@@ -1,0 +1,121 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+
+<script src="public/js/bsn.AutoSuggest_2.1.3_comp.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" href="public/js/autosuggest_inquisitor.css" type="text/css" media="screen" charset="utf-8" />
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td colspan="2" align="left"><h1>变价信息</h1></td>
+                </tr>
+                
+                <tr>
+                  <td  align="right">产品</td>
+                  <td align="left">
+				  <input name="ProductsName" id="ProductsName" type="text" 
+                  <%if Act=="Edit"%>value="{vi.ProductsName}"<%/if%> />
+				  <INPUT TYPE="hidden" NAME="ProductsID" id="ProductsID" <%if Act=="Edit"%>value="{vi.ProductsID}"<%/if%>>
+					</td>
+                </tr>
+
+				<tr>
+                  <td  align="right">期间价格</td>
+                  <td align="left">
+                  <input name="vPrice" id="vPrice"  type="text" 
+                  <%if Act=="Edit"%>value="{vi.vPrice}"<%/if%>
+                  </td>
+                </tr>
+					
+
+				<tr>
+                  <td  align="right">开始时间</td>
+                  <td align="left">
+                  <input name="bDateTime" id="bDateTime" onclick="new Calendar().show(this);" type="text" 
+                  <%if Act=="Edit"%>value="{vi.bDateTime}"<%/if%>
+                  </td>
+                </tr>
+
+				<tr>
+                  <td  align="right">结束时间</td>
+                  <td align="left">
+                  <input name="eDateTime" id="eDateTime" onclick="new Calendar().show(this);" type="text" 
+                  <%if Act=="Edit"%>value="{vi.eDateTime}"<%/if%>
+                  </td>
+                </tr>
+				
+                <tr>
+                  <td colspan="2" align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+    
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+		
+	var options = {
+		script:'Services/CAjax.aspx?do=GetProductsList&RCode='+Math.random()+'&',
+		varname:"ProductsName",
+		json:true,
+		shownoresults:false,
+		maxresults:6,
+		callback: function (obj) { document.getElementById('ProductsID').value = obj.id; }
+	};
+	var as_json = new bsn.AutoSuggest('ProductsName', options);
+
+			function CheckF()
+			{
+				
+					if(Sys.getObj('ProductsName').value != '')
+					{
+						if(Sys.getObj('vPrice').value != '')
+						{
+							if(Sys.getObj('bDateTime').value != '')
+							{
+								if(Sys.getObj('eDateTime').value != '')
+								{
+									Sys.getObj('bForm').submit();
+								}else
+								{
+									alert('结束时间不能为空!');	
+								}
+							}else
+							{
+								alert('开始时间不能为空!');	
+							}
+						}else
+						{
+							alert('期间价格不能为空!');	
+						}
+					}else
+					{
+						alert('产品不能为空!');	
+					}
+
+				
+			}
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

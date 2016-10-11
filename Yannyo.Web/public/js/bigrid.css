@@ -1,0 +1,69 @@
+.biGrid{
+}
+
+.biGrid td
+{
+	font:11px "Segoe UI";
+}
+
+.biGrid .gridHeader{
+}
+
+.biGrid .gScrollbarHorizon
+{
+	background-image:url(skin/default/images/scrollbar_bg_horizon.png);
+	height:16;
+	width:100%;
+}
+
+.biGrid .gScrollbarVertical{
+	background-image:url(skin/default/images/scrollbar_bg_vertical.png);
+	width:16;
+}
+
+.biGrid .gScrollbarBtnRight
+{
+	position:relative;
+	height:16;
+	width:16;
+}
+
+.biGrid .gScrollbarBtnDown
+{
+	position:relative;
+	width:16;
+	height:16;
+}
+
+.biGrid .gScrollbarHorizonItem
+{
+    position:relative;z-index:999;
+    left:16;top:-16;
+    height:16;
+    width:30;
+    font-size:1px;
+    background-image:url(skin/default/images/sh_bg.gif);
+}
+
+.biGrid .gScrollbarVerticalItem
+{
+    position:relative;
+    z-index:998;
+    top:0;
+    height:10;
+    width:16;
+    font-size:1px;
+    background-image:url(skin/default/images/sv_bg.gif);
+}
+.biGrid .fixedrow
+{
+	background-image:url(skin/default/images/fhbg.gif);
+	height:24;
+	border-right:1px solid #ccc;
+}
+
+.biGrid .fixedrow2
+{
+	background-image:url(skin/default/images/bg.gif);
+}
+

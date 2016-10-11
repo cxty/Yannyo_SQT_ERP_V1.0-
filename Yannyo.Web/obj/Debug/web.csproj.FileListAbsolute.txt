@@ -1,0 +1,16 @@
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\obj\Debug\ResolveAssemblyReference.cache
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\web.dll
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\web.pdb
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.BLL.dll
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Common.dll
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Config.dll
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Entity.dll
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Entity.pdb
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Config.pdb
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.BLL.pdb
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\obj\Debug\web.dll
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\obj\Debug\web.pdb
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Public.dll
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Cache.dll
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Cache.pdb
+F:\WEB\wwwroot\Yannyo_IsLand_Sales\Yannyo_IsLand_Sales\web\bin\Yannyo.Public.pdb

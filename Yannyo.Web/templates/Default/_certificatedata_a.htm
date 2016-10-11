@@ -1,0 +1,55 @@
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="8%">凭证编号</td>
+			<td >单位</td>
+            <td width="20%">摘要</td>
+			<td width="20%">科目</td>
+			<td width="10%">经办人</td>
+			<td width="10%" align="right">发生金额</td>
+			<td width="10%" align="right">发生时间</td>
+			
+            <td width="10%" align="right">创建时间</td>
+            <td width="5%" align="center">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <a href="javascript:void(0);" onClick="javascript:CertificateData.ShowBox({dl[CertificateID]},'{dl[cCode]}');">{dl[cCode]}</a>
+            </td>
+
+            <td>
+
+			{dl[ObjectName]}
+
+			</td>
+            <td>{dl[cdName]}</td>
+			<td>
+			<%set {aspxrewriteurl}=GetFeesSubjectClassParentStr( int.Parse(dl["FeesSubjectID"].ToString()),">")%>
+			{aspxrewriteurl}
+			</td>
+			<td>{dl[StaffName]}</td>
+			<td align="right"><%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["cdMoney"]),2).ToString()%>
+    {aspxrewriteurl}</td>
+			<td align="right">
+			<%set {aspxrewriteurl} = DateTime.Parse(dl["cDateTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+			</td>
+			
+			<td align="right">{dl[cdAppendTime]}</td>
+            <td align="center">
+			
+			<a href="javascript:void(0);" onClick="javascript:CertificateData.ShowBox({dl[CertificateID]},'{dl[cCode]}');">查看</a> 
+			
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="5"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+            <td colspan="4" align="right">
+            <%set {aspxrewriteurl}=decimal.Round(Convert.ToDecimal((SumMoneyB).ToString()),2).ToString()%>
+            合计:{aspxrewriteurl}</td>
+          </tr>
+          
+          <%/if%>
+        </table>

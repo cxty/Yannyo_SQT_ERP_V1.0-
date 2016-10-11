@@ -1,0 +1,75 @@
+<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr class="print_box_top">
+            <td colspan="2" align="center"><b>凭证汇总表</b></td>
+          </tr>
+          <tr class="print_box_top">
+            <td colspan="2">单位名称:{config.CompanyName}</td>
+          </tr>
+          <tr class="print_box_top">
+            <td>凭证范围:{bDate}~{eDate}</td>
+            <td align="right">共{cCount}张</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+            <table width="100%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 " style= "border-collapse:collapse; ">
+<thead>
+  <tr >
+    <td width="10%">科目代码</td>
+    <td width="20%">科目名称</td>
+    <td width="15%" align="right">借方金额</td>
+    <td width="15%" align="right">贷方金额</td>
+    </tr>
+</thead>
+<tbody id="dloop">
+<%if dList!=null%>
+<%loop dl dList%>
+  <tr >
+    
+    <td>{dl[cCode]}</td>
+    <td width="20%">{dl[cClassName]}</td>
+    <td width="20%" align="right" >{dl[cdMoney]}&nbsp;
+    <%set {cdMoneySum}=Convert.ToDecimal(cdMoneySum+Convert.ToDecimal(dl["cdMoney"]))%>
+    </td>
+    <td width="10%" align="right">{dl[cdMoneyB]}&nbsp;
+        <%set {cdMoneyBSum}=Convert.ToDecimal(cdMoneyBSum+Convert.ToDecimal(dl["cdMoneyB"]))%>
+    </td>
+    </tr>
+<%/loop%>
+<tr>
+	<td>合计</td>
+    <td width="20%">&nbsp;</td>
+    <td width="20%" align="right">{cdMoneySum}&nbsp;</td>
+    <td width="10%" align="right">{cdMoneyBSum}&nbsp;</td>
+</tr>
+<%/if%>
+</tbody>
+</table>
+            </td>
+          </tr>
+        </table>
+        打印时间:{DateTime.Now}
+        <br><br>
+        <div style="page-break-after: always"></div>
+        
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

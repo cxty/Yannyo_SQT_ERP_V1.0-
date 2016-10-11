@@ -1,0 +1,516 @@
+<div id="datalist_A">
+		<div class="dlist">
+		<%if {ispost} %>
+
+
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td colspan="2"><h3><b>现金明细 {eDateTime}</b></h3></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+
+<%set {AllSumValue} = 0%>
+		<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+          <tr class="tBar">
+			<%if BankMoneyList != null%>
+				<%loop bl BankMoneyList%>
+					<td >{bl[bName]}</td>
+				<%/loop%>
+			<%/if%>
+          </tr>
+          <%if BankMoneyList != null%>
+
+          <tr>
+
+			
+			<%if BankMoneyList != null%>
+				<%loop bl BankMoneyList%>
+					<td  align="right">
+					<%set {AllSumValue}={AllSumValue}+decimal.Parse(bl["BankMoney"].ToString())%>
+					<%set {ReHTML}=bl["BankMoney"].ToString()%>
+					{ReHTML}
+					</td>
+				<%/loop%>
+			<%/if%>
+
+            
+
+          </tr>
+
+          <%/if%>
+        </table>
+
+
+	</td>
+  </tr>
+  <tr>
+    <td>合计:</td>
+	<td align="right">
+			{AllSumValue}
+			<%set {BankMoney_Sum}={AllSumValue}%>
+	</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td colspan="2"><h3><b>应收款(公司) {eDateTime}</b></h3></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+
+<%if {ispost} %>
+<%set {AllSumValue} = 0%>
+<%set {AllSumValue1} = 0%>
+<%set {AllSumValue2} = 0%>
+<%set {AllSumValue3} = 0%>
+<%set {AllSumValue4} = 0%>
+<%set {AllSumValue5} = 0%>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+				<tr class="tBar">
+
+					<td >门店、客户</td>
+
+					<td width="10%">累计新增应收金额<br>(未完成)</td>
+					<td width="10%">累计新增应收金额<br>(已完成)</td>
+					<td width="10%">实际对账金额<br>(已完成)</td>
+					<td width="10%">实际已收款金额<br>(已完成)</td>
+					<td width="10%">剩余应收金额</td>
+					
+				</tr>
+				<%if ARMoney_E_List != null%>
+				  <%loop dl ARMoney_E_List%>
+					  <tr>
+
+						<td >{dl[sName]}</td>
+
+						<td align="right">{dl[ASumAMoney]}</td>
+						<td align="right">{dl[BSumAMoney]}</td>
+						<td align="right">{dl[BSumBMoney]}</td>
+						<td align="right">{dl[BSumActualMoney]}</td>
+						<td align="right">{dl[SYMoney]}</td>
+
+<%set {AllSumValue1}={AllSumValue1}+decimal.Parse(dl["ASumAMoney"].ToString())%>
+<%set {AllSumValue2}={AllSumValue2}+decimal.Parse(dl["BSumAMoney"].ToString())%>
+<%set {AllSumValue3}={AllSumValue3}+decimal.Parse(dl["BSumBMoney"].ToString())%>
+<%set {AllSumValue4}={AllSumValue4}+decimal.Parse(dl["BSumActualMoney"].ToString())%>
+<%set {AllSumValue5}={AllSumValue5}+decimal.Parse(dl["SYMoney"].ToString())%>
+
+					  </tr>
+				  <%/loop%>
+				  <%set {AllSumValue}={AllSumValue5} %>
+				<%/if%>
+				  <tr>
+					<td>合计:</td>
+
+					<td align="right">{AllSumValue1}</td>
+					<td align="right">{AllSumValue2}</td>
+					<td align="right">{AllSumValue3}</td>
+					<td align="right">{AllSumValue4}</td>
+					<td align="right">{AllSumValue5}</td>
+
+				  </tr>
+				
+			</table>
+		<%/if%>
+		<%set {ARMoney_E_Sum}={AllSumValue}%>
+	</td>
+  </tr>
+  <!--<tr>
+    <td>合计:</td>
+	<td align="right">
+			{AllSumValue}
+			
+	</td>
+  </tr>-->
+</table>
+
+
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td colspan="2"><h3><b>应收款(结算系统) {eDateTime}</b></h3></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+
+<%if {ispost} %>
+<%set {AllSumValue} = 0%>
+<%set {AllSumValue1} = 0%>
+<%set {AllSumValue2} = 0%>
+<%set {AllSumValue3} = 0%>
+<%set {AllSumValue4} = 0%>
+<%set {AllSumValue5} = 0%>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+				<tr class="tBar">
+
+					<td >结算系统</td>
+
+					<td width="10%">累计新增应收金额<br>(未完成)</td>
+					<td width="10%">累计新增应收金额<br>(已完成)</td>
+					<td width="10%">实际对账金额<br>(已完成)</td>
+					<td width="10%">实际已收款金额<br>(已完成)</td>
+					<td width="10%">剩余应收金额</td>
+					
+				</tr>
+				<%if ARMoney_PaySystem_List != null%>
+				  <%loop dl ARMoney_PaySystem_List%>
+					  <tr>
+
+						<td >{dl[pName]}</td>
+
+						<td align="right">{dl[ASumAMoney]}</td>
+						<td align="right">{dl[BSumAMoney]}</td>
+						<td align="right">{dl[BSumBMoney]}</td>
+						<td align="right">{dl[BSumActualMoney]}</td>
+						<td align="right">{dl[SYMoney]}</td>
+
+<%set {AllSumValue1}={AllSumValue1}+decimal.Parse(dl["ASumAMoney"].ToString())%>
+<%set {AllSumValue2}={AllSumValue2}+decimal.Parse(dl["BSumAMoney"].ToString())%>
+<%set {AllSumValue3}={AllSumValue3}+decimal.Parse(dl["BSumBMoney"].ToString())%>
+<%set {AllSumValue4}={AllSumValue4}+decimal.Parse(dl["BSumActualMoney"].ToString())%>
+<%set {AllSumValue5}={AllSumValue5}+decimal.Parse(dl["SYMoney"].ToString())%>
+
+					  </tr>
+				  <%/loop%>
+				  <%set {AllSumValue}={AllSumValue5} %>
+				<%/if%>
+				  <tr>
+					<td>合计:</td>
+
+					<td align="right">{AllSumValue1}</td>
+					<td align="right">{AllSumValue2}</td>
+					<td align="right">{AllSumValue3}</td>
+					<td align="right">{AllSumValue4}</td>
+					<td align="right">{AllSumValue5}</td>
+
+				  </tr>
+				
+			</table>
+		<%/if%>
+		<%set {APMoney_PaySystem_Sum}={AllSumValue}%>
+	</td>
+  </tr>
+  <!--<tr>
+    <td>合计:</td>
+	<td align="right">
+			{AllSumValue}
+			
+	</td>
+  </tr>-->
+</table>
+
+
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td colspan="2"><h3><b>应收款(个人) {eDateTime}</b></h3></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+
+<%if {ispost} %>
+<%set {AllSumValue} = 0%>
+<%set {AllSumValue1} = 0%>
+<%set {AllSumValue2} = 0%>
+<%set {AllSumValue3} = 0%>
+<%set {AllSumValue4} = 0%>
+<%set {AllSumValue5} = 0%>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+				<tr class="tBar">
+
+					<td >姓名</td>
+
+					<td width="10%">累计新增应收金额<br>(未完成)</td>
+					<td width="10%">累计新增应收金额<br>(已完成)</td>
+					<td width="10%">实际对账金额<br>(已完成)</td>
+					<td width="10%">实际已收款金额<br>(已完成)</td>
+					<td width="10%">剩余应收金额</td>
+					
+				</tr>
+				<%if ARMoney_P_List != null%>
+				  <%loop dl ARMoney_P_List%>
+					  <tr>
+
+						<td >{dl[sName]}</td>
+
+						<td align="right">{dl[ASumAMoney]}</td>
+						<td align="right">{dl[BSumAMoney]}</td>
+						<td align="right">{dl[BSumBMoney]}</td>
+						<td align="right">{dl[BSumActualMoney]}</td>
+						<td align="right">{dl[SYMoney]}</td>
+
+<%set {AllSumValue1}={AllSumValue1}+decimal.Parse(dl["ASumAMoney"].ToString())%>
+<%set {AllSumValue2}={AllSumValue2}+decimal.Parse(dl["BSumAMoney"].ToString())%>
+<%set {AllSumValue3}={AllSumValue3}+decimal.Parse(dl["BSumBMoney"].ToString())%>
+<%set {AllSumValue4}={AllSumValue4}+decimal.Parse(dl["BSumActualMoney"].ToString())%>
+<%set {AllSumValue5}={AllSumValue5}+decimal.Parse(dl["SYMoney"].ToString())%>
+
+					  </tr>
+				  <%/loop%>
+				  <%set {AllSumValue}={AllSumValue5} %>
+				<%/if%>
+				  <tr>
+					<td>合计:</td>
+
+					<td align="right">{AllSumValue1}</td>
+					<td align="right">{AllSumValue2}</td>
+					<td align="right">{AllSumValue3}</td>
+					<td align="right">{AllSumValue4}</td>
+					<td align="right">{AllSumValue5}</td>
+
+				  </tr>
+				
+			</table>
+		<%/if%>
+		<%set {ARMoney_P_Sum}={AllSumValue}%>
+	</td>
+  </tr>
+  <!--<tr>
+    <td>合计:</td>
+	<td align="right">
+			{AllSumValue}
+			
+	</td>
+  </tr>-->
+</table>
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td colspan="2"><h3><b>应付款(公司) {eDateTime}</b></h3></td>
+  </tr>
+<tr>
+    <td colspan="2">
+
+<%if {ispost} %>
+<%set {AllSumValue} = 0%>
+<%set {AllSumValue1} = 0%>
+<%set {AllSumValue2} = 0%>
+<%set {AllSumValue3} = 0%>
+<%set {AllSumValue4} = 0%>
+<%set {AllSumValue5} = 0%>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+				<tr class="tBar">
+
+					<td >姓名</td>
+
+					<td width="10%">累计应付金额</td>
+					<td width="10%">累计已付金额</td>
+					<td width="10%">累计其他已付金额</td>
+					<td width="10%">剩余应付金额</td>
+					
+				</tr>
+				<%if APMoney_E_List != null%>
+				  <%loop dl APMoney_E_List%>
+					  <tr>
+
+						<td >{dl[sName]}</td>
+
+						<td align="right">{dl[SumNPMoney]}</td>
+						<td align="right">{dl[SumPayMoney]}</td>
+						<td align="right">{dl[SumOtherMoney]}</td>
+						<td align="right">{dl[SYMoney]}</td>
+
+<%set {AllSumValue1}={AllSumValue1}+decimal.Parse(dl["SumNPMoney"].ToString())%>
+<%set {AllSumValue2}={AllSumValue2}+decimal.Parse(dl["SumPayMoney"].ToString())%>
+<%set {AllSumValue3}={AllSumValue3}+decimal.Parse(dl["SumOtherMoney"].ToString())%>
+<%set {AllSumValue4}={AllSumValue4}+decimal.Parse(dl["SYMoney"].ToString())%>
+
+					  </tr>
+				  <%/loop%>
+				  <%set {AllSumValue}={AllSumValue4} %>
+				<%/if%>
+				
+			</table>
+		<%/if%>
+	</td>
+  </tr>
+  <tr>
+    <td>合计:</td>
+	<td align="right">
+			{AllSumValue}
+			<%set {APMoney_E_Sum}={AllSumValue}%>
+	</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td colspan="2"><h3><b>应付款(个人) {eDateTime}</b></h3></td>
+  </tr>
+  <tr>
+    <td colspan="2">
+
+<%if {ispost} %>
+<%set {AllSumValue} = 0%>
+<%set {AllSumValue1} = 0%>
+<%set {AllSumValue2} = 0%>
+<%set {AllSumValue3} = 0%>
+<%set {AllSumValue4} = 0%>
+<%set {AllSumValue5} = 0%>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+				<tr class="tBar">
+
+					<td >姓名</td>
+
+					<td width="10%">累计应付金额</td>
+					<td width="10%">累计已付金额</td>
+					<td width="10%">累计其他已付金额</td>
+					<td width="10%">剩余应付金额</td>
+					
+				</tr>
+				<%if APMoney_P_List != null%>
+				  <%loop dl APMoney_P_List%>
+					  <tr>
+
+						<td >{dl[sName]}</td>
+
+						<td align="right">{dl[SumNPMoney]}</td>
+						<td align="right">{dl[SumPayMoney]}</td>
+						<td align="right">{dl[SumOtherMoney]}</td>
+						<td align="right">{dl[SYMoney]}</td>
+
+<%set {AllSumValue1}={AllSumValue1}+decimal.Parse(dl["SumNPMoney"].ToString())%>
+<%set {AllSumValue2}={AllSumValue2}+decimal.Parse(dl["SumPayMoney"].ToString())%>
+<%set {AllSumValue3}={AllSumValue3}+decimal.Parse(dl["SumOtherMoney"].ToString())%>
+<%set {AllSumValue4}={AllSumValue4}+decimal.Parse(dl["SYMoney"].ToString())%>
+
+					  </tr>
+				  <%/loop%>
+				  <%set {AllSumValue}={AllSumValue4} %>
+				<%/if%>
+				  <tr>
+					<td>小计:</td>
+
+					<td align="right">{AllSumValue1}</td>
+					<td align="right">{AllSumValue2}</td>
+					<td align="right">{AllSumValue3}</td>
+					<td align="right">{AllSumValue4}</td>
+
+				  </tr>
+				
+			</table>
+		<%/if%>
+	</td>
+  </tr>
+  <tr>
+    <td>合计:</td>
+	<td align="right">
+			{AllSumValue}
+			<%set {APMoney_P_Sum}={AllSumValue}%>
+	</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td colspan="2"><h3><b>库存 {eDateTime}</b></h3></td>
+  </tr>
+  <tr>
+	<td colspan="2">
+
+<%if {ispost} %>
+<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+			<tr class="tBar">
+				<td width="2%">排名</td>
+
+				<td width="10%">名称</td>
+
+
+				<td width="5%">品牌</td>
+				
+				<td width="5%">库存量</td>
+				<td width="3%">箱数</td>
+				<td width="5%">金额</td>
+			</tr>
+			<%if StockDataList != null%>
+			  <%loop dl StockDataList%>
+			  <tr>
+				<td >{dl__loop__id}</td>
+				
+				<td >{dl[pName]}</td>
+				
+				<td >{dl[pBrand]}</td>
+				
+				<td align="right">{dl[S_QUANTITY]}</td>
+				<td align="right">
+				<%set {aspxrewriteurl}=(decimal.Parse(dl["S_QUANTITY"].ToString()) / decimal.Parse(dl["pToBoxNo"].ToString())).ToString("0.00")%>
+				{aspxrewriteurl}
+				</td>
+				<td align="right">{dl[sumPrice]}</td>
+			  </tr>
+<%set {AllSumValue}={AllSumValue}+decimal.Parse(dl["sumPrice"].ToString())%>
+			  <%/loop%>
+			 <%/if%>
+		</table>
+
+<%/if%>
+	</td>
+  </tr>
+  <tr>
+    <td>合计:</td>
+	<td align="right">
+			{AllSumValue}
+			<%set {StockData_Sum}={AllSumValue}%>
+	</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td><h3>固定资产 {eDateTime}</h3></td>
+  </tr>
+  <tr>
+    <td>合计:</td>
+  </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="5" cellpadding="0">
+  <tr>
+    <td><h3>净资产 {eDateTime}</h3></td>
+  </tr>
+  <tr>
+    <td>
+
+<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+  <tr class="tBar">
+    <td width="50%" align="center">项目</td>
+    <td align="center">金额</td>
+  </tr>
+  <tr>
+    <td>现金</td>
+    <td align="right"><%set {aspxrewriteurl} = ({BankMoney_Sum}).ToString("0.00")%>
+	{aspxrewriteurl}</td>
+  </tr>
+  <tr>
+    <td>应收款</td>
+    <td align="right"><%set  {aspxrewriteurl} = ({ARMoney_E_Sum}+{ARMoney_P_Sum}+{APMoney_PaySystem_Sum}).ToString("0.00")%>
+	{aspxrewriteurl}</td>
+  </tr>
+  <tr>
+    <td>应付款</td>
+    <td align="right"><%set  {aspxrewriteurl} = ({APMoney_E_Sum}+{APMoney_P_Sum}).ToString("0.00")%>
+	{aspxrewriteurl}</td>
+  </tr>
+  <tr>
+    <td>库存</td>
+    <td align="right"><%set {aspxrewriteurl} = ({StockData_Sum}).ToString("0.00")%>
+	{aspxrewriteurl}</td>
+  </tr>
+  <tr>
+    <td>固定资产</td>
+    <td align="right">0</td>
+  </tr>
+  <tr>
+    <td>合计:</td>
+    <td align="right"><%set  {aspxrewriteurl} = ({BankMoney_Sum}+({ARMoney_E_Sum}+{ARMoney_P_Sum})-({APMoney_E_Sum}+{APMoney_P_Sum})+{StockData_Sum}).ToString("0.00")%>
+	{aspxrewriteurl}</td>
+  </tr>
+</table>
+
+</td>
+  </tr>
+</table>
+
+
+
+
+
+
+		<%/if%>
+		</div>
+	</div>

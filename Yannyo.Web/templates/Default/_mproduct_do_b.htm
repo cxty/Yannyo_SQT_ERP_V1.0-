@@ -1,0 +1,38 @@
+
+            <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBox" >
+              <thead >
+              <tr class="tBar">
+                <td width="5%" align="center"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+                <td >商品名称</td>
+                <td width="20%">数量</td>
+                <td width="20%">更新时间</td>
+              </tr>
+              </thead>
+              
+  <%if dList != null%>
+  <tbody id="dloop">
+	<%loop dl dList%>
+  <tr id="tr_{dl[num_iid]}" pid="{dl[outer_id]}" num_iid="{dl[num_iid]}"  title="{dl[title]}" pname="{dl[pName]}">
+	<td align="center" width="2%"><input name="cCheck" type="checkbox" class="B_Check" title="{dl[title]}" id="ch_{dl[num_iid]}" value="{dl[num_iid]}"  cid="{dl[cid]}"/></td>
+	<td >{dl[title]}</td>
+	<td  width="20%" align="right" id="loop_{dl[num_iid]}">
+	<a href="javascript:void(0);" id="a_{dl[num_iid]}" onclick="javascript:M_Product_do.ShowNum('tr_{dl[num_iid]}');"> {dl[mNum]} </a>
+	</td>
+	<td width="20%" align="right">{dl[modified]}</td>
+  </tr>
+  <%/loop%>
+  </tbody>
+  <%/if%>
+  
+</table>
+<div style="height:30px"></div>
+<div id="footer_tool">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+	  <td align="center">
+		<input type="button" name="bt_updatenum" id="bt_updatenum" style="width:150px" value=" 更新选中(更新到商城) " class="B_INPUT">
+		<input type="button" name="bt_cancel" id="bt_cancel" value=" 取消 " class="B_INPUT">
+	  </td>
+	</tr>
+  </table>
+</div>

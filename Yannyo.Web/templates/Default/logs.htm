@@ -1,0 +1,44 @@
+<%template _header%>
+<div class="main" >
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1">
+<div class="datalist">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+<thead>
+  <tr class="tBar"> 
+    <td width="5%">编号</td>
+    <td width="10%">人员</td>
+    <td>事件</td>
+    <td width="10%">发生时间</td>
+  </tr>
+  </thead>
+  <tbody id="dloop">
+  <%if dList!=null%>
+<%loop dl dList%>
+  <tr class="tBar">
+    <td align="center">{dl[EventLogID]}</td>
+    <td align="left">{dl[UserName]}</td>
+    <td align="left">{dl[eMSG]}</td>
+    <td align="left">{dl[eAppendTime]}</td>
+  </tr>
+  <%/loop%>
+<%/if%>
+  </tbody>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr class="tBar">
+      <td width="50%"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+    </tr>
+  </table>
+</div>
+  
+        </form>
+        <%/if%>
+</div>
+
+
+
+<%template _copyright%>
+<%template _footer%>

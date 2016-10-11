@@ -1,0 +1,52 @@
+<%template _poppageheader%>
+<body>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<script src="public/js/msendgoods_exp.js" language="javascript" type="text/javascript"></script>
+<table width="100%" border="0" cellspacing="1" cellpadding="2" class="tBox">
+  <tr>
+    <td width="30%" class="ltd">快递模板:</td>
+    <td class="rtd">
+    <select name="ExpName" id="ExpName">
+    <option value="0">请选择</option>
+    <%if eList!=null%>
+        <%loop el eList%>
+        <option value="{el[m_ExpressTemplatesID]}" >{el[mExpName]}</option>
+        <%/loop%>
+    <%/if%>
+    </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="ltd">运单号:</td>
+    <td class="rtd"><input name="ExpNO" id="ExpNO" type="text"  /></td>
+  </tr>
+</table>
+
+<div id="footer_tool">
+ <input type="button" id="Sub_button" name="Sub_button" style="margin:5px" class="B_INPUT" value=" 确 定 " />
+ <input type="button" id="c_button" name="c_button" style="margin:5px" class="B_INPUT" value=" 取 消 " />
+</div>
+<script language="javascript" type="text/javascript">
+
+var TMsendgoods_Exp = new TMsendgoods_Exp();
+TMsendgoods_Exp.ini();
+
+</script>
+        <%/if%>
+	<%/if%>
+<%/if%>
+<%template _footer%>

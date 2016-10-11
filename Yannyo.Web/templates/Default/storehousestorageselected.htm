@@ -1,0 +1,109 @@
+﻿<%template _poppageheader%>
+<body>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="/public/js/Cxty_XTool.js"></script>
+<script src="/public/js/myFrontPageJs/storage.js" type="text/javascript" language="javascript"></script>
+
+        <form action="" method="post" name="form1" id="form1">
+          <table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox">
+          <tr class="tBar">
+           <td align="center" width="20%">选择门店</td>
+           <td align="center" width="30%">导入时间</td>
+           <td align="center" width="15%">查询</td>
+           <td align="center" width="15%">导出查询结果</td>
+          </tr>
+           <tr class="tBar">
+            <td align="center">
+              <input type="text" name="SName" id="SName" style="width:150px" <%if {ispost}%>value="{sName}"<%/if%> />
+                    <input type="hidden"  name="StoresID" id="StoresID" <%if {ispost}%>value="{sId}"<%/if%>/>
+                    <span style="color:Red">输入*可检索</span>
+            </td>
+            <td align="center">
+             <%set {aspxrewriteurl}=bDate.ToString("yyyy-MM-dd")%>
+             <input name="sDate" id="sDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />至
+             <%set {aspxrewriteurl}=eDate.ToString("yyyy-MM-dd")%>
+             <input name="stDate" id="stDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />
+            </td>
+            <td align="center">
+             <input type="button" id="selected_Data" name="selected_Data" value="确定" onclick="javascript:checkF()" style="width:60%;height:23px" />
+            </td>
+            <td align="center"><input type="button" id="export" name="export" value="导出数据" style="width:60%;height:25px" /></td>
+           </tr>
+          </table>
+    <div id="space"></div>
+    <table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox" id="get_data">
+        <tr class="tBar">
+        <td width="10%;" align="center">序号</td>
+	    <td width="10%">商品条码</td>
+	    <td width="20%">商品名称</td>
+        <td width="10%" align="right">数量</td>
+        <td width="10%" align="right">金额</td>
+        <td align="center" width="20%">导入时间</td> 
+        <td align="center" width="20%">系统时间</td>
+        </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox" id="data">
+        <tbody>
+        <%if pList !=null%>
+         <%loop pl pList%>
+             <tr>
+             <td align="center" width="10%">{pl__loop__id}</td>
+              <td width="10%"><%if pl["pBarcode"].ToString() ==""%>无条码<%/if%>{pl[pBarcode]}</td>
+              <td width="20%">{pl[pName]}</td>
+              <td align="right" width="10%">{pl[pRelityStorage]}</td>
+              <td align="right" width="10%">{pl[pMoney]}</td>
+              <td align="center" width="20%">
+               <%set {aspxrewriteurl} = DateTime.Parse(pl["pAppendTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl} </td>
+              <td align="center" width="20%">
+                <%set {aspxrewriteurl} = DateTime.Parse(pl["pUpdateTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}</td>
+             </tr>
+           <%/loop%>
+         <%/if%>
+        </tbody>
+        </table>
+        <script language="javascript" type="text/javascript">
+
+            function checkF() {
+                var sName = $('#SName').val();
+                var bDate = $("#sDate").val();
+                var eDate = $("#stDate").val();
+                if (sName != "") {
+                    if (bDate <= eDate) {
+                        $('#form1').submit();
+                    }
+                    else {
+                        jAlert("日期选择错误，请重新选择！", "友情提示");
+                    }
+                   
+                }
+                else {
+                    jAlert("门店名称不能为空，请重新输入！", "友情提示");
+                }
+            }
+            //导出数据
+            $("#export").click(function () {
+                var StoresID = $("#StoresID").val();
+                var bDate = $("#sDate").val();
+                var eDate = $("#stDate").val();
+                if (StoresID > 0) {
+                    if (bDate <= eDate) {
+                        var _url = '/storehousestorageselected.aspx?Act=act&StoresID=' + StoresID + '&sDate=' + bDate + '&stDate=' + eDate;
+                        window.open('', "top");
+                        setTimeout(window.open(_url, "top"), 100);
+                    }
+                    else {
+                        jAlert("日期选择错误，请重新选择！", "友情提示");
+                    }
+                }
+                else {
+                    jAlert("门店名称不能为空，请重新输入！", "友情提示");
+                }
+            });
+        </script>
+      </form>
+        <%template _footer%>

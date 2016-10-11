@@ -1,0 +1,15 @@
+<div class="copyright">
+Powered by <a href="http://www.yannyo.com">燕游商企通 v1.0</a> , 闽ICP备09018556号<br />
+<p id="debuginfo">
+<%if {config.Debug}!=0%>
+	Processed in {this.Processtime} second(s)
+	<%if {isguestcachepage}==1%>
+		(Cached).
+	<%else if {querycount}>1%>
+		 , {querycount} queries.
+	<%else%>
+				, {querycount} query.
+	<%/if%>
+<%/if%>
+</p>
+</div>

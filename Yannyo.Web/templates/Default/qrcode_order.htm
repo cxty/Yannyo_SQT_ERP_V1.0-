@@ -1,0 +1,214 @@
+﻿<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+            <%if oi!=null%>
+            <h2>单据编号:{oi.oOrderNum} 该单据打印时间:{printdatetime}</h2>
+<%if oi.oType==3 || oi.oType==4 || oi.oType==5 || oi.oType==6 || oi.oType==7%>
+            <h2>单据信息:</h2>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left">单号:{oi.oOrderNum}</td>
+    <td align="left"> 客 户:
+{oi.StoresSupplierName} </td>
+    <td align="left"> 业务员:
+      {oi.StaffName} </td>
+    <td align="left"><%set {aspxrewriteurl}=oi.oOrderDateTime.ToString("yyyy-MM-dd")%>
+      日期:
+      {aspxrewriteurl} </td>
+  </tr>
+  <tr>
+    <td align="left">
+联系人:{oi.oCustomersContact}
+    </td>
+    <td align="left"> 联系电话:{oi.oCustomersTel} </td>
+    <td colspan="2" align="left">
+      地址:{oi.oCustomersAddress}    </td>
+    </tr>
+  <tr>
+    <td align="left">客户订单号:{oi.oCustomersOrderID}</td>
+    <td colspan="3" align="left">客户指定门店:{oi.oCustomersNameB}</td>
+    </tr>
+  <tr>
+    <td align="left">企业注册号{config.RegistrationNo}:</td>
+    <td colspan="2" align="left">单位地址：{config.Address}</td>
+    <td align="left">电话：{config.Phone}</td>
+    </tr>
+</table>
+<table width="98%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 "   style= "border-collapse:collapse; ">
+	<tr >
+	  <!--<td width="50">仓库</td>-->
+	  <td width="40" align="center">条码</td>
+	  <td align="center">商品名称</td>
+	  <td width="40" align="center">包装量</td>
+	  
+	  <%if ShowMoney == true%>
+	  <td width="50" align="center">单价<br />
+	    (元)</td>
+	  <%/if%>
+	 <td width="50" align="center">数量</td>
+	  <td width="50" align="center">件数</td>
+	  <%if ShowMoney == true%>
+	  <td width="50" align="center">金额</td>
+	  <%/if%>
+     
+	</tr>
+
+<%if OrderList!=null%>
+	<%loop ol OrderList%>
+		<tr>
+		  <!--<td width="80">{ol[StorageName]}</td>-->
+		  <td >{ol[ProductsBarcode]}</td>
+		  <td>
+		  <%if ol["IsGifts"].ToString() !="0"%>
+		  (赠)
+		  <%/if%>
+		  {ol[ProductsName]}</td>
+		  <td align="center" >{ol[ProductsToBoxNo]}</td>
+		  
+		  <%if ShowMoney == true%>
+		  <td  align="right">
+<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oPrice"]),2).ToString()%>
+		  <nobr>{aspxrewriteurl}&nbsp;</nobr>
+</td>
+		  <%/if%>
+		   <td  align="right">
+           <%set {sumQuantityM} = Convert.ToDecimal(sumQuantityM+Convert.ToDecimal(ol["oQuantity"]))%>
+		  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"]),config.QuantityDecimal).ToString()%>
+		  <nobr>{aspxrewriteurl}{ol[ProductsUnits]}&nbsp;</nobr>
+</td>
+<td  align="right">
+			<%set {sumQuantityB} = Convert.ToDecimal(sumQuantityB+Convert.ToDecimal(ol["oQuantity"])/Convert.ToDecimal(ol["ProductsToBoxNo"]))%>
+		  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"])/Convert.ToDecimal(ol["ProductsToBoxNo"]),config.QuantityDecimal).ToString()%>
+		  <nobr>{aspxrewriteurl}{ol[ProductsMaxUnits]}&nbsp;</nobr>
+</td>
+		  <%if ShowMoney == true%>
+		  <td align="right">
+<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oMoney"]),2).ToString()%>
+		  <nobr>{aspxrewriteurl}&nbsp;</nobr>
+</td>
+		  <%/if%>
+		 
+		</tr>
+	<%/loop%>
+    <%if ShowMoney == true%>
+    <%set {OrderFieldCount} = Convert.ToInt32(OrderFieldCount + 3)%>
+    <%else%>
+    <%set {OrderFieldCount} = Convert.ToInt32(OrderFieldCount + 2)%>
+    <%/if%>
+    <tr>
+    <td>合计:</td>
+    <td colspan="{OrderFieldCount}"></td>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(sumQuantityM,config.QuantityDecimal).ToString()%>
+    <nobr>{aspxrewriteurl}&nbsp;</nobr></td>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(sumQuantityB,config.QuantityDecimal).ToString()%>
+    <nobr>{aspxrewriteurl}&nbsp;</nobr>
+    </td>
+    <%if ShowMoney == true%>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(summoney,2).ToString()%>
+    <nobr>{aspxrewriteurl}&nbsp;</nobr>
+    </td>
+    <%/if%>
+    </tr>
+<%/if%>
+
+  </table>
+  <%if ShowMoney == true%>
+  <div><!--合计:&yen;{summoney} &nbsp;&nbsp;&nbsp;&nbsp;-->大写:人民币{summoney_str}</div>
+  <%/if%>
+<%/if%>
+<%if 1==2%>
+            <h2>操作记录:</h2>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+                <tr class="tBar">
+                  <td width="25%">操作时间</td>
+                  <td width="20%">操作员</td>
+                  <td width="20%">操作类型</td>
+                  <td>备注</td>
+                </tr>
+                <%if dList != null%>
+          <%loop dl dList%>
+                <tr 
+                <%if printdatetime==dl["pAppendTime"].ToString()%>
+                style="font-weight:bold;font-size:14px"
+                <%/if%>
+                >
+                  <td>{dl[pAppendTime]}</td>
+                  <td>
+                  <%if dl["UserStaffName"].ToString()==""%>
+            {dl[UserName]}
+            <%else%>
+            {dl[UserStaffName]}
+            <%/if%>
+                  </td>
+                  <td>
+                  <%if dl["oType"].ToString() == "-1"%>
+                  作废
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "0"%>
+                  开单
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "1"%>
+                  修改
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "2"%>
+                  审核
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "3"%>
+                  发货
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "4"%>
+                  收货
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "5"%>
+                  核销
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "6"%>
+                  打印
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "7"%>
+                  差额去向处理(调拨)
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "8"%>
+                  差额转单处理
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "9"%>
+                  随附凭证
+                  <%/if%>
+                  </td>
+                  <td>{dl[oMsg]}</td>
+                </tr>
+                <%/loop%>
+          <%/if%>
+
+              </table>
+<%/if%>     
+<%/if%>
+    
+</form>
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

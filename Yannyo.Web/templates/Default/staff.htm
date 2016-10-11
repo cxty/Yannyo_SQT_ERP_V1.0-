@@ -1,0 +1,105 @@
+<%template _header%>
+
+
+
+<script src="public/js/staff.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<div class="toolbox">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:StaffManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:StaffManage.ShowAddUserBox();"  />
+姓名:
+<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}">
+状态:
+    <select id="sState" name="sState" >
+    <option value="-1" <%if sState==-1%> selected="selected"<%/if%>>全部</option>
+	<option value="0" <%if sState==0%> selected="selected"<%/if%>>正常</option>
+	<option value="1" <%if sState==1%> selected="selected"<%/if%>>屏蔽</option>
+    </select>
+<INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:StaffManage.Search();"  />
+</div>
+<div class="list_title">
+<%if DepartmentsClassID>0%>
+<%set {aspxrewriteurl} = GetDepartmentsPaterStr(DepartmentsClassID.ToString())%>{aspxrewriteurl}
+<%else%>
+所有
+<%/if%>人员列表
+</div>
+
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td >姓名</td>
+			<td width="5%">性别</td>
+			<td width="10%">身份证</td>
+			<td width="10%">联系电话</td>
+			<td width="10%" align="center">类型</td>
+			<td width="10%" align="center">状态</td>
+            <td width="10%" align="center">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[StaffID]}" />
+            </td>
+            <td><a href="javascript:void(0);" onclick="javascript:StaffManage.ShowEditUserBox({dl[StaffID]});">{dl[sName]}</a></td>
+			<td>{dl[sSex]}</td>
+			<td>{dl[sCarID]}</td>
+			<td>{dl[sTel]}</td>
+			<td align="center"><%set {aspxrewriteurl} = GetStaffTypeStr(dl["sType"].ToString())%>{aspxrewriteurl}</td>
+			<td align="center">
+			<a href="javascript:void(0);" onclick="javascript:StaffManage.State({dl[StaffID]});" id="s_{dl[StaffID]}">
+			<%if dl["sState"].ToString() == "0"%>
+            正常
+            <%/if%>
+            <%if dl["sState"].ToString() == "1"%>
+            <span style="color:#F00" >屏蔽</span>
+            <%/if%>
+			</a></td>
+            <td align="center">
+<a href="javascript:void(0);" onclick="javascript:StaffManage.ShowUpBox({dl[StaffID]});">上岗</a> 
+<a href="javascript:void(0);" onclick="javascript:StaffManage.ShowDownBox({dl[StaffID]});">离岗</a> 
+
+			
+			<a href="javascript:void(0);" onclick="javascript:StaffManage.ShowEditUserBox({dl[StaffID]});">修改</a>
+
+			<a href="javascript:void(0);" onclick="javascript:StaffManage.ShowDelUserBox({dl[StaffID]});">删除</a> 
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="8"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+</form>
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var StaffManage = new TStaffManage();
+StaffManage.ini();
+
+function HidBox()
+{
+	StaffManage.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+
+<%template _copyright%>
+<%template _footer%>

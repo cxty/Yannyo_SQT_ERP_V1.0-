@@ -1,0 +1,134 @@
+﻿<%template _header%>
+ <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+ <script type="text/javascript" language="javascript" src="/public/js/jquery.js"></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script src="/public/js/myFrontPageJs/storage.js" type="text/javascript" language="javascript"></script>
+
+<form action="" method="post" name="bForm" id="bForm"> 
+<input type="hidden" id="_payType"  name="_payType" />
+<input type="hidden" id="_ReType"   name="_ReType" />
+ <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color:#cccccc">
+  <tr>
+   <td>应付类型：
+    <select id="payType" name="payType">
+     <option value="0" <%if payType==0%>selected="selected"<%/if%>>客户</option>
+     <option value="1" <%if payType==1%>selected="selected"<%/if%>>供应商</option>
+     <option value="2" <%if payType==2%>selected="selected"<%/if%>>个人</option>
+     <option value="3" <%if payType==3%>selected="selected"<%/if%>>超市系统</option>
+    </select>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    对账时间：<%set {aspxrewriteurl}=sDate.ToString("yyyy-MM-dd")%>
+    <input type="text" id="sDate" name="sDate" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" style="width:100px"/>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    统计类型：<select id="ReType" name="ReType" >
+    <option value="0" <%if ReType==0%>selected="selected"<%/if%>>月</option>
+    <option value="1" <%if ReType==1%>selected="selected"<%/if%>>年</option>
+    </select>
+   </td>
+   <td align="right">
+    <input type="button" id="btn_submit" name="btn_submit" value="查询"  class="B_INPUT"/>
+   </td>
+  </tr>
+ </table>
+
+
+
+<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+    <tr class="tBar">
+    <td width="3%" align="center" rowspan="1" style="height:30px"><span style="font-size:11pt">序号</span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">对账单号</span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">付款类型</span></td>
+    <td width="14%" align="center">
+    <span style="font-size:11pt">
+    <%if payType==0%>客户名称<%/if%><%if payType==1%>供应商名称<%/if%>
+    <%if payType==2%>个人名称<%/if%><%if payType==3%>超市系统名称<%/if%>
+    </span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">上期余额</span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">本期对账金额</span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">实际对账金额</span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">到款金额</span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">本期余额</span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">是否发票</span></td>
+	<td width="8%" align="center"><span style="font-size:11pt">添加日期</span></td>
+    <td width="8%" align="center"><span style="font-size:11pt">经办人</span></td>
+    </tr>
+    <%if dList != null%>
+    <%loop dl dList%>
+    <tr>
+    <td align="center">{dl__loop__id}</td>
+    <td align="center">{dl[sCode]}</td>
+    <td align="center">
+        <%if dl["sObjectType"].ToString() == "0"%>
+        客户
+        <%/if%>
+        <%if dl["sObjectType"].ToString() == "1"%>
+        供应商
+        <%/if%>
+        <%if dl["sObjectType"].ToString() == "2"%>
+        人员
+        <%/if%>
+        <%if dl["sObjectType"].ToString() == "3"%>
+        商超系统
+        <%/if%>
+    </td>
+    <td>{dl[sObjectName]}</td>
+    <td align="right">
+     <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[sUpMoney]}),2).ToString()%>
+     {aspxrewriteurl}
+    </td>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[sThisMoney]}),2).ToString()%>
+     {aspxrewriteurl}
+    </td>
+    <td align="right">
+      <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[sMoney]}),2).ToString()%>
+     {aspxrewriteurl}
+    </td>
+    <td align="right">
+      <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[sToMoney]}),2).ToString()%>
+     {aspxrewriteurl}
+    </td>
+    <td align="right">
+      <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[sBalanceMoney]}),2).ToString()%>
+     {aspxrewriteurl}
+    </td>
+    <td align="center">
+    <%if dl["sReceiptState"].ToString()=="1"%>是<%/if%>
+    <%if dl["sReceiptState"].ToString()=="2"%>否<%/if%>
+    </td> 
+	<td align="center"><%set {aspxrewriteurl} = DateTime.Parse(dl["sDateTime"].ToString()).ToString("yyyy-MM-dd")%>
+		{aspxrewriteurl}
+	</td>
+    <td align="center">{dl[uName]}</td>
+    </tr>
+    <%/loop%> 
+    <%/if%>
+</table>
+   <div id="winAll">
+          <div id="winLoding"><img alt="" src="/images/loading99.gif"/></div>
+         </div>
+</form>
+
+        
+    <script language="javascript" type="text/javascript">
+        $("#btn_submit").click(function () {
+            $("#_payType").val($("#payType").children('option:selected').val());
+            $("#_ReType").val($("#ReType").children('option:selected').val());
+            $("div#winAll").fadeIn("slow");
+            $("#bForm").submit();
+        });
+
+  </script>
+   <%/if%>
+ <%/if%>
+
+<%template _copyright%>
+<%template _footer%>

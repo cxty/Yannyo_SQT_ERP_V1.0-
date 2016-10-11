@@ -1,0 +1,65 @@
+<%template _poppageheader%>
+<body>
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="public/js/dialog.js "></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+<script type="text/javascript" src="/public/js/jquery.maskedinput-1.2.2.min.js"></script>
+<script type="text/javascript" src="/public/js/jQuery.jsons.js"></script>
+
+<script type="text/javascript" src="/public/js/datapost.js"></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+
+
+
+<form name="bForm" id="bForm" action="" method="post">
+<div id="sMsg" ></div>
+<div id="ProductList">
+<ul>
+<%if ProductList!=null%>
+<%loop pl ProductList%>
+<li id="p_{pl[ProductsID]}">{pl[pName]}</li>
+<%/loop%>
+<%/if%>
+</ul>
+</div>
+<div id="OrderList" style="height:500px;overflow:scroll;">      
+</div>
+<div style="height:30px"></div>
+<div >
+页数:<INPUT TYPE="text" NAME="page_num" id="page_num">
+<input type="button" name="subbutton_add" id="subbutton_add" value=" 单 据 " class="B_INPUT">
+<input type="button" name="subbutton_p" id="subbutton_p" value=" 产品默认价格 " class="B_INPUT">
+</div>
+              
+</form>
+
+
+<%/if%>
+    <%/if%>
+<%/if%>
+
+<script language="javascript" type="text/javascript">
+var DataPost = new TDataPost();
+DataPost.ini();
+
+</script>
+
+
+<%template _footer%>

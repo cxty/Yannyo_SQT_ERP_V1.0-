@@ -1,0 +1,44 @@
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td align="right">商品名称:</td>
+                  <td colspan="3" align="left" id="ProductInfo">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td width="30%" align="right">仓库:</td>
+                  <td width="20%" align="left"><select id="StorageID" name="StorageID" >
+                    <%if StorageList!=null%>
+                    <%loop sl StorageList%>
+                    <option value="{sl[StorageID]}">{sl[sCode]}_{sl[sName]}</option>
+                    <%/loop%>
+                    <%/if%>
+                  </select></td>
+                  <td rowspan="2" align="center">-&gt;</td>
+                  <td width="45%" align="left">
+                  <select id="StorageIDB" name="StorageIDB" >
+                    <%if StorageList!=null%>
+                    <%loop sl StorageList%>
+                    <option value="{sl[StorageID]}">{sl[sCode]}_{sl[sName]}</option>
+                    <%/loop%>
+                    <%/if%>
+                  </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right">库存:</td>
+                  <td align="left" id="StorageInfo">&nbsp;</td>
+                  <td align="left" id="StorageInfoB">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td align="right">数量:</td>
+                  <td colspan="3" align="left"><input name="Quantity" id="Quantity" type="text"></td>
+                </tr>
+                <tr>
+                  <td width="30%" align="right">单价:</td>
+                  <td colspan="3" align="left"><input name="Price" id="Price" type="text"></td>
+                </tr>
+                
+				
+                <tr>
+                  <td colspan="4" align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:OrderDOBox.CheckF();"/>
+                </tr>
+              </table>

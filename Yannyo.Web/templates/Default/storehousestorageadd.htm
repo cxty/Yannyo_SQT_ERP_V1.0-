@@ -1,0 +1,98 @@
+﻿<%template _poppageheader%>
+<body>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script src="/public/js/myFrontPageJs/storage.js" type="text/javascript" language="javascript"></script>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form action="" method="post" enctype="multipart/form-data" name="bForm" id="bForm">
+              <table border="0" cellspacing="2" cellpadding="2" style="width: 490px">
+                <tr id="sName" class="tBar">
+                 <td>门店名称：
+                    <input type="text" name="SName" id="SName"style="width:180px" showtitle="可填写少于50个的数字或中英文字符"/>
+                    <input type="hidden"  name="StoresID" id="StoresID" />
+                   
+                 </td>
+                </tr>
+                <tr id="StName" class="tBar">
+                  <td>仓库名称：
+                   <input id="stName" name="stName" type="text" value="默认值" disabled=disabled style="width:180px;"/>
+                
+                </tr>
+                <tr id="time" class="tBar">
+                  <td>时间选择：
+                      <%set {aspxrewriteurl}=sDate.ToString("yyyy-MM-dd")%>
+                      <input type="text" id="dtime" name="dtime" value="{aspxrewriteurl}" onclick="new Calendar().show(this);"/>
+                  
+                  </td>
+                </tr>
+                <tr class="tBar"><td align="left">上传文件：&nbsp;<input id="file" name="fileUploading" type="file" style="height:20px" showtitle="需上传标准的excel格式"/>
+                </td>
+                </tr>
+                    <tr class="tBar">
+                   <td align="left">名称查询：&nbsp;<input type="text" id="pName" name="pName" style="width:180px;"  showtitle="输入*可检索(如果未匹配商品)"/>
+                   <INPUT TYPE="hidden" NAME="ProductID" id="ProductID" >
+                  
+                   </td>
+                  </tr>
+                <tr id="submit" class="tBar">
+                  <td colspan="2" align="left">
+                  <input type="button" id="button1" style="margin-left:150px" class="B_INPUT" value="确定" onclick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin-left:5px" class="B_INPUT" value="取消" onclick="javascript:window.parent.HidBox();"/></td>
+                </tr>
+				<tr id="loading" style="display:none;">
+                  <td colspan="2" align="left" class="style1"><img src="/images/loading.gif" alt="" />数据处理中,该过程需要10-30分钟,请不要刷新,切换或关闭此页面!</td>
+                </tr> 
+              </table>
+    
+            </form>
+            
+			<script language="javascript" type="text/javascript">
+			    function CheckF() {
+			        if (Sys.getObj('SName').value != '') {
+			            if (Sys.getObj('stName').value != '') {
+			                if (Sys.getObj('dtime').value != '') {
+			                    if (Sys.getObj('file').value != '') {
+			                        jConfirm('您要确定导入产品到库吗？', '导入提示', function (r) {
+			                            if (r) {
+			                                Sys.getObj('loading').style.display = "";
+			                                Sys.getObj('bForm').submit();
+			                            }
+			                        });
+			                    }
+			                    else {
+			                        jAlert("请选择上传文件！", "友情提示");
+                                }
+			                }
+			                else {
+			                    jAlert("时间不能为空！","友情提示");
+			                }
+			            }
+			            else {
+			                jAlert("仓库名称不能为空！", "友情提示");
+			            }
+			        }
+			        else {
+			            jAlert("门店名称不能为空！", "友情提示");
+			        }
+			    } 
+            </script>
+                
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

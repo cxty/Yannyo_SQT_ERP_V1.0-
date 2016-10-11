@@ -1,0 +1,30 @@
+<%template _header%>
+
+
+
+<%if page_err!=0%>
+    <%template _errmsgbox%>
+<%else%>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<div class="main" id="OrderList">
+    <%if page_err!=0%>
+        <%template _errmsgbox%>
+    <%else%>
+        <form action="" method="post" name="form1" id="form1">        
+        <div class="toolbar">
+<table  border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+        </div>
+        <div class="datalist">
+        </div>
+        </form>
+    <%/if%>
+</div>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

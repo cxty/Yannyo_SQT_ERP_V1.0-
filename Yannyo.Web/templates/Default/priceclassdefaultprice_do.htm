@@ -1,0 +1,101 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+				<tr>
+					<td align="left"><h3>商品:{pi.pName} ({pi.pBarcode})</h3></td>
+				</tr>
+                <tr>
+                  <td style="height:200px;
+                  overflow:scroll;
+                  overflow-x:hidden;">
+                  <%if dList!=null%>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center">价格类型</td>
+                      <td align="center">价格</td>
+                        <td align="center">开单不可更改</td>
+                    </tr>
+                    <%loop dl dList%>
+                    <tr>
+                      <td width="29%" align="right">{dl[pClassName]}:</td>
+                      <td width="60%" align="left">
+                          <nobr>
+                              <input type="hidden" name="PriceClassID_{dl__loop__id}" id="PriceClassID_{dl__loop__id}" value="{dl[PriceClassID]}">
+                              <input style="width:100%;" type="text" name="pPrice_{dl__loop__id}" id="pPrice_{dl__loop__id}" value="{dl[pPrice]}" showtitle="只能填写数字格式">
+                              </nobr>
+                      </td>
+                        <td width="10%">
+                            <input style="width:30px;" type="checkbox" name="pIsEdit_{dl__loop__id}" id="pIsEdit_{dl__loop__id}" value="1"
+                            <%if dl["pIsEdit"].ToString()=="1"%>
+                            checked
+                            <%/if%>>
+                        </td>
+                    </tr>
+                    <%/loop%>
+                    
+                  </table>
+                  <input type="hidden" name="Loop" id="Loop" value="{dl__loop__id}">
+                  <input type="hidden" name="pPrice" id="pPrice" value="">
+                  
+                  <%/if%>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+    
+            </form>
+            
+<script language="javascript" type="text/javascript">
+
+	function CheckF()
+	{
+		var Loop = Number(Sys.getObj('Loop').value);
+		if(Loop>0){
+			var pPriceStr = '';
+			for(var i=1;i<=Loop;i++){
+				if(Sys.getObj('PriceClassID_'+i))
+				{
+					Sys.getObj('pPrice_'+i).value = Number(Sys.getObj('pPrice_'+i).value)?Number(Sys.getObj('pPrice_'+i).value):0;
+					pPriceStr = pPriceStr + Sys.getObj('PriceClassID_' + i).value + ',' + Sys.getObj('pPrice_' + i).value + ',' + (Sys.getObj('pIsEdit_' + i).checked?'1':'0') + ';';
+				}
+			}
+			Sys.getObj('bForm').action = 'PriceClassDefaultPrice_do_Save-{ProductsID}.aspx';
+			Sys.getObj('pPrice').value=pPriceStr;
+			Sys.getObj('bForm').submit();
+			
+			pPriceStr = null;
+		}else{
+			alert('无效的数据.');	
+		}
+	}
+	</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

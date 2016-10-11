@@ -1,0 +1,46 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+
+                <tr>
+                  <td width="20%" align="right" class="ltd">系统名称</td>
+                  <td align="left" class="rtd">
+                  <input name="yName" id="yName" type="text" 
+                  <%if Act=="Edit"%>value="{YHsys.yName}"<%/if%> showtitle="客户进销存系统名称"
+                  /></td>
+                </tr>
+
+              </table>
+<div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                  	<input type="submit" id="button1" style="margin:5px" class="B_INPUT" value="确定" />
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            </form>
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

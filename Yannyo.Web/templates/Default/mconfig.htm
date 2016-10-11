@@ -1,0 +1,124 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<script src="public/js/mconfig.js" language="javascript" type="text/javascript"></script>
+<form action="" method="post" name="form1" id="form1">
+
+<div class="datalist">
+    
+       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="2" class="tBox tBoxI" id="tBoxs">
+	  <tr class="tBar">
+		<td colspan="2"><b>网店系统配置信息</b></td>
+	  </tr>
+	  <tr>
+		<td width="35%" align="right">网店状态:</td>
+		<td>
+		  <input name="Taobao_Open" type="radio" id="radio" value="1" class="B_Check" 
+          <%if ManageConfig.Taobao_Open == 1%>
+          checked="checked"
+          <%/if%>
+           />
+		  开启
+		  <input type="radio" name="Taobao_Open" id="radio2" value="0" class="B_Check" 
+<%if ManageConfig.Taobao_Open == 0%>
+checked="checked"
+<%/if%>
+/>
+		  关闭</td>
+		</tr>
+	  <tr>
+	    <td align="right">接口环境:</td>
+	    <td><input name="Taobao_SandBox" type="radio" id="radio3" value="1" class="B_Check" 
+          <%if ManageConfig.Taobao_SandBox == 1%>
+          checked="checked"
+          <%/if%>
+           />
+	      安全沙箱
+	      <input type="radio" name="Taobao_SandBox" id="radio4" value="0" class="B_Check" 
+<%if ManageConfig.Taobao_SandBox == 0%>
+checked="checked"
+<%/if%>
+/>
+	      正式数据 </td>
+	    </tr>
+	  <tr>
+	    <td colspan="2" align="center"><input type="submit" id="button3" style="margin:5px" class="B_INPUT" value="   保   存   "  /></td>
+	    </tr>
+
+      </table>
+       <br />
+       <br />
+    <div id="m_List" name="m_List">
+      <table width="100%" border="0" cellspacing="0" cellpadding="1" class="tBox" id="tBoxs2">
+  <tr  class="tBar">
+    <td colspan="5"><b>网店系统列表</b><input name="b_add" type="button" class="B_INPUT" id="b_add" style="margin:5px" value="添加"  /></td>
+  </tr>
+  <tr class="tBar">
+    <td>名称</td>
+    <td width="15%">对应客户</td>
+    <td width="15%">系统状态</td>
+    <td width="15%">创建时间</td>
+    <td width="10%">操作</td>
+  </tr>
+  <%if dList!=null%>
+  <%loop dl dList%>
+  <tr>
+    <td>{dl[m_Name]}</td>
+    <td>{dl[StoresName]}</td>
+    <td id="m_state_{dl[m_ConfigInfoID]}">
+    <%if dl["m_State"].ToString()=="0"%>
+    正常
+    <%/if%>
+    <%if dl["m_State"].ToString()=="1"%>
+    屏蔽
+    <%/if%></td>
+    <td>{dl[m_AppendTime]}</td>
+    <td><a href="javascript:void(0);" onclick="javascript:MConfig.edit({dl[m_ConfigInfoID]});">修改</a> | 
+    
+    <a href="javascript:void(0);" onclick="javascript:MConfig.state({dl[m_ConfigInfoID]});" state="dl[m_State]" id="m_tool_{dl[m_ConfigInfoID]}">
+    <%if dl["m_State"].ToString()=="0"%>
+    关闭
+    <%/if%>
+    <%if dl["m_State"].ToString()=="1"%>
+    开启
+    <%/if%>
+    </a></td>
+  </tr>
+  <%/loop%>
+  <%/if%>
+</table>
+
+</div>
+</div>
+<script language="javascript" type="text/javascript">
+var MConfig = new TMConfig();
+MConfig.ini();
+
+function HidBox()
+{
+	MConfig.HidUserBox();
+	location = location;
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+addTableListener(document.getElementById("tBoxs2"),0,0);
+</script>
+      <%/if%>
+    
+</form>
+</div>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

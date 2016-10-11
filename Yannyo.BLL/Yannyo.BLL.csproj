@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8D8794D4-EAEF-48A3-86B3-C822FF35C793}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yannyo.BLL</RootNamespace>
+    <AssemblyName>Yannyo.BLL</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Yannyo.Common">
+      <HintPath>..\Yannyo.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="buySaleDetailsOfClasses.cs" />
+    <Compile Include="Caches.cs" />
+    <Compile Include="Certificates.cs" />
+    <Compile Include="CostDetails.cs" />
+    <Compile Include="DataClass.cs" />
+    <Compile Include="DataUtils.cs" />
+    <Compile Include="Logs.cs" />
+    <Compile Include="MonthlyStatements.cs" />
+    <Compile Include="M_Utils.cs" />
+    <Compile Include="OnlineUsers.cs" />
+    <Compile Include="Orders.cs" />
+    <Compile Include="ProductsLossInfo.cs" />
+    <Compile Include="Purchasingpayment.cs" />
+    <Compile Include="storehouseStorage.cs" />
+    <Compile Include="tbAPMoneyInfo.cs" />
+    <Compile Include="tbARMoneyInfo.cs" />
+    <Compile Include="tbBankInfo.cs" />
+    <Compile Include="tbBankMoneyInfo.cs" />
+    <Compile Include="tbCostValenceInfo.cs" />
+    <Compile Include="tbDataToMailInfo.cs" />
+    <Compile Include="tbErpOrderInfo.cs" />
+    <Compile Include="tbFeesSubjectInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tbGiftsInfo.cs" />
+    <Compile Include="tbMarketingFeesInfo.cs" />
+    <Compile Include="tbPaymentSystemInfo.cs" />
+    <Compile Include="tbPriceClassDefaultPriceInfo.cs" />
+    <Compile Include="tbProductPoolInfo.cs" />
+    <Compile Include="tbProductsInfo.cs" />
+    <Compile Include="tbRegionInfo.cs" />
+    <Compile Include="tbSalesInfo.cs" />
+    <Compile Include="tbStaffInfo.cs" />
+    <Compile Include="tbStaffStoresInfo.cs" />
+    <Compile Include="tbStockProductInfo.cs" />
+    <Compile Include="tbStorageInfo.cs" />
+    <Compile Include="tbStoresInfo.cs" />
+    <Compile Include="tbSupplierInfo.cs" />
+    <Compile Include="tbUserInfo.cs" />
+    <Compile Include="tbValenceInfo.cs" />
+    <Compile Include="tbYHsysInfo.cs" />
+    <Compile Include="TopApiUtils.cs" />
+    <Compile Include="UsersUtils.cs" />
+    <Compile Include="tbProductFieldInfo.cs" />
+    <Compile Include="tbProductsFieldValueInfo.cs" />
+    <Compile Include="tbStorageProductLogInfo.cs" />
+    <Compile Include="tbStorageProductLogDataInfo.cs" />
+    <Compile Include="tbProductPriceNOAuto.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Taobao.TopSdk\TopSdk.csproj">
+      <Project>{9C11CAE5-5188-4E71-825B-68FC3135728A}</Project>
+      <Name>TopSdk</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Cache\Yannyo.Cache.csproj">
+      <Project>{DEC263A7-C844-46A2-B143-91FE1B3A3851}</Project>
+      <Name>Yannyo.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Config\Yannyo.Config.csproj">
+      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Name>Yannyo.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Data\Yannyo.Data.csproj">
+      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
+      <Name>Yannyo.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Entity\Yannyo.Entity.csproj">
+      <Project>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</Project>
+      <Name>Yannyo.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.SOAP\Yannyo.SOAP.csproj">
+      <Project>{682F3CEC-7381-417D-8C1D-A929C9BEAF85}</Project>
+      <Name>Yannyo.SOAP</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

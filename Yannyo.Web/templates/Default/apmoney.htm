@@ -1,0 +1,98 @@
+<%template _header%>
+
+
+<script src="public/js/apmoney.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:ApmoneyManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:ApmoneyManage.ShowAddUserBox();"  />
+<input type="button" id="button4" style="margin:5px" class="B_INPUT" value="批量添加" onclick="javascript:ApmoneyManage.ShowAddBatBox();"  />
+<input type="button" id="button2" style="margin:5px" class="B_INPUT" value="导入" onclick="javascript:ApmoneyManage.ShowImportUserBox();"  />
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+			<td width="3%">类型</td>
+			<td >名称</td>
+			<td width="5%">科目</td>
+			<td width="5%">新增应付金额</td>
+			<td width="5%">实际应付金额</td>
+			<td width="5%">已付金额</td>
+			
+			<td width="20%">备注</td>
+			<td width="5%">发生时间</td>
+			<td width="5%">创建时间</td>
+            <td width="10%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[APMoneyID]}" />
+            </td>
+			<td>
+			<%if dl["APObjType"].ToString()=="0"%>
+			门店
+			<%/if%>
+			<%if dl["APObjType"].ToString()=="1"%>
+			个人
+			<%/if%>
+			<%if dl["APObjType"].ToString()=="2"%>
+			供货商
+			<%/if%>
+			</td>
+			<td><nobr><a href="javascript:void(0);" onclick="javascript:ApmoneyManage.ShowEditUserBox({dl[APMoneyID]});">{dl[APObjName]}</a></nobr></td>
+			<td align="center">{dl[FeesSubjectName]}</td>
+			<td align="right">{dl[aNPMoney]}</td>
+            <td align="right">{dl[aPMoney]}</td>
+			<td align="right">{dl[aPayMoney]}</td>
+			
+			<td align="right">{dl[aReMake]}</td>
+			<td align="right">
+			<%set {aspxrewriteurl} = DateTime.Parse(dl["aDoDateTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+
+			
+			</td>
+			
+			<td>{dl[aAppendTime]}</td>
+            <td>
+			<a href="javascript:void(0);" onclick="javascript:ApmoneyManage.ShowDelUserBox({dl[APMoneyID]});">删除</a> 
+			<a href="javascript:void(0);" onclick="javascript:ApmoneyManage.ShowEditUserBox({dl[APMoneyID]});">修改</a>
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="11"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+<script language="javascript" type="text/javascript">
+var ApmoneyManage = new TApmoneyManage();
+ApmoneyManage.ini();
+
+function HidBox()
+{
+	ApmoneyManage.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+      <%/if%>
+    </div></form>
+
+
+
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,37 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:10px;" class="print_othermsg">
+  <tr>
+    <td>白联:存根联 </td>
+    <td>红联:财务联 </td>
+    <td>绿联:回单联 </td>
+    <td>蓝联:客户联</td>
+	<td>黄联:仓管联</td>
+  </tr>
+  <tr style="font-weight:bold">
+    <td>制单:{print_ui.StaffName}
+</td>
+<td>审核:
+<%if print_v_ui!=null%>
+{print_v_ui.StaffName}
+<%/if%>
+</td>
+    <td>仓管员:</td>
+
+    <td>送货员:</td>
+    <td>客户签收:</td>
+	
+  </tr>
+  <tr>
+    <td colspan="3" valign="top">
+    福建省工商行政管理机关提示： 该供货凭证可作为出货台账，请注意保存两年。 <br />
+    备注:{oi.oReMake}</td>
+    <td colspan="2" align="center" valign="top"><img src="/barcode.aspx?codestr={oi.oOrderNum}&codetype=UPC-A" width="190" height="46"  /></td>
+  </tr>
+  <tr>
+    <td colspan="3" valign="top">&nbsp;</td>
+    <td colspan="2" align="center" valign="top">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3" valign="top">&nbsp;</td>
+    <td colspan="2" align="center" valign="top">&nbsp;</td>
+  </tr>
+</table>

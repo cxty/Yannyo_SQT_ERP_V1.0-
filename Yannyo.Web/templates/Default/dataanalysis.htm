@@ -1,0 +1,730 @@
+<%template _header%>
+
+<script src="public/JSClass/FusionCharts.js" type="text/javascript" ></script>
+
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<script type="text/javascript" src="public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="public/js/jquery.bgiframe.js"></script>
+
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+
+<script src="public/js/DataAnalysis.js" type="text/javascript" ></script>
+
+<style type="text/css">
+.menu_list {	
+	width: 135px;
+}
+.menu_head {
+	padding: 5px 10px;
+	cursor: pointer;
+	position: relative;
+	margin:1px;
+    background: #eef4d3 url(images/left.png) center right no-repeat;
+}
+.menu_body {
+	display:none;
+}
+.menu_body a{
+  display:block;
+  color:#006699;
+  background-color:#EFEFEF;
+  padding-left:10px;
+  text-decoration:none;
+}
+.menu_body a:hover{
+  color: #000000;
+  text-decoration:underline;
+  }
+</style>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<div class="left_toolbar" >
+<ul>
+<li><b><a href="dataanalysis_H.aspx">概况</a></b></li>
+<li><b>永辉数据</b>
+	<ul>
+    	<li>
+			<div id="firstpane_1" class="menu_list">
+			<p class="menu_head">
+			<a href="dataanalysis_A.aspx" 
+			<%if Act=="A"%>
+			class = "sed"
+			<%/if%>>销售数据分析</a></p>
+				<div class="menu_body">
+					<a href="dataanalysis_A1.aspx" 
+					<%if Act=="A1"%>
+					class = "sed"
+					<%/if%>>客户、门店</a>
+					<a href="dataanalysis_A2.aspx" 
+					<%if Act=="A2"%>
+					class = "sed"
+					<%/if%>>业务员</a>
+					<a href="dataanalysis_A3.aspx" 
+					<%if Act=="A3"%>
+					class = "sed"
+					<%/if%>>促销员</a>
+					<a href="dataanalysis_A4.aspx" 
+					<%if Act=="A4"%>
+					class = "sed"
+					<%/if%>>产品</a>
+					<a href="dataanalysis_A5.aspx" 
+					<%if Act=="A5"%>
+					class = "sed"
+					<%/if%>>品牌</a>
+					<a href="dataanalysis_A6.aspx" 
+					<%if Act=="A6"%>
+					class = "sed"
+					<%/if%>>系统</a>
+				</div>
+			</div>
+		</li>
+        
+        
+    </ul>
+</li>
+
+<li><b>公司数据</b>
+	<ul>
+			<li>
+				<div id="firstpane_2" class="menu_list">
+				<p class="menu_head">
+				<a href="dataanalysis_E.aspx" 
+				<%if Act=="E"%>
+				class = "sed"
+				<%/if%>>利润分析</a></p>
+					<div class="menu_body">
+						<a href="dataanalysis_E1.aspx" 
+						<%if Act=="E1"%>
+						class = "sed"
+						<%/if%>>客户、门店</a>
+						<a href="dataanalysis_E2.aspx" 
+						<%if Act=="E2"%>
+						class = "sed"
+						<%/if%>>业务员</a>
+						<a href="dataanalysis_E3.aspx" 
+						<%if Act=="E3"%>
+						class = "sed"
+						<%/if%>>促销员</a>
+						<a href="dataanalysis_E4.aspx" 
+						<%if Act=="E4"%>
+						class = "sed"
+						<%/if%>>产品</a>
+						<a href="dataanalysis_E5.aspx" 
+						<%if Act=="E5"%>
+						class = "sed"
+						<%/if%>>品牌</a>
+					</div>
+				</div>
+			</li>
+			<li>
+				<div id="firstpane_3" class="menu_list">
+				<p class="menu_head">
+				<a href="dataanalysis_F.aspx" 
+				<%if Act=="F"%>
+				class = "sed"
+				<%/if%>>毛利分析</a></p>
+					<div class="menu_body">
+						<a href="dataanalysis_F1.aspx" 
+						<%if Act=="F1"%>
+						class = "sed"
+						<%/if%>>客户、门店</a>
+						<a href="dataanalysis_F2.aspx" 
+						<%if Act=="F2"%>
+						class = "sed"
+						<%/if%>>业务员</a>
+						<a href="dataanalysis_F3.aspx" 
+						<%if Act=="F3"%>
+						class = "sed"
+						<%/if%>>促销员</a>
+						<a href="dataanalysis_F4.aspx" 
+						<%if Act=="F4"%>
+						class = "sed"
+						<%/if%>>产品</a>
+						<a href="dataanalysis_F5.aspx" 
+						<%if Act=="F5"%>
+						class = "sed"
+						<%/if%>>品牌</a>
+					</div>
+				</div>
+			</li>
+
+			<li>
+			<div id="firstpane_6" class="menu_list">
+			<p class="menu_head">
+			<a href="dataanalysis_H.aspx" 
+			<%if Act=="H"%>
+			class = "sed"
+			<%/if%>>财务分析</a></p>
+					<div class="menu_body">
+						<a href="dataanalysis_H1.aspx" 
+						<%if Act=="H1"%>
+						class = "sed"
+						<%/if%>>费用/收入</a>
+
+						
+						<a href="dataanalysis_H2.aspx" 
+						<%if Act=="H2"%>
+						class = "sed"
+						<%/if%>>应收应付</a>
+						<a href="dataanalysis_H4.aspx" 
+						<%if Act=="H4"%>
+						class = "sed"
+						<%/if%>>现金银行</a>
+						<a href="dataanalysis_H3.aspx" 
+						<%if Act=="H3"%>
+						class = "sed"
+						<%/if%>>实时库存</a>
+						<a href="dataanalysis_H5.aspx" 
+						<%if Act=="H5"%>
+						class = "sed"
+						<%/if%>>固定资产</a>
+						<a href="dataanalysis_H6.aspx" 
+						<%if Act=="H6"%>
+						class = "sed"
+						<%/if%>>净资产</a>
+					</div>
+			</div></li>
+		</ul>
+</li>
+</ul>
+</div>
+<div class="right_box">
+<form action="" method="post" name="form1" id="form1">
+
+	<%if Act!="H3" && Act!="H4" && Act!="H2" && Act!="H6" && Act!="H"%>
+		<%template _toolbar_dataanalysis%>
+	<%/if%>
+	<%if Act=="H"%>
+		<%template _toolbar_h_analysis%>
+	<%/if%>
+	<%if Act=="H3"%>
+		<%template _toolbar_stockanalysis%>
+	<%/if%>
+	<%if Act=="H2"%>
+		<%template _toolbar_h2_analysis%>
+	<%/if%>
+	<%if Act=="H4"%>
+		<%template _toolbar_h4_analysis%>
+	<%/if%>
+	<%if Act=="H6"%>
+		<%template _toolbar_h6_analysis%>
+	<%/if%>
+    <div class="datalist">
+
+    <%if Act=="H"%>
+		<%template _datalist_h_dataanalysis%>
+	<%/if%>
+
+    <%if Act=="A" || Act=="E" || Act=="F" %>
+        <div id="datalist_A">
+		<div class="toolbar_X">
+			<ul>
+				<%if Act=="E" || Act=="F"%>
+					<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_G" value="7" 
+					<%if ShowType==7%>
+					checked
+					<%/if%> ><a >综合(含公司费用)</a></li>
+				<%/if%>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_A" value="1" 
+				<%if ShowType==1%>
+				checked
+				<%/if%> ><a >门店/客户</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_B" value="2" 
+				<%if ShowType==2%>
+				checked
+				<%/if%>  ><a >业务员</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_C" value="3" 
+				<%if ShowType==3%>
+				checked
+				<%/if%>  ><a >促销员</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_D" value="4" 
+				<%if ShowType==4%>
+				checked
+				<%/if%>  ><a >产品</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_E" value="5" 
+				<%if ShowType==5%>
+				checked
+				<%/if%>  ><a >品牌</a></li>
+				<%if Act=="A" %>
+					<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_F" value="6" 
+					<%if ShowType==6%>
+					checked
+					<%/if%>  ><a >系统</a></li>
+				<%/if%>
+				
+			</ul>
+		</div>
+			<%if Act=="A"%>
+			<%template _datalist_a_dataanalysis%>
+			<%/if%>
+			<%if Act=="E" || Act=="F"%>
+				
+				<%if ShowType==7%>
+					<div class="toolbar_X">
+					<%template _datalist_datetime_dataanalysis%>
+					</div>
+					<div class="dlist">
+						<%if {ispost} %>
+							<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+								<tr class="tBar">
+									<td width="5%">销售额</td>
+									<%if Act=="E"%>
+									<td width="5%">公司费用</td>
+									<%/if%>
+									<td width="5%">销售费用</td>
+									<td width="5%">赠品</td>
+									<td width="5%">坏货</td>
+									<td width="5%">退货</td>
+									<td width="5%">成本</td>
+									<%if Act=="E"%>
+									<td width="5%">利润</td>
+									<%/if%>
+									<%if Act=="F"%>
+									<td width="5%">毛利</td>
+									<%/if%>
+								</tr>
+								<%if dList != null%>
+								  <%loop dl dList%>
+								  <tr>
+									<td align="right">{dl[0]}</td>
+									<%if Act=="E"%>
+									<td align="right">{dl[6]}</td>
+									<%/if%>
+									<td align="right">{dl[5]}</td>
+									<td align="right">{dl[4]}</td>
+									<td align="right">{dl[3]}</td>
+									<td align="right">{dl[2]}</td>
+									<td align="right">{dl[1]}</td>
+									<td align="right">
+									<%if Act=="E"%>
+									<%set {aspxrewriteurl}=(decimal.Parse(dl[0].ToString())-decimal.Parse(dl[1].ToString())-decimal.Parse(dl[5].ToString())-decimal.Parse(dl[6].ToString())).ToString()%>
+									<%/if%>
+									<%if Act=="F"%>
+									<%set {aspxrewriteurl}=(decimal.Parse(dl[0].ToString())-decimal.Parse(dl[1].ToString())-decimal.Parse(dl[5].ToString())).ToString()%>
+									<%/if%>
+									{aspxrewriteurl}
+									</td>
+								  </tr>
+								  <%/loop%>
+								 <%/if%>
+							</table>
+						<%/if%>
+					</div>
+					<div id="datalist_E">
+						<div class="dlist">
+						{ReHTML}
+						</div>
+					</div>
+				<%else if ShowType==4 || ShowType==5%>
+				<%template _datalist_f_dataanalysis%>
+				<%else%>
+				<%template _datalist_e_dataanalysis%>
+				<%/if%>
+			<%/if%>
+
+        </div>
+    <%/if%>
+
+	<%if Act=="H1"%>
+		<%template _datalist_h1_dataanalysis%>
+	<%/if%>
+    
+	<%if Act=="H2"%>
+	<!--应收应付-->
+    <div id="datalist_B">
+		<div class="dlist">
+		<%template _datalist_h2_dataanalysis%>
+		</div>
+    </div>
+    <%/if%>
+
+    <%if Act=="H3"%>
+	<!--库存-->
+    <div id="datalist_B">
+		<div class="dlist">
+		<%template _datalist_stock_dataanalysis%>
+		</div>
+    </div>
+    <%/if%>
+
+	<%if Act=="H4"%>
+	<!--库存-->
+    <div id="datalist_B">
+		<div class="dlist">
+		<%template _datalist_h4_dataanalysis%>
+		</div>
+    </div>
+    <%/if%>
+    
+	<%if Act=="H6"%>
+	<!--净资产-->
+    <div id="datalist_B">
+		<div class="dlist">
+		<%template _datalist_h6_dataanalysis%>
+		</div>
+    </div>
+    <%/if%>
+
+	<%if Act=="A1" || Act=="A2" || Act=="A3" || Act=="A4" || Act=="A5" || Act=="A6" || Act=="E1" || Act=="E2" || Act=="E3" || Act=="E4" || Act=="E5" || Act=="E6" || Act=="F1" || Act=="F2" || Act=="F3" || Act=="F4" || Act=="F5" || Act=="F6" || Act=="G1" || Act=="G2" || Act=="G3" || Act=="G4" || Act=="G5" || Act=="G6"%>
+    <div id="datalist_A1">
+		<div class="toolbar_X">
+			<span>
+			选择
+				<%if Act=="A1" || Act=="E1" || Act=="F1" || Act=="G1"%>
+				客户、门店:
+				<%/if%>
+				<%if Act=="A2" || Act=="E2" || Act=="F2" || Act=="G2"%>
+				业务员:
+				<%/if%>
+				<%if Act=="A3" || Act=="E3" || Act=="F3" || Act=="G3"%>
+				促销员:
+				<%/if%>
+				<%if Act=="A4" || Act=="E4" || Act=="F4" || Act=="G4"%>
+				产品:
+				<%/if%>
+				<%if Act=="A5" || Act=="E5" || Act=="F5" || Act=="G5"%>
+				品牌:
+				<%/if%>
+				<%if Act=="A6" || Act=="E6" || Act=="F6" || Act=="G6"%>
+				系统:
+				<%/if%>
+				<INPUT TYPE="text" NAME="A_Value" id="A_Value" onClick="javascript:DataAnalysis.ShowTitleBox('{Act}');" value="{A_Value}">
+				<INPUT TYPE="hidden" NAME="A_Value_ID" id="A_Value_ID" value="{A_Value_ID}" />
+			</span>
+			<ul>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_A" value="1" 
+				<%if ShowType==1%>
+				checked
+				<%/if%> ><a >日</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_B" value="2" 
+				<%if ShowType==2%>
+				checked
+				<%/if%>  ><a >月</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_C" value="3" 
+				<%if ShowType==3%>
+				checked
+				<%/if%>  ><a >年</a></li>
+			</ul>
+		</div>
+		<div class="dlist">
+		{ReHTML}
+		</div>
+    </div>
+    <%/if%>
+	
+	
+    </div>
+</form>
+</div>
+
+
+<script language="javascript" type="text/javascript">
+
+
+$().ready(function(){
+	$('#StoresName').autocomplete('Services/CAjax.aspx',{
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStoresList',
+			'RCode':Math.random(),
+			'StoresName':function(){return $('#StoresName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StoresID").val((formatted!=null)?formatted:"0");      
+		}
+	  );
+	
+	$('#StaffName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStaffList',
+			'sType':1,
+			'RCode':Math.random(),
+			'StaffName':function(){return $('#StaffName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StaffID").val((formatted!=null)?formatted:"0");
+		}
+	  );
+
+	  $('#StaffNameB').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStaffList',
+			'sType':2,
+			'RCode':Math.random(),
+			'StaffName':function(){return $('#StaffNameB').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StaffIDB").val((formatted!=null)?formatted:"0");
+		}
+	  );
+
+	  $('#ProductName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetProductsList',
+			'RCode':Math.random(),
+			'ProductsName':function(){return $('#ProductName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#ProductID").val((formatted!=null)?formatted:"0");
+		}
+	  );
+
+	  $('#YHsysName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetYHsysList',
+			'RCode':Math.random(),
+			'YHsysName':function(){return $('#YHsysName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#YHsysID").val((formatted!=null)?formatted:"0");
+		}
+	  );
+});
+
+
+
+
+function BuildRegionTool(_nodes,tObj)
+{
+	var tHTML='';
+	if(_nodes && tObj)
+	{
+		tObjs = new TCxty_XTool(13,'',_nodes,null,null,'RegionSelect');
+		tObj.innerHTML = tObjs;
+		<%if Act!=""%>
+		tObjs.setValue('{RegionID}');
+		<%/if%>
+	}
+}
+
+
+var DataAnalysis= new TDataAnalysis();
+DataAnalysis.ini();
+
+function HidBox()
+{
+	DataAnalysis.HidUserBox();
+}
+function ReValue(valueArray)
+{
+	DataAnalysis.ReValue(valueArray);
+}
+<%if Act=="A" || Act=="E" || Act=="F" || Act=="H1" | Act=="E1" || Act=="E2" || Act=="E3" || Act=="E4" || Act=="E5" || Act=="E6" || Act=="F1" || Act=="F2" || Act=="F3" || Act=="F4" || Act=="F5" || Act=="F6"%>
+if(DataAnalysis.StoresName_Box)
+{
+	DataAnalysis.StoresName_Box.style.display = 'none';
+}
+if(DataAnalysis.StaffName_Box)
+{
+	DataAnalysis.StaffName_Box.style.display = 'none';
+}
+if(DataAnalysis.StaffNameB_Box)
+{
+	DataAnalysis.StaffNameB_Box.style.display = 'none';
+}
+if(DataAnalysis.pBrand_Box)
+{
+	DataAnalysis.pBrand_Box.style.display = 'none';
+}
+if(DataAnalysis.YHsysName_Box)
+{
+	DataAnalysis.YHsysName_Box.style.display = 'none';
+}
+if(DataAnalysis.ProductName_Box)
+{
+	DataAnalysis.ProductName_Box.style.display = 'none';
+}
+<%/if%>
+
+<%if Act=="A" || Act=="A1" || Act=="A2" || Act=="A3" || Act=="A4" || Act=="A5" || Act=="A6"%>
+f_1();
+<%/if%>
+<%if Act=="E" || Act=="E1" || Act=="E2" || Act=="E3" || Act=="E4" || Act=="E5" || Act=="E6"%>
+f_2();
+<%/if%>
+<%if Act=="F" || Act=="F1" || Act=="F2" || Act=="F3" || Act=="F4" || Act=="F5" || Act=="F6"%>
+f_3();
+<%/if%>
+<%if Act=="H" || Act=="H1" || Act=="H2" || Act=="H3" || Act=="H4" || Act=="H5" || Act=="H6" || Act=="H7"%>
+f_6();
+<%/if%>
+</script>
+
+
+    </div>
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>
+
+<%if 1==2%>
+销售部分： 
+
+
+财务分析：
+
+
+1，每月费用
+
+2，每月收入
+
+3，实时库存
+    体现 总数（包括可销售，不可销售），箱数，金额（成本）
+4，应收应付
+    个人应收 应付，公司应收 应付
+5，现金银行
+    体现明细 总数
+6，固定资产
+    总数和明细
+7，净资产
+    净资产=现金银行+库存+固定资产+个人应收+公司应收-个人应付-公司应付
+
+<%/if%>

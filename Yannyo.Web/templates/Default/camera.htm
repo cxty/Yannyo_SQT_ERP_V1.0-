@@ -1,0 +1,54 @@
+<%template _poppageheader%>
+
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<script src="public/js/swfobject.js" type="text/javascript" ></script>
+            <form name="bForm" id="bForm" action="" method="post" style="text-align:center">
+            <b >调整好凭证后,请按回车键即可保存.</b>
+            <div id="divFileProgressContainer" style="text-align:center"></div>
+
+<script type="text/javascript">
+	var so = new SWFObject("/public/Camera.swf?r="+Math.random(), "Cameras", "{w}", "{h}","7");
+	so.addParam("allowScriptAccess", "always");
+	so.addVariable("mWidth", "{w}");
+	so.addVariable("mHeight", "{h}");
+	so.addVariable("ReCallJs", "ReCallJs");
+	so.addVariable("c", encodeURIComponent("{ucode}"));
+	so.addVariable("ReCall", "/Services/uppic.aspx?CertificateID={CertificateID}&Act={Act}");
+	so.write("divFileProgressContainer");
+
+	function ReCallJs(reid,picid)
+	{
+		if(reid==0)
+		{
+			window.setTimeout('RToP('+picid+');',1000);
+		}else{
+			window.setTimeout('alert(\'失败:\''+reid+');',1000);
+		}
+	}
+	function RToP(picid)
+	{
+		window.returnValue = picid;
+		//parent.Certificate_do.AddPic(picid);
+		window.setTimeout('window.close();',1000);
+	}
+</script>
+            </form>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

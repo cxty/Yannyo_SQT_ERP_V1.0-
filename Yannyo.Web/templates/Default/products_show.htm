@@ -1,0 +1,126 @@
+﻿<%template _poppageheader%>
+<body>
+<script type="text/javascript" language="javascript">
+function img_show(img_str,sObj){
+	if(img_str){
+		var _img = img_str.split(',');
+		for(var i=0;i<_img.length;i++){
+			if(_img[i]){
+				var _img_obj = $('<img src="'+_img[i]+'" />')
+				$('#'+sObj).append(_img_obj);
+				_img_obj = null;
+			}
+		}
+	}
+}
+function file_show(file_str,sObj){
+	if(file_str){
+		var _file = file_str.split(',');
+		for(var i=0;i<_file.length;i++){
+			if(_file[i]){
+				var _file_obj = $('<div src="'+_file[i]+'" ><a href="'+_file[i]+'" target="_blank">'+_file[i]+'</a></div>')
+				$('#'+sObj).append(_file_obj);
+				_file_obj = null;
+			}
+		}
+	}
+}
+</script>  
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <br>        <br>
+            <div id="print_box">
+            <form name="bForm" id="bForm" action="" method="post" class="print_box">
+            <h4 align="center" style="font-size:24px">{config.CompanyName} 商品信息</h4><br>
+              <table width="100%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 "   style= "border-collapse:collapse; ">
+                
+                <tr >
+                  <td width="20%" align="right"><strong>名称:</strong></td>
+                  <td width="30%">{pi.pName}</td>
+                  <td width="20%" align="right"><strong>条码:</strong></td>
+                  <td width="30%">{pi.pBarcode} </td>
+                </tr>
+                <tr >
+                  <td align="right" ><strong>品牌:</strong></td>
+                  <td >{pi.pBrand}</td>
+                  <td align="right" ><strong>分类:</strong></td>
+                  <td >{pi.ProductClass}</td>
+                </tr>
+                <tr >
+                  <td align="right" ><strong>小单位:</strong></td>
+                  <td >{pi.pUnits}</td>
+                  <td align="right" ><strong>大单位:</strong></td>
+                  <td >{pi.pMaxUnits}</td>
+                </tr>
+                <tr >
+                  <td align="right" ><strong>规格:</strong></td>
+                  <td >{pi.pStandard}</td>
+                  <td align="right" ><strong>装件数:</strong></td>
+                  <td >1*{pi.pToBoxNo}入</td>
+                </tr>
+                <tr >
+                  <td align="right" ><strong>默认售价:</strong></td>
+                  <td >{pi.pSellingPrice}</td>
+                  <td align="right" >&nbsp;</td>
+                  <td >&nbsp;</td>
+                </tr>
+                <tr >
+                  <td align="right" ><strong>生产厂家:</strong></td>
+                  <td >{pi.pProducer}</td>
+                  <td align="right" ><strong>产地:</strong></td>
+                  <td >{pi.pAddress}</td>
+                </tr>
+                <tr >
+                  <td align="right" ><strong>保质期:</strong></td>
+                  <td >{pi.pExpireDay}</td>
+                  <td >&nbsp;</td>
+                  <td >&nbsp;</td>
+                </tr>
+                <%if ProductFieldList !=null%>
+                    <%loop pf ProductFieldList%>
+                <tr >
+                  <td align="right" ><strong>{pf[pfName]}:</strong></td>
+                  <td colspan="3" class="x_box" id="f_box_{pf__loop__id}">
+                  <%if pf["pfType"].ToString() == "3"%>
+					  <script type="text/javascript" language="javascript">
+                      img_show('{pf[FieldValue]}','f_box_{pf__loop__id}');
+                      </script>
+                  <%else%>
+                      <%if pf["pfType"].ToString() == "4"%>
+                          <script type="text/javascript" language="javascript">
+                          file_show('{pf[FieldValue]}','f_box_{pf__loop__id}');
+                          </script>
+                      <%else%>
+                        {pf[FieldValue]}
+                      <%/if%>
+                  <%/if%>
+                  </td>
+                </tr>
+                <%/loop%>
+                <%/if%>
+                
+                    
+              </table>
+            
+            </form>
+            
+        </div>
+   <br><br>
+<%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

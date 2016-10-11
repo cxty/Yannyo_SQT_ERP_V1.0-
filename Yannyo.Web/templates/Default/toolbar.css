@@ -1,0 +1,61 @@
+
+table#toolbar {
+	margin-right: 10px;
+}
+
+table#toolbar a.toolbar {
+	color : #808080;
+	text-decoration : none;
+	display: block;
+	border: 1px solid #DDD;
+	width: 40px;
+	padding: 2px 5px 2px 5px;
+}
+table#toolbar a.toolbar:hover {
+	color : #C64934;
+	cursor: pointer;
+	border: 1px solid #c24733;
+	background-color: #f1e8e6;
+	padding: 3px 5px 1px 5px;
+}
+table#toolbar a.toolbar:active {
+	color : #FF9900;
+}
+#menubar ul{z-index:99999;}
+#menubar ul.menus li {
+float:left;
+list-style:none outside none;
+margin-right:1px;
+
+}
+#menubar ul.menus li a {
+background:none repeat scroll 0 0 #67ACE5;
+color:#FFFFFF;
+display:block;
+padding:5px 10px;
+text-decoration:none;
+}
+#menubar ul.menus li.current-cat a {
+background:none repeat scroll 0 0 #5495CD;
+}
+#menubar ul.menus li a:hover, #menubar ul.menus li a.current {
+background:none repeat scroll 0 0 #4281B7;
+}
+#menubar ul.children {
+display:none;
+margin:0;
+padding:0;
+}
+#menubar ul.children li {
+display:inline;
+float:none;
+margin:0;
+padding:0;
+}
+#menubar ul.children li a {
+width:100px;
+}
+#menubar ul.children li a.subtitle {
+border-right:3px solid #4281B7;
+width:97px;
+}

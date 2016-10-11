@@ -1,0 +1,218 @@
+﻿<%template _header%>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script src="/public/js/myFrontPageJs/storage.js" type="text/javascript" language="javascript" ></script>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        	<form name="bForm" id="bForm" action="" method="post">
+            <div style="background-color:#cccccc">
+            <input type="hidden" id="reginID" name="reginID" />
+            <input type="hidden" id="aID" name="aID" />
+            <input type="hidden" id="tType" name="tType" />
+            <table  style="width:100%">
+            <hr style="visibility:hidden" />
+              <tr>
+              <td style="width:15%">统计方式：
+              <select id="tjType" style="width:100px;">
+                <option value="0" <%if tType==0%> selected="selected"<%/if%>>合成统计</option>
+                <option value="1" <%if tType==1%> selected="selected"<%/if%>>分步统计</option>
+              </select>
+              </td>
+               
+               <td style="width:15%">
+               <div id="div_region" style="visibility:hidden">
+                区域选择：
+                 <%if rList !=null%>
+                   <select id="sel_regionName">
+                     <option value="0">查看全部</option>
+                     <%loop rl rList%>
+                     <option value="{rl[RegionID]}" <%if sel_rId.ToString()==rl["RegionID"].ToString()%> selected="selected"<%/if%>>{rl[rName]}</option>
+                     <%/loop%>
+                   </select> 
+                 <%/if%> 
+               </div>      
+               </td>
+               
+               <td  align="left" style="width:20%">日期选择：
+                 <%set {aspxrewriteurl}=bDate.ToString("yyyy-MM-dd")%>
+                 <input name="bDate" id="bDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />
+               </td>
+               <td  align="left" style="width:15%">联营：
+                <select id="Associated">
+                 <option value="-1"<%if sType.ToString()=="-1"%> selected="selected"<%/if%>>包含</option>
+                 <option value="0" <%if sType.ToString()=="0"%> selected="selected"<%/if%>>剔除</option>
+                 <option value="1" <%if sType.ToString()=="1"%> selected="selected"<%/if%>>仅联营</option>
+                </select>
+               </td>
+               <td align="right">
+                <input type="button" id="submit_btn" name="submit_btn" value="查询" class="B_INPUT" style="cursor:pointer" />&nbsp;&nbsp;&nbsp;
+                <input type="button" id="export_data" name="export_data" value="导出数据" class="B_INPUT" style="cursor:pointer" />
+               </td>
+              </tr>
+              <tr>
+              <td colspan="6">
+              <hr />
+              </td>
+              </tr>
+              <tr>
+               <td colspan="6"><span style="font-size:13px; color:Red"><b>友情提示：查看门店详情请点击[分步统计]</b></span></td>
+              </tr>
+            </table>
+         </div>
+        
+         <div id="space"></div>
+         <!--合成统计-->
+        
+        <%if {ispost}%>
+        <%if tType==0%>
+          <table id="get_data" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+            <tr class="tBar">
+              <td align="center"  rowspan="2" style="width:15%;height:30px"><span style="font-size:larger"><b>门店名称</b></span></td>
+              <td align="center"  colspan="2" rowspan="2" style="width:35%"><span style="font-size:larger"><b>商品名称</b></span></td>
+              <td align="center"  rowspan="2" style="width:15%"><span style="font-size:larger"><b>商品条码</b></span></td>
+              <td align="center"  rowspan="2" style="width:10%"><span style="font-size:larger"><b>是否联营</b></span></td>
+              <td align="center"  rowspan="2" style="width:10%"><span style="font-size:larger"><b>库存数量</b></span></td>
+              <td align="center"  rowspan="2" style="width:10%"><span style="font-size:larger"><b>截止日期</b></span></td>
+            </tr>
+          </table>
+          <table id="tBoxs"  class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+            <%if sList !=null%>
+            <%loop sl sList%>
+            <%set {pList}=getProductDetails({sl[StoresID]},{tType})%>
+            <%set {pCount}=p_count({sl[StoresID]},{tType})%>
+            <%set {tLoopid}=1%>
+            <%set {sumD}=0%>
+            <tr>
+             <td align="center" rowspan="{pCount}" style="width:15%">{sl[sName]}</td>
+              <%if pList !=null%>
+              <%loop pl pList%>
+               <%if (tLoopid%2) == 0%>
+                   <tr>
+               <%/if%>
+                  <td align="center"  style="width:5%">{pl__loop__id}</td>
+                  <td align="left"  style="width:30%">{pl[pName]}</td>
+                  <td align="center"  style="width:15%">{pl[pBarcode]}</td>
+                  <td align="center"  style="width:10%">
+                  <%if sType==-1%>
+                  包含
+                  <%/if%>
+                  <%if sType==0%>
+                  剔除
+                  <%/if%>
+                  <%if sType==1%>
+                  仅联营
+                  <%/if%>
+                  </td>
+                  <td align="center"  style="width:10%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[pRelityStorage]}),2).ToString()%>
+                    {aspxrewriteurl}
+                    <%set {sumD}=decimal.Round(sumD+Convert.ToDecimal(aspxrewriteurl),2)%>
+                  </td>
+                  <td align="center"  style="width:10%">
+                    <%set {aspxrewriteurl} = Convert.ToDateTime({pl[pAppendtime]}).ToString("yyyy-MM-dd")%>
+                   {aspxrewriteurl}
+                  </td>
+                <%if (tLoopid%2) == 0%>
+   			       </tr>
+                <%/if%>
+                <%set {tLoopid}=tLoopid+1%>
+              <%/loop%>        
+              <%/if%>
+            </tr>
+            <tr>
+              <td align="center" colspan="5" style="height:30px;font-size:11pt;"><span style="font-size:11pt; font-weight:bold">{sl[sName]}</span>&nbsp;客户费用合计</td>
+              <td align="center" >{sumD}</td>
+              <td></td>
+            </tr>
+            <%/loop%>
+            <%/if%>
+          </table>
+        <%/if%>
+
+
+
+         <!--分步统计-->
+         <%if tType==1%>
+         <table id="get_data" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+         <thead style="font-weight:bold">
+          <tr class="tBar">
+           <td align="center"  rowspan="2" style="width:5%;"><span style="font-size:larger">编号</span></td>
+           <td align="center"  rowspan="2" style="width:30%"><span style="font-size:larger">门店名称</span></td>
+           <td align="center"  rowspan="2" style="width:15%"><span style="font-size:larger">门店类型</span></td>
+           <td align="center"  rowspan="2" style="width:15%"><span style="font-size:larger">库存数量</span></td>
+           <td align="center"  colspan="2" style="width:20%"><span style="font-size:larger">库存金额</span></td>
+           <td align="center"  rowspan="2" style="width:15%"><span style="font-size:larger">截止日期</span></td>
+          </tr>
+          <tr class="tBar">
+           <td align="right">销售金额</td>
+           <td align="right">成本金额</td>
+          </tr>
+         </thead>
+         </table>
+         <table id="tBoxs"  class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+            <%if mList !=null%>
+            <%loop sll mList%>
+              <tr>
+                 <td align="center" style="width:5%;">{sll__loop__id}</td>
+                 <td align="center" style="width:30%"><a href="javascript:void(0);" onclick="javascript:sendInFo({sll[StoresID]},{sType},'{sll[pAppendTime]}','{sll[sName]}')">{sll[sName]}</a></td>
+                 <td align="center" style="width:15%">{sll[sType]}</td>
+                 <td align="center" style="width:15%">
+                  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sll[pRelityStorage]}),2).ToString()%>
+                  {aspxrewriteurl}
+                  <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+                 </td>
+                 <td align="right" style="width:10%">
+                  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sll[pMoney]}),2).ToString()%>
+                  {aspxrewriteurl}
+                  <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+                  </td>
+                 <td align="right" style="width:10%">
+                 <%if {Show}=="1"%>
+                    <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sll[qMoney]}),2).ToString()%>
+                    {aspxrewriteurl}
+                    <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                 <%else%>
+                 无权限
+                 <%/if%>
+                 </td>
+                 <td align="center" style="width:15%">
+                   <%set {aspxrewriteurl} = Convert.ToDateTime({sll[pAppendTime]}).ToString("yyyy-MM-dd")%>
+                   {aspxrewriteurl}
+                 </td>
+              </tr>
+            <%/loop%>
+               <tr>
+               <td align="center" colspan="3" style="height:30px"><span style="font-size:larger"><b>合&nbsp;&nbsp;计</b></span></td>
+               <td align="center">{sumA}</td>
+               <td align="right">{sumB}</td>
+               <td align="right">
+               <%if {Show}=="1"%>
+               {sumC}
+               <%else%>
+                 无权限
+                 <%/if%>
+               </td>
+               <td></td>
+              </tr>
+            <%/if%>
+         </table>
+         <%/if%>
+
+         <%/if%>
+         <div id="winAll">
+          <div id="winLoding"><img alt="" src="/images/loading99.gif"/></div>
+         </div>
+        </form>
+        
+        <%/if%>
+    <%/if%>
+
+<%template _copyright%>
+<%template _footer%>

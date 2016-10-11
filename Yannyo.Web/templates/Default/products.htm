@@ -1,0 +1,99 @@
+﻿<%template _header%>
+
+
+<script src="public/js/products.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1" onsubmit="javascript:ProductsManage.Search();">
+<div class="toolbar">
+<div class="toolbox">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:ProductsManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:ProductsManage.ShowAddUserBox();"  />
+<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}"><INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:ProductsManage.Search();"  />
+    <input type="button" id="button5" style="margin:5px" class="B_INPUT" value="导入导出" onclick="javascript:ProductsManage.dataAct();" />
+</div>
+<div class="list_title">
+商品列表
+</div>
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+			<td width="10%">条码</td>
+			<td >名称</td>
+			<td width="10%">品牌</td>
+			<td width="10%">规格</td>
+			<td width="5%">小单位</td>
+            <td width="5%">大单位</td>
+			<td width="5%">件装数</td>
+			<td width="5%">默认成本</td>
+
+			<td width="5%">状态</td>
+            <td width="10%">创建时间</td>
+            <td width="10%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[ProductsID]}" />
+            </td>
+			<td><a href="/products_show.aspx?pid={dl[ProductsID]}" target="_blank" >{dl[pBarcode]}</a></td>
+			<td><a href="/products_show.aspx?pid={dl[ProductsID]}"  target="_blank">{dl[pName]}</a></td>
+            <td>{dl[pBrand]}</td>
+			<td>{dl[pStandard]}</td>
+			<td align="center">{dl[pUnits]}</td>
+            <td align="center">{dl[pMaxUnits]}</td>
+			<td align="right">1*{dl[pToBoxNo]}</td>
+			<td align="right">{dl[pPrice]}</td>
+
+			<td align="center">
+            <a href="javascript:void(0);" onclick="javascript:ProductsManage.SetState({dl[ProductsID]});" id="p_{dl[ProductsID]}">
+            <%if dl["pState"].ToString() == "0"%>
+            正常
+            <%/if%>
+            <%if dl["pState"].ToString() == "1"%>
+            屏蔽
+            <%/if%>
+            </a>
+            </td>
+			<td>{dl[pAppendTime]}</td>
+            <td>
+			<a href="javascript:void(0);" onclick="javascript:ProductsManage.ShowDelUserBox({dl[ProductsID]});">删除</a> 
+			<a href="javascript:void(0);" onclick="javascript:ProductsManage.ShowEditUserBox({dl[ProductsID]});">修改</a>
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="12"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+<script language="javascript" type="text/javascript">
+var ProductsManage = new TProductsManage();
+ProductsManage.ini();
+
+function HidBox()
+{
+	ProductsManage.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+      <%/if%>
+    </form></div>
+
+
+
+<%template _copyright%>
+<%template _footer%>

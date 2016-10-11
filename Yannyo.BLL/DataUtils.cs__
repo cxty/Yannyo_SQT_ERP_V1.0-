@@ -1,0 +1,698 @@
+﻿using System;
+using System.Data;
+using System.Data.Common;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
+using System.Collections.Generic;
+using System.IO;
+
+using Yannyo.Common;
+using Yannyo.Data;
+using Yannyo.Config;
+using Yannyo.Entity;
+
+
+namespace Yannyo.BLL
+{
+    public class DataUtils
+    {
+        public static DataTable GetSales_analysis(int StoresID, int StaffID, int StaffIDB, string Brand, int RegionID, int ProductID, int YHsysID, DateTime bDate, DateTime eDate, int ShowType, int DateType, out decimal AllSumValue)
+        {
+            return DatabaseProvider.GetInstance().GetSales_analysis(StoresID, StaffID, StaffIDB, Brand, RegionID, ProductID, YHsysID, bDate, eDate, ShowType, DateType, out AllSumValue);
+        }
+        /// <summary>
+        /// 返回一个时间段内指定格式的日期，dType:1=日,2=月,3=年
+        /// </summary>
+        public static DataTable GetDateTimeList(DateTime bDate, DateTime eDate, int dType)
+        {
+            return DatabaseProvider.GetInstance().GetDateTimeList(bDate, eDate, dType);
+        }
+        /// <summary>
+        /// 返回一个时间段内:销售额,成本,退货,坏货,赠品,销售费用,公司费用
+        /// </summary>
+        /// <param name="dType">类型(7:综合(含公司费用), 1:门店/客户, 2:业务员, 3:促销员, 4:产品, 5:品牌, 6:系统)</param>
+        public static DataTable GetErpData_analysis(DateTime bDate, DateTime eDate, int dType)
+        {
+            return DatabaseProvider.GetInstance().GetErpData_analysis(bDate, eDate, dType);
+        }
+        /// <summary>
+        /// 返回一个时间段内:销售额,成本,退货,坏货,赠品,销售费用,公司费用
+        /// </summary>
+        /// <param name="dType">类型(7:综合(含公司费用), 1:门店/客户, 2:业务员, 3:促销员, 4:产品, 5:品牌, 6:系统)</param>
+        /// <param name="StoresID">@StoresID int = 0,			--门店客户编号</param>
+        /// <param name="StaffID">@StaffID int = 0,			--业务员编号</param>
+        /// <param name="StaffIDB">@StaffIDB int = 0,			--促销员编号</param>
+        /// <param name="Brand">@Brand varchar(128) = '',	--品牌名称,模糊</param>
+        /// <param name="RegionID">@RegionID int = 0,			--地区编号</param>
+        /// <param name="ProductID">@ProductID int = 0,			--产品编号</param>
+        /// <param name="YHsysID">@YHsysID int = 0			--系统编号</param>
+        public static DataTable GetErpData_analysis(DateTime bDate, DateTime eDate, int dType, int StoresID, int StaffID, int StaffIDB, string Brand, int RegionID, int ProductID, int YHsysID)
+        {
+            return DatabaseProvider.GetInstance().GetErpData_analysis(bDate, eDate, dType, StoresID, StaffID, StaffIDB, Brand, RegionID, ProductID, YHsysID);
+        }
+        /// <summary>
+        /// 返回一个时间段内:费用
+        /// </summary>
+        /// <param name="mType">类型(销售费用=0,公司管理费用=1)</param>
+        public static DataTable Get_Fees_analysis(DateTime bDate, DateTime eDate, int mType)
+        {
+            return DatabaseProvider.GetInstance().Get_Fees_analysis(bDate, eDate, mType);
+        }
+        /// <summary>
+        /// 库存情况
+        /// </summary>
+        /// <param name="storageid">仓库编号</param>
+        /// <param name="eDate">库存点</param>
+        /// <param name="ProductID">产品编号</param>
+        public static DataTable GetStock_analysis(int storageid, DateTime eDate, int ProductID)
+        {
+            return DatabaseProvider.GetInstance().GetStock_analysis(storageid, eDate, ProductID);
+        }
+
+        /// <summary>
+        /// 应收应付
+        /// </summary>
+        /// <param name="gettype">客户应收=0,人员应收=1,供货商应付=2,人员应付=3</param>
+        /// <param name="eDate">截止时间点</param>
+        /// <param name="ObjID">指定对象编号</param>
+        public static DataTable GetAPARMoney(int gettype, DateTime eDate, int ObjID)
+        {
+            return DatabaseProvider.GetInstance().GetAPARMoney(gettype, eDate, ObjID);
+        }
+        /// <summary>
+        /// 返回净资产
+        /// </summary>
+        /// <param name="eDate">截止时间点</param>
+        public static DataTable GetNetAssets(DateTime eDate)
+        {
+            return DatabaseProvider.GetInstance().GetNetAssets(eDate);
+        }
+        /// <summary>
+        /// 返回人员带身份证列表
+        /// </summary>
+        public static DataTable GetStaffBirthdayList()
+        {
+            return DatabaseProvider.GetInstance().GetStaffBirthdayList();
+        }
+        /// <summary>
+        /// 取指定门店的费用明细
+        /// </summary>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="StoresID"></param>
+        /// <returns></returns>
+        public static DataTable Get_Fees_by_StoresID(DateTime bDate, DateTime eDate, int StoresID)
+        {
+            return DatabaseProvider.GetInstance().Get_Fees_by_StoresID(bDate, eDate, StoresID);
+        }
+
+        /// <summary>
+        /// 取指定科目费用明细
+        /// </summary>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="FeesSubjectID"></param>
+        /// <returns></returns>
+        public static DataTable Get_Fees_by_FeesSubjectID(DateTime bDate, DateTime eDate, int FeesSubjectID)
+        {
+            return DatabaseProvider.GetInstance().Get_Fees_by_FeesSubjectID(bDate, eDate, FeesSubjectID);
+        }
+
+        /// <summary>
+        /// 取销售统计表
+        /// </summary>
+        /// <param name="ReType">商品销售=1,客户销售=2,销售成本,利润=3</param>
+        /// <param name="bDate">开始时间</param>
+        /// <param name="eDate">结束时间</param>
+        /// <param name="NOJoinSales">是否剔除联营数据</param>
+        /// <returns></returns>
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales);
+        }
+        /// <summary>
+        /// 取销售统计表
+        /// </summary>
+        /// <param name="ReType"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="NOJoinSales"></param>
+        /// <param name="StoresID"></param>
+        /// <returns></returns>
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID);
+        }
+        /// <summary>
+        /// 取销售统计表
+        /// </summary>
+        /// <param name="ReType"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="NOJoinSales"></param>
+        /// <param name="StoresID"></param>
+        /// <param name="PaymentSystemID"></param>
+        /// <returns></returns>
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID, int PaymentSystemID)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID, PaymentSystemID);
+        }
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID, int PaymentSystemID, int oSteps)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID, PaymentSystemID, oSteps);
+        }
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID, int PaymentSystemID, int oSteps, int dType)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID, PaymentSystemID, oSteps, dType);
+        }
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID, int PaymentSystemID, int oSteps, int dType, int CostPrice)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID, PaymentSystemID, oSteps, dType, CostPrice);
+        }
+        /// <summary>
+        /// 取进货统计表
+        /// </summary>
+        /// <param name="ReType"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <returns></returns>
+        public static DataTable GetPurchaseReport(int ReType, DateTime bDate, DateTime eDate)
+        {
+            return DatabaseProvider.GetInstance().GetPurchaseReport( ReType,  bDate,  eDate);
+        }
+        /// <summary>
+        /// 出库统计
+        /// </summary>
+        /// <param name="ReType">商品=1,客户=2</param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="NOJoinSales"></param>
+        /// <returns></returns>
+        public static DataTable GetOutReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales)
+        {
+            return DatabaseProvider.GetInstance().GetOutReport(ReType, bDate, eDate, NOJoinSales);
+        }
+        /// <summary>
+        /// 去除重复项
+        /// </summary>
+        /// <param name="needToPurge"></param>
+        public static void Purge(ref List<string> needToPurge)
+        {
+            for (int i = 0; i < needToPurge.Count - 1; i++)
+            {
+                string deststring = needToPurge[i];
+                for (int j = i + 1; j < needToPurge.Count; j++)
+                {
+                    if (deststring.CompareTo(needToPurge[j]) == 0)
+                    {
+                        needToPurge.RemoveAt(j);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 返回客户销售统计数据
+        /// </summary>
+        /// <param name="ShowType">显示类型,1=按客户,2=业务员,3=促销员,4=产品,5=品牌(产品分类),6=系统</param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <returns></returns>
+        public static DataTable GetCustomers_DataAnalysis(int ShowType, DateTime bDate, DateTime eDate, out decimal AllSumMoney)
+        {
+            return DatabaseProvider.GetInstance().GetCustomers_DataAnalysis(ShowType, bDate, eDate, out AllSumMoney);
+        }
+        /// <summary>
+        /// 导出数据
+        /// </summary>
+        /// <param name="bDate"></param>
+        /// <param name="Type"></param>
+        /// <param name="checkValue"></param>
+        /// <returns></returns>
+        public static DataTable getExportData(DateTime bDate, int Type, int checkValue)
+        {
+            return DatabaseProvider.GetInstance().getExportData(bDate, Type, checkValue);
+        }
+        /// <summary>
+        /// 导出出货数据
+        /// </summary>
+        /// <param name="bDate"></param>
+        /// <param name="checkValue"></param>
+        /// <returns></returns>
+        public static DataTable getReportOutExport(DateTime bDate, int checkValue)
+        {
+            return DatabaseProvider.GetInstance().getReportOutExport(bDate, checkValue);
+        }
+
+        #region 数据导出邮件发送
+        /// <summary>
+        /// 系统配置信息
+        /// </summary>
+        //public static GeneralConfigInfo config = GeneralConfigs.GetConfig();
+        /// <summary>
+        /// 客户销售自动发邮件
+        /// </summary>
+        /// <param name="dType">1=客户；2=业务员；3=促销员；4=单品；5=品牌</param>
+        /// <param name="bDate">查询日期</param>
+        /// <param name="checkValue">0=日；1=周；2=月</param>
+        /// <param name="toEmail">收件人邮箱地址</param>
+        /// <returns></returns>
+        public static void getStorageSalesDetails( int dType, string bDate, int checkValue, string toEmail)
+        {
+            GeneralConfigInfo config = GeneralConfigs.GetConfig();
+
+            string tbDate = bDate + " 00:00:00";
+            string FileURL = "";
+
+            {
+                DataTable dcList = getExportData(Convert.ToDateTime(tbDate), dType, checkValue);
+                DataTable dt = dcList.Copy();
+                DataSet ds = new DataSet();
+                ds.Tables.Add(dt);
+                //客户
+                if (dType == 1)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "客户名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+                    if (toEmail.Trim() != "")
+                    {
+                        //每日
+                        if (checkValue == 0)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Customer_Day" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每日_客户销售数据_客户", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>"+config.Sysurl + FileURL+" 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每周
+                        if (checkValue == 1)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Customer_Week" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每周_客户销售数据_客户", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每月
+                        if (checkValue == 2)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Customer_Month" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每月_客户销售数据_客户", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                    }
+                }
+                //业务员
+                if (dType == 2)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "业务员名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+                    if (toEmail.Trim() != "")
+                    {
+                        //每日
+                        if (checkValue == 0)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Staff_Day" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每日_客户销售数据_业务员", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每周
+                        if (checkValue == 1)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Staff_Week" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每周_客户销售数据_业务员", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每月
+                        if (checkValue == 2)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Staff_Month" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每月_客户销售数据_业务员", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                    }
+                }
+                //促销员
+                if (dType == 3)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "促销员名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+                    if (toEmail.Trim() != "")
+                    {
+                        //每日
+                        if (checkValue == 0)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Promotion_Day" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每日_客户销售数据_促销员", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每周
+                        if (checkValue == 1)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Promotion_Week" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每周_客户销售数据_促销员", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每月
+                        if (checkValue == 2)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Promotion_Month" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每月_客户销售数据_促销员", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                    }
+                }
+                //单品
+                if (dType == 4)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "商品名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+                    if (toEmail.Trim() != "")
+                    {
+                        //每日
+                        if (checkValue == 0)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Products_Day" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每日_客户销售数据_商品", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每周
+                        if (checkValue == 1)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Products_Week" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每周_客户销售数据_商品", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每月
+                        if (checkValue == 2)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Products_Month" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每月_客户销售数据_商品", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                    }
+                }
+                //品牌
+                if (dType == 5)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "品牌名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+                    if (toEmail.Trim() != "")
+                    {
+                        //每日
+                        if (checkValue == 0)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Brand_Day" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每日_客户销售数据_品牌", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每周
+                        if (checkValue == 1)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Brand_Week" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每周_客户销售数据_品牌", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                        //每月
+                        if (checkValue == 2)
+                        {
+                            FileURL = GreateExcelToFile(ds.Tables[0], "The_Data_Of_Customer_Sales_Brand_Month" + Convert.ToDateTime(tbDate).ToShortDateString() + ".xls");
+                            UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + " 每月_客户销售数据_品牌", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                        }
+                    }
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// 联营库存自动发邮件
+        /// </summary>
+        /// <param name="bDate">导出日期</param>
+        /// <param name="tType">0=合成统计；1=分步统计</param>
+        /// <param name="sType">-1=包含联营；0=剔除联营；1=仅联营</param>
+        public static void getJointInventoryDetails(DateTime bDate, int tType, int sType, string toEmail)
+        {
+            GeneralConfigInfo config = GeneralConfigs.GetConfig();
+            string FileURL = "";
+
+            {
+                DataTable dList = ProductsLossInfo.getExportData(bDate.Date.AddDays(-2), sType);
+                DataTable dt = new DataTable();
+                dt = dList.Copy();
+                DataSet ds = new DataSet();
+                ds.Tables.Add(dt);
+                //合成统计
+                if (tType == 0)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "门店名称";
+                    ds.Tables[0].Columns[1].ColumnName = "商品名称";
+                    ds.Tables[0].Columns[2].ColumnName = "商品条码";
+                    ds.Tables[0].Columns[3].ColumnName = "商品品牌";
+                    ds.Tables[0].Columns[4].ColumnName = "库存数量";
+
+                    if (toEmail.Trim() != "")
+                    {
+                        FileURL = GreateExcelToFile(ds.Tables[0], "Associated_inventory_Data_" + bDate.Date.AddDays(-2).ToShortDateString() + ".xls");
+                        UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + "联营库存数据", "请下载:<br><a herf=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 公司销售月数据自动发送
+        /// </summary>
+        /// <param name="toEmail">收件人邮箱</param>
+        /// <param name="bDate">开始日期</param>
+        /// <param name="eDate">结束日期</param>
+        public static void getIslandSalesDetails(string toEmail, DateTime bDate, DateTime eDate)
+        {
+            GeneralConfigInfo config = GeneralConfigs.GetConfig();
+            string FileURL = "";
+
+            {
+                DataTable eList = tbStoresInfo.getExportDate(bDate, eDate);
+                DataTable dt = eList.Copy();
+                DataSet ds = new DataSet();
+                ds.Tables.Add(dt);
+                ds.Tables[0].Columns[0].ColumnName = "门店名称";
+                ds.Tables[0].Columns[1].ColumnName = "销售金额";
+
+                if (toEmail.Trim() != "")
+                {
+                    FileURL = GreateExcelToFile(ds.Tables[0], "Monthly_sales_Data_" + bDate.ToShortDateString() + ".xls");
+                    UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + "每月销售数据", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                }
+            }
+        }
+        /// <summary>
+        /// 公司出货月数据自动发送邮件
+        /// </summary>
+        /// <param name="toEmail">收件人邮箱</param>
+        /// <param name="bDate">开始日期</param>
+        /// <param name="checkValue">0=单品；1=客户；2=品牌；3=区域；4=业务员</param>
+        public static void getIslandShipmentDetails( string toEmail, DateTime bDate, int checkValue)
+        {
+            GeneralConfigInfo config = GeneralConfigs.GetConfig();
+            string FileURL = "";
+
+            {
+                DataTable dcList = DataUtils.getReportOutExport(bDate, checkValue);
+                DataTable dt = dcList.Copy();
+                DataSet ds = new DataSet();
+                ds.Tables.Add(dt);
+                //单品
+                if (checkValue == 0)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "商品名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+
+                    if (toEmail.Trim() != "")
+                    {
+                        FileURL = GreateExcelToFile(ds.Tables[0], "Monthly_shipment_data_goods_Data_" + bDate.ToShortDateString() + ".xls");
+                        UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + "每月出货数据_单品", "请下载 :<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                    }
+                }
+                //客户
+                if (checkValue == 1)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "客户名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+
+                    if (toEmail.Trim() != "")
+                    {
+                        FileURL = GreateExcelToFile(ds.Tables[0], "Monthly_shipment_data_customers_Data_" + bDate.ToShortDateString() + ".xls");
+                        UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + "每月出货数据_客户", "请下载 :<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                    }
+                }
+                //品牌
+                if (checkValue == 2)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "品牌名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+
+                    if (toEmail.Trim() != "")
+                    {
+                        FileURL = GreateExcelToFile(ds.Tables[0], "Monthly_shipment_data_brand_Data_" + bDate.ToShortDateString() + ".xls");
+                        UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + "每月出货数据_品牌", "请下载 :<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                    }
+                }
+                //区域
+                if (checkValue == 3)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "区域名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+
+                    if (toEmail.Trim() != "")
+                    {
+                        FileURL = GreateExcelToFile(ds.Tables[0], "Monthly_shipment_data_region_Data_" + bDate.ToShortDateString() + ".xls");
+                        UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + "每月出货数据_区域", "请下载 :<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                    }
+                }
+                //业务员
+                if (checkValue == 4)
+                {
+                    ds.Tables[0].Columns[0].ColumnName = "业务员名称";
+                    ds.Tables[0].Columns[1].ColumnName = "销售数量";
+                    ds.Tables[0].Columns[2].ColumnName = "销售金额";
+
+                    if (toEmail.Trim() != "")
+                    {
+                        FileURL = GreateExcelToFile(ds.Tables[0], "Monthly_shipment_data_salesman_Data_" + bDate.ToShortDateString() + ".xls");
+                        UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + "每月出货数据_业务员", "请下载 :<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 仓库库存自动发送邮件
+        /// </summary>
+        /// <param name="toEmail">收件人邮件</param>
+        /// <param name="StorageID">门店ID=0</param>
+        /// <param name="sDate">查询日期</param>
+        /// <param name="ProductID">产品ID=0</param>
+        public static void getStockDetails(string toEmail, int StorageID, DateTime sDate, int ProductID)
+        {
+            GeneralConfigInfo config = GeneralConfigs.GetConfig();
+            string FileURL = "";
+
+            {
+                DataTable dList = tbProductsInfo.GetProductsStorageInfoByStorageID(StorageID, sDate, ProductID);
+                DataTable dt = dList.Copy();
+                dt.Columns.RemoveAt(0);
+                dt.Columns.RemoveAt(0);
+                dt.Columns.RemoveAt(5);
+                dt.Columns.RemoveAt(5);
+                dt.Columns.RemoveAt(5);
+                dt.Columns.RemoveAt(6);
+                DataSet dset = new DataSet();
+                dt.Columns["sName"].SetOrdinal(0);
+                dset.Tables.Add(dt);
+
+                dset.Tables[0].Columns[0].ColumnName = "仓库名称";
+                dset.Tables[0].Columns[1].ColumnName = "商品条码";
+                dset.Tables[0].Columns[2].ColumnName = "商品名称";
+                dset.Tables[0].Columns[3].ColumnName = "库存数量";
+                dset.Tables[0].Columns[4].ColumnName = "入库未核销";
+                dset.Tables[0].Columns[5].ColumnName = "出库未核销";
+                dset.Tables[0].Columns[6].ColumnName = "不可用库存";
+
+
+                if (toEmail.Trim() != "")
+                {
+                    FileURL = GreateExcelToFile(dset.Tables[0], "The_inventory_Data_" + sDate.ToShortDateString() + ".xls");
+                    UsersUtils.SendMailToEmail(toEmail.Trim(), config.CompanyName + "公司库存数据", "请下载:<br><a href=\"" + config.Sysurl + FileURL + "\">" + config.Sysurl + FileURL + "</a><br>若不能下载请复制右侧连接:<br>" + config.Sysurl + FileURL + " 到浏览器地址栏(或下载软件任务栏)下载,下载地址永久有效. ");
+                }
+            }
+        }
+        /// <summary>
+        /// 服务端生成Excel
+        /// </summary>
+        /// <returns></returns>
+        public static string GreateExcelToFile(DataTable dt, string fileName)
+        {
+            fileName = fileName.Replace("/", "-");
+            string FilePath = "/Data/ExportData/" + DateTime.Now.Year + "-" + DateTime.Now.Month + "/";
+            string colHeaders = "", ls_item = "";
+
+            ////定义表对象与行对象，同时用DataSet对其值进行初始化 
+            //DataTable dt = ds.Tables[0]; 
+            DataRow[] myRow = dt.Select();//可以类似dt.Select("id>10")之形式达到数据筛选目的 
+            int i = 0;
+            int cl = dt.Columns.Count;
+
+            //取得数据表各列标题，各标题之间以t分割，最后一个列标题后加回车符 
+            for (i = 0; i < cl; i++)
+            {
+                if (i == (cl - 1))//最后一列，加n 
+                {
+                    colHeaders += dt.Columns[i].Caption.ToString() + "\n";
+                }
+                else
+                {
+                    colHeaders += dt.Columns[i].Caption.ToString() + "\t";
+                }
+
+            }
+
+            //向HTTP输出流中写入取得的数据信息 
+
+            //逐行处理数据 
+            foreach (DataRow row in myRow)
+            {
+
+                //当前行数据写入HTTP输出流，并且置空ls_item以便下行数据 
+                for (i = 0; i < cl; i++)
+                {
+                    if (i == (cl - 1))//最后一列，加n 
+                    {
+                        ls_item += row[i].ToString() + "\n";
+                    }
+                    else
+                    {
+                        ls_item += row[i].ToString() + "\t";
+                    }
+
+                }
+
+            }
+            if (StrToFile(colHeaders + ls_item, FilePath, fileName))
+            {
+                return FilePath + fileName;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        /// <summary>
+        /// 字符串保存成文件
+        /// </summary>
+        /// <returns></returns>
+        public static bool StrToFile(string Str, string FilePath, string FileName)
+        {
+            try
+            {
+                string _FilePath = FilePath;
+                FilePath = Utils.GetMapPath(@"\\Data\\ExportData\\" + DateTime.Now.Year + "-" + DateTime.Now.Month + "\\");
+                if (!Directory.Exists(FilePath))
+                {
+                    Directory.CreateDirectory(FilePath);
+                }
+                StreamWriter sw = new StreamWriter(File.Create(FilePath + "/" + FileName.Replace("/", "-")), Encoding.Default);
+                //StreamWriter sw = File.CreateText(FilePath + "/" + FileName.Replace("/","-"));
+                try
+                {
+                    sw.Write(Str);
+                }
+                finally
+                {
+                    sw.Flush();
+                    sw.Close();
+                    sw.Dispose();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        #endregion
+    }
+}

@@ -1,0 +1,108 @@
+<div id="datalist_A">
+		<div class="toolbar_X">
+			<ul>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_H" value="1" 
+				<%if ShowType==1%>
+				checked
+				<%/if%> ><a >客户应收</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_I" value="2" 
+				<%if ShowType==2%>
+				checked
+				<%/if%> ><a >个人应收</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_I" value="3" 
+				<%if ShowType==3%>
+				checked
+				<%/if%> ><a >供货商应付</a></li>
+				<li><INPUT class="B_Check" TYPE="radio" NAME="ShowType" id="ShowType_I" value="4" 
+				<%if ShowType==4%>
+				checked
+				<%/if%> ><a >个人应付</a></li>
+			</ul>
+		</div>
+		<div class="dlist">
+		<%if {ispost} %>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+				<tr class="tBar">
+					<td width="5%">排名</td>
+					<%if ShowType==2 || ShowType==4%>
+					<td >姓名</td>
+					<%/if%>
+					<%if ShowType==1%>
+					<td >门店、客户</td>
+					<%/if%>
+					<%if ShowType==3%>
+					<td >供货商</td>
+					<%/if%>
+
+					<%if ShowType==1 || ShowType==2%>
+					<td width="10%">累计新增应收金额<br>(未完成)</td>
+					<td width="10%">累计新增应收金额<br>(已完成)</td>
+					<td width="10%">实际对账金额<br>(已完成)</td>
+					<td width="10%">实际已收款金额<br>(已完成)</td>
+					<td width="10%">剩余应收金额</td>
+					<%/if%>
+
+					<%if ShowType==3 || ShowType==4%>
+					<td width="10%">累计应付金额</td>
+					<td width="10%">累计已付金额</td>
+					<td width="10%">累计其他已付金额</td>
+					<td width="10%">剩余应付金额</td>
+					<%/if%>
+					
+				</tr>
+				<%if dList != null%>
+				  <%loop dl dList%>
+					  <tr>
+						<td >{dl__loop__id}</td>
+						<%if ShowType==1 || ShowType==4%>
+						<td >{dl[sName]}</td>
+						<%/if%>
+						<%if ShowType==0%>
+						<td >{dl[sName]}</td>
+						<%/if%>
+						<%if ShowType==3%>
+						<td >{dl[sName]}</td>
+						<%/if%>
+						<%if ShowType==2%>
+						<td >{dl[sName]}</td>
+						<%/if%>
+						<%if ShowType==1 || ShowType==2%>
+						<td align="right">{dl[ASumAMoney]}</td>
+						<td align="right">{dl[BSumAMoney]}</td>
+						<td align="right">{dl[BSumBMoney]}</td>
+						<td align="right">{dl[BSumActualMoney]}</td>
+						<td align="right">{dl[SYMoney]}</td>
+						<%/if%>
+						<%if ShowType==3 || ShowType==4%>
+						<td align="right">{dl[SumPMoney]}</td>
+						<td align="right">{dl[SumPayMoney]}</td>
+						<td align="right">{dl[SumOtherMoney]}</td>
+						<td align="right">{dl[SYMoney]}</td>
+						<%/if%>
+						
+
+					  </tr>
+				  <%/loop%>
+				<%/if%>
+				  <tr>
+					<td>合计:</td>
+					<td></td>
+					<%if ShowType==1 || ShowType==2%>
+					<td align="right">{AllSumValue1}</td>
+					<td align="right">{AllSumValue2}</td>
+					<td align="right">{AllSumValue3}</td>
+					<td align="right">{AllSumValue4}</td>
+					<td align="right">{AllSumValue5}</td>
+					<%/if%>
+					<%if ShowType==3 || ShowType==4%>
+					<td align="right">{AllSumValue1}</td>
+					<td align="right">{AllSumValue2}</td>
+					<td align="right">{AllSumValue3}</td>
+					<td align="right">{AllSumValue4}</td>
+					<%/if%>
+				  </tr>
+				
+			</table>
+		<%/if%>
+		</div>
+	</div>

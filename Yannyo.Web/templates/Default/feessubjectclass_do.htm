@@ -1,0 +1,91 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="/public/js/feessubjectclass_do.js"></script>
+          <form name="bForm" id="bForm" action="" method="post">
+          <input type="hidden" id="lastName" name="lastName" <%if Act=="Edit"%>value="{FeesSubjectClass.cClassName}"<%/if%> />
+        <table width="100%" border="0" cellspacing="2" cellpadding="2">
+  <tr class="tBar">
+    <td align="right">上级科目:</td>
+    <td>顶级{FeesSubjectClassPaterStr}</td>
+  </tr>
+  <tr class="tBar">
+    <td align="right">编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</td>
+    <td><input showtitle="请填写数字" name="cCode" id="cCode" type="text" 
+                  <%if Act=="Edit"%>value="{FeesSubjectClass.cCode}"<%/if%>
+                  /></td>
+  </tr>
+  <tr class="tBar">
+    <td width="20%" align="right">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称:</td>
+    <td><input showtitle="可填写少于50个的中英文字符" name="cClassName" id="cClassName" type="text" 
+                  <%if Act=="Edit"%>value="{FeesSubjectClass.cClassName}"<%/if%>
+                  /></td>
+  </tr>
+  
+  <tr class="tBar">
+    <td align="right">类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型:</td>
+    <td>
+    <select id="cType" name="cType" >
+    <%if dList != null%>
+    <%loop dl dList%>
+    <option value="{dl[ID]}"
+    <%if Act=="Edit"%>
+     <%if dl["ID"].ToString() == FeesSubjectClass.cType.ToString()%>
+     selected
+     <%/if%>
+     <%/if%>
+     >{dl[Name]}</option>
+    <%/loop%>
+    <%/if%>
+    </select>
+    </td>
+  </tr>
+  <tr class="tBar">
+    <td align="right">余额方向:</td>
+    <td><INPUT class="B_Check" TYPE="radio" NAME="cDirection" id="cDirection_a" value="0"  
+    <%if Act=="Edit"%>
+    <%if FeesSubjectClass.cDirection.ToString() == "0"%>
+    checked="checked"
+    <%/if%>
+    <%else%>
+    checked="checked"
+    <%/if%>
+    >借
+		<INPUT class="B_Check" TYPE="radio" NAME="cDirection" id="cDirection_b" value="1"  
+        <%if Act=="Edit"%>
+    <%if FeesSubjectClass.cDirection.ToString() == "1"%>
+    checked="checked" 
+    <%/if%>
+    <%/if%>
+        >贷</td>
+  </tr>
+  
+</table>
+   <div style="height:30px"></div>
+<div id="footer_tool"><INPUT TYPE="hidden" NAME="cParentID" id="cParentID"><input type="button" name="bt_ok" id="bt_ok" value=" 确定 " class="B_INPUT">&nbsp; &nbsp;<input type="button" name="bt_cancel" id="bt_cancel" value=" 取消 " class="B_INPUT">
+    </div>  
+</form>
+<script language="javascript" type="text/javascript">
+var FeesSubjectClass_do = new TFeesSubjectClass_do();
+FeesSubjectClass_do.Act = '{Act}';
+FeesSubjectClass_do.FeesSubjectClassID = {FeesSubjectClassID};
+FeesSubjectClass_do.ini();
+</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

@@ -1,0 +1,122 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/bankmoney.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+<!--
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:BankMoney.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="管理银行" onclick="javascript:BankMoney.ShowAddBankBox();"  />
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:BankMoney.ShowAddMoneyBox();"  />
+-->
+<!--<input type="button" id="button4" style="margin:5px" class="B_INPUT" value="导入" onclick="javascript:BankMoney.ShowImportBox();"  />-->
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+<div id="shiyan"></div>
+<div id="col_head" style="width:100%">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" >
+		<thead  style="width:100%">
+          <tr class="tBar">
+            <!--<td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>-->
+			<td width="5%">日期</td>
+			<%if fList != null%>
+				<%loop fl fList%>
+					<td width="5%">{fl[bName]}</td>
+				<%/loop%>
+			<%/if%>
+			<td width="5%">合计</td>
+            <!--<td width="5%">操作</td>-->
+          </tr>
+		  </thead>
+</table>
+</div>
+
+<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+<tbody>
+          <%if dList != null%>
+          <%loop dl dList%>
+		  <%if DateTime.Parse(dl["tdate"].ToString()) < DateTime.Parse(DateTime.Now.ToShortDateString())%>
+          <tr>
+           <!-- <td>
+				<input name="cCheck" type="checkbox" class="B_Check" value="{dl[tdate]}" />
+            </td>-->
+			<td width="5%">{dl[tdate]}</td>
+			<%set {sumMoney} = 0%>
+			<%if fList != null%>
+				<%loop fl fList%>
+					<td width="5%"  align="right">
+					<%set {sumMoney}={sumMoney}+decimal.Parse(dl["Bank_"+(fl__loop__id-1).ToString()].ToString())%>
+					<%set {tStr}=dl["Bank_"+(fl__loop__id-1).ToString()].ToString()%>
+					{tStr}
+					</td>
+				<%/loop%>
+			<%/if%>
+
+            <td width="5%" align="right">
+			{sumMoney}
+			</td>
+			<!--<td>
+			
+			<a href="javascript:void(0);" onclick="javascript:BankMoney.ShowEditBox('{dl[tdate]}');">修改</a> 
+			<a href="javascript:void(0);" onclick="javascript:BankMoney.ShowDelBox('{dl[tdate]}');">删除</a> 
+			
+			
+			</td>-->
+          </tr>
+		  <%/if%>
+          <%/loop%>
+          <!--<tr>
+            <td colspan="11"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          -->
+          <%/if%>
+		  </tbody>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var BankMoney = new TBankMoney();
+BankMoney.ini();
+
+function HidBox()
+{
+	BankMoney.HidUserBox();
+	location.reload();
+}
+window.onscroll =function()
+	{
+		var t = document.body.getBoundingClientRect().top;
+
+		var head=document.getElementById("col_head");
+		if((t+document.getElementById("shiyan").offsetTop)<0)
+		{
+			head.style.position="absolute";
+			document.getElementById("col_head").style.top = (-t) +"px";
+		}
+		else
+		{
+			head.style.position="";
+		}
+	}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

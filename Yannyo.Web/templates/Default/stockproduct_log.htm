@@ -1,0 +1,683 @@
+<%template _header%>
+
+
+
+<%if page_err!=0%>
+    <%template _errmsgbox%>
+<%else%>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<script language="javascript" src="public/js/jTable.js"></script>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+<script language="javascript" src="/public/js/jTable.js"></script>
+
+<script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+
+    <div class="main" id="OrderList">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<script language="javascript" src="public/js/stockproduct_log.js"></script>
+<form action="" method="post" name="form1" id="form1">   
+<div class="toolbar">
+<div class="toolbox">
+
+            仓库分类：
+            <input name="StorageClassName" id="StorageClassName" type="text" <%if {Act} !=""%>value="{StorageClassName}"<%/if%> style="width:145px"/>
+            <input type="hidden" id="StorageClassNum" name="StorageClassNum" <%if {Act} !=""%>value="{StorageClassNum}"<%/if%>/>
+            &nbsp;&nbsp;
+            仓库：
+
+            <select id="StorageID" name="StorageID" >
+            <option value="0">选择全部</option>
+				<%if StorageClassNum!=0%>
+					<%loop sl StorageList%>
+					<option value="{sl[StorageID]}"<%if Convert.ToInt32(sl["StorageID"].ToString())=={StorageID}%> selected="selected"<%/if%>>{sl[sName]}({sl[sCode]})</option>
+					<%/loop%>
+				<%/if%>
+            </select>
+			<%set {aspxrewriteurl}=bDate.ToString("yyyy-MM-dd")%>
+            时间段：<input type="text" readonly="readonly" name="bDate" id="bDate" value="{aspxrewriteurl}" onClick="new Calendar().show(this);" style="width:100px"/>
+            <%set {aspxrewriteurl}=eDate.ToString("yyyy-MM-dd")%>
+            -<input type="text" readonly="readonly" name="eDate" id="eDate" value="{aspxrewriteurl}" onClick="new Calendar().show(this);" style="width:100px"/>
+            商品：<input TYPE="text" NAME="S_key" id="S_key" value="{S_key}" style="width:145px" showtitle="输入,条码或者*可检索">
+            <INPUT TYPE="hidden" NAME="ProductID" id="ProductID" value="{ProductID}">
+            <INPUT TYPE="hidden" NAME="Act" id="Act">
+            
+    <input type="button" id="bt_se" name="bt_se" style="margin:5px" class="B_INPUT" value="查找" />
+    <!--<input type="button" id="bt_print" name="bt_print" style="margin:5px" class="B_INPUT" value="打印" />-->
+
+</div>
+<div class="list_title">
+库存商品明细
+</div>
+</div>
+
+<div class="datalist">
+<table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox" id="tBox" >
+    <thead  > 
+      <tr class="tBar">
+      <td width="6%" colspan="2" align="center"><%set {aspxrewriteurl}=bDate.ToString("yyyy")%>{aspxrewriteurl}年</td>
+        <td width="10%" rowspan="2">单据编号</td>
+        <td  rowspan="2">摘要</td>
+        <td width="15%" colspan="3" align="center">本期增加</td>
+        <td width="30%" colspan="6" align="center">本期减少</td>
+        <td width="5%" rowspan="2" align="center">本期调整</td>
+        <td width="5%" rowspan="2" align="center">期末结存</td>
+      </tr>
+      <tr class="tBar">
+        <td width="3%"  align="center">月</td>
+        <td width="3%"  align="center">日</td>
+        <td width="5%" align="center">采购入库</td>
+        <td width="5%" align="center">采购退货</td>
+        <td width="5%" align="center">调拨入库</td>
+        <td width="5%" align="center">销售出货</td>
+        <td width="5%" align="center">销售退货</td>
+        <td width="5%" align="center">赠品</td>
+        <td width="5%" align="center">样品</td>
+        <td width="5%" align="center">坏货报损</td>
+        <td width="5%" align="center">调拨出库</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr >
+        <td colspan="4" align="right">上期结转</td>
+        <td colspan="10" align="center">&nbsp;</td>
+        <td align="right">
+          <%set {aspxrewriteurl} = decimal.Round(Product_UPYear,0).ToString()%>
+          <%csharp%>
+          sum_j = Product_UPYear;
+          <%/csharp%>
+          <nobr>{aspxrewriteurl}</nobr></td>
+      </tr>
+     
+     
+<%if dList!=null%>
+    <%csharp%>
+    int l_count = 0;
+    <%/csharp%>
+	<%loop dl dList%>
+	<%csharp%>
+    l_count++;
+    
+    if(dl__loop__id==1){
+    //开始月前半部分
+    
+    sum_a = decimal.Parse(bList.Rows[0][0].ToString());
+    sum_b = decimal.Parse(bList.Rows[0][1].ToString());
+    
+    sum_c = decimal.Parse(bList.Rows[0][10].ToString());
+    
+    sum_d = decimal.Parse(bList.Rows[0][2].ToString());
+    sum_e = decimal.Parse(bList.Rows[0][3].ToString());
+    sum_f = decimal.Parse(bList.Rows[0][4].ToString());
+    sum_g = decimal.Parse(bList.Rows[0][5].ToString());
+    sum_h = decimal.Parse(bList.Rows[0][8].ToString());
+    
+    sum_i = decimal.Parse(bList.Rows[0][11].ToString());
+    
+    sum_k = decimal.Parse(bList.Rows[0][7].ToString());
+    }
+    
+    <%/csharp%>
+    <%if dl["oState"].ToString()=="0"%>
+    
+    
+    <%if thisMonth!=int.Parse(dl["owMonth"].ToString()) && thisMonth!=0%>
+    <tr class="tBar">
+        <td align="left">{thisMonth}</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">本月合计</td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_a,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_b,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_c,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_d,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_e,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_f,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_g,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_h,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_i,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        
+        <%set {aspxrewriteurl} = decimal.Round(sum_k,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">&nbsp;</td>
+      </tr>
+      <%csharp%>
+      sum_y_a += sum_a;
+      sum_y_b += sum_b;
+      sum_y_c += sum_c;
+      sum_y_d += sum_d;
+      sum_y_e += sum_e;
+      sum_y_f += sum_f;
+      sum_y_g += sum_g;
+      sum_y_h += sum_h;
+      sum_y_i += sum_i;
+      
+      
+      sum_y_k += sum_k;
+      
+      sum_a = 0;
+      sum_b = 0;
+      sum_c = 0;
+      sum_d = 0;
+      sum_e = 0;
+      sum_f = 0;
+      sum_g = 0;
+      sum_h = 0;
+      sum_i = 0;
+      sum_k = 0;
+      <%/csharp%>
+    <%/if%>
+    <%if thisYear!=int.Parse(dl["owYear"].ToString()) && thisYear!=0%>
+    <tr class="tBar">
+        <td align="right">{thisYear}</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">本年累计</td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_a,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_b,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_c,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_d,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_e,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_f,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_g,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_h,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_i,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_k,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">&nbsp;</td>
+      </tr>
+      <%csharp%>
+      sum_y_a = 0;
+      sum_y_b = 0;
+      sum_y_c = 0;
+      sum_y_d = 0;
+      sum_y_e = 0;
+      sum_y_f = 0;
+      sum_y_g = 0;
+      sum_y_h = 0;
+      sum_y_i = 0;
+      
+      sum_y_k = 0;
+      <%/csharp%>
+    <%/if%>
+      <tr >
+        <td align="left">{dl[owMonth]}</td>
+        <td align="left">{dl[owDay]}</td>
+        <td><a href="javascript:void(0);" onclick="javascript:StockProduct_Log.ShowEditUserBox({dl[OrderID]},{dl[oType]});">{dl[oOrderNum]}</a></td>
+        <td>{dl[oCustomersName]}</td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="1"%>
+        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"].ToString()),0).ToString()%>
+		{aspxrewriteurl}
+        <%csharp%>
+        sum_a = sum_a + decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j + decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="2"%>
+       	<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"].ToString()),0).ToString()%>
+		{aspxrewriteurl}
+        <%csharp%>
+        sum_b = sum_b + decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j - decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="9" && decimal.Parse(dl["oQuantity"].ToString())>0%>
+        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"].ToString()),0).ToString()%>
+		{aspxrewriteurl}
+        <%csharp%>
+        sum_c = sum_c + decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j + decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="3"%>
+        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"].ToString()),0).ToString()%>
+		{aspxrewriteurl}
+        <%csharp%>
+        sum_d = sum_d + decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j - decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="4"%>
+        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"].ToString()),0).ToString()%>
+		{aspxrewriteurl}
+        <%csharp%>
+        sum_e = sum_e + decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j + decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="5"%>
+        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"].ToString()),0).ToString()%>
+		{aspxrewriteurl}
+        <%csharp%>
+        sum_f = sum_f + decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j - decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="6"%>
+        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"].ToString()),0).ToString()%>
+		{aspxrewriteurl}
+        <%csharp%>
+        sum_g = sum_g + decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j - decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+          <%/if%>
+  		</td>
+        <td align="right">
+          <%if dl["oType"].ToString() =="10"%>
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"].ToString()),0).ToString()%>
+			{aspxrewriteurl}
+          <%csharp%>
+          sum_h = sum_h + decimal.Parse(dl["oQuantity"].ToString());
+          sum_j = sum_j - decimal.Parse(dl["oQuantity"].ToString());
+          <%/csharp%>
+          <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="9" && decimal.Parse(dl["oQuantity"].ToString())<0%>
+        <%set {aspxrewriteurl}=decimal.Round(System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_i = sum_i + System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()));
+        sum_j = sum_j - System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()));
+        <%/csharp%>
+        <%/if%>
+  		</td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="8"%>
+        <%set {aspxrewriteurl}=decimal.Round(System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_k = sum_k + System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()));
+        sum_j = sum_j + System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()));
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_j,0).ToString()%>
+		{aspxrewriteurl}
+        </td>
+      </tr>
+      <%/if%>
+      <%if dl["oState"].ToString()=="1"%>
+      <tr >
+        <td align="left" style="color:#F00">{dl[owMonth]}</td>
+        <td align="left" style="color:#F00">{dl[owDay]}</td>
+        <td style="color:#F00">{dl[oOrderNum]}</td>
+        <td style="color:#F00">(作废){dl[oCustomersName]}</td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="1"%>
+        <%set {aspxrewriteurl}=decimal.Round((-decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_a = sum_a - decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j - decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="2"%>
+         <%set {aspxrewriteurl}=decimal.Round((-decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_b = sum_b - decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j + decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="9" && decimal.Parse(dl["oQuantity"].ToString())>0%>
+         <%set {aspxrewriteurl}=decimal.Round((-decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_c = sum_c - decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j - decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="3"%>
+         <%set {aspxrewriteurl}=decimal.Round((-decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_d = sum_d - decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j + decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="4"%>
+        <%set {aspxrewriteurl}=decimal.Round((-decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_e = sum_e - decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j - decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="5"%>
+         <%set {aspxrewriteurl}=decimal.Round((-decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_f = sum_f - decimal.Parse(dl["oQuantity"].ToString());
+        sum_j = sum_j + decimal.Parse(dl["oQuantity"].ToString());
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="6"%>
+        <%set {aspxrewriteurl}=decimal.Round((-decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+                {aspxrewriteurl}
+                <%csharp%>
+                sum_g = sum_g - decimal.Parse(dl["oQuantity"].ToString());
+                sum_j = sum_j + decimal.Parse(dl["oQuantity"].ToString());
+                <%/csharp%>
+          <%/if%></td>
+        <td align="right">
+          <%if dl["oType"].ToString() =="10"%>
+            <%set {aspxrewriteurl}=decimal.Round((-decimal.Parse(dl["oQuantity"].ToString())),0).ToString()%>
+            {aspxrewriteurl}
+            <%csharp%>
+            sum_h = sum_h - decimal.Parse(dl["oQuantity"].ToString());
+            sum_j = sum_j + decimal.Parse(dl["oQuantity"].ToString());
+            <%/csharp%>
+          <%/if%>
+        </td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="9" && decimal.Parse(dl["oQuantity"].ToString())<0%>
+        <%set {aspxrewriteurl}=decimal.Round((-System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()))),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_i = sum_i - System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()));
+        sum_j = sum_j + System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()));
+        <%/csharp%>
+        <%/if%>
+  		</td>
+        <td align="right">
+        <%if dl["oType"].ToString() =="8" && decimal.Parse(dl["oQuantity"].ToString())<0%>
+        <%set {aspxrewriteurl}=decimal.Round((-System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()))),0).ToString()%>
+        {aspxrewriteurl}
+        <%csharp%>
+        sum_k = sum_k + System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()));
+        sum_j = sum_j + System.Math.Abs(decimal.Parse(dl["oQuantity"].ToString()));
+        <%/csharp%>
+        <%/if%>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_j,0).ToString()%>
+		{aspxrewriteurl}
+        </td>
+      </tr>
+      <%/if%>
+      <%csharp%>
+      thisMonth=int.Parse(dl["owMonth"].ToString());
+      thisYear=int.Parse(dl["owYear"].ToString());
+      <%/csharp%>
+    <%/loop%>
+    
+    <%csharp%>
+    if(l_count!=0 && l_count==dList.Rows.Count)
+    {
+    	//结束月后半部分
+
+        sum_a += decimal.Parse(eList.Rows[0][0].ToString());
+        sum_b += decimal.Parse(eList.Rows[0][1].ToString());
+        
+        sum_c += decimal.Parse(eList.Rows[0][10].ToString());
+        
+        sum_d += decimal.Parse(eList.Rows[0][2].ToString());
+        sum_e += decimal.Parse(eList.Rows[0][3].ToString());
+        sum_f += decimal.Parse(eList.Rows[0][4].ToString());
+        sum_g += decimal.Parse(eList.Rows[0][5].ToString());
+        sum_h += decimal.Parse(eList.Rows[0][8].ToString());
+        
+        sum_i += decimal.Parse(eList.Rows[0][11].ToString());
+        
+        //年累计
+       	sum_y_a = decimal.Parse(yList.Rows[0][0].ToString());
+        sum_y_b = decimal.Parse(yList.Rows[0][1].ToString());
+        
+        sum_y_c = decimal.Parse(yList.Rows[0][10].ToString());
+        
+        sum_y_d = decimal.Parse(yList.Rows[0][2].ToString());
+        sum_y_e = decimal.Parse(yList.Rows[0][3].ToString());
+        sum_y_f = decimal.Parse(yList.Rows[0][4].ToString());
+        sum_y_g = decimal.Parse(yList.Rows[0][5].ToString());
+        sum_y_h = decimal.Parse(yList.Rows[0][8].ToString());
+        
+        sum_y_i = decimal.Parse(yList.Rows[0][11].ToString());
+        sum_y_k = decimal.Parse(yList.Rows[0][7].ToString()); 
+        <%/csharp%>
+        <tr class="tBar">
+        <td align="left">{thisMonth}</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">本月合计</td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_a,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_b,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_c,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_d,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_e,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_f,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_g,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_h,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_i,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        
+        <%set {aspxrewriteurl} = decimal.Round(sum_k,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">&nbsp;</td>
+      </tr>
+      <tr class="tBar">
+        <td align="right">{thisYear}</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">&nbsp;</td>
+        <td align="right">本年累计</td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_a,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_b,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_c,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_d,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_e,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_f,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_g,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_h,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_i,0).ToString()%>
+		<span>{aspxrewriteurl}</span>
+        </td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sum_y_k,0).ToString()%>
+		<span>{aspxrewriteurl}</span></td>
+        <td align="right">&nbsp;</td>
+      </tr>
+      <tr >
+        <td colspan="4" align="right">结转下期</td>
+        <td colspan="10" align="center">&nbsp;</td>
+        <td align="right">
+         <%set {aspxrewriteurl} = decimal.Round(sum_j,0).ToString()%>
+		{aspxrewriteurl}
+</td>
+      </tr>
+        <%csharp%>
+	}
+    <%/csharp%>
+<%/if%>
+      
+
+    
+    </tbody>
+</table>
+</div>
+
+<div id="winType">
+    <div id="winbody">
+       <table border="0" cellpadding="0" cellspacing="0" style="width:100%;height:100%; border-color:White">
+       <tr>
+        <td style="background-color:#AABE4D;height:35px"><span style="color:White;font-size:larger; padding-left:10px"><b>仓库分类</b></span><span id="winClose">关闭</span></td>
+       </tr>
+       <tr>
+         <td>
+          <div id="treeNode"></div>
+    
+         </td>
+       </tr>
+       </table>
+    </div>
+</div>
+<div id="winAll">
+	<div id="winLoding"><img alt="" src="/images/loading99.gif"/></div>
+</div>
+
+</form>
+
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+
+var tf = new TableFixed("tBox");
+
+tf.Clone();
+
+
+var StockProduct_Log = new TStockProduct_Log();
+StockProduct_Log.TreeJson = {"data":[{"data":"仓库分类","state":"closed","children":[{StorageClassJson}]}]};
+StockProduct_Log.ini();
+
+function HidBox()
+{
+	StockProduct_Log.HidUserBox();
+	location=location;
+}
+</script>
+		<%/if%>
+
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

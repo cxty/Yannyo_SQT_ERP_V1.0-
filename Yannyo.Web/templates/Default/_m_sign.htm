@@ -1,0 +1,11 @@
+<%if ShowMSign == true%>
+<script language="javascript" type="text/javascript">
+dialog("授权[{M_Config.m_Name}] {M_Config.StoresName}",'iframe:{config.Taobao_Api_Authorize}{M_Config.m_AppKey}',550,450,"iframe",'parent.HidBox();');
+</script>
+<%else%>
+	<%if GoodsCatLastTimeDay>5%>
+	<script language="javascript" type="text/javascript">
+		dialog("更新商品类目[{M_Config.m_Name}] {M_Config.StoresName}",'iframe:/mgoodscat_do-{M_Config.m_ConfigInfoID}-download.aspx',500,250,"iframe",'parent.HidBox();');
+	</script>
+	<%/if%>
+<%/if%>

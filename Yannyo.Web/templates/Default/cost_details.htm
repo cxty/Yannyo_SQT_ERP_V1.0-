@@ -1,0 +1,555 @@
+﻿<%template _header%>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript" ></script>
+<script src="/public/js/myFrontPageJs/costdetails.js" type="text/javascript" language="javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+<script type="text/javascript" src="/public/js/cost_details.js"></script>
+
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        
+       <div class="main" >
+        <form action="" id="bForm" class="bForm" method="post">
+        <div class="toolbar">
+        <div class="toolbox">
+          <div id="Query List">
+            <input type="hidden" id="tType" name="tType" />
+            <input type="hidden" id="feeType" name="feeType" />
+            <input type="hidden" id="moriType" name="moriType" />
+            <input type="hidden" id="get_treeNode" name="get_treeNode"/>
+            <input type="hidden" id="get_direction" name="get_direction" />
+            <input type="hidden" id="get_sID" name="get_sID" />
+            <input type="hidden" id="maori_ID" name="maori_ID" />
+            <input type='hidden' id='className_val' name='className_val'/>
+            <input type="hidden" id="cookie_className" name="cookie_className" value="{getTreeNode}" />
+            <table >
+             <tr>
+              <td style="width:15%">统计类型：
+               <select id="tjType">
+                 <option value="0" <%if {tType}==0%>selected="selected"<%/if%>>毛利统计</option>
+                 <option value="1" <%if {tType}==1%>selected="selected"<%/if%>>费用统计</option>
+               </select>
+              </td>
+
+              <td id="getType" align="left" style="width:10%">类别：
+              </td>
+              <td id="classType" style="width:25%" align="left">
+              </td>
+
+              <td align="left" style="width:35%">查询日期：
+                 <%set {aspxrewriteurl}=sDate.ToString("yyyy-MM-dd")%>
+                 <input name="sDate" id="sDate" style="width:100px;" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />至
+                <%set {aspxrewriteurl}=stDate.ToString("yyyy-MM-dd")%>
+                <input name="stDate" id="stDate" style="width:100px;" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />
+              </td>
+              <td align="right" style="width:5%">
+                <input type="button" id="tbn_submit" name="btn_submit" value="查询"  style="width:120px;height:25px"/>
+              </td>
+              <td align="right" style="width:5%">
+              <input type="button" id="export_data" name="export_data" value="导出数据" style="width:120px;height:25px" />
+             </td>
+             </tr>
+            </table>
+           </div>
+           
+           <table>
+           <tr>
+           <td >
+           <%if {tType}==1 && {feeType}==0%>
+           <span style="color:Red">友情提示：当前<b>[统计费用]</b>为您选择科目节点下所有节点数据</span>
+           <%/if%>
+           </td>
+           </tr>
+           <%if {tType}==1 && {feeType}==0%>
+           <tr>
+            <td style="width:100%;"><hr /></td>
+           </tr>
+           <%/if%>
+           <tr>
+           <td >
+           <%if {tType}==1 && {feeType}==0%>
+           <span><b>统计科目:</b></span> 
+            <%csharp%>
+            foreach(DataTable dt in kDateSetName.Tables)
+            {
+            <%/csharp%>
+
+             <%if dt !=null%>
+              <%loop dl dt%>
+               <b><span>[</span><span style="color:#7A378B">{dl[cClassName]}</span><span>]</span></b>
+              <%/loop%>
+             <%/if%>
+
+           <%csharp%>
+             }
+           <%/csharp%>
+           <%/if%>
+
+            <%if {tType}==1 && {feeType}==2%>
+           <span><b>统计科目:</b></span> 
+            <%csharp%>
+            foreach(DataTable dt in kDateSetName.Tables)
+            {
+            <%/csharp%>
+
+             <%if dt !=null%>
+              <%loop dl dt%>
+               <b><span>[</span><span style="color:#7A378B">{dl[cClassName]}</span><span>]</span></b>
+              <%/loop%>
+             <%/if%>
+
+           <%csharp%>
+             }
+           <%/csharp%>
+           <%/if%>
+           </td>
+           </tr>
+          </table>
+          </div>
+<div class="list_title">
+费用统计
+</div>
+</div>
+          <div id="tb_title">
+           <div id="space"></div>
+            <div class="datalist">
+           <table id="title_space" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+            <thead style="font-weight:bold">
+            <!--费用统计_门店-->
+            <%if {tType}==1 && {feeType}==0%>
+             <tr class="tBar">
+               <td align="center" style="width:20%;height:30px;"><span style="font-size:larger">区域</span></td>
+               <td align="center" colspan="2" style="width:40%;height:30px;"><span style="font-size:larger">客户名称</span></td>
+               <td align="center" style="width:10%;height:30px;"><span style="font-size:larger">类别</span></td>
+               <td align="center" style="width:20%;height:30px;"><span style="font-size:larger">发生金额</span></td>
+               <td align="center" style="width:10%;height:30px;"><span style="font-size:larger">查看详情</span></td>
+             </tr>
+            <%/if%>
+            <!--费用统计_科目-->
+            <%if {tType}==1 && {feeType}==1%>
+             <tr class="tBar">
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="center" style="width:40%;height:30px;"><span style="font-size:larger">科目名称</span></td>
+               <td align="center" style="width:20%;height:30px;"><span style="font-size:larger">发生金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">查看详情</span></td>
+             </tr>
+            <%/if%>
+             <!--费用统计_业务员-->
+            <%if {tType}==1 && {feeType}==2%>
+             <tr class="tBar">
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="center" style="width:40%;height:30px;"><span style="font-size:larger">业务员名称</span></td>
+               <td align="center" style="width:20%;height:30px;"><span style="font-size:larger">发生金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">查看详情</span></td>
+             </tr>
+            <%/if%>
+            <!--费用统计_赠品-->
+            <%if {tType}==1 && {feeType}==3%>
+             <tr class="tBar">
+               <td align="left" rowspan="2" style="width:15%;height:30px;"><span style="font-size:larger">门店名称</span></td>
+               <td align="center" rowspan="2" colspan="2" style="width:30%;height:30px;"><span style="font-size:larger">商品名称</span></td>
+               <td align="center" rowspan="2" style="width:15%;height:30px;"><span style="font-size:larger">商品条码</span></td>
+               <td align="center" colspan="2" style="width:20%;height:15px;"><span style="font-size:larger">商品数量</span></td>
+               <td align="center" colspan="2" style="width:10%;height:15px;"><span style="font-size:larger">发生金额</span></td>
+               <td align="center" rowspan="2" style="width:10%;height:30px;"><span style="font-size:larger">查看详情</span></td>
+             </tr>
+             <tr class="tBar">
+               <td align="center" style="width:10%;height:15px;"><span style="font-size:11pt">赠品单数量</span></td>
+               <td align="center" style="width:10%;height:15px;"><span style="font-size:11pt">销售单数量</span></td>
+               <td align="center" colspan="2" style="width:10%;height:15px;"><span style="font-size:11pt">赠品金额</span></td>
+             </tr>
+            <%/if%>
+            <!--毛利统计_区域-->
+            <%if {tType}==0 && {moriType}==0%>
+             <tr class="tBar">
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="center" style="width:30%;height:30px;"><span style="font-size:larger">区域名称</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">销售金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">成本金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">利润金额</span></td>
+             </tr>
+            <%/if%>
+            <!--毛利统计_客户-->
+            <%if {tType}==0 && {moriType}==1%>
+             <tr class="tBar">
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="center" style="width:30%;height:30px;"><span style="font-size:larger">客户名称</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">销售金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">成本金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">利润金额</span></td>
+             </tr>
+            <%/if%>
+            <!--毛利统计_业务员-->
+            <%if {tType}==0 && {moriType}==2%>
+             <tr class="tBar">
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="center" style="width:30%;height:30px;"><span style="font-size:larger">业务名称</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">销售金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">成本金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">利润金额</span></td>
+             </tr>
+            <%/if%>
+            <!--毛利统计_品牌-->
+            <%if {tType}==0 && {moriType}==3%>
+             <tr class="tBar">
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="center" style="width:30%;height:30px;"><span style="font-size:larger">品牌名称</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">销售金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">成本金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">利润金额</span></td>
+             </tr>
+            <%/if%>
+            <!--毛利统计_商品-->
+            <%if {tType}==0 && {moriType}==4%>
+             <tr class="tBar">
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="center" style="width:30%;height:30px;"><span style="font-size:larger">商品名称</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">销售金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">成本金额</span></td>
+               <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">利润金额</span></td>
+             </tr>
+            <%/if%>
+            </thead>
+           </table>
+           </div>
+
+           <table id="tBoxs" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+           <tbody>
+           <!--费用统计_门店-->
+           <%if {tType}==1 && {feeType}==0%>
+           
+            <%if nTable !=null%>
+            <%loop rl nTable%>
+            <%set {tLoopid}=1%>
+            <%set {sList}=getStoresName({rl[RegionID]})%>
+            <%set {s_count}=getStoresCount({rl[RegionID]})%>
+            <%set {sumA}=0%>
+             <tr>
+                  <td rowspan="{s_count}" align="center" style="width:20%;">{rl[rName]}</td>
+                  <%if sList !=null%>
+                  <%loop sl sList%>
+                  <%set {SdateSetCost}=getCostOfStorehouse({sl[StoresID]})%>
+                 
+                  
+                  <%if (tLoopid%2) == 0%>
+                   <tr>
+                  <%/if%>
+                  <td align="center" style="width:10%;">{sl__loop__id}</td>
+                  <td align="left" style="width:30%;">{sl[sName]} </td>
+                  <td align="center" style="width:10%;">{sl[sType]}</td>
+                   <td align="center" style="width:20%;">
+                   <%csharp%>
+                   foreach(DataTable ct in SdateSetCost.Tables)
+                    {
+                   <%/csharp%>
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({test}),2).ToString()%>
+                    {aspxrewriteurl}
+                    <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+                    <%set {test}=0%>
+                    <%csharp%>
+                    if({test}=={test})
+                    {
+                     break;
+                    }
+                    }
+                    SdateSetCost.Clear();
+                  <%/csharp%>
+                  </td>
+                  <td align="center" style="width:10%;"><a href="javascript:void(0)" onclick="javascript:sendInFo('{sl[StoresID]}','{get_direction}','{sDate}','{stDate}','{sl[sName]}','{sl[sType]}','{getTreeNode}')">查看</a></td>
+                  <%if (tLoopid%2) == 0%>
+   			       </tr>
+                  <%/if%>
+                  <%set {tLoopid}=tLoopid+1%>
+
+                  <%/loop%>
+                  <%/if%>
+             </tr>
+             <tr>
+             <td align="center" colspan="4" style="height:30px;font-size:larger;"><span style="font-size:large; font-weight:bold">{rl[rName]}</span>&nbsp;客户费用合计</td>
+             <td align="center" ><b>{sumA}</b></td>
+             <td colspan="2"></td>
+             </tr>
+            <%/loop%>
+            <%/if%>
+
+
+           <%/if%>
+           <!--费用统计_科目-->
+           <%if {tType}==1 && {feeType}==1%>
+            
+            <%if newTable !=null%>
+            <%loop cl newTable%>
+            <%set {test}=getCostOfClass({cl[FeesSubjectClassID]})%>
+            <tr>
+               <td align="center" style="width:15%;">
+              {cl__loop__id}
+               </td>
+               <td align="center" style="width:40%;">{cl[cClassName]}</td>
+               <td align="center" style="width:20%;">
+               <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({test}),2).ToString()%>
+               {aspxrewriteurl}
+               </td>
+               <td align="center" style="width:15%;"><a href="javascript:void(0)" onclick="javascript:sendInFoClass('{get_direction}','{sDate}','{stDate}','{cl[cClassName]}','{cl[FeesSubjectClassID]}')">查看</a></td> 
+            </tr>
+            <%/loop%>
+            <%/if%>
+
+           <%/if%>
+           <!--费用统计_业务员-->
+           <%if {tType}==1 && {feeType}==2%>
+             <%if tnTable !=null%>
+             <%loop sl tnTable%>
+             <%set {sTest}=getCostOFStaff({sl[StaffID]})%>
+            
+             <tr>
+               <td align="center" style="width:15%;">{sl__loop__id}</td>
+               <td align="center" style="width:40%;">{sl[sName]}</td>
+               <td align="center" style="width:20%;">
+                 <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sTest}),2).ToString()%>
+               {aspxrewriteurl}
+               </td>
+               <td align="center" style="width:15%;"><a href="javascript:void(0)" onclick="javascript:sendInFoStaff('{get_direction}','{sDate}','{stDate}','{sl[sName]}','{getTreeNode}','{sl[StaffID]}')">查看</a></td>
+             </tr>
+             <%/loop%>
+             <%/if%>
+           <%/if%>
+           <!--费用统计_赠品-->
+           <%if {tType}==1 && {feeType}==3%>
+             <%set {tLoopid}=1%>
+
+             <%set {sumB}=0%>
+             <%set {sumBB}=0%>
+             <%set {sumB}=0%>
+             <%set {sumCC}=0%>
+             <%set {sumC}=0%>
+
+              <%if gList !=null%>
+              <%loop gl gList%>
+             <tr>
+               <td align="left"  style="width:15%;">{gl[sName]}</td>
+              
+ 
+                    <td align="center" style="width:5%;">{gl__loop__id}</td>
+                    <td align="left" style="width:25%;">{gl[pName]}</td>
+                    <td align="center" style="width:15%;">{gl[pBarcode]}</td>
+                    <td align="center" style="width:10%;">
+                     <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({gl[oQuantity]}),2).ToString()%>
+                      {aspxrewriteurl}
+                      <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                    </td>
+                    <td align="center" style="width:10%;">
+                    <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({gl[SoQuantity]}),2).ToString()%>
+                      {aspxrewriteurl}
+                      <%set {sumCC}=decimal.Round(sumCC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                    </td>
+
+                    <td align="right" style="width:10%;">
+                    <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({gl[oMoney]}),2).ToString()%>
+                      {aspxrewriteurl}
+                      <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+                    </td>
+                    <td align="center" style="width:10%;"><a href="javascript:void(0)" onclick="javascript:sendInFoGifts('{gl[StoresID]}','{gl[sName]}','{gl[ProductsID]}','{gl[pName]}','{gl[pBarcode]}','{sDate}','{stDate}')">查看</a></td>
+
+              
+             </tr>
+             <%/loop%>
+              <%/if%>
+
+             <tr>
+              <td align="center" colspan="4" style="height:30px;"><span style="font-size:11pt"><b>合计：</b></span></td>
+              <td align="center" ><b>{sumC}</b></td>
+              <td align="center" ><b>{sumCC}</b></td>
+              <td align="right" ><b>{sumB}</b></td>
+              <td align="center" ></td>
+             </tr>
+
+           <%/if%>
+           <!--毛利统计-->
+            <%if {tType}==0 && {ispost}%>
+            <%if mList !=null%>
+            <%loop ml mList%>
+            <tr>
+               <td align="center" style="width:15%;">{ml__loop__id}</td>
+               <td align="left" style="width:30%;">
+               <%if {moriType}==0%>
+               {ml[rName]}
+               <%/if%>
+               <%if {moriType}==1%>
+               {ml[sName]}
+               <%/if%>
+               <%if {moriType}==2%>
+               {ml[sName]}
+               <%/if%>
+               <%if {moriType}==3%>
+               {ml[pBrand]}
+               <%/if%>
+               <%if {moriType}==4%>
+               {ml[pName]}
+               <%/if%>
+               </td>
+               <td align="right" style="width:15%;">
+               <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({ml[oMoney]}),2).ToString()%>
+               {aspxrewriteurl}
+               <%set {sumD}=decimal.Round(sumD+Convert.ToDecimal(aspxrewriteurl),2)%>
+               </td>
+               <td align="right" style="width:15%;">
+               <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({ml[sMoney]}),2).ToString()%>
+               {aspxrewriteurl}
+               <%set {sumE}=decimal.Round(sumE+Convert.ToDecimal(aspxrewriteurl),2)%>
+               </td>
+               <td align="right" style="width:15%;">
+               <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({ml[qMoney]}),2).ToString()%>
+               {aspxrewriteurl}
+               <%set {sumF}=decimal.Round(sumF+Convert.ToDecimal(aspxrewriteurl),2)%>
+               </td>
+             </tr>
+             <%/loop%>
+             <%/if%>
+             <tr>
+              <td align="center" colspan="2" style="height:30px;"><span style="font-size:11pt"><b>合计：</b></span></td>
+              <td align="right">{sumD}</td>
+              <td align="right">{sumE}</td>
+              <td align="right">{sumF}</td>
+             </tr>
+            <%/if%>
+            
+           </tbody>
+           </table>
+          
+
+
+           <div id="winType">
+            <div id="winbody">
+               <table border="0" cellpadding="0" cellspacing="0" style="width:100%;height:100%; border-color:White">
+               <tr>
+                <td style="background-color:#AABE4D;height:35px"><span style="color:White;font-size:larger; padding-left:10px"><b>科目选择</b></span><span id="winClose">关闭</span></td>
+               </tr>
+               <tr>
+                 <td>
+                  <div id="trTree"></div>
+                 </td>
+               </tr>
+               <tr>
+                 <td align="center">
+                  <div id="winFoot">
+                     <input type="button" id="win_btn" value="确定" style="width:100px;height:25px;cursor:pointer" />&nbsp;&nbsp;&nbsp;<input type="button" id="res_btn" value="取消" style="width:100px;height:25px;cursor:pointer"/>
+                  </div>
+                 </td>
+               </tr>
+               </table>
+            </div>
+           </div>
+          </div>
+          
+          <div id="winAll">
+          <div id="winLoding"><img alt="" src="/images/loading99.gif"/></div>
+         </div>
+        </form></div>
+        
+        <script language="javascript" type="text/javascript">
+            var getTreeVal = new CostDetails();
+            getTreeVal.Checked();
+            $(document).ready(function () { 
+              //页面加载时生成
+    $(window).load(function () {
+        var getType = $("#tjType").children('option:selected').val();
+        var saleType= $("#saleType").children('option:selected').val();
+                    
+            if (getType == 0) {
+            if({moriType}==0){
+                var boardDiv = "<select class='Maori_val' style='width:50%'><option value='0' selected='selected'>区域</option><option value='1'>客户</option><option value='2'>业务员</option><option value='3'>品牌</option> <option value='4'>单品</option></select>";
+                $("#getType").append(boardDiv);
+                          
+            }
+            if({moriType}==1){
+                var boardDiv = "<select class='Maori_val' style='width:50%'><option value='0' >区域</option><option value='1' selected='selected'>客户</option><option value='2'>业务员</option><option value='3'>品牌</option> <option value='4'>单品</option></select>";
+                $("#getType").append(boardDiv);
+
+                          
+            }
+            if({moriType}==2){
+                var boardDiv = "<select class='Maori_val' style='width:50%'><option value='0' >区域</option><option value='1'>客户</option><option value='2' selected='selected'>业务员</option><option value='3'>品牌</option> <option value='4'>单品</option></select>";
+                $("#getType").append(boardDiv);
+                         
+            }
+            if({moriType}==3){
+                var boardDiv = "<select class='Maori_val' style='width:50%'><option value='0' >区域</option><option value='1'>客户</option><option value='2'>业务员</option><option value='3' selected='selected'>品牌</option> <option value='4'>单品</option></select>";
+                $("#getType").append(boardDiv);
+                          
+            }
+            if({moriType}==4){
+                var boardDiv = "<select class='Maori_val' style='width:50%'><option value='0' >区域</option><option value='1'>客户</option><option value='2'>业务员</option><option value='3'>品牌</option> <option value='4' selected='selected'>单品</option></select>";
+                $("#getType").append(boardDiv);
+                         
+            }
+        }
+
+        if (getType == 1) {
+            if ({feeType}==0){
+                var boardDiv = "<select class='category_val' style='width:50%'><option value='0' selected='selected'>客户</option><option value='1'>科目</option><option value='2'>业务员</option><option value='3'>赠品</option></select>";
+                $("#getType").append(boardDiv);
+                if({get_direction}==0)
+                {
+                    var kTypeDiv="<span id='classN'>科目选择：</span><input type='text' id='className' name='className' value='{TreeName}' style='width:120px;' /><span id='kDirection'>&nbsp;&nbsp;&nbsp;借贷方向：</span><select id='direction'><option value='0' selected='selected'>借方</option> <option value='1'>贷方</option></select>";
+                    $("#classType").append(kTypeDiv);
+                }
+                if({get_direction}==1)
+                {
+                    var kTypeDiv="<span id='classN'>科目选择：</span><input type='text' id='className' name='className' value='{TreeName}' style='width:120px;' /><span id='kDirection'>&nbsp;&nbsp;&nbsp;借贷方向：</span><select id='direction'><option value='0'>借方</option> <option value='1' selected='selected'>贷方</option></select>";
+                    $("#classType").append(kTypeDiv);
+                }
+            }
+            if ({feeType}==1){
+                var boardDiv = "<select class='category_val' style='width:50%'><option value='0' >客户</option><option value='1' selected='selected'>科目</option><option value='2'>业务员</option><option value='3'>赠品</option></select>";
+                $("#getType").append(boardDiv);
+                if({get_direction}==0)
+                {
+                    var kTypeDiv="<span id='classN'>科目选择：</span><input type='text' id='className' name='className' value='{TreeName}' style='width:120px;' /><span id='kDirection'>&nbsp;&nbsp;&nbsp;借贷方向：</span><select id='direction'><option value='0' selected='selected'>借方</option> <option value='1'>贷方</option></select>";
+                    $("#classType").append(kTypeDiv);
+                }
+                if({get_direction}==1)
+                {
+                    var kTypeDiv="<span id='classN'>科目选择：</span><input type='text' id='className' name='className' value='{TreeName}' style='width:120px;' /><span id='kDirection'>&nbsp;&nbsp;&nbsp;借贷方向：</span><select id='direction'><option value='0'>借方</option> <option value='1' selected='selected'>贷方</option></select>";
+                    $("#classType").append(kTypeDiv);
+                }
+            }
+                if ({feeType}==2){
+                var boardDiv = "<select class='category_val' style='width:50%'><option value='0' >客户</option><option value='1' >科目</option><option value='2' selected='selected'>业务员</option><option value='3'>赠品</option></select>";
+                $("#getType").append(boardDiv);
+                if({get_direction}==0)
+                {
+                    var kTypeDiv="<span id='classN'>科目选择：</span><input type='text' id='className' name='className' value='{TreeName}' style='width:120px;' /><span id='kDirection'>&nbsp;&nbsp;&nbsp;借贷方向：</span><select id='direction'><option value='0' selected='selected'>借方</option> <option value='1'>贷方</option></select>";
+                    $("#classType").append(kTypeDiv);
+                }
+                if({get_direction}==1)
+                {
+                    var kTypeDiv="<span id='classN'>科目选择：</span><input type='text' id='className' name='className' value='{TreeName}' style='width:120px;' /><span id='kDirection'>&nbsp;&nbsp;&nbsp;借贷方向：</span><select id='direction'><option value='0'>借方</option> <option value='1' selected='selected'>贷方</option></select>";
+                    $("#classType").append(kTypeDiv);
+                }
+            }
+                if ({feeType}==3){
+                var boardDiv = "<select class='category_val' style='width:50%'><option value='0' >客户</option><option value='1'>科目</option><option value='2'>业务员</option><option value='3' selected='selected'>赠品</option></select>";
+                $("#getType").append(boardDiv);
+            }
+        }            
+    });
+
+            });
+        </script>
+        
+        <%/if%>
+    <%/if%>
+
+<%template _copyright%>
+<%template _footer%>
+
+

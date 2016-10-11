@@ -1,0 +1,87 @@
+<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<script type="text/javascript" src="public/js/dataclass_box.js"></script>
+<div id="treeBox">
+
+</div>
+<script language="javascript" type="text/javascript">
+var DataClass_box = new TDataClass_box();
+DataClass_box.ini();
+
+
+	$("#treeBox").jstree({   
+	<%if Act=="cObj"%>
+	 "json_data":{"data":[{"data":"客户","state":"closed","children":[{CustomersJson}]},
+	 						{"data":"供应商","state":"closed","children":[{SupplierJson}]},
+							{"data":"人员","state":"closed","children":[{DepartmentsJson}]}
+						]}, 
+	<%/if%>
+	<%if Act=="sObj"%>
+	"json_data":{"data":[{"data":"科目","state":"closed","children":[{FeesSubjectJson}]}
+						]}, 
+	<%/if%>
+	
+	"types" : {  
+			 "valid_children" : [ "dt" ],  
+			 "types" : {
+				 "dt" : {
+					 "icon" : { 
+						"image" : "/images/dot.png" 
+					},
+					 "valid_children" : [ "default" ],
+					 "max_depth" : 2,
+					 "hover_node" : true,
+					 "open_node":false,
+					 "select_node" : true
+				 },
+				"root":{
+					<%if ShowType!="All"%>
+					"valid_children" : [ "default" ],
+					"hover_node" : false,
+					"select_node" : function () {return false;}
+					<%/if%>
+				 }  
+			 }  
+		}, 
+	 "plugins" : [ "themes", "json_data", "ui", "crrm", "types", "hotkeys"] 
+	
+	}).bind("select_node.jstree", function (e,data) {
+		<%if Act=="cObj"%>
+		var sID = data.rslt.obj.attr("id").replace('d_','');
+		var sType = data.rslt.obj.attr("otype");
+		var sName = data.rslt.obj.context.text;
+		var isRoot = data.rslt.obj.attr("rel") == 'root'?1:0;
+		<%if ShowType!="All"%>
+		DataClass_box.cObjReCall(sID,sType,sName);
+		<%else%>
+		DataClass_box.cObjReCall(sID,sType,sName,isRoot);
+		<%/if%>
+		<%/if%>
+		<%if Act=="sObj"%>
+		var sID = data.rslt.obj.attr("id").replace('t_','');
+		var sName = data.rslt.obj.context.text;
+		DataClass_box.sObjReCall(sID,sName);
+		<%/if%>
+		//alert(data.rslt.obj.attr("id") + ":" + data.rslt.obj.attr("rel"));
+	 });
+	//$("#treeBox").jstree('open_all');
+</script>
+<%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

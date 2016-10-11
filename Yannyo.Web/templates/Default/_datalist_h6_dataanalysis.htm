@@ -1,0 +1,33 @@
+<div id="datalist_A">
+		<div class="dlist">
+		<%if {ispost} %>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+				<tr class="tBar">
+					<td width="10%">现金银行</td>
+					<td width="10%">库存</td>
+					<td width="10%">固定资产</td>
+					<td width="10%">个人应收</td>
+					<td width="10%">公司应收</td>
+					<td width="10%">个人应付</td>
+					<td width="10%">公司应付</td>
+					<td width="10%">净资产</td>
+				</tr>
+				<%if dList != null%>
+				  <%loop dl dList%>
+					  <tr>
+						<td align="right">{dl[BankMoney]}</td>
+						<td align="right">{dl[StockMoney]}</td>
+						<td align="right">0</td>
+						<td align="right">{dl[ARMoney_A]}</td>
+						<td align="right">{dl[ARMoney_B]}</td>
+						<td align="right">{dl[APMoney_A]}</td>
+						<td align="right">{dl[APMoney_B]}</td>
+						
+						<td align="right">{dl[NetAssetsMoney]}</td>
+					  </tr>
+				  <%/loop%>
+				<%/if%>
+			</table>
+		<%/if%>
+		</div>
+	</div>

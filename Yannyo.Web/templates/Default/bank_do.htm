@@ -1,0 +1,192 @@
+<%template _poppageheader%>
+   
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <script type="text/javascript" language="javascript" src="/public/js/jquery.js"></script>
+        <script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+        <link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+         <link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+        <script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>         
+        <script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+        <script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                <tr>
+                  <td width="20%" align="right" class="ltd">科目选择:</td>
+                  <td align="left" class="rtd">
+                   <input type="text" id="FeesSubject" name="FeesSubject" <%if Act=="Edit"%>value="{ba.CAccountName}" disabled="disabled"<%/if%>/><input <%if Act=="Edit"%>value="为只读项"<%else%>value="点击文本框选择科目"<%/if%>  style="color:White; background-color:#FF9900; border:1px solid #FF6600;width:120px"/>
+                   <input type="hidden" id="FeesSubjectID" name="FeesSubjectID" />
+                   <input type="hidden" id="cName" name="cName" />
+                   <input type="hidden" id="act" name="act" value="{Act}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td width="20%" align="right" class="ltd">日期选择:</td>
+                  <td align="left" class="rtd">
+                   <%set {aspxrewriteurl}=bAppendTime.ToString("yyyy-MM-dd")%>
+                   <input name="bAppendTime" id="bAppendTime" type="text" disabled="disabled" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" /><input value="为只读项"  style="color:White; background-color:#FF9900; border:1px solid #FF6600;width:120px"/>
+                  </td>
+                </tr>
+                <tr>
+                 <td width="20%" align="right" class="ltd">期初金额:</td>
+                  <td align="left" class="rtd">
+                   <%set {cMoney}=decimal.Round(Convert.ToDecimal({ba.CAccountMoney}),2)%>
+                   <input type="text" id="beginMoney" name="beginMoney" <%if Act=="Edit"%>value="{cMoney}"<%/if%> showtitle="只能填写数字格式"/>
+                  </td>
+                </tr>
+              </table>
+           <div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                   	<input type="button" id="btnSubmit" style="margin:5px;cursor:pointer" class="B_INPUT" value="确定" />
+                    <input type="button" id="button2" style="margin:5px;cursor:pointer" class="B_INPUT" value="取消" onclick="javascript:window.parent.HidBox();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+
+            <!--科目树-->
+            <div id="winTreeType">
+              <div style="height:10px"></div>
+              <div style="background-color:#AABE4D; width:400px;height:28px; line-height:28px"><span style="color:White;font-size:larger; padding-left:10px"><b>科目选择</b></span><span id="winClose">关闭</span></div>
+              <div id="treeNode"></div>
+           </div>
+
+</form>
+          <script type="text/javascript" language="javascript">
+              $(document).ready(function () {
+                  //页面加载时候付初值
+                  $(window).load(function(){
+                    if('{Act}'!='Edit')
+                    {
+                     $("#beginMoney").attr("value","0.00");
+                    }
+                  });
+                 $("#beginMoney").click(function(){
+                      var inputDom=$("#beginMoney").get(0);
+                      inputDom.select();
+                 });
+                 $("#btnSubmit").click(function () {
+                      var getClassName = $("#FeesSubject").val(); //科目名称
+                      var getBeginMoney = $("#beginMoney").val(); //期初金额
+                      var getFeesSubjectID=$("#FeesSubjectID").val();//科目编号
+                      var getrr=$("#FeesSubjectID").val();
+                      var getCheckName=$("#cName").val();
+                      var getbAppendTime=$("#bAppendTime").val();
+                      var myDate=new Date();
+                      var myDateTime=myDate.format("yyyy-MM-dd");
+
+                          if (getClassName != '') {
+                              if (getBeginMoney != '') {
+                                 if(getFeesSubjectID !=0) {
+                                     if(getbAppendTime > myDateTime)
+                                     {
+                                       jAlert("日期选择错误，不能大于当前日期!", "友情提示");
+                                     }
+                                     else{
+                                      jConfirm('确定添加本条数据吗？', '友情提示', function (r) {
+			                                if (r) {
+			                                     $("#bForm").submit();
+			                                }
+			                            });    
+                                     }        
+                                  }
+                                  else{
+                                      if('{Act}'=='Edit')
+                                      {
+                                           jConfirm('确定修改本条数据吗？', '友情提示', function (r) {
+			                                if (r) {
+			                                     $("#bForm").submit();
+			                                }
+			                            });   
+                                      }
+                                      else{
+                                          jAlert("请正确选择科目!", "友情提示");
+                                      }
+                                  } 
+                              }
+                              else {
+                                 jAlert("请正确设置期初金额!", "友情提示"); 
+                              }
+                         }
+						 else
+						 {
+						    jAlert("科目名称不能为空，请核对后重新选择!", "友情提示");
+						 }
+                  });
+                  //关闭科目选择
+                  $("#winClose").click(function(){
+                    $("#winTreeType").fadeOut("slow");
+                  });
+
+                  //弹出科目选择
+                  $("#FeesSubject").click(function(){
+                      $("#winTreeType").fadeIn("slow");
+                  });
+ 
+              //科目树
+            $("#treeNode").jstree({   
+               "json_data":{"data":[{"data":"科目","state":"closed","children":[{FeesSubjectJson}]}
+						]}, 
+	
+	        "types" : {  
+			 "valid_children" : [ "dt" ],  
+			 "types" : {
+				 "dt" : {
+					 "icon" : { 
+						"image" : "/images/dot.png" 
+					},
+					 "valid_children" : [ "default" ],
+					 "max_depth" : 2,
+					 "hover_node" : true,
+					 "open_node":false,
+					 "select_node" : true
+				 },
+				"root":{
+					"valid_children" : [ "default" ],
+					"hover_node" : false,
+					"select_node" : function () {return false;}
+				 }  
+			 }  
+		}, 
+	 "plugins" : [ "themes", "json_data", "ui", "crrm", "types", "hotkeys","cCode"] 
+	
+	}).bind("select_node.jstree", function (e,data) {
+		var sID = data.rslt.obj.attr("id").replace('t_','');
+		var sName = data.rslt.obj.context.text;
+        $("#FeesSubject").val(sName);
+        $("#FeesSubjectID").val(sID);
+        $("#winTreeType").fadeOut("slow");
+	 });
+   });
+       function chooseOne(cb){      
+         var obj = document.getElementsByName("cbox");      
+         for (i=0; i<obj.length; i++){        
+             if (obj[i]!=cb) obj[i].checked = false;      
+             else obj[i].checked = true;      
+         }      
+    } 
+
+          </script>
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

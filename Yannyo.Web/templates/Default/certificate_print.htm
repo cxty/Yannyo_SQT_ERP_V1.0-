@@ -1,0 +1,164 @@
+<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        
+        <%csharp%>
+        foreach(DataTable dt in CertificateDataSet.Tables)
+        {
+        cdMoneySum = 0;
+        cdMoneyBSum = 0;
+        pageindex++;
+        <%/csharp%>
+
+<div  style="page-break-after:always;">
+<div id="print_box" style="margin-left:50px;margin-top:50px;margin-right:30px;">
+        	<form name="bForm" id="bForm" action="" method="post" class="print_box">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr >
+                  <td height="40" colspan="2" align="center">
+                  <table border="0" cellpadding="0" cellspacing="0">
+                  <tr><td width="10" align="center">
+                  
+                </td>
+                    <td align="center" style="font-size:24px"><span style="font-size:x-large; text-decoration:underline">记账凭证</span></td>
+                    <td width="10" align="center">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td align="center">&nbsp;</td>
+                    <td align="center"><b>
+					<%set {aspxrewriteurl}=ci.cDateTime.ToString("yyyy 年 MM 月 dd 日")%>
+                {aspxrewriteurl}</b></td>
+                    <td align="center">&nbsp;</td>
+                  </tr>
+                  </table>
+                </td>
+                </tr>
+                <tr >
+                <td align="left">核算单位:{config.CompanyName}</td>
+                <td align="right">
+<nobr>
+<%set {aspxrewriteurl}=(ci.cNumber.ToString()).PadLeft(config.CertificateCodeLen,'0')%>
+第{aspxrewriteurl}号
+—
+<%set {aspxrewriteurl}=(pageindex.ToString()).PadLeft(config.CertificateCodeLen,'0')%>
+({aspxrewriteurl}/
+<%set {aspxrewriteurl}=(CertificateDataSet.Tables.Count.ToString()).PadLeft(config.CertificateCodeLen,'0')%>
+{aspxrewriteurl})
+</nobr>
+                </td>
+                </tr>
+                <tr>
+                
+              <td colspan="2" align="left" valign="top" >
+              <table width="100%"  border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 " style= "border-collapse:collapse; ">
+                <tr>
+                    <td width="20%" height="30" align="center" style="font-size:18px">摘 要</td>
+                  <td align="center" style="font-size:18px">会 计 科 目</td>
+                  <td width="15%" align="center" style="font-size:18px">借方金额</td>
+                    <td width="15%" align="center" style="font-size:18px">贷方金额</td>
+                </tr>
+                <%if dt!=null%>
+                <%loop cdl dt%>
+                <tr>
+                  <td height="50">{cdl[cdName]}</td>
+                  <td>
+				  <%set {aspxrewriteurl}=GetFeesSubjectClassParentStr( int.Parse(cdl["FeesSubjectID"].ToString()),"\")%>
+			{aspxrewriteurl}&nbsp;&nbsp;{cdl[ObjectName]}
+				  </td>
+                  <td align="right">
+                  <%if Convert.ToDecimal(cdl["cdMoney"])!=0%>
+                  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(cdl["cdMoney"]),2).ToString()%>
+		 <nobr>{aspxrewriteurl}&nbsp;&nbsp;</nobr>
+         		<%/if%></td>
+                  <td align="right">
+                  <%if Convert.ToDecimal(cdl["cdMoneyB"])!=0%>
+                  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(cdl["cdMoneyB"]),2).ToString()%>
+		 <nobr>{aspxrewriteurl}&nbsp;&nbsp;</nobr>
+         <%/if%></td>
+                </tr>
+                <%set {cdMoneySum} = cdMoneySum+decimal.Parse(cdl["cdMoney"].ToString())%>
+                <%set {cdMoneyBSum} = cdMoneyBSum+decimal.Parse(cdl["cdMoneyB"].ToString())%>
+                <%/loop%>
+                <%if cdl__loop__id < CertificateMAXRow%>
+                <%csharp%>
+                for(int k=0;k<(CertificateMAXRow-cdl__loop__id);k++)
+                {
+                <%/csharp%>
+                <tr>
+                    <td height="50" >&nbsp;</td>
+                    <td >&nbsp;</td>
+                    <td align="right">&nbsp;</td>
+                    <td align="right">&nbsp;</td>
+                </tr>
+                <%csharp%>
+                }
+                <%/csharp%>
+                <%/if%>
+                <tr>
+                <td height="30">附单据数:{ci.cRemake}张</td>
+                <td><%set {aspxrewriteurl}=chang(cdMoneySum.ToString())%>
+                  合计:{aspxrewriteurl}</td>
+                <td width="10%" align="right">
+                <%if Convert.ToDecimal(cdMoneySum)!=0%>
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(cdMoneySum),2).ToString()%>
+		 <nobr>{aspxrewriteurl}&nbsp;&nbsp;</nobr>
+         <%/if%>
+         </td>
+                    <td width="10%" align="right">
+                    <%if Convert.ToDecimal(cdMoneyBSum)!=0%>
+                    <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(cdMoneyBSum),2).ToString()%>
+		 <nobr>{aspxrewriteurl}&nbsp;&nbsp;</nobr>
+         <%/if%></td>
+                </tr>
+                <%/if%>
+                </table></td>
+             </tr>
+
+                <tr>
+                  <td colspan="2" valign="top" >
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="15%">财务主管: </td>
+    <td width="15%">记账:</td>
+    <td width="15%">复核:
+      <%if print_v_ui!=null%>
+      <%if print_v_ui.StaffName!=null%>
+{print_v_ui.StaffName}
+<%/if%>
+<%/if%></td>
+    <td width="15%">出纳:</td>
+    <td width="15%">制单:{print_ui.StaffName}</td>
+    <td width="15%">经办人:{ci.StaffName}</td>
+  </tr>
+</table></td>
+                </tr>
+                
+            </table>
+            
+</form>
+        </div><br><br>
+        
+        </div>
+        
+        <%csharp%>
+        }
+        <%/csharp%>
+        
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

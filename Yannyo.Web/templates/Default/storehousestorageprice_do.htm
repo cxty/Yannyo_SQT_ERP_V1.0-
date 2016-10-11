@@ -1,0 +1,190 @@
+﻿<%template _poppageheader%>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form action="" method="post" enctype="multipart/form-data" name="bForm" id="bForm">
+              <table border="0" cellspacing="2" cellpadding="2" style="width: 400px;font-size:9pt;">
+                <tr id="SName">
+                 <td>门店名称：<input type="text" style="width:150px" id="StoresName" name="StoresName" <%if Act=="Edit"%>value="{pi.StoresName}" readonly="readonly"  <%/if%>/>
+                 <INPUT TYPE="hidden" NAME="StoresID" id="StoresID" />
+                  <span style="color:Red">输入*查询</span></td>
+                </tr>
+                <tr>
+                  <td>仓库名称：<input id="stName"  name="stName" readonly="readonly" type="text" style="width:150px" value="默认值"/>
+                   <span style="color:Red">*默认项</span></td>
+                </tr>
+                <tr id="time">
+                  <td class="style1">时间选择：<input name="pAppendTime" id="pAppendTime" onclick="new Calendar().show(this);" type="text"  style="width:150px;"  <%if Act=="Edit"%>value="{pi.PAppendTime}"<%/if%>  />
+                    <span style="color:Red">*必填项</span>
+                  </td>
+                </tr>
+                  <tr>
+                   <td align="left">产品名称：<input type="text" id="ProductsName" name="ProductsName" style="width:150px;" <%if Act=="Edit"%>value="{pi.ProductsName}" readonly="readonly" <%/if%>  />
+                   <INPUT TYPE="hidden" NAME="ProductID" id="ProductID" >
+                    <span style="color:Red">输入*查询</span>
+                   </td>
+                  </tr>
+                  <tr>
+                   <td align="left">产品条码：<input type="text" id="ProductsBarcode" name="ProductsBarcode" style="width:150px;" <%if Act=="Edit"%>value="{pi.ProductsBarcode}"<%/if%>  /> 
+                      <span style="color:Red">允许为空</span></td>
+                  </tr>
+                  <tr>
+                   <td align="left">产品单价：<input type="text" id="pPrice" name="pPrice" style="width:150px;" <%if Act=="Edit"%>value="{pi.PPrice}"<%/if%>  />
+                    <span style="color:Red">*必填项</span>
+                   </td>
+                  </tr>
+                <tr id="submit">
+                  <td colspan="2" align="left">
+                  <input type="hidden" name="text_form" /> <!--隐藏表单-->
+                  <input type="button" id="button1" style="margin-left:100px" class="B_INPUT" value="确定" onclick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin-left:5px" class="B_INPUT" value="取消" onclick="javascript:window.parent.HidBox();"/></td>
+                </tr>
+				<tr id="loading" style="display:none;">
+                  <td colspan="2" align="left"><img src="/images/loading.gif" alt="" />数据处理中,该过程需要10-30分钟,请不要刷新,切换或关闭此页面!</td>
+                </tr>
+              </table>
+    
+            </form>
+            
+			<script language="javascript" type="text/javascript">
+			    function CheckF() {
+			        if (Sys.getObj('StoresName').value != '') {
+			            if (Sys.getObj('pAppendTime').value != '') {
+			                if (Sys.getObj('ProductsName').value != '') {
+			                    if (Sys.getObj('pPrice').value != '') {
+			                        if (confirm('确定添加该产品信息吗？')) {
+			                            Sys.getObj('loading').style.display = "";
+			                            Sys.getObj('bForm').submit();
+			                        }
+			                    }
+			                    else {
+			                        alert("产品价格不能为空！");
+			                    }
+			                }
+			                else {
+			                    alert("产品名称不能为空！");
+			                }
+			            }
+			            else {
+			                alert("请选择时间！");
+			            }
+			        }
+			        else {
+			            alert("门店名称不能为空！");
+			        }
+			    }
+
+			    $().ready(function () {
+			        $('#StoresName').autocomplete('Services/CAjax.aspx', {
+
+			            width: 200,
+			            scroll: true,
+			            autoFill: true,
+			            scrollHeight: 200,
+			            matchContains: true,
+			            dataType: 'json',
+			            extraParams: {
+			                'do': 'GetStoresInfoList',
+			                'RCode': Math.random(),
+			                'StoresName': function () { return $('#StoresName').val(); }
+			            },
+			            parse: function (data) {
+			                var rows = [];
+			                var tArray = data.results;
+			                for (var i = 0; i < tArray.length; i++) {
+			                    rows[rows.length] = {
+			                        data: tArray[i].value + "(" + tArray[i].info + ")",
+			                        value: tArray[i].id,
+			                        result: tArray[i].value,
+			                        sCode: tArray[i].info,
+			                        CustomersClassID: tArray[i].CustomersClassID,
+			                        CustomersClassName: tArray[i].CustomersClassName,
+			                        PriceClassID: tArray[i].PriceClassID,
+			                        PriceClassName: tArray[i].PriceClassName,
+			                        sType: tArray[i].sType,
+			                        sIsFZYH: tArray[i].sIsFZYH,
+			                        YHsysName: tArray[i].YHsysName,
+			                        sContact: tArray[i].sContact,
+			                        sTel: tArray[i].sTel,
+			                        sAddress: tArray[i].sAddress,
+			                        StaffID: tArray[i].StaffID,
+			                        StaffName: tArray[i].StaffName
+			                    };
+			                }
+			                return rows;
+			            },
+			            formatItem: function (row, i, max) {
+			                return row;
+			            },
+			            formatMatch: function (row, i, max) {
+			                return row.value;
+			            },
+			            formatResult: function (row) {
+			                return row.value;
+			            }
+			        }).result(function (event, data, formatted, row) {
+
+			            $("#StoresID").val((formatted != null) ? formatted : "0");
+			        }
+	  );
+			    });
+
+			    $().ready(function () {
+			        $('#ProductsName').autocomplete('Services/CAjax.aspx', {
+
+			            width: 200,
+			            scroll: true,
+			            autoFill: true,
+			            scrollHeight: 200,
+			            matchContains: true,
+			            dataType: 'json',
+			            extraParams: {
+			                'do': 'GetProductsList',
+			                'RCode': Math.random(),
+			                'ProductsName': function () { return $('#ProductsName').val(); }
+			            },
+			            parse: function (data) {
+			                var rows = [];
+			                var tArray = data.results;
+			                for (var i = 0; i < tArray.length; i++) {
+			                    rows[rows.length] = {
+			                        data: tArray[i].value + "(" + tArray[i].info + ")",
+			                        value: tArray[i].id,
+			                        result: tArray[i].value
+			                    };
+			                }
+			                return rows;
+			            },
+			            formatItem: function (row, i, max) {
+			                return row;
+			            },
+			            formatMatch: function (row, i, max) {
+			                return row.value;
+			            },
+			            formatResult: function (row) {
+			                return row.value;
+			            }
+			        }).result(function (event, data, formatted) {
+			            $("#ProductID").val((formatted != null) ? formatted : "0");
+			        }
+		  );
+			    });
+            </script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+

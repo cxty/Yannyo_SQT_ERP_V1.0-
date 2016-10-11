@@ -1,0 +1,4 @@
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Web/bin/Yannyo.Data.SqlServer.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Web/bin/Yannyo.Data.SqlServer.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data.SqlServer/obj/Debug/Yannyo.Data.SqlServer.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data.SqlServer/obj/Debug/Yannyo.Data.SqlServer.dll.mdb

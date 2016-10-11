@@ -1,0 +1,173 @@
+﻿<%template _poppageheader%>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="/public/js/storehousestorage_add_list.js "></script>
+    <div class="main" id="OrderList">
+  <%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<form action="" method="post" name="bForm" id="bForm">   
+<div class="toolbar">
+<table border="0" cellspacing="2" cellpadding="0" style="font-size:9pt;width:100%" >
+  <tr>
+    <td align="left" valign="middle" style="width:23%;">门店名称：
+                    <input type="text" name="SName" id="SName" style="width:100px"/>
+                    <INPUT TYPE="hidden" NAME="StoresID" id="StoresID" value="{StoresID}" />
+                    <span style="color:Red">*可检索</span>
+                 </td>
+    <td align="left" valign="middle" style="width:25%;">日期选择：
+    <input name="sDate" id="sDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" readonly="readonly"/>
+    </td> 
+    <td><b><span style="color:Red">注意：[期初结存]不填写数量，提交表单以后，凡是空项数据全部为“0”</span></b></td>
+  </tr>
+</table>
+</div>
+<div id="space"></div>
+<div id="col_head" style="width:100%">
+<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox"  style="font-size:10pt;">
+<thead >
+          <tr class="tBar" style="height:30px">
+            <td width="5%" align="center" rowspan="2"><b>序号</b></td>
+            <td width="10%" align="center" rowspan="2"><b>商品条码</b></td>
+			<td  align="center" rowspan="2"><b>商品名称</b></td>
+			<td width="20%" align="center" colspan="2"><b>期初结存</b></td>
+            <td width="20%" align="center" colspan="2"><b>产品单价</b></td>
+          </tr>
+         </thead>
+         </table>
+</div>
+<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs" style="font-size:10pt;">
+          <%if dList != null%>
+          <tbody>
+          <%loop dl dList%>
+          <tr style="height:30px">
+            <td align="center" width="5%">{dl__loop__id}</td>
+            <td align="left" width="10%">{dl[pBarcode]}</td>
+            <td align="left">{dl[pName]}</td>
+            <td align="center" width="20%">
+             <input type="text" class="tpPList" id="pNum_{dl__loop__id}" pid="{dl[ProductsID]}" pMoney="pMoney_{dl__loop__id}" name="pName_{dl__loop__id}" />
+             <input type="hidden" id="pName" name="pName" value="{dl[pName]}"/>   
+            </td> 
+             <td align="center" width="20%">
+             <input type="text" class="tpPList" id="pMoney_"  pMoney="pMoney_{dl__loop__id}"/>
+            </td>   
+          </tr>
+          <%/loop%>
+          </tbody>
+          <tfoot>
+              <tr style="height:30px">
+                <td align="center"><b>合计：</b></td>
+                <td align="center" colspan="2"></td>
+                <td align="center"></td> 
+              </tr>
+              <tr><td></td></tr>
+           </tfoot>
+          <%/if%>
+        </table>
+        <div style=" width:100%; position:fixed;bottom:0px; background-color:#8E8E8E;">
+            <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+                <tr style="height:30px">
+                    <td align="center"></td>
+                    <td align="center"  colspan="2">
+                    <input type="hidden" id="reValue" name="reValue" />
+                        <input type="button" id="listLog" name="listLog" value="提交" style="height:25px;width:40px" />
+                        <input type="reset"  id="reset" name="reset" value="重填"  style="height:25px;width:40px" />
+                    </td>
+                    <td align="center"></td> 
+                    </tr>
+                    </table>
+            </div>  
+      <script language="javascript" type="text/javascript">
+        
+          var StoreHouseStorage_add_list = new TStoreHouseStorage_add_list();
+          StoreHouseStorage_add_list.ini();
+
+          addTableListener(document.getElementById("tBoxs"), 0, 0);
+          window.onscroll = function () {
+              var t = document.body.getBoundingClientRect().top;
+
+              var head = document.getElementById("col_head");
+              if ((t + document.getElementById("space").offsetTop) < 0) {
+
+                  head.style.position = "absolute";
+                  document.getElementById("col_head").style.top = (-t) + "px";
+              }
+              else {
+                  head.style.position = "";
+                  //$("col_head").addClass("");
+              }
+          }
+
+          $().ready(function () {
+              $('#SName').autocomplete('Services/CAjax.aspx', {
+
+                  width: 200,
+                  scroll: true,
+                  autoFill: true,
+                  scrollHeight: 200,
+                  matchContains: true,
+                  dataType: 'json',
+                  extraParams: {
+                      'do': 'GetStoresInfoList',
+                      'RCode': Math.random(),
+                      'StoresName': function () { return $('#SName').val(); }
+                  },
+                  parse: function (data) {
+                      var rows = [];
+                      var tArray = data.results;
+                      for (var i = 0; i < tArray.length; i++) {
+                          rows[rows.length] = {
+                              data: tArray[i].value + "(" + tArray[i].info + ")",
+                              value: tArray[i].id,
+                              result: tArray[i].value,
+                              sCode: tArray[i].info,
+                              CustomersClassID: tArray[i].CustomersClassID,
+                              CustomersClassName: tArray[i].CustomersClassName,
+                              PriceClassID: tArray[i].PriceClassID,
+                              PriceClassName: tArray[i].PriceClassName,
+                              sType: tArray[i].sType,
+                              sIsFZYH: tArray[i].sIsFZYH,
+                              YHsysName: tArray[i].YHsysName,
+                              sContact: tArray[i].sContact,
+                              sTel: tArray[i].sTel,
+                              sAddress: tArray[i].sAddress,
+                              StaffID: tArray[i].StaffID,
+                              StaffName: tArray[i].StaffName
+                          };
+                      }
+                      return rows;
+                  },
+                  formatItem: function (row, i, max) {
+                      return row;
+                  },
+                  formatMatch: function (row, i, max) {
+                      return row.value;
+                  },
+                  formatResult: function (row) {
+                      return row.value;
+                  }
+              }).result(function (event, data, formatted, row) {
+
+                  $("#StoresID").val((formatted != null) ? formatted : "0");
+              }
+	  );
+          });              
+      </script>
+    </form>
+    </div>
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

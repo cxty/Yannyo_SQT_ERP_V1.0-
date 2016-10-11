@@ -1,0 +1,87 @@
+﻿<%template _poppageheader%>
+<body>
+<script src="/public/js/jquery.js" type="text/javascript" ></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script src="/public/js/myFrontPageJs/storage.js" type="text/javascript" language="javascript" ></script>
+        <form action="" method="post" name="form1" id="form1">
+          <div>
+           <table border="0" cellpadding="0" cellspacing="2" style="width:100%; background-color:#cccccc">
+            <tr>
+             <td colspan="7"><span style="font-size:11pt"><b>截止日期：{sDate.ToLongDateString()}</b></span></td>          
+            </tr>
+            <tr>
+             <td colspan="8"><hr /></td>
+            </tr>
+           </table>
+           <table class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+            <tr class="tBar">
+              <td align="center"  rowspan="2" style="width:5%"><span style="font-size:larger"><b>编号</b></span></td>
+              <td align="center"  rowspan="2" style="width:15%"><span style="font-size:larger"><b>门店名称</b></span></td>
+              <td align="center"  rowspan="2" style="width:25%"><span style="font-size:larger"><b>商品名称</b></span></td>
+              <td align="center"  rowspan="2" style="width:15%"><span style="font-size:larger"><b>商品条码</b></span></td>
+              <td align="center"  rowspan="2" style="width:10%"><span style="font-size:larger"><b>是否联营</b></span></td>
+              <td align="center"  rowspan="2" style="width:10%"><span style="font-size:larger"><b>库存数量</b></span></td>
+              <td align="center"  style="width:20%" colspan="2"><span style="font-size:larger"><b>库存金额</b></span></td>
+            </tr>
+            <tr class="tBar">
+             <td align="right" style="width:10%"><b>销售金额</b></td>
+             <td align="right" style="width:10%"><b>成本金额</b></td>
+            </tr>
+           </table>
+           <table id="tBoxs"  class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+           <%if pList !=null%>
+           <%loop pl pList%>
+           <tr>
+             <td align="center" style="width:5%">{pl__loop__id}</td>
+             <td align="center" style="width:15%">{sName}</td>
+             <td align="left" style="width:25%">{pl[pName]}</td>
+             <td align="center" style="width:15%">{pl[pBarcode]}</td>
+             <td align="center" style="width:10%">
+             <%if aID==-1%>包含联营
+             <%/if%>
+             <%if aID==0%>剔除联营
+             <%/if%>
+             <%if aID==1%>仅含联营
+             <%/if%>
+             </td>
+             <td align="center" style="width:10%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[pRelityStorage]}),2).ToString()%>
+                  {aspxrewriteurl}
+                  <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+             <td align="right" style="width:10%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[qMoney]}),2).ToString()%>
+                  {aspxrewriteurl}
+                  <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+             <td align="right" style="width:10%">
+             <%if {Show}=="1"%>
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[pMoney]}),2).ToString()%>
+                  {aspxrewriteurl}
+                  <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+             <%else%>
+             无权限
+             <%/if%>
+            </td>
+           </tr>
+           <%/loop%>
+           <tr>
+            <td align="center" colspan="5"><span style="font-size:larger"><b>合&nbsp;&nbsp;计</b></span></td>
+            <td align="center">{sumA}</td>
+            <td align="right">{sumB}</td>
+            <td align="right">
+             <%if {Show}=="1"%>
+            {sumC}
+              <%else%>
+             无权限
+             <%/if%>
+            </td>
+           </tr>
+           <%/if%>
+           </table>
+          </div>
+
+        </form>
+      
+        <%template _footer%>

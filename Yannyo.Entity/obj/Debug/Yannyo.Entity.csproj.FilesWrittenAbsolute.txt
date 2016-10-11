@@ -1,0 +1,5 @@
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Entity/bin/Debug/Yannyo.Entity.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Entity/bin/Debug/Yannyo.Entity.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Entity/obj/Debug/Yannyo.Entity.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Entity/obj/Debug/Yannyo.Entity.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Entity/bin/Debug/Yannyo.Common.dll

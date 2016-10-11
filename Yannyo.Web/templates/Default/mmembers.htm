@@ -1,0 +1,109 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+
+
+    <div class="main" >
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+		<%template _m_sign%>
+<script language="javascript" src="public/js/jTable.js"></script>
+<script src="public/js/m_members.js" language="javascript" type="text/javascript"></script>
+<div>
+<div class="toolbar">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>客户昵称:<br />
+<input type="text" value="" id="buyer_nick" name="buyer_nick" />
+<input type="button" id="bt_s" style="margin:5px" class="B_INPUT" value="查找" /></td>
+  </tr>
+  <tr>
+    <td><input type="button" id="bt_DownLoad" style="margin:5px" class="B_INPUT" value="下载数据" />
+      <input type="button" id="bt_Delt" style="margin:5px" class="B_INPUT" value="删除选中" /></td>
+  </tr>
+</table>
+</div>
+<div class="mtitleBox"><span>客户:{M_Config.StoresName}-网店:{M_Config.m_Name} </span></div>
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBox" >
+        <thead>
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td width="10%">数字ID</td>
+            <td width="18%">昵称</td>
+            <td width="10%">级别</td>
+            <td width="5%" align="center">总交易额</td>
+            <td width="5%">总交易量</td>
+            <td width="5%">上次交易时间</td>
+            <td width="5%">状态</td>
+            <td width="5%" align="center">操作</td>
+          </tr>
+		</thead>
+
+          <%if dList != null%>
+		  <tbody id="dloop">
+          <%loop dl dList%>
+          <tr id="tr_{dl[m_MemberInfoID]}">
+            <td width="2%">
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[m_MemberInfoID]}" />
+            </td>
+		    <td width="10%">{dl[buyer_id]}</td>
+            <td width="18%"><a href="javascript:void(0);" onclick="javascript:M_Members.Edit({dl[m_MemberInfoID]});">{dl[buyer_nick]}</a></td>
+			<td width="10%">{dl[member_grade]}</td>
+            <td width="5%" align="right">
+			{dl[trade_amount]}
+			</td>
+            <td width="5%" align="right">{dl[trade_count]}</td>
+            <td width="5%" align="right">{dl[laste_time]}</td>
+            <td width="5%" align="center">{dl[status]}</td>
+            <td align="center">
+              
+              <a href="javascript:void(0);" onclick="javascript:M_Members.Edit({dl[m_MemberInfoID]});">查看</a>            </td>
+            </tr>
+          <%/loop%>
+		  </tbody>
+		  <tfoot>
+          <tr>
+            <td colspan="9">{PageBarHTML}</td>
+          </tr>
+          </tfoot>
+          <%/if%>
+        </table>
+    </form>
+</div>
+<script language="javascript" type="text/javascript">
+var tf = new TableFixed("tBox");
+
+tf.Clone();
+
+var M_Members = new TM_Members();
+M_Members.MConfigID = {M_Config.m_ConfigInfoID};
+M_Members.ini();
+
+function HidBox()
+{
+	M_Members.HidUserBox();
+	location = location;
+}
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+        
+        <%/if%>
+    </div>
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

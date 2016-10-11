@@ -1,0 +1,187 @@
+<%template _header%>
+
+
+
+<script src="public/js/staffstores.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<script language="javascript" src="public/js/jTable.js"></script>
+        <form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<div class="toolbox">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:StaffStoresManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:StaffStoresManage.ShowAddUserBox();"  />
+<!--<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="导入" onclick="javascript:StaffStoresManage.ShowimportdataBox();"  />-->
+姓名:<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}">
+门店:<INPUT TYPE="text" NAME="StoresName" id="StoresName" value="{StoresName}">
+岗位状态:<SELECT NAME="sType">
+	<OPTION VALUE="-1"
+	<%if sType==-1%>
+	SELECTED
+	<%/if%>
+	>全部
+	<OPTION VALUE="0"
+	<%if sType==0%>
+	SELECTED
+	<%/if%>
+	>上岗
+	<OPTION VALUE="1"
+	<%if sType==1%>
+	SELECTED
+	<%/if%>
+	>离岗
+</SELECT>
+<INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:StaffStoresManage.Search();"  />
+
+<input type="button" id="button6" style="margin:5px" class="B_INPUT" value="未离岗记录" onclick="javascript:StaffStoresManage.SearchB();"  />
+
+<input type="button" id="button7" style="margin:5px" class="B_INPUT" value="人员岗位记录" onclick="javascript:StaffStoresManage.SearchC();"  />
+</div>
+<div class="list_title">
+人员岗位变动记录
+</div>
+</div>
+<div class="datalist">
+    <%if Act=="SearchB"%>
+		<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+        <thead> 
+          <tr class="tBar">
+			 <td >人员姓名</td>
+			 <td width="20%">门店名称</td>
+			 <td width="20%">上岗时间</td>
+			 <td width="10%">操作</td>
+		  </tr>
+          </thead> 
+          <tbody>
+		  <%if dList != null%>
+			<%loop dl dList%>
+			<tr>
+				 <td ><a href="javascript:void(0);" onclick="javascript:StaffStoresManage.ShowDownBox({dl[StaffID]});">{dl[StaffName]}</a></td>
+				 <td width="20%">{dl[StoresName]}</td>
+				 <td width="10%">
+				 <%set {aspxrewriteurl} = DateTime.Parse(dl["bdate"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+				 </td>
+				 <td width="10%"><a href="javascript:void(0);" onclick="javascript:StaffStoresManage.ShowDownBox({dl[StaffID]});">离岗</a></td>
+			  </tr>
+			<%/loop%>
+		  <%/if%>
+          </tbody>
+		</table>
+	<%else%>
+	<%if Act=="SearchC"%>
+		<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <thead> 
+          <tr class="tBar">
+			 <td >人员姓名</td>
+			 <td width="20%">门店名称</td>
+			 <td width="10%">上岗时间</td>
+			 <td width="10%">离岗时间</td>
+			 <td width="10%">操作</td>
+		  </tr>
+          </thead> 
+          <tbody>
+		  <%if dList != null%>
+			<%loop dl dList%>
+			<tr>
+				 <td ><a href="javascript:void(0);" onclick="javascript:StaffStoresManage.ShowDownBox({dl[StaffID]});">{dl[StaffName]}</a></td>
+				 <td width="20%">{dl[StoresName]}</td>
+				 <td width="10%">
+				 <%set {aspxrewriteurl} = DateTime.Parse(dl["bdate"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+				 </td>
+				 <td width="10%">
+				 <%if DateTime.Parse(dl["edate"].ToString())<=DateTime.Now%>
+					 <%set {aspxrewriteurl} = DateTime.Parse(dl["edate"].ToString()).ToShortDateString().ToString()%>
+						{aspxrewriteurl}
+				 <%/if%>
+				 </td>
+				 <td width="10%"><a href="javascript:void(0);" onclick="javascript:StaffStoresManage.ShowDownBox({dl[StaffID]});">离岗</a></td>
+			  </tr>
+			<%/loop%>
+		  <%/if%>
+          </tbody>
+		</table>
+	<%else%>
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <thead>
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td >人员姓名</td>
+			<td width="20%">门店名称</td>
+			<td width="10%">发生时间</td>
+			<td width="10%">上岗离岗</td>
+            <td width="10%">创建时间</td>
+            <td width="10%">操作</td>
+          </tr>
+          </thead>
+          <tbody>
+          <%if dList != null%>
+			  <%loop dl dList%>
+			  
+          <tr>
+            <td width="2%">
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[StaffStoresID]}" />
+            </td>
+            <td><a href="javascript:void(0);" onclick="javascript:StaffStoresManage.ShowEditUserBox({dl[StaffStoresID]});">{dl[StaffName]}</a></td>
+			<td width="20%">{dl[StoresName]}</td>
+			<td width="10%">
+			<%set {aspxrewriteurl} = DateTime.Parse(dl["sDateTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+			</td>
+			<td width="10%">
+			<%if dl["sType"].ToString() == "0"%>
+			上岗
+			<%/if%>
+			<%if dl["sType"].ToString() == "1"%>
+			离岗
+			<%/if%>
+			</td>
+            <td width="10%">
+			<%set {aspxrewriteurl} = DateTime.Parse(dl["sAppendTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+			</td>
+            <td width="10%">
+			<a href="javascript:void(0);" onclick="javascript:StaffStoresManage.ShowDelUserBox({dl[StaffStoresID]});">删除</a> 
+			<!--<a href="javascript:void(0);" onclick="javascript:StaffStoresManage.ShowEditUserBox({dl[StaffStoresID]});">修改</a>-->
+			</td>
+          </tr>
+          <%/loop%>
+          </tbody>
+          
+          <%/if%>
+          
+        </table>
+        <%if PageBarHTML!=null%>{PageBarHTML}<%/if%>
+    <%/if%>
+	<%/if%>
+</div>
+
+      
+	</form>
+    <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+var tf = new TableFixed("tBoxs");
+
+tf.Clone();
+
+var StaffStoresManage = new TStaffStoresManage();
+StaffStoresManage.ini();
+
+function HidBox()
+{
+	StaffStoresManage.HidUserBox();
+	location=location;
+}
+	
+</script>
+
+
+<%template _copyright%>
+<%template _footer%>

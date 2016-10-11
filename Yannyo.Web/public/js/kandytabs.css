@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+.kandyTabs{margin:0;padding:2px;border:1px solid #DDD;background:#f5f5f5;overflow:hidden;zoom:1}
+.kandyTabs .tabtitle{margin:0;padding:0;line-height:22px;border-bottom:1px solid #DDD;}
+.kandyTabs .tabtitle .tabbtn{cursor:hand;margin:0 4px 0 0;padding:0 5px;display:inline-block;background:#e5e5e5;border:1px solid #DDD;border-width:1px 1px 0;}
+.kandyTabs .tabtitle .tabcur{cursor:hand;line-height:23px;background:#FFF;border-bottom:1px solid #FFF;font-weight:bold;color:#F00;margin-bottom:-1px;}
+.kandyTabs .tabbody{padding:5px;background:#FFF;border:1px solid #DDD;border-width:0 1px 1px;overflow:hidden;zoom:1;}
+.kandyTabs .tabbody .tabcont{background:#FFF;text-align:center}
+.kandyTabs .tabbody .tabroll .tabcont{margin:5px 0 0}
+
+.tabnav,.tabctrl,.tabpage{zoom:1}
+.tabnav em,tabctrl b{cursor:pointer;}
+.tabpage *{/*cursor:default;*/font-weight:normal}
+.tabprevno,.tabnextno{/*cursor:default!important*/}
+.tabprocess{height:5px;overflow:hidden;}
+
+.kandyFold{border:3px double #DDD;overflow:hidden;zoom:1}
+.kandyFold .tabbtn{border-top:1px solid #DDD;display:block;margin:-1px 0 0;padding:0 10px;line-height:24px;background:#EEE;zoom:1}
+.kandyFold .tabcur{background:#FFF;border-bottom:1px dashed #EEE;font-weight:bold;color:#F00;}
+.kandyFold .tabon{background:#F5F5F5;font-weight:bold}
+.kandyFold .tabcont{display:block;margin:0;padding:5px;}
+
+.kandySlide{position:relative;zoom:1;}
+.kandySlide .tabtitle{position:absolute;bottom:8px;right:8px;z-index:10}
+.kandySlide .tabtitle .tabbtn{float:left;background:#000;color:#FFF;padding:0 4px;font:bold 12px/16px Arial;margin:0 0 0 5px;filter:alpha(opacity=50);opacity:.5;-moz-border-radius:8px}
+.kandySlide .tabtitle .tabcur{background:#F30;padding:0 6px;filter:alpha(opacity=70);opacity:.7;font-size:13px}
+.kandySlide .tabcont img{vertical-align:text-bottom;background:#FFF url(loading.gif) center no-repeat}
+
+.kandyLoop{position:relative;zoom:1;border:1px solid #DDD;padding:2px;background:#EEE;}
+.kandyLoop .tabtitle{float:right;padding:3px 5px 5px;}
+.kandyLoop .tabtitle .tabbtn{cursor:hand;margin:0 0 0 5px;font-size:10px;display:inline-block;width:8px;height:8px;overflow:hidden;text-indent:-30px;background:#CCC;-moz-border-radius:4px;zoom:1}
+.kandyLoop .tabtitle .tabcur{cursor:hand;background:#F30}
+.kandyLoop .tabbody{border:1px solid #DDD;background:#FFF;clear:both}
+.kandyLoop .tabcont{zoom:1}
+.kandyLoop .tabcont img{vertical-align:text-bottom;background:#FFF url(loading.gif) center no-repeat}

@@ -1,0 +1,124 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="/public/js/comm.js"></script>
+<script type="text/javascript" src="/public/js/xml.js"></script>
+<script type="text/javascript" src="/public/js/jquery-1.3.2.js"></script>
+
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/staff_do_updown.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _poperrmsgbox%>
+        <%else%>
+       <form action="" method="post" name="form1" id="form1"> 
+       <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+	   <tr>
+		 <td width="20%" class="ltd">人员名称:</td>
+		 <td class="rtd"><b>{si.sName}</b></td>
+	   </tr>
+  <tr>
+    <td width="20%" class="ltd">
+<%if Act=="Up"%>
+上岗时间
+<%/if%>
+<%if Act=="Down"%>
+离岗时间
+<%/if%>:</td>
+    <td class="rtd"><input name="aDate" id="aDate" onClick="new Calendar().show(this);" type="text" >
+<INPUT TYPE="hidden" NAME="tSidStr" id="tSidStr"></td>
+  </tr>
+  <%if si.sType == 1 || si.sType==2%>
+  <tr>
+    <td class="ltd">选择门店</td>
+    <td class="rtd">
+    <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+          <tr class="tBar">
+            <td width="5%"><input name="cCheck" type="checkbox" class="B_Check" value="" onClick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td >门店客户名称</td>
+			<%if Act=="Down"%>
+			<td width="20%">上岗时间</td>
+			<%/if%>
+            
+          </tr>
+		  <tr>
+            <td colspan="3">
+			
+          <%if dList != null%>
+		  <div style="overflow:scroll;height:280px;overflow-x:hidden;">
+		  <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox"  >
+          <%loop dl dList%>
+          <tr >
+            <td width="5%">
+			
+			<input name="cCheck" type="checkbox" class="B_Check" value="{dl[StoresID]}" />
+			
+
+            </td>
+			<%if Act=="Up"%>
+			<td >{dl[sName]}</td>
+			<%/if%>
+			<%if Act=="Down"%>
+			<td >{dl[StoresName]}</td>
+			<%/if%>
+			
+			<%if Act=="Down"%>
+            <td width="20%">
+			{dl[bdate]}
+			</td>
+			<%/if%>
+          </tr>
+          <%/loop%>
+			</table>
+			</div>
+			
+          <%/if%>
+		  </td>
+          </tr>
+
+        </table>
+    </td>
+  </tr>
+  <%/if%>
+</table>    
+        
+<div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                  	<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:Staff_do_updown.OKGo();"  />
+<input type="button" id="button6" style="margin:5px" class="B_INPUT" value="退出" onClick="javascript:parent.HidBox();"  />
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+</form>
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var Staff_do_updown = new TStaff_do_updown();
+Staff_do_updown.Act = '{Act}';
+<%if si.sType == 1 || si.sType==2%>
+Staff_do_updown.IsNoList = true;
+<%/if%>
+Staff_do_updown.ini();
+
+function HidBox()
+{
+	Staff_do_updown.HidUserBox();
+	location.reload();
+}
+</script>
+<%/if%>
+
+<%template _footer%>

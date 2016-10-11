@@ -1,0 +1,75 @@
+﻿<table width="100%" border="0" cellspacing="1" cellpadding="1">
+<tr>
+  <td class="OrderListTool">
+
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>单号:<br />{oi.oOrderNum}</td>
+    <td><%set {aspxrewriteurl}=oi.oOrderDateTime.ToString("yyyy-MM-dd")%>
+      日期:<br />{aspxrewriteurl}</td>
+    <td align="center"><img src="qrcode-{oi.OrderID}.aspx" /></td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+  <td>
+  <table width="99%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 "   style= "border-collapse:collapse; ">
+	<tr >
+	  <td width="60" align="center">仓库</td>
+	  <td width="40" align="center">条码</td>
+	  <td align="center">商品名称</td>
+	  <td width="30" align="center">包装量</td>
+	  
+	  <td width="45" align="center">数量<br>(小单位)</td>
+	  <td width="45" align="center">数量<br>(大单位)</td>
+	  
+     
+	</tr>
+
+<%if OrderList!=null%>
+	<%loop ol OrderList%>
+		<tr>
+		  <td >{ol[StorageName]}</td>
+		  <td >{ol[ProductsBarcode]}</td>
+		  <td>
+		  <%if ol["IsGifts"].ToString() !="0"%>
+		  (赠)
+		  <%/if%>
+		  {ol[ProductsName]}</td>
+		  <td align="right">{ol[ProductsToBoxNo]}</td>
+		  
+		   <td  align="right">
+		  <%set {sumQuantityM} = Convert.ToDecimal(sumQuantityM+Convert.ToDecimal(ol["oQuantity"]))%>
+		  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"]),config.QuantityDecimal).ToString()%>
+		  <nobr>{aspxrewriteurl}{ol[ProductsUnits]}&nbsp;</nobr>
+</td>
+<td  align="right">
+		  <%set {sumQuantityB} = Convert.ToDecimal(sumQuantityB+Convert.ToDecimal(ol["oQuantity"])/Convert.ToDecimal(ol["ProductsToBoxNo"]))%>
+		  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"])/Convert.ToDecimal(ol["ProductsToBoxNo"]),config.QuantityDecimal).ToString()%>
+		  <nobr>{aspxrewriteurl}{ol[ProductsMaxUnits]}&nbsp;</nobr>
+</td>
+		 
+		 
+		</tr>
+	<%/loop%>
+    
+   
+    
+    <tr>
+    <td>合计:</td>
+    <td colspan="3"></td>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(sumQuantityM,config.QuantityDecimal).ToString()%>
+    <nobr>{aspxrewriteurl}&nbsp;</nobr></td>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(sumQuantityB,config.QuantityDecimal).ToString()%>
+    <nobr>{aspxrewriteurl}&nbsp;</nobr>
+    </td>
+    
+    </tr>
+<%/if%>
+
+  </table>
+ 
+</tr>
+</table>

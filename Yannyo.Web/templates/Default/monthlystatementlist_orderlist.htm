@@ -1,0 +1,144 @@
+<%template _poppageheader%>
+<body>
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="public/js/dialog.js "></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+<script type="text/javascript" src="/public/js/jquery.maskedinput-1.2.2.min.js"></script>
+<script type="text/javascript" src="/public/js/monthlystatementlist_orderlist.js"></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        
+        <form name="bForm" id="bForm" action="" method="post">
+<table border="0" cellspacing="3" cellpadding="3">
+  <tr>
+    <td align="left">单据号:<br/><input name="oOrderNum" id="oOrderNum" value="{oOrderNum}" type="text" /></td>
+    <td align="left">
+    客户订单号:<br/><input name="oCustomersOrderID" id="oCustomersOrderID" value="{oCustomersOrderID}" type="text" />
+    </td>
+    <td align="left">单据时间:<br/><input name="oOrderDateTimeB" id="oOrderDateTimeB" style="width:80px" value="{oOrderDateTimeB}" type="text" onClick="new Calendar().show(this);" readonly="readonly"/>-<input name="oOrderDateTimeE" id="oOrderDateTimeE" style="width:80px" value="{oOrderDateTimeE}" type="text" onClick="new Calendar().show(this);" readonly="readonly"/></td>
+    <td align="left"><input type="button" id="button_Search" name="button_Search" style="margin:5px;width:120px" class="B_INPUT" value=" 单据查找 "  /></td>
+    </tr>
+</table>
+<div class="datalist">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+  <thead>   
+  <tr class="tBar">
+    <td width="5%" colspan="8" align="center"><input type="checkbox" name="checkbox" id="checkbox_b" class="B_Check"></td>
+    <td valign="top" width="10%" align="left">单据编号</td>
+	<td valign="top" align="left">
+	<%if OrderType==2%>
+	客户
+	<%/if%>
+	<%if OrderType==1%>
+	供应商
+	<%/if%>
+	</td>
+    <td valign="top" width="10%" align="center">单据类型</td>
+    <td valign="top" width="10%" align="right">总金额</td>
+    <td valign="top" width="10%" align="right">单据时间</td>
+    <td valign="top" width="10%" align="center">业务员</td>
+    <td valign="top" width="10%" align="center">操作员</td>
+  </tr>
+  </thead> 
+  <tbody id="dLoop">
+  <%if dList != null%>
+          <%loop dl dList%>
+  <tr >
+    <td colspan="8" align="center">
+    <input type="checkbox" name="checkbox_bb" id="checkbox_bb_{dl__loop__id}" oOrderNum="{dl[oOrderNum]}"
+    <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["SumMoney"]),2).ToString()%>
+     SumMoney="{aspxrewriteurl}"
+     <%set {aspxrewriteurl}=Convert.ToDateTime(dl["oOrderDateTime"]).ToString("yyyy-MM-dd")%>
+     oOrderDateTime="{aspxrewriteurl}"
+     StaffName="{dl[StaffName]}"
+	 StoresSupplierName = "{dl[StoresSupplierName]}"
+     <%set {aspxrewriteurl}=GetOrderType(dl["oType"].ToString())%>
+     oTypeStr="{aspxrewriteurl}"
+     oType="{dl[oType]}"
+     id="checkbox2" value="{dl[OrderID]}"  class="B_Check"></td>
+    <td valign="top" align="left">{dl[oOrderNum]}</td>
+	<td valign="top" align="left">{dl[StoresSupplierName]}</td>
+    <td valign="top" align="center">
+            <%set {aspxrewriteurl}=GetOrderType(dl["oType"].ToString())%>
+            {aspxrewriteurl}
+            </td>
+    <td align="right" valign="top">
+			<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["SumMoney"]),2).ToString()%>
+
+			{aspxrewriteurl}
+			&nbsp;&nbsp;</td>
+    <td valign="top" align="right">
+			<%set {aspxrewriteurl}=Convert.ToDateTime(dl["oOrderDateTime"]).ToString("yyyy-MM-dd")%>
+			{aspxrewriteurl}</td>
+    <td valign="top" align="center">{dl[StaffName]}</td>
+    <td valign="top" align="center">
+            <%if dl["UserStaffName"].ToString()==""%>
+            {dl[UserName]}
+            <%else%>
+            {dl[UserStaffName]}
+            <%/if%></td>
+  </tr>
+  <%/loop%>
+          <%/if%>
+  </tbody>
+  <tr class="tBar">
+    <td height="60">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    </tr>
+</table>
+
+<div style="height:60px"></div>
+<div id="footer_tool">
+<div style="text-align:left">
+<%if PageBarHTML!=null%>
+{PageBarHTML}
+<%/if%>
+</div>
+<input type="button" name="subbutton_add" id="subbutton_add" value=" 添加选中 " class="B_INPUT">
+<input type="button" name="subbutton_close" id="subbutton_close" value=" 返回对账单 " class="B_INPUT">
+</div>
+</div>
+</form>        
+        
+        
+
+        <%/if%>
+      <%/if%>
+<%/if%>
+
+<script language="javascript" type="text/javascript">
+var MonthlyStatementList_OrderList = new TMonthlyStatementList_OrderList();
+MonthlyStatementList_OrderList.OrderType = {OrderType};
+MonthlyStatementList_OrderList.StoresSupplierID = {StoresSupplierID};
+MonthlyStatementList_OrderList.ini();	
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+function HidBox()
+{
+	MonthlyStatementList_OrderList.HidUserBox();
+}
+</script>
+
+<%template _footer%>

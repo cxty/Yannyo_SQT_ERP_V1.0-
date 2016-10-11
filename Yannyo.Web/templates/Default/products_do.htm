@@ -1,0 +1,318 @@
+﻿<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script type="text/javascript" src="public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="public/js/jquery.bgiframe.js"></script>
+
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<script type="text/javascript" src="public/js/jquery.jUploader-1.01.min.js "></script>
+<script type="text/javascript" src="public/js/product_do.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                
+
+                <tr>
+                  <td  align="right" class="ltd">条码</td>
+                  <td align="left" class="rtd">
+                  <input name="pBarcode" id="pBarcode" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pBarcode}" oldvalue="{pi.pBarcode}" <%/if%> showtitle="只能填写数字格式"
+                  /></td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">名称</td>
+                  <td align="left" class="rtd">
+                  <input name="pName" id="pName" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pName}" oldvalue="{pi.pName}" <%/if%> showtitle="可填写少于50个的中英文字符"
+                  /></td>
+                </tr>
+                  <tr>
+                      <td align="right" class="ltd">名称(EN)</td>
+                      <td align="left" class="rtd">
+                          <input name="pEnName" id="pEnName" type="text"
+                          <%if Act=="Edit"%>value="{pi.pEnName}" oldvalue="{pi.pEnName}" <%/if%> showtitle="可填写少于50个的中英文字符"
+                          />
+                      </td>
+                  </tr>
+				<tr>
+                  <td  align="right" class="ltd">品牌</td>
+                  <td align="left" class="rtd">
+                  <input name="pBrand" id="pBrand" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pBrand}"<%/if%> showtitle="商品的品牌"
+                  /></td>
+                </tr>
+
+				<tr>
+                  <td align="right" class="ltd">分类</td>
+                  <td align="left" class="rtd">
+                  <input type="hidden" id="ProductClassID" name="ProductClassID" 
+                  <%if Act=="Edit"%>value="{pi.ProductClassID}"<%/if%>
+                  />
+                  <input type="text" name="category" id="category" value="" />
+                  <ul id="categorymenu" class="mcdropdown_menu">{ProductClassStr}</ul>
+                  </td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">规格</td>
+                  <td align="left" class="rtd">
+                  <input name="pStandard" id="pStandard" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pStandard}"<%/if%> showtitle="商品的规格"
+                  /></td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">小单位</td>
+                  <td align="left" class="rtd">
+                  <input name="pUnits" id="pUnits" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pUnits}"<%/if%> showtitle="商品的最小计算单位"
+                  /></td>
+                </tr>
+<tr>
+                  <td  align="right" class="ltd">大单位</td>
+                  <td align="left" class="rtd">
+                  <input name="pMaxUnits" id="pMaxUnits" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pMaxUnits}"<%/if%> showtitle="商品的最大计算单位"
+                  /></td>
+                </tr>
+				<tr>
+                  <td  align="right" class="ltd">装件数</td>
+                  <td align="left" class="rtd">1*
+                  <input name="pToBoxNo" id="pToBoxNo" style="width:30px" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pToBoxNo}"<%/if%> showtitle="商品每件装箱的数量"
+                  />
+                  入</td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">默认成本</td>
+                  <td align="left" class="rtd">
+                  <input name="pPrice" id="pPrice" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pPrice}"<%/if%> showtitle="只能填写数字格式"
+                  /></td>
+                </tr>
+				
+				<tr>
+                  <td  align="right" class="ltd">默认售价</td>
+                  <td align="left" class="rtd">
+                  <input name="pSellingPrice" id="pSellingPrice" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pSellingPrice}"<%/if%> showtitle="只能填写数字格式"
+                  /></td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">生产厂家</td>
+                  <td align="left" class="rtd">
+                  <input name="pProducer" id="pProducer" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pProducer}"<%/if%> showtitle="商品的生产厂商"
+                  /></td>
+                </tr>
+				<tr>
+                  <td  align="right" class="ltd">保质期</td>
+                  <td align="left" class="rtd">
+                  <input name="pExpireDay" id="pExpireDay" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pExpireDay}"<%/if%> showtitle="商品的保质期"
+                  /></td>
+                </tr>
+				<tr>
+                  <td  align="right" class="ltd">产地</td>
+                  <td align="left" class="rtd">
+                  <input name="pAddress" id="pAddress" type="text" 
+                  <%if Act=="Edit"%>value="{pi.pAddress}"<%/if%> showtitle="商品的出产地方"
+                  /></td>
+                </tr>
+
+				<tr>
+                  <td align="right" class="ltd">状态:</td>
+                  <td align="left" class="rtd">
+				  <input name="pState" type="checkbox" value="0" id="pState" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if pi.pState.ToString() == "0"%>
+                        checked="checked"
+                    <%/if%>
+                  <%else%>
+						checked="checked"
+                  <%/if%>
+                  />
+                    正常</td>
+                </tr>
+                
+                <tr><td colspan="2" align="center" >自定义字段:<input type="hidden" id="ProductFieldValue" name="ProductFieldValue"/></td></tr>
+                <tbody id="ProductField">
+                </tbody>
+                </table>
+            <div style="height:50px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                  	<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  	<input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+            </form>
+            
+<script language="javascript" type="text/javascript">
+var ProductDo = new TProductDo();
+
+$(document).ready(function (){
+	$("#category").mcDropdown("#categorymenu",{
+		select:function(){
+			var ddarray = this.getValue();
+			if(ddarray.length>0)
+			{
+				ProductDo.iniField(Number(ddarray[0]));
+			}
+		}
+	});
+	ProductDo.ProductFieldValue = '{ProductFieldValueList_Json}';
+	ProductDo.ini();
+});
+<%if Act=="Edit"%>
+$(document).ready(function (){
+var dd = $("#category").mcDropdown();
+		dd.setValue({pi.ProductClassID});
+});
+<%/if%>
+
+$().ready(function(){
+$('#pBarcode').autocomplete('Services/CAjax.aspx',{ 
+			
+			width: 200,
+			scroll: true,
+			autoFill: true,
+			scrollHeight: 200,
+			matchContains: true,
+			dataType: 'json',
+			extraParams:{
+				'do':'GetProductsList',
+				'RCode':Math.random(),
+				'ProductsName':function(){return $('#pBarcode').val();}
+			},
+			parse: function(data) {
+					var rows = [];  
+					var tArray = data.results;
+					 for(var i=0; i<tArray.length; i++){  
+					  rows[rows.length] = {    
+						data:tArray[i].value +"("+ tArray[i].info+")",    
+						value:tArray[i].value,
+						code:tArray[i].info,    
+						result:tArray[i].info    
+						};    
+					  }
+				   return rows; 
+				 },
+			formatItem: function(row, i, max) {  
+				   return row;
+			},
+			formatMatch: function(row, i, max) {
+						return row[i].code; 
+			},
+			formatResult: function(row) { 
+						return row.code;
+			}
+		  }).result(function(event, data, formatted) {
+				$("#pName").val((formatted!=null)?formatted:"");
+			}
+		  );
+});
+
+			function CheckF()
+			{
+				var dd = $("#category").mcDropdown();
+				ProductDo.sub_form();
+				if(dd!=''){
+				var ddarray = dd.getValue();
+				if(ddarray.length>0)
+				{
+					if(Number(ddarray[0])>0){
+						Sys.getObj('ProductClassID').value = Number(ddarray[0]);
+					if(Sys.getObj('pBarcode').value != '')
+					{
+						if(Sys.getObj('pName').value != '')
+						{
+							if(Sys.getObj('pBrand').value != '')
+							{
+								
+									if(Sys.getObj('pUnits').value != '')
+									{
+										if(Sys.getObj('pToBoxNo').value != '')
+										{
+											if(Sys.getObj('pPrice').value != '')
+											{
+												
+												Sys.getObj('bForm').submit();
+											}
+											else
+											{
+												alert('默认成本不能为空!');	
+											}
+										}
+										else
+										{
+											alert('装件数不能为空!');	
+										}
+									}
+									else
+									{
+										alert('单位不能为空!');	
+									}
+								
+							}
+							else
+							{
+								alert('品牌不能为空!');	
+							}
+						}
+						else
+						{
+							alert('名称不能为空!');	
+						}
+						
+					}
+					else
+					{
+						alert('条码不能为空!');	
+					}
+					}else
+				{
+					alert('请选择产品分类!');	
+				}
+				}else
+				{
+					alert('请选择产品分类!');	
+				}
+				}else
+				{
+					alert('请选择产品分类!');	
+				}
+				
+			}
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

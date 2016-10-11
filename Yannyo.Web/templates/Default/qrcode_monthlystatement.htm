@@ -1,0 +1,114 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+            <%if oi!=null%>
+            <h2>对账单编号:{msi.sCode} 该对账单打印时间:{printdatetime}</h2>
+
+            <h2>对账单信息:</h2>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left">单号:{msi.sCode}</td>
+    <td align="left">单位:
+{msi.sObjectName} </td>
+    <td align="left"> 对账单日期:
+      <%set {aspxrewriteurl}=msi.sDateTime.ToString("yyyy-MM-dd")%>
+      {aspxrewriteurl} </td>
+    </tr>
+  <tr>
+    <td align="left">上期余额:{msi.sUpMoney} </td>
+    <td align="left">本期新增金额:{msi.sThisMoney} </td>
+    <td align="left">本期实际对账金额:{msi.sMoney}</td>
+    </tr>
+  <tr>
+    <td align="left">到款金额:{msi.sToMoney}</td>
+    <td colspan="2" align="left">本期余额:{msi.sBalanceMoney}</td>
+    </tr>
+</table>
+
+            <h2>操作记录:</h2>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+                <tr class="tBar">
+                  <td width="25%">操作时间</td>
+                  <td width="20%">操作员</td>
+                  <td width="20%">操作类型</td>
+                  <td>备注</td>
+                </tr>
+                <%if dList != null%>
+          <%loop dl dList%>
+                <tr>
+                  <td>{dl[mAppendTime]}</td>
+                  <td>
+                  <%if dl["UserStaffName"].ToString()==""%>
+            {dl[UserName]}
+            <%else%>
+            {dl[UserStaffName]}
+            <%/if%>
+                  </td>
+                  <td>
+                  <%if dl["mType"].ToString() == "-1"%>
+                  作废
+                  <%/if%>
+                  <%if dl["mType"].ToString() == "0"%>
+                  新开
+                  <%/if%>
+                  <%if dl["mType"].ToString() == "1"%>
+                  修改
+                  <%/if%>
+                  <%if dl["mType"].ToString() == "2"%>
+                  对账确认
+                  <%/if%>
+                  <%if dl["mType"].ToString() == "3"%>
+                  到款
+                  <%/if%>
+                  <%if dl["mType"].ToString() == "4"%>
+                  结账
+                  <%/if%>
+                  <%if dl["mType"].ToString() == "5"%>
+                  打印
+                  <%/if%>
+				  <%if dl["mType"].ToString() == "6"%>
+                  差额去向处理
+                  <%/if%>
+				  <%if dl["mType"].ToString() == "7"%>
+                  随附凭证
+                  <%/if%>
+                  </td>
+                  <td>{dl[mMsg]}</td>
+                </tr>
+                <%/loop%>
+          <%/if%>
+                <tr>
+                  <td colspan="4">
+<%if PageBarHTML!=null%>
+{PageBarHTML}
+<%/if%>
+                  </td>
+                </tr>
+              </table>
+             <%/if%>
+    
+</form>
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

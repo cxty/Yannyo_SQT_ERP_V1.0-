@@ -1,0 +1,31 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+<thead>
+  <tr class="tBar">
+    <td width="5%">序号</td>
+    <td>凭证编号</td>
+    <td width="10%">经办人</td>
+    <td width="10%">金额</td>
+    <td width="10%">发生时间</td>
+    <td width="5%">操作</td>
+  </tr>
+</thead>
+<tbody id="dloop">
+<%if dList!=null%>
+<%loop dl dList%>
+  <tr CertificateID="{dl[CertificateID]}">
+    <td width="5%">{dl__loop__id}</td>
+	<%set {aspxrewriteurl}=Convert.ToDateTime(dl["cDateTime"]).ToString("yyyyMMdd")+"-"+(dl["cNumber"].ToString()).PadLeft(config.CertificateCodeLen,'0')%>
+    <td><a href="javascript:void(0);" onClick="javascript:Certificate_do_box.ShowData({dl[CertificateID]},'{aspxrewriteurl}');">{aspxrewriteurl}</a></td>
+    <td width="10%">{dl[StaffName]}</td>
+    <td width="10%" align="right" class="loop_Money">{dl[cMoney]}
+    <%set {SumMoney}=Convert.ToDecimal(SumMoney+Convert.ToDecimal(dl["cMoney"]))%>
+    </td>
+    <td width="10%" align="right">
+    <%set {aspxrewriteurl}=Convert.ToDateTime(dl["cDateTime"]).ToString("yyyy-MM-dd")%>
+    {aspxrewriteurl}</td>
+    <td width="5%" align="center"><a href="javascript:void(0);" onClick="javascript:Certificate_do_box.Del(this,{dl[CertificateID]})">移除</a></td>
+  </tr>
+<%/loop%>
+<%/if%>
+</tbody>
+</table>

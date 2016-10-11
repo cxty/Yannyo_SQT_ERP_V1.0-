@@ -1,0 +1,87 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="/public/js/comm.js"></script>
+<script type="text/javascript" src="/public/js/xml.js"></script>
+
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+
+
+	<script src="public/js/apmoney_importdata.js" language="javascript" type="text/javascript"></script>
+<%if page_msg!=0%>
+	<%template _popmsgbox%>
+<%else%>
+	<%if page_err!=0%>
+		<%template _poperrmsgbox%>
+	<%else%>
+
+<form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<INPUT TYPE="hidden" NAME="Act" id="Act" value="{Act}" />
+截止日期:
+<%set {aspxrewriteurl}=eDate.ToString("yyyy-MM-dd")%>
+<input name="eDate" id="eDate" onclick="new Calendar().show(this);" type="text" value="{aspxrewriteurl}" style="width:90px" />
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查看" onclick="javascript:Apmoney_ImportdataManage.Search();"  />
+
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="确定导入" onclick="javascript:Apmoney_ImportdataManage.OK();"  />
+<input type="button" id="button6" style="margin:5px" class="B_INPUT" value="退出" onclick="javascript:parent.HidBox();"  />
+</div>
+
+<div class="datalist">
+    
+        <table width="630" border="0" cellspacing="2" cellpadding="0" class="tBox" align="left">
+          <tr class="tBar">
+            
+            <td >名称</td>
+			<td width="70px">入库额</td>
+			<td width="70px">退货额</td>
+			<td width="70px">新增应付</td>
+			<td width="70px">累计应付</td>
+            <td width="70px">累计实付</td>
+			<td width="100px">实际应付</td>
+          </tr>
+          </tr>
+
+        </table>
+		<%if dList != null%>
+		  <div style="overflow:scroll;height:400px;overflow-x:hidden;clear:left;" align="left">
+		  <table width="630px" border="0" cellspacing="2" cellpadding="0" class="tBox"  >
+          <%loop dl dList%>
+		  <%if decimal.Parse(dl["tMoney"].ToString()) != 0%>
+          <tr >
+			<td align="left">{dl[sName]}</td>
+			<td width="70px" align="right">{dl[DeliveryMoney]}</td>
+			<td width="70px" align="right">{dl[ReturnMoney]}</td>
+			<td width="70px" align="right">
+			<INPUT TYPE="text" NAME="_nMoney_{loop_count}" id="_nMoney_{loop_count}" value="{dl[nMoney]}" style="width:55px;text-align:right;">
+			</td>
+			<td width="70px" align="right">{dl[AMoney]}</td>
+			<td width="70px" align="right">{dl[ActualMoney]}</td>
+            <td width="100px" align="right">
+			<input name="_SupplierID_{loop_count}" id="_SupplierID_{loop_count}" type="hidden" value="{dl[SupplierID]}">
+			<INPUT TYPE="text" NAME="_tMoney_{loop_count}" id="_tMoney_{loop_count}" value="{dl[tMoney]}" style="width:85px;text-align:right;">
+			
+			</td>
+          </tr>
+		  <%set {loop_count}={loop_count}+1%>
+		  <%/if%>
+          <%/loop%>
+			</table>
+			</div>
+			<input name="loop_count" id="loop_count" type="hidden" value="{loop_count}">
+          <%/if%>
+</div>
+</form>
+	<script language="javascript" type="text/javascript">
+	var Apmoney_ImportdataManage = new TApmoney_ImportdataManage();
+	Apmoney_ImportdataManage.ini();
+
+	function HidBox()
+	{
+		Apmoney_ImportdataManage.HidUserBox();
+		location.reload();
+	}
+	</script>
+	<%/if%>
+<%/if%>
+<%template _footer%>
+

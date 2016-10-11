@@ -1,0 +1,365 @@
+﻿using System;
+using System.Text;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using Yannyo.Data;
+using Yannyo.Config;
+using Yannyo.Common;
+using Yannyo.Entity;
+
+namespace Yannyo.Data.SqlServer
+{
+    
+    public partial class DataProvider : IDataProvider
+    {
+        #region 仓库报损数据
+        /// <summary>
+        /// 获得仓库名称,仓库编号
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getWorehouseName()
+        {
+            StringBuilder btr = new StringBuilder();
+            btr.Append("select sName,StorageID from tbStorageInfo");
+            DataTable dt= DbHelper.ExecuteDataset(CommandType.Text, btr.ToString()).Tables[0];
+            if (dt.Rows.Count > 0)
+            {
+                return dt;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        /// <summary>
+        /// 根据仓库编号获得产品信息
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <returns></returns>
+        public DataTable getProductsInfoByStorageID(int aid, int sid, DateTime date,DateTime eDate)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inyAssociated",SqlDbType.Int), 
+                          new SqlParameter("@inyStorageID",SqlDbType.Int), 
+                          new SqlParameter("@dtmDate",SqlDbType.DateTime), 
+                          new SqlParameter("@dtmEdate",SqlDbType.DateTime), 
+                                       };
+            parameter[0].Value = aid;
+            parameter[1].Value = sid;
+            parameter[2].Value = date;
+            parameter[3].Value = eDate;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "getStorehouseProductsOfAssociatedDetails", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 调用存储过程获得联营产品报损详情
+        /// </summary>
+        /// <param name="sDate"></param>
+        /// <param name="inyAssociated"></param>
+        /// <param name="inyStorageID"></param>
+        /// <returns></returns>
+        public DataTable bindProductsLoss(DateTime bDate,DateTime eDate, int inyAssociated, int inyStorageID,int export)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@dtmbDate",SqlDbType.DateTime), 
+                          new SqlParameter("@dtmeDate",SqlDbType.DateTime), 
+                          new SqlParameter("@inyAssociated",SqlDbType.Int), 
+                          new SqlParameter("@inyStorageID",SqlDbType.Int), 
+                          new SqlParameter("@inyExport",SqlDbType.Int),
+                                       };
+            parameter[0].Value = bDate;
+            parameter[1].Value = eDate;
+            parameter[2].Value = inyAssociated;
+            parameter[3].Value = inyStorageID;
+            parameter[4].Value = export;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "StorehouseProductsLoss", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 获得仓库产品报损单据编号以及单据时间
+        /// </summary>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="inyStorageID"></param>
+        /// <param name="inyProductsID"></param>
+        /// <returns></returns>
+        public DataTable getProductsLossDetails(DateTime bDate, DateTime eDate, int inyStorageID, int inyProductsID)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@dtmbDate",SqlDbType.DateTime), 
+                          new SqlParameter("@dtmeDate",SqlDbType.DateTime), 
+                          new SqlParameter("@inysID",SqlDbType.Int), 
+                          new SqlParameter("@inypID",SqlDbType.Int), 
+                                       };
+            parameter[0].Value = bDate;
+            parameter[1].Value = eDate;
+            parameter[2].Value = inyStorageID;
+            parameter[3].Value = inyProductsID;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "GetStorehouseLossDetails", parameter).Tables[0];
+        }
+        #endregion
+        #region  联营数据
+        /// <summary>
+        /// 根据区域编号获得门店名称
+        /// </summary>
+        /// <param name="rid"></param>
+        /// <returns></returns>
+        public DataTable getStorehouseNameByRegionID(int rid)
+        {
+            StringBuilder btr = new StringBuilder();
+            btr.Append("select StoresID,sName from tbStoresInfo where RegionID='"+rid+"' and sState=0");
+            return DbHelper.ExecuteDataset(CommandType.Text, btr.ToString()).Tables[0];
+        }
+        /// <summary>
+        /// 获取门店联营产品：包含，剔除，仅包含总数
+        /// </summary>
+        /// <param name="assc"></param>
+        /// <returns></returns>
+        public DataTable getStorehouseProductsDetails(int regionID, int assc, DateTime dtTime)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inyRegoin",SqlDbType.Int),
+                          new SqlParameter("@inyType",SqlDbType.Int), 
+                          new SqlParameter("@dtmDateTime",SqlDbType.DateTime), 
+                                       };
+            parameter[0].Value = regionID;
+            parameter[1].Value = assc;
+            parameter[2].Value = dtTime;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "AssociteProductsDetails", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 联营产品库存详情
+        /// </summary>
+        /// <param name="sID"></param>
+        /// <param name="aID"></param>
+        /// <param name="sDate"></param>
+        /// <returns></returns>
+        public DataTable getProductDetailsByStorehouseID(int sID, int aID,DateTime sDate,int qID)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inyStorehouseID",SqlDbType.Int),
+                          new SqlParameter("@inyAssociteID",SqlDbType.Int), 
+                          new SqlParameter("@dtmDateTime",SqlDbType.DateTime), 
+                          new SqlParameter("@inyQid",SqlDbType.Int),
+                                       };
+            parameter[0].Value = sID;
+            parameter[1].Value = aID;
+            parameter[2].Value = sDate;
+            parameter[3].Value = qID;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "AssociteProductsDetails_do", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 获得门店名称
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getStoresName(DateTime dt)
+        {
+            StringBuilder btr = new StringBuilder();
+
+            btr.Append(" select StoresID,sName from tbStoresInfo"); 
+            btr.Append(" where sState=0 and StoresID in (select StoresID from tbStoreStorehouseInfo");
+            btr.Append(" where pRelityStorage <>0 and pAppendTime='"+dt+"')");
+           
+            return DbHelper.ExecuteDataset(CommandType.Text,btr.ToString()).Tables[0];
+        }
+        /// <summary>
+        /// 导出数据
+        /// </summary>
+        /// <param name="bDate"></param>
+        /// <returns></returns>
+        public DataTable getProductsLossExportData(DateTime bDate,DateTime eDate,int isAssocite)
+        {
+            //仅联营
+            if (isAssocite == 1)
+            {
+              StringBuilder btr = new StringBuilder();
+              btr.Append(" select sp.*,isnull(joinp.pRelityStorage,0) as pRelityStorage from(");
+              btr.Append("  select s.StoresID,p.ProductsID,s.sName,p.pName,p.pBarcode,p.pBrand from");
+		      btr.Append("  (select StoresID,sName from tbStoresInfo where sState=0) as s ,");
+		      btr.Append("  (select ProductsID,pName,pBarcode,pBrand from tbProductsInfo where pState=0 and ProductsID in(");
+              btr.Append("  select ProductsID from tbProductPoolDataInfo where Bdate<='" + bDate + "' and Edate>'" + eDate + "')) as p");
+              btr.Append("  ) as sp left join (");
+              btr.Append("   select ProductsID,StoresID,isnull(sum(pRelityStorage),0) as pRelityStorage from tbStoreStorehouseInfo ");
+              btr.Append("  where pAppendTime='" + bDate + "' and ProductsID in(select ProductsID from tbProductPoolDataInfo ");
+              btr.Append("  where Bdate<='" + bDate + "' and Edate>'" + eDate + "') group by ProductsID,StoresID ) as joinp ");
+		      btr.Append("  on sp.ProductsID=joinp.ProductsID and sp.StoresID=joinp.StoresID");
+                return DbHelper.ExecuteDataset(CommandType.Text, btr.ToString()).Tables[0];
+            }
+            //剔除
+            if (isAssocite == 0)
+            {
+                StringBuilder btr = new StringBuilder();
+                btr.Append(" select sp.*,isnull(joinp.pRelityStorage,0) as pRelityStorage from(");
+                btr.Append("  select s.StoresID,p.ProductsID,s.sName,p.pName,p.pBarcode,p.pBrand from");
+                btr.Append("  (select StoresID,sName from tbStoresInfo where sState=0) as s ,");
+                btr.Append("  (select ProductsID,pName,pBarcode,pBrand from tbProductsInfo where pState=0 and ProductsID not in(");
+                btr.Append("  select ProductsID from tbProductPoolDataInfo where Bdate<='" + bDate + "' and Edate>'" + eDate + "')) as p");
+                btr.Append("  ) as sp left join (");
+                btr.Append("   select ProductsID,StoresID,isnull(sum(pRelityStorage),0) as pRelityStorage from tbStoreStorehouseInfo ");
+                btr.Append("  where pAppendTime='" + bDate + "' and ProductsID not in(select ProductsID from tbProductPoolDataInfo ");
+                btr.Append("  where Bdate<='" + bDate + "' and Edate>'" + eDate + "') group by ProductsID,StoresID ) as joinp ");
+                btr.Append("  on sp.ProductsID=joinp.ProductsID and sp.StoresID=joinp.StoresID");
+                return DbHelper.ExecuteDataset(CommandType.Text, btr.ToString()).Tables[0];
+            }
+            //包含
+            if (isAssocite == -1)
+            {
+                StringBuilder btr = new StringBuilder();
+                btr.Append("select StoresID,ProductsID,sName,pName,pBarcode,pBrand,isnull(sum(pRelityStorage),0) as pRelityStorage from tbStoreStorehouseInfo where pAppendTime='" + bDate + "'");
+                btr.Append("group by StoresID,ProductsID,sName,pName,pBarcode,pBrand order by ProductsID asc");
+                return DbHelper.ExecuteDataset(CommandType.Text, btr.ToString()).Tables[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+        #endregion
+        #region  产品日均销量统计
+        /// <summary>
+        /// 统计购销产品日均销量
+        /// </summary>
+        /// <param name="tTpye"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <returns></returns>
+        public DataTable getProductsDay_Sales_Details(int tTpye, DateTime bDate, DateTime eDate)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inytType",SqlDbType.Int),
+                          new SqlParameter("@bDate",SqlDbType.DateTime), 
+                          new SqlParameter("@eDate",SqlDbType.DateTime), 
+                                       };
+            parameter[0].Value = tTpye;
+            parameter[1].Value = bDate;
+            parameter[2].Value = eDate;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "Products_Sale_Details", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 获得单品日均销量在各门店的详情
+        /// </summary>
+        /// <param name="productsID"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="tType"></param>
+        /// <returns></returns>
+        public DataTable getProducts_Sales_Storehouse(int productsID,DateTime bDate,DateTime eDate,int tType)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inyProductID",SqlDbType.Int),
+                          new SqlParameter("@bDate",SqlDbType.DateTime), 
+                          new SqlParameter("@eDate",SqlDbType.DateTime), 
+                          new SqlParameter("@inytType",SqlDbType.Int),
+                                       };
+            parameter[0].Value = productsID;
+            parameter[1].Value = bDate;
+            parameter[2].Value = eDate;
+            parameter[3].Value = tType;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "Products_sales_storehouse", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 获得产品日均销量同比销量
+        /// </summary>
+        /// <param name="productsID"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="tType"></param>
+        /// <returns></returns>
+        public DataTable getProducts_Sales_Details_year_basis(int tTpye,int productsID,DateTime bDate, DateTime eDate)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inytType",SqlDbType.Int),
+                          new SqlParameter("@intProductsID",SqlDbType.Int),
+                          new SqlParameter("@bDate",SqlDbType.DateTime), 
+                          new SqlParameter("@eDate",SqlDbType.DateTime), 
+                                       };
+            parameter[0].Value = tTpye;
+            parameter[1].Value = productsID;
+            parameter[2].Value = bDate;
+            parameter[3].Value = eDate;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "Products_Sale_Details_year_basis", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 选择月份时候，获得环比产品日均销量
+        /// </summary>
+        /// <param name="tTpye"></param>
+        /// <param name="productsID"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <returns></returns>
+        public DataTable Products_Sale_Details_year_annulus(int tTpye, int productsID, DateTime bDate, DateTime eDate)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inytType",SqlDbType.Int),
+                          new SqlParameter("@intProductsID",SqlDbType.Int),
+                          new SqlParameter("@bDate",SqlDbType.DateTime), 
+                          new SqlParameter("@eDate",SqlDbType.DateTime), 
+                                       };
+            parameter[0].Value = tTpye;
+            parameter[1].Value = productsID;
+            parameter[2].Value = bDate;
+            parameter[3].Value = eDate;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "Products_Sale_Details_year_annulus", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 获得门店销售同比日均销量
+        /// </summary>
+        /// <param name="productsID"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="tType"></param>
+        /// <returns></returns>
+        public DataTable Products_sales_storehouse_basis(int productsID,int storesID, DateTime bDate, DateTime eDate, int tType)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inyProductID",SqlDbType.Int),
+                          new SqlParameter("@inyStoresID",SqlDbType.Int),
+                          new SqlParameter("@bDate",SqlDbType.DateTime), 
+                          new SqlParameter("@eDate",SqlDbType.DateTime), 
+                          new SqlParameter("@inytType",SqlDbType.Int),
+                                       };
+            parameter[0].Value = productsID;
+            parameter[1].Value = storesID;
+            parameter[2].Value = bDate;
+            parameter[3].Value = eDate;
+            parameter[4].Value = tType;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "Products_sales_storehouse_basis", parameter).Tables[0];
+        }
+        /// <summary>
+        /// 获得门店产品环比日均销量
+        /// </summary>
+        /// <param name="productsID"></param>
+        /// <param name="storesID"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="tType"></param>
+        /// <returns></returns>
+        public DataTable Products_sales_storehouse_annulus(int productsID, int storesID, DateTime bDate, DateTime eDate, int tType)
+        {
+            SqlParameter[] parameter = { 
+                          new SqlParameter("@inyProductID",SqlDbType.Int),
+                          new SqlParameter("@inyStoresID",SqlDbType.Int),
+                          new SqlParameter("@bDate",SqlDbType.DateTime), 
+                          new SqlParameter("@eDate",SqlDbType.DateTime), 
+                          new SqlParameter("@inytType",SqlDbType.Int),
+                                       };
+            parameter[0].Value = productsID;
+            parameter[1].Value = storesID;
+            parameter[2].Value = bDate;
+            parameter[3].Value = eDate;
+            parameter[4].Value = tType;
+
+            return DbHelper.ExecuteDataset(CommandType.StoredProcedure, "sp_" + BaseConfigs.GetTablePrefix + "Products_sales_storehouse_annulus", parameter).Tables[0];
+        }
+        #endregion
+    }
+}

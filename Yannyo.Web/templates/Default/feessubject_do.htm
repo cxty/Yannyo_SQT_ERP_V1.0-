@@ -1,0 +1,118 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<script type="text/javascript" src="public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="public/js/jquery.bgiframe.js"></script>
+
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td width="20%" align="right">科目名称:</td>
+                  <td align="left">
+                  <input name="fName" id="fName" type="text" 
+                  <%if Act=="Edit"%>value="{FeesSubject.fName}"<%/if%>
+                  /></td>
+                </tr>
+                <tr>
+                  <td align="right">所属分类:</td>
+                  <td align="left">
+                  <input type="hidden" id="FeesSubjectClassID" name="FeesSubjectClassID" 
+                  <%if Act=="Edit"%>value="{FeesSubject.FeesSubjectClassID}"<%/if%>
+                  />
+                  <input type="text" name="category" id="category" value="" />
+                  <ul id="categorymenu" class="mcdropdown_menu">{FeesSubjectClass}</ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right">科目编号:</td>
+                  <td align="left"><input name="fCode" id="fCode" type="text" 
+                  <%if Act=="Edit"%>value="{FeesSubject.fCode}"<%/if%>
+                  /></td>
+                </tr>
+                <tr>
+                  <td align="right">借贷关系:</td>
+                  <td align="left"><input class="B_Check" name="fDebitCredit" type="radio" value="0" 
+                  <%if Act=="Edit"%>
+                  <%if FeesSubject.fDebitCredit==0%>
+                  checked
+                  <%/if%>
+                  <%else%>
+                  checked
+                  <%/if%>
+                  >借<input class="B_Check" name="fDebitCredit" type="radio" value="1"
+                  <%if Act=="Edit"%>
+                  <%if FeesSubject.fDebitCredit==1%>
+                  checked
+                  <%/if%>
+                  <%/if%>
+                  >贷</td>
+                </tr>
+                
+                <tr>
+                  <td colspan="2" align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+    
+</form>
+<script language="javascript" type="text/javascript">
+$(document).ready(function (){
+	$("#category").mcDropdown("#categorymenu");
+});
+<%if Act=="Edit"%>
+$(document).ready(function (){
+var dd = $("#category").mcDropdown();
+		dd.setValue({FeesSubject.FeesSubjectClassID});
+});
+<%/if%>
+function CheckF()
+{
+	var dd = $("#category").mcDropdown();
+	if(dd!=''){
+		var ddarray = dd.getValue();
+		if(ddarray.length>0)
+		{
+			if(Number(ddarray[0])>0){
+				Sys.getObj('FeesSubjectClassID').value = Number(ddarray[0]);
+					if(Sys.getObj('fName').value != '')
+					{
+	
+						Sys.getObj('bForm').submit();
+	
+					}else
+					{
+						alert('科目名称不能为空!');	
+					}
+			}else
+			{
+				alert('请选择科目分类!');	
+			}
+		}else
+		{
+			alert('请选择科目分类!');	
+		}
+	}else
+	{
+		alert('请选择科目分类!');	
+	}
+}
+</script>
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

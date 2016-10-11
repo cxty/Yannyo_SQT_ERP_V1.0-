@@ -1,0 +1,75 @@
+﻿<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+
+<div id="print_box">
+            <form name="bForm" id="bForm" action="" method="post" class="print_box">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="print_box_top">
+                  <td align="center">
+&nbsp;
+{config.CompanyName}
+                  <%set {aspxrewriteurl}=GetOrderType(ordertype.ToString())%>
+                  {aspxrewriteurl}单
+                  <%if oi.oState==1%>
+                  	(已经作废)
+                  <%else%>
+                      
+                      <br>注:*内部配货用*
+                      
+                  <%/if%>
+&nbsp;
+<br><br>
+                  </td>
+                </tr>
+                <tr>
+                
+                  <td align="left" valign="top" >
+                  <!--采购-->
+                  <%if ordertype==1 || ordertype ==2%>
+                  	<%template _storage_order_print_a%>
+                  <%/if%>
+                  <!--销售-->
+                  <%if ordertype==3 || ordertype == 4 || ordertype==5 || ordertype==6 || ordertype==7 || ordertype==11%>
+                  	<%if IsMOrder == true%>
+                    	<%template _storage_order_print_e%>
+                  	<%else%>
+                  		<%template _storage_order_print_b%>
+                    <%/if%>
+                  <%/if%>
+                  <!--调整,坏货-->
+                  <%if ordertype==8 || ordertype==10%>
+	                  <%template _storage_order_print_c%>
+                  <%/if%>
+                  <!--调拨-->
+                  <%if ordertype==9%>
+                  	  <%template _storage_order_print_d%>
+                  <%/if%>
+                  </td>
+                  
+                </tr>
+              </table>
+              
+              
+			</form>
+</div>
+<div style="page-break-after: always"></div>
+
+<%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

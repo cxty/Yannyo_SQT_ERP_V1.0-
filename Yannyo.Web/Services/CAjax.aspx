@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" validateRequest="false" CodeBehind="CAjax.aspx.cs" Inherits="Yannyo.Web.Services.CAjax" %>

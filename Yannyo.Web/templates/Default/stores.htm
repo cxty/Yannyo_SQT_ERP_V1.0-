@@ -1,0 +1,113 @@
+<%template _header%>
+
+
+<script src="public/js/stores.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<div class="toolbox">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:StoresManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:StoresManage.ShowAddUserBox();"  />
+<!--<input type="button" id="button6" style="margin:5px" class="B_INPUT" value="自动导入" onclick="javascript:StoresManage.ShowImportBox();"  />-->
+
+<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}">
+状态:
+    <select id="sState" name="sState" >
+    <option value="-1" <%if sState==-1%> selected="selected"<%/if%>>全部</option>
+	<option value="0" <%if sState==0%> selected="selected"<%/if%>>正常</option>
+	<option value="1" <%if sState==1%> selected="selected"<%/if%>>屏蔽</option>
+    </select>
+<INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:StoresManage.Search();"  />
+
+    <input type="button" id="button5" style="margin:5px" class="B_INPUT" value="导入导出" onclick="javascript:StoresManage.dataAct();" />
+</div>
+<div class="list_title">
+客户列表
+</div>
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td >名称</td>
+			<td width="8%">编号</td>
+			<td width="5%">类型</td>
+            <td width="10%">客户分类</td>
+			<td width="10%">价格分类</td>
+			<td width="10%">超市系统</td>
+			<td width="10%">结算系统</td>
+			<td width="10%">地区</td>
+			<td width="5%">对账日</td>
+			<td width="10%">期初应收款</td>
+			<td width="5%">状态</td>
+            <!--<td width="10%">创建时间</td>-->
+            <td width="5%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[StoresID]}" />
+            </td>
+            <td><a href="javascript:void(0);" onclick="javascript:StoresManage.ShowEditUserBox({dl[StoresID]});">{dl[sName]}</a></td>
+			<td>{dl[sCode]}</td>
+			<td>{dl[sType]}</td>
+            <td>{dl[CustomersClassName]}</td>
+			<td>{dl[PriceClassName]}</td>
+			<td>{dl[YHsysName]}</td>
+			<td>{dl[PaymentSystemName]}</td>
+			<td><%set {aspxrewriteurl} = GetRegionPaterStr(dl["RegionID"].ToString())%>{aspxrewriteurl}</td>
+
+			<td width="5%" align="right">{dl[sDoDay]}</td>
+			<td width="5%" align="right">{dl[sDoDayMoney]}</td>
+
+			<td>
+			<%if dl["sState"].ToString() == "0"%>
+            正常
+            <%/if%>
+            <%if dl["sState"].ToString() == "1"%>
+            屏蔽
+            <%/if%>
+			</td>
+            <!--<td>{dl[sAppendTime]}</td>-->
+            <td>
+			<nobr>
+			<a href="javascript:void(0);" onclick="javascript:StoresManage.ShowDelUserBox({dl[StoresID]});">删除</a> 
+			<a href="javascript:void(0);" onclick="javascript:StoresManage.ShowEditUserBox({dl[StoresID]});">修改</a>
+			</nobr>
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="13"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+
+      <%/if%>
+    
+	</form></div>
+<script language="javascript" type="text/javascript">
+var StoresManage = new TStoresManage();
+StoresManage.ini();
+
+function HidBox()
+{
+	StoresManage.HidUserBox();
+	//location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,22 @@
+<%template _pageheader%>
+<body>
+<div class="top">
+  <div class="top_inner">
+    <div class="sitelink">
+	<%if {userid}>0%>
+	<a>您好 {username} </a><span class="separator">|</span>
+	
+
+	<a href="https://docs.google.com/a/bdu9.com" target="_blank">企业文档</a> <span class="separator">|</span> <a href="https://mail.google.com/a/bdu9.com" target="_blank">企业邮箱</a> <span class="separator">|</span> <a href="mailto:cxty@qq.com">反馈</a> 
+
+	<span class="separator">|</span> <a href="javascript:void(0);" id="top_edit_pwd">修改密码</a>
+	<span class="separator">|</span> <a href="javascript:void(0);" id="top_clear_caches">清理缓存</a>	
+	<span class="separator">|</span> <a href="logout.aspx">退出系统</a>
+	<%/if%>
+	</div>
+   <span class="logo">{config.Systitle}</span>
+  </div>
+	<%if {userid}>0%>
+	<%template _toolbar%>
+	<%/if%>
+</div>

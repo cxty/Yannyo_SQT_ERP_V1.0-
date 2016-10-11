@@ -1,0 +1,74 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <form name="bForm" id="bForm" action="" method="post">
+        <h2>凭证编号:{ci.cCode}</h2>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+                <tr class="tBar">
+                  <td width="25%">操作时间</td>
+                  <td width="20%">操作员</td>
+                  <td width="20%">操作类型</td>
+                  <td>备注</td>
+                </tr>
+                <%if dList != null%>
+          <%loop dl dList%>
+                <tr>
+                  <td>{dl[cAppendTime]}</td>
+                  <td>
+                  <%if dl["UserStaffName"].ToString()==""%>
+            {dl[UserName]}
+            <%else%>
+            {dl[UserStaffName]}
+            <%/if%>
+                  </td>
+                  <td>
+                  <%if dl["cType"].ToString() == "-1"%>
+                  作废
+                  <%/if%>
+                  <%if dl["cType"].ToString() == "0"%>
+                  新建
+                  <%/if%>
+                  <%if dl["cType"].ToString() == "1"%>
+                  修改
+                  <%/if%>
+                  <%if dl["cType"].ToString() == "2"%>
+                  审核
+                  <%/if%>
+                  <%if dl["cType"].ToString() == "3"%>
+                  打印
+                  <%/if%>
+                  <%if dl["cType"].ToString() == "4"%>
+                  撤回重审
+                  <%/if%>
+				  
+                  </td>
+                  <td>{dl[cMsg]}</td>
+                </tr>
+                <%/loop%>
+          <%/if%>
+
+              </table>
+        </form>
+        
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

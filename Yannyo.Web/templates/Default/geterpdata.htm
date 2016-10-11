@@ -1,0 +1,93 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" src="public/js/GetErpData.js"></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td colspan="2" align="left"><h1>获取Erp系统单据数据</h1></td>
+                </tr>
+                
+                
+
+				<tr>
+                  <td  align="right"><nobr>起始时间</nobr></td>
+                  <td align="left">
+                  <input name="bDateTime" id="bDateTime" onclick="new Calendar().show(this);"  type="text" >
+                  </td>
+                </tr>
+					
+
+				<tr>
+                  <td  align="right">结束时间</td>
+                  <td align="left">
+                  <input name="eDateTime" id="eDateTime" onclick="new Calendar().show(this);" type="text" >
+                  </td>
+                </tr>
+				
+				<tr>
+                  <td  align="right" width="20%">产品列表</td>
+                  <td align="left" id="productlist">
+				  <img src="images/loading.gif" />加载中请稍后...
+				  </td>
+                </tr>
+
+				<tr>
+                  <td  align="right" width="20%"></td>
+                  <td align="left" >
+				  <span id="productlistMsg"></span><br/>
+				  <span id="productlistMsgB"></span>
+				  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="2" align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定开始获取" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+    
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+			var GetErpData = new TGetErpData();
+			GetErpData.ini();
+
+			function CheckF()
+			{
+				if(Sys.getObj('bDateTime').value != '')
+				{
+					if(Sys.getObj('eDateTime').value != '')
+					{
+						GetErpData.Go(0,0,0);
+					}else
+					{
+						alert('结束时间不能为空!');	
+					}
+				}else
+				{
+					alert('起始时间不能为空!');	
+				}
+			}
+			</script>
+           
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

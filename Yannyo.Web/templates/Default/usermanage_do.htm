@@ -1,0 +1,207 @@
+﻿<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="/public/js/usermanagedo.js"></script>
+
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="left" valign="top">
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td width="20%" align="right">登录名:</td>
+                  <td align="left">
+                  <input name="uName" id="uName" type="text" showtitle="可填写少于50个的中英文字符"
+                  <%if Act=="Edit"%>value="{ui.uName}"<%/if%>
+                  /></td>
+                </tr>
+                <tr>
+                  <td align="right">密码:</td>
+                  <td align="left">
+                  <input name="uPWD" id="uPWD" type="password" showtitle="修改操作员时,留空表示不修改密码" /><input name="uPWD_Old" id="uPWD_Old" type="hidden" 
+                  <%if Act=="Edit"%>value="{ui.uPWD}"<%/if%>
+                  /></td>
+                </tr>
+                <tr>
+                  <td align="right">人员:</td>
+                  <td align="left">
+                  <input name="StaffName" id="StaffName" type="text" showtitle="人事管理中的人员名称,在弹出的列表中选择即可(可用*号检索)"
+<%if Act=="Edit"%>value="{ui.StaffName}"<%/if%>
+/>
+<INPUT TYPE="hidden" NAME="StaffID" id="StaffID" 
+<%if Act=="Edit"%>value="{ui.StaffID}"<%/if%>
+/>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right">用户组:</td>
+                  <td align="left">
+                  <select id="uType" name="uType" >
+                  <%if Act=="Edit"%>
+
+                  <option value="0" Popedoms="{ui.uPermissions}" 
+                  <%if ui.uType.ToString() == "0"%>
+                  selected
+                  <%/if%>
+                  >未分组</option>
+
+                  <%else%>
+                  <option value="0" Popedoms="" >未分组</option>
+                  <%/if%>
+                  
+                  <%if UserTypeList!=null%>
+                  <%loop ut UserTypeList%>
+                  <option value="{ut[ID]}" Popedoms="{ut[Popedoms]}"
+                  <%if Act=="Edit"%>
+                  <%if ui.uType.ToString() == ut["ID"].ToString()%>
+                  selected
+                  <%/if%>
+                  <%/if%>
+                  >{ut[Name]}</option>
+                  <%/loop%>
+                  <%/if%>
+                  </select>
+                  </td>
+                </tr>
+                <tr>
+                	<td align="right">仓库:</td>
+                    <td>
+                    	<input name="StorageIDStr" type="checkbox" value="x" id="All_Storage" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if ui.StorageIDStr.ToString() == "x"%>
+                        checked="checked"
+                    <%/if%>
+                  <%else%>
+                  	checked="checked"
+                  <%/if%>
+                  />全部<br>
+                  <div style="width:100%;
+                  height:180px;
+                  overflow:auto;">
+                  <%if StorageList != null%>
+                  	<%loop sl StorageList%>
+                    	<nobr><input name="StorageIDStr" type="checkbox" value="{sl[StorageID]}" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if ui.StorageIDStr.ToString().IndexOf(","+sl["StorageID"].ToString()+",")>-1%>
+                        checked="checked"
+                    <%/if%>
+                  <%/if%>
+                  />{sl[sName]}</nobr>
+                    <%/loop%>
+                  <%/if%>
+                  </div>
+                    </td>
+                </tr>
+                <tr>
+                  <td align="right">状态:</td>
+                  <td align="left"><input name="uEstate" type="checkbox" value="0" id="uEstate" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if ui.uEstate.ToString() == "0"%>
+                        checked="checked"
+                    <%/if%>
+                  <%/if%>
+                  />
+                    正常</td>
+                </tr>
+
+              </table>
+                  
+                  </td>
+                  <td align="left" valign="top">
+                  权限:
+                  <div id="UserPopedomList" class="UserPopedomList" style="height:300px;overflow:scroll;"><img src="images/loading.gif" />加载中</div>
+                  </td>
+                </tr>
+              </table>
+<div style="height:30px"></div>
+<div id="footer_tool">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:UserManageDo.sub();"/>
+<input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+</div>
+			  
+<INPUT TYPE="hidden" NAME="uPermissions" id="uPermissions">
+</form>
+<script language="javascript" type="text/javascript">
+var UserManageDo = new TUserManageDo();
+<%if Act=="Edit"%>
+UserManageDo.Permissions = '{ui.uPermissions}';
+<%/if%>
+
+
+$().ready(function(){
+$('#StaffName').autocomplete('Services/CAjax.aspx',{
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStaffList',
+			'RCode':Math.random(),
+			'sType':-1,
+			'StaffName':function(){return $('#StaffName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StaffID").val((formatted!=null)?formatted:"0");      
+		}
+	  );
+	  
+	  $("#UserPopedomList").jstree({   
+
+         "json_data":{"data":[{UserPopedomJson}]},  
+
+         "plugins" : [ "themes", "json_data", "ui", "crrm", "types", "hotkeys", "checkbox" ] 
+
+     });
+	$("#UserPopedomList").jstree('open_all');
+	UserManageDo.Checked();
+
+});
+
+
+UserManageDo.ini();
+</script>
+
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

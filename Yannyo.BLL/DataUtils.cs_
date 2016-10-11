@@ -1,0 +1,226 @@
+﻿using System;
+using System.Data;
+using System.Data.Common;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
+
+using Yannyo.Common;
+using Yannyo.Data;
+using Yannyo.Config;
+using Yannyo.Entity;
+using System.Collections.Generic;
+
+namespace Yannyo.BLL
+{
+    public class DataUtils
+    {
+        public static DataTable GetSales_analysis(int StoresID, int StaffID, int StaffIDB, string Brand, int RegionID, int ProductID, int YHsysID, DateTime bDate, DateTime eDate, int ShowType, int DateType, out decimal AllSumValue)
+        {
+            return DatabaseProvider.GetInstance().GetSales_analysis(StoresID, StaffID, StaffIDB, Brand, RegionID, ProductID, YHsysID, bDate, eDate, ShowType, DateType, out AllSumValue);
+        }
+        /// <summary>
+        /// 返回一个时间段内指定格式的日期，dType:1=日,2=月,3=年
+        /// </summary>
+        public static DataTable GetDateTimeList(DateTime bDate, DateTime eDate, int dType)
+        {
+            return DatabaseProvider.GetInstance().GetDateTimeList(bDate, eDate, dType);
+        }
+        /// <summary>
+        /// 返回一个时间段内:销售额,成本,退货,坏货,赠品,销售费用,公司费用
+        /// </summary>
+        /// <param name="dType">类型(7:综合(含公司费用), 1:门店/客户, 2:业务员, 3:促销员, 4:产品, 5:品牌, 6:系统)</param>
+        public static DataTable GetErpData_analysis(DateTime bDate, DateTime eDate, int dType)
+        {
+            return DatabaseProvider.GetInstance().GetErpData_analysis(bDate, eDate, dType);
+        }
+        /// <summary>
+        /// 返回一个时间段内:销售额,成本,退货,坏货,赠品,销售费用,公司费用
+        /// </summary>
+        /// <param name="dType">类型(7:综合(含公司费用), 1:门店/客户, 2:业务员, 3:促销员, 4:产品, 5:品牌, 6:系统)</param>
+        /// <param name="StoresID">@StoresID int = 0,			--门店客户编号</param>
+        /// <param name="StaffID">@StaffID int = 0,			--业务员编号</param>
+        /// <param name="StaffIDB">@StaffIDB int = 0,			--促销员编号</param>
+        /// <param name="Brand">@Brand varchar(128) = '',	--品牌名称,模糊</param>
+        /// <param name="RegionID">@RegionID int = 0,			--地区编号</param>
+        /// <param name="ProductID">@ProductID int = 0,			--产品编号</param>
+        /// <param name="YHsysID">@YHsysID int = 0			--系统编号</param>
+        public static DataTable GetErpData_analysis(DateTime bDate, DateTime eDate, int dType, int StoresID, int StaffID, int StaffIDB, string Brand, int RegionID, int ProductID, int YHsysID)
+        {
+            return DatabaseProvider.GetInstance().GetErpData_analysis(bDate, eDate, dType, StoresID, StaffID, StaffIDB, Brand, RegionID, ProductID, YHsysID);
+        }
+        /// <summary>
+        /// 返回一个时间段内:费用
+        /// </summary>
+        /// <param name="mType">类型(销售费用=0,公司管理费用=1)</param>
+        public static DataTable Get_Fees_analysis(DateTime bDate, DateTime eDate, int mType)
+        {
+            return DatabaseProvider.GetInstance().Get_Fees_analysis(bDate, eDate, mType);
+        }
+        /// <summary>
+        /// 库存情况
+        /// </summary>
+        /// <param name="storageid">仓库编号</param>
+        /// <param name="eDate">库存点</param>
+        /// <param name="ProductID">产品编号</param>
+        public static DataTable GetStock_analysis(int storageid, DateTime eDate, int ProductID)
+        {
+            return DatabaseProvider.GetInstance().GetStock_analysis(storageid, eDate, ProductID);
+        }
+
+        /// <summary>
+        /// 应收应付
+        /// </summary>
+        /// <param name="gettype">客户应收=0,人员应收=1,供货商应付=2,人员应付=3</param>
+        /// <param name="eDate">截止时间点</param>
+        /// <param name="ObjID">指定对象编号</param>
+        public static DataTable GetAPARMoney(int gettype, DateTime eDate, int ObjID)
+        {
+            return DatabaseProvider.GetInstance().GetAPARMoney(gettype, eDate, ObjID);
+        }
+        /// <summary>
+        /// 返回净资产
+        /// </summary>
+        /// <param name="eDate">截止时间点</param>
+        public static DataTable GetNetAssets(DateTime eDate)
+        {
+            return DatabaseProvider.GetInstance().GetNetAssets(eDate);
+        }
+        /// <summary>
+        /// 返回人员带身份证列表
+        /// </summary>
+        public static DataTable GetStaffBirthdayList()
+        {
+            return DatabaseProvider.GetInstance().GetStaffBirthdayList();
+        }
+        /// <summary>
+        /// 取指定门店的费用明细
+        /// </summary>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="StoresID"></param>
+        /// <returns></returns>
+        public static DataTable Get_Fees_by_StoresID(DateTime bDate, DateTime eDate, int StoresID)
+        {
+            return DatabaseProvider.GetInstance().Get_Fees_by_StoresID(bDate, eDate, StoresID);
+        }
+
+        /// <summary>
+        /// 取指定科目费用明细
+        /// </summary>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="FeesSubjectID"></param>
+        /// <returns></returns>
+        public static DataTable Get_Fees_by_FeesSubjectID(DateTime bDate, DateTime eDate, int FeesSubjectID)
+        {
+            return DatabaseProvider.GetInstance().Get_Fees_by_FeesSubjectID(bDate, eDate, FeesSubjectID);
+        }
+
+        /// <summary>
+        /// 取销售统计表
+        /// </summary>
+        /// <param name="ReType">商品销售=1,客户销售=2,销售成本,利润=3</param>
+        /// <param name="bDate">开始时间</param>
+        /// <param name="eDate">结束时间</param>
+        /// <param name="NOJoinSales">是否剔除联营数据</param>
+        /// <returns></returns>
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales);
+        }
+        /// <summary>
+        /// 取销售统计表
+        /// </summary>
+        /// <param name="ReType"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="NOJoinSales"></param>
+        /// <param name="StoresID"></param>
+        /// <returns></returns>
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID);
+        }
+        /// <summary>
+        /// 取销售统计表
+        /// </summary>
+        /// <param name="ReType"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="NOJoinSales"></param>
+        /// <param name="StoresID"></param>
+        /// <param name="PaymentSystemID"></param>
+        /// <returns></returns>
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID, int PaymentSystemID)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID, PaymentSystemID);
+        }
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID, int PaymentSystemID, int oSteps)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID, PaymentSystemID, oSteps);
+        }
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID, int PaymentSystemID, int oSteps, int dType)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID, PaymentSystemID, oSteps, dType);
+        }
+        public static DataTable GetSalesReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales, int StoresID, int PaymentSystemID, int oSteps, int dType, int CostPrice)
+        {
+            return DatabaseProvider.GetInstance().GetSalesReport(ReType, bDate, eDate, NOJoinSales, StoresID, PaymentSystemID, oSteps, dType, CostPrice);
+        }
+        /// <summary>
+        /// 取进货统计表
+        /// </summary>
+        /// <param name="ReType"></param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <returns></returns>
+        public static DataTable GetPurchaseReport(int ReType, DateTime bDate, DateTime eDate)
+        {
+            return DatabaseProvider.GetInstance().GetPurchaseReport( ReType,  bDate,  eDate);
+        }
+        /// <summary>
+        /// 出库统计
+        /// </summary>
+        /// <param name="ReType">商品=1,客户=2</param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <param name="NOJoinSales"></param>
+        /// <returns></returns>
+        public static DataTable GetOutReport(int ReType, DateTime bDate, DateTime eDate, int NOJoinSales)
+        {
+            return DatabaseProvider.GetInstance().GetOutReport(ReType, bDate, eDate, NOJoinSales);
+        }
+        /// <summary>
+        /// 去除重复项
+        /// </summary>
+        /// <param name="needToPurge"></param>
+        public static void Purge(ref List<string> needToPurge)
+        {
+            for (int i = 0; i < needToPurge.Count - 1; i++)
+            {
+                string deststring = needToPurge[i];
+                for (int j = i + 1; j < needToPurge.Count; j++)
+                {
+                    if (deststring.CompareTo(needToPurge[j]) == 0)
+                    {
+                        needToPurge.RemoveAt(j);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 返回客户销售统计数据
+        /// </summary>
+        /// <param name="ShowType">显示类型,1=按客户,2=业务员,3=促销员,4=产品,5=品牌(产品分类),6=系统</param>
+        /// <param name="bDate"></param>
+        /// <param name="eDate"></param>
+        /// <returns></returns>
+        public static DataTable GetCustomers_DataAnalysis(int ShowType, DateTime bDate, DateTime eDate, out decimal AllSumMoney)
+        {
+            return DatabaseProvider.GetInstance().GetCustomers_DataAnalysis(ShowType, bDate, eDate, out AllSumMoney);
+        }
+    }
+}

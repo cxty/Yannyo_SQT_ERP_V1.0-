@@ -1,0 +1,155 @@
+﻿<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="/public/js/jquery.js"></script>
+        <script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+        <script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+        <link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+        <link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+        <script type="text/javascript" language="javascript" src="/public/js/myFrontPageJs/feessubjectclass_do_move.js"></script>
+       <form name="bForm" id="bForm" action="" method="post">
+  <table width="100%" border="0" cellspacing="2" cellpadding="2" style="background-color:#EDEDED">
+  <tr class="tBar">
+    <td align="left" colspan="3" style="width:100%;background-color:#cccccc"><b>当前选择:{sName}</b>
+    <input type="hidden" id="FeesSubjectID" name="FeesSubjectID" />
+    <input type="hidden" id="FeesSubjectName" name="FeesSubjectName" />
+    <input type="hidden" id="sFeeID" name="sFeeID" value="{sID}" />
+    <input type="hidden" id="lastName" name="lastName"  value="{sName}" />
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3"></td>
+  </tr>
+  <tr>
+  <td style="width:48%">
+  <div align="center" style="height:372px;width:100%; overflow-y:scroll;background-color:#ffffff; border:1px solid #cccccc">
+    <table id="edTable" width="100%" border="0" cellspacing="2" cellpadding="2">
+        <tr class="tBar">
+            <td width="1%" rowspan="2" align="center" style="width:10%"><input type="checkbox" id="cheAll" name="cheAll" style="width:25px"/></td>
+            <td align="center" rowspan="2" style="width:25%">凭证编号</td>
+            <td align="center" colspan="2" style="width:35%">凭证金额</td>
+            <td align="center" rowspan="2" style="width:15%">经办人</td>
+            </tr>
+        <tr class="tBar">
+            <td align="center">金额</td>
+            <td align="center"><nobr>借贷关系</nobr></td>
+        </tr>
+        <%if cList !=null%>
+        <%loop cl cList%>
+        <tr class="tBar" style="font-weight:normal">
+            <td align="center" style="width:10%"><input type="checkbox" class="checkID" name="checkID" value="{cl[CertificateDataID]}" style="width:25px"/></td>
+            <td align="left" style="width:15%">
+<nobr>
+<%set {aspxrewriteurl}=Convert.ToDateTime(cl["cDateTime"]).ToString("yyyyMMdd")+"-"+(cl["cNumber"].ToString()).PadLeft(config.CertificateCodeLen,'0')%>
+{aspxrewriteurl}
+</nobr>
+            </td>
+            <td align="right"><nobr>
+            <%if cl["cdMoney"].ToString() !="0.0000"%>
+            <%set {aspxrewriteurl}=decimal.Round(Convert.ToDecimal({cl[cdMoney]}),2).ToString()%>
+            {aspxrewriteurl}<%/if%>
+            <%if cl["cdMoneyB"].ToString() !="0.0000"%>
+            <%set {aspxrewriteurl}=decimal.Round(Convert.ToDecimal({cl[cdMoneyB]}),2).ToString()%>
+            {aspxrewriteurl}<%/if%></nobr>
+            </td>
+            <td align="center">
+            <%if cl["cdMoney"].ToString() !="0.0000"%>借方<%/if%>
+            <%if cl["cdMoneyB"].ToString() !="0.0000"%>贷方<%/if%>
+            </td>
+            <td align="center" style="width:15%">{cl[sName]}</td>
+            </tr>
+        <%/loop%>
+        <%/if%>
+    </table>
+    </div>
+  </td>
+  <td align="center" style="width:4%"><b>→</b></td>
+   <td style="width:48%">
+      <table width="100%" border="0" cellspacing="2" cellpadding="2">
+        <tr>
+            <td>
+              <div id="treeNode" class="treeNode" style="width:100%;height:370px; border:1px solid #cccccc; overflow-y:scroll"></div>
+            </td>
+        </tr>
+      </table>
+  </td>
+  </tr>
+  <tr class="tBar">
+  <td colspan="3" style="background-color:#EDEDED">注意：将左边科目下凭证号选中后，选中右边科目，将会将左边所选凭证数据移至后边所选科目下！</td>
+  </tr>
+</table>
+   <div style=" width:100%; position:fixed;bottom:0px; background-color:#8E8E8E;">
+    <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
+        <tr>
+            <td colspan="2" align="center"><input type="button" name="bt_ok" id="bt_ok" value=" 确定 " class="B_INPUT">&nbsp; &nbsp;<input type="button" name="bt_cancel" id="bt_cancel" value=" 取消 " class="B_INPUT" onClick="javascript:window.parent.HidBox();"></td>
+        </tr>
+    </table>
+    </div>
+     <div id="winAll">
+          <div id="winLoding"><img alt="" id="images" src="/images/loading17.gif" style="visibility:visible"/>数据移动中...</div>
+         </div>  
+</form>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () { 
+        //科目树
+        $("#treeNode").jstree({   
+            "json_data":{"data":[{"data":"科目","state":"closed","children":[{FeesSubjectJson}]}
+					]}, 
+	
+	    "types" : {  
+			"valid_children" : [ "dt" ],  
+			"types" : {
+				"dt" : {
+					"icon" : { 
+					"image" : "/images/dot.png" 
+				},
+					"valid_children" : [ "default" ],
+					"max_depth" : 2,
+					"hover_node" : true,
+					"open_node":false,
+					"select_node" : true
+				},
+			"root":{
+				    "valid_children" : [ "default" ],
+				    "hover_node" : false,
+				    "select_node" : function () {return false;}
+				}      
+			}  
+	    }, 
+        "core" : { 
+				"initially_open" : [ "t_0" ]
+			},	
+		"ui":{},
+		"lang":{     
+                 loading : "加载中……"    
+             },
+	    "plugins" : [ "themes", "json_data", "ui", "crrm", "types", "hotkeys","cCode"],
+	
+	}).bind("select_node.jstree", function (e,data) {
+		var sID = data.rslt.obj.attr("id").replace('t_','');
+        var sName = data.rslt.obj.context.text;
+        $("#FeesSubjectID").val(sID);
+        $("#FeesSubjectName").val(sName);
+	    });
+    });
+   
+</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

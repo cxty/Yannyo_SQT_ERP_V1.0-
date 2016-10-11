@@ -1,0 +1,123 @@
+<%template _header%>
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+<script src="public/js/PriceClassDefaultPrice.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="PriceClassDefaultPrice">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<form action="" method="post" name="form1" id="form1">      
+<div class="toolbar">
+<div class="toolbox">
+商品:<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}">
+<INPUT TYPE="hidden" NAME="ProductID" id="ProductID" value="{ProductID}">
+<INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:PriceClassDefaultPrice.Search();"  />
+</div>
+<div class="list_title">
+价格类型默认价格
+</div>
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td width="10%">条码</td>
+            <td >名称</td>
+            <td width="10%">分类</td>
+            <td width="10%">规格</td>
+
+            <td width="5%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[ProductsID]}" />
+            
+            </td>
+            <td><a href="javascript:void(0);" onclick="javascript:PriceClassDefaultPrice.ShowEditUserBox({dl[ProductsID]});">{dl[pBarcode]}</a></td>
+            <td><a href="javascript:void(0);" onclick="javascript:PriceClassDefaultPrice.ShowEditUserBox({dl[ProductsID]});">{dl[pName]}</a></td>
+            <td>{dl[ProductClass]}</td>
+            <td>{dl[pStandard]}</td>
+
+            <td>
+			<a href="javascript:void(0);" onclick="javascript:PriceClassDefaultPrice.ShowEditUserBox({dl[ProductsID]});">设置</a></td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="6">
+			<%if PageBarHTML!=null%>
+			{PageBarHTML}
+			<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+
+      <%/if%>
+    
+</form></div>
+<script language="javascript" type="text/javascript">
+$().ready(function(){
+	$('#S_key').autocomplete('Services/CAjax.aspx',{ 
+			
+			width: 200,
+			scroll: true,
+			autoFill: true,
+			scrollHeight: 200,
+			matchContains: true,
+			dataType: 'json',
+			extraParams:{
+				'do':'GetProductsList',
+				'RCode':Math.random(),
+				'ProductsName':function(){return $('#S_key').val();}
+			},
+			parse: function(data) {
+					var rows = [];  
+					var tArray = data.results;
+					 for(var i=0; i<tArray.length; i++){  
+					  rows[rows.length] = {    
+						data:tArray[i].value +"("+ tArray[i].info+")",    
+						value:tArray[i].id,    
+						result:tArray[i].value    
+						};    
+					  }
+				   return rows; 
+				 },
+			formatItem: function(row, i, max) {  
+				   return row;
+			},
+			formatMatch: function(row, i, max) {
+						return row.value; 
+			},
+			formatResult: function(row) { 
+						return row.value;
+			}
+		  }).result(function(event, data, formatted) {
+				$("#ProductID").val((formatted!=null)?formatted:"0");
+			}
+		  );
+});
+
+
+var PriceClassDefaultPrice = new TPriceClassDefaultPrice();
+PriceClassDefaultPrice.ini();
+
+function HidBox()
+{
+	PriceClassDefaultPrice.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+
+<%template _copyright%>
+<%template _footer%>

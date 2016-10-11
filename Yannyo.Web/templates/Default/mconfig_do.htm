@@ -1,0 +1,92 @@
+<%template _poppageheader%>
+<body>
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="public/js/mconfig_do.js "></script>
+        	<form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+              <tr>
+              	 <td width="20%" align="right">名称</td>
+                 <td>
+                 <input name="m_Name" id="m_Name" type="text" 
+                  <%if Act=="Edit"%>value="{mc.m_Name}"<%/if%>
+                  />
+                 </td>
+              </tr>
+                <tr>
+                  <td width="20%" align="right">门店</td>
+                  <td align="left">
+                  <input name="StoresName" id="StoresName" type="text" 
+                  <%if Act=="Edit"%>value="{mc.StoresName}"<%/if%>
+                  />
+				  <INPUT TYPE="hidden" NAME="StoresID" id="StoresID" <%if Act=="Edit"%>value="{mc.StoresID}"<%/if%>>
+				  检索可输入*</td>
+                </tr>
+                <tr>
+              	 <td width="20%" align="right">AppKey</td>
+                 <td>
+                 <input name="m_AppKey" id="m_AppKey" type="text" 
+                  <%if Act=="Edit"%>value="{mc.m_AppKey}"<%/if%>
+                  />
+                 </td>
+              </tr>
+              <tr>
+              	 <td width="20%" align="right">AppSecret</td>
+                 <td>
+                 <input name="m_AppSecret" id="m_AppSecret" type="text" 
+                  <%if Act=="Edit"%>value="{mc.m_AppSecret}"<%/if%>
+                  />
+                 </td>
+              </tr>
+              <tr>
+              	 <td width="20%" align="right">状态</td>
+                 <td>
+                 <INPUT TYPE="radio" NAME="m_State" value="0" class="B_Check"
+				  <%if Act=="Edit"%>
+					<%if mc.m_State.ToString() == "0"%>
+					checked
+					<%/if%>
+				  <%else%>
+					checked
+				  <%/if%>
+				  >正常
+				  <INPUT TYPE="radio" NAME="m_State" value="1" class="B_Check"
+				  <%if Act=="Edit"%>
+					<%if mc.m_State.ToString() == "1"%>
+					checked
+					<%/if%>
+				  <%/if%>
+				  >屏蔽
+                 </td>
+              </tr>
+                
+				
+                <tr>
+                  <td colspan="2" align="center"><input type="button" id="but_sub" style="margin:5px" class="B_INPUT" value="确定"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+          	</form>
+			<script language="javascript" type="text/javascript">
+            var MConfig_do = new TMConfig_do();
+            MConfig_do.ini();
+            </script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

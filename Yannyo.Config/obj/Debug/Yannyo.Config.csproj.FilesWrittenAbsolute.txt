@@ -1,0 +1,5 @@
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Config/bin/Debug/Yannyo.Config.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Config/bin/Debug/Yannyo.Config.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Config/obj/Debug/Yannyo.Config.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Config/obj/Debug/Yannyo.Config.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Config/bin/Debug/Yannyo.Common.dll

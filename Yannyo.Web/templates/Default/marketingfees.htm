@@ -1,0 +1,107 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/marketingfees.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:MarketingFees.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加支出" onclick="javascript:MarketingFees.ShowAddUserBox();"  />
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="添加收入" onclick="javascript:MarketingFees.ShowAddRevenueBox();"  />
+
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="批量添加" onclick="javascript:MarketingFees.ShowAddBatBox();"  />
+<input type="button" id="button4" style="margin:5px" class="B_INPUT" value="导入" onclick="javascript:MarketingFees.ShowImportBox();"  />
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td >收入/支出</td>
+			<td >门店/公司</td>
+			<td width="10%">科目</td>
+			<td width="10%">经办人</td>
+			<td width="10%">发生费用</td>
+			<td width="10%">发生时间</td>
+			<td width="20%">备注</td>
+            <td width="10%">创建时间</td>
+            <td width="10%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[MarketingFeesID]}" />
+            </td>
+			<td>
+			<%if dl["mIsIncomeExpenditure"].ToString() == "0"%>
+			支出
+			<%else%>
+			收入
+			<%/if%>
+			</td>
+            <td>
+			<%if dl["mType"].ToString() == "0"%>
+			{dl[StoresName]}
+			<%else%>
+			公司
+			<%/if%>
+			</td>
+			<td>{dl[FeesSubjectName]}</td>
+			<td>{dl[StaffName]}</td>
+			<td align="right">{dl[mFees]}</td>
+			<td>
+			<%set {aspxrewriteurl} = DateTime.Parse(dl["mDateTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+			</td>
+			<td>{dl[mRemark]}</td>
+			<td>{dl[mAppendTime]}</td>
+            <td>
+			
+			<a href="javascript:void(0);" onclick="javascript:MarketingFees.ShowDelUserBox({dl[MarketingFeesID]});">删除</a> 
+			
+			<%if dl["mIsIncomeExpenditure"].ToString() == "0"%>
+			<a href="javascript:void(0);" onclick="javascript:MarketingFees.ShowEditUserBox({dl[MarketingFeesID]});">修改</a>
+			<%else%>
+			<a href="javascript:void(0);" onclick="javascript:MarketingFees.ShowEditRevenueBox({dl[MarketingFeesID]});">修改</a>
+			<%/if%>
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="10"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var MarketingFees = new TMarketingFees();
+MarketingFees.ini();
+
+function HidBox()
+{
+	MarketingFees.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

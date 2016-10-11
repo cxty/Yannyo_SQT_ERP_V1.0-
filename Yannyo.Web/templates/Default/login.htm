@@ -1,0 +1,57 @@
+<%template _header%>
+<div style="height:130px"></div>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+
+
+<%if page_err!=0%>
+	<%template _errmsgbox%>
+<%else%>
+
+<div class="login">
+  <div id="demo"></div>
+  <div class="rights">
+    <div class="tips"> <span class="tipstit tipstit1">登录系统！</span> <span class="tipslist">
+      <div id="ty2_dlg">
+        <form name="form1" action="" method="post">
+          <div class="padder"> 
+<table width="100%" border="0" cellspacing="10" cellpadding="10">
+  <tr>
+    <td width="20%" align="right"><span class="title">帐　号：</span></td>
+    <td width="80%"><span class="input"><!--style="ime-mode:disabled"-->
+            <input autocomplete="on" name="username" type="text"   class="input01"  tabindex="1" value="" id="username"  />
+            </span></td>
+  </tr>
+  <tr>
+    <td align="right"><span class="title">密　码：</span></td>
+    <td><span class="input">
+            <input name="password"  type="password" class="input01" tabindex="2" id="password"/>
+            </span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><input type="image" src="templates/{templatepath}/image/btn-signin.gif" style="width:66px; height:28px; border:0"/></td>
+  </tr>
+</table>
+            <div class="clearer"></div>
+          </div>
+          
+        </form>
+      </div>
+      <div style="MaRGIN: 5px 0px 0px 15px; COLOR: #ff0066" id="login_feedback"> <a class="loginBoxText" href="#" target="_blank">
+        <div class="icon_warning">!</div>
+        反馈登录问题与建议</a></div>
+      </span> <span class="tipsnr"></span> </div>
+  </div>
+</div>
+<%/if%>
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

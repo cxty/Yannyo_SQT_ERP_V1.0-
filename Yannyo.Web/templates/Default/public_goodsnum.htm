@@ -1,0 +1,99 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<script type="text/javascript" src="/public/js/public_goodsnum.js"></script>
+<div id="shiyan"></div>
+
+<form name="form1" id="form1" method="post" action="">
+<div id="col_head" style="width:100%">
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="tBox">
+  <thead >
+  <tr class="tBar">
+    <td colspan="2"><b>{mGoods.title}({mGoods.ProductsName})</b></td>
+    </tr>
+  <tr class="tBar">
+    <td width="50%">仓库</td>
+    <td>数量(请填最小单位:{mProducts.pUnits})</td>
+  </tr>
+  </thead>
+</table>
+</div>
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox" id="tBoxs">
+  <%if dList != null%>
+  <tbody id="dloop">
+	<%loop dl dList%>
+  <tr >
+    <td width="50%">{dl[sName]}</td>
+    <td>
+      <input type="hidden" name="m_StorageID_{dl__loop__id}" id="m_StorageID_{dl__loop__id}" value="{dl[StorageID]}">
+      <input name="num_{dl__loop__id}" type="text" id="num_{dl__loop__id}" value="{dl[m_Num]}" pToBoxNo="{dl[pToBoxNo]}" pUnits="{dl[pUnits]}" pMaxUnits="{dl[pMaxUnits]}" onKeyDown="javascript:Public_GoodsNum.onChange(this);" onKeyUp="javascript:Public_GoodsNum.onChange(this);" onKeyPress="javascript:Public_GoodsNum.onChange(this);" style="width:50px">
+      
+    </td>
+  </tr>
+  <%/loop%>
+  </tbody>
+  <%/if%>
+</table>
+<div style="height:30px"></div>
+<div id="footer_tool">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+	  <td width="50%" align="left">合计:
+      <%if dList != null%>
+	    <input type="hidden" name="m_count" id="m_count" value="">
+       <%/if%>
+       </td>
+	  <td align="left"><span id="sum_num"></span></td>
+	  </tr>
+	<tr>
+	  <td colspan="2" align="center">
+		<input type="button" name="bt_updatenum" id="bt_updatenum" value=" 确定 " class="B_INPUT">
+		<input type="button" name="bt_cancel" id="bt_cancel" value=" 取消 " class="B_INPUT">
+	  </td>
+	</tr>
+  </table>
+</div>
+</form>
+<script language="javascript" type="text/javascript">
+var Public_GoodsNum = new TPublic_GoodsNum();
+Public_GoodsNum.reobj = '{objstr}';
+Public_GoodsNum.pUnits = '{mProducts.pUnits}';
+Public_GoodsNum.pMaxUnits = '{mProducts.pMaxUnits}';
+Public_GoodsNum.pToBoxNo = '{mProducts.pToBoxNo}';
+Public_GoodsNum.ini();
+
+window.onscroll =function()
+	{
+		var t = document.body.getBoundingClientRect().top;
+
+		var head=document.getElementById("col_head");
+		if((t+document.getElementById("shiyan").offsetTop)<0)
+		{
+			head.style.position="absolute";
+			document.getElementById("col_head").style.top = (-t) +"px";
+		}
+		else
+		{
+			head.style.position="";
+		}
+	}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

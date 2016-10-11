@@ -1,0 +1,89 @@
+﻿<%template _poppageheader%>
+<body>
+<script src="/public/js/jquery.js" type="text/javascript" ></script>
+<script src="/public/js/myFrontPageJs/costdetails.js" type="text/javascript" language="javascript" ></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+        <form action="" method="post" name="form1" id="form1">
+          <div>
+          <input type="hidden" id="sid" name="sid" value="{sID}" />
+          <input type="hidden" id="pid" name="pid" value="{pID}" />
+          <input type="hidden" id="bDate" name="bDate" value="{bDate}" />
+          <input type="hidden" id="eDate" name="eDate" value="{eDate}" />
+          <table width="100%" border="0" cellspacing="2" cellpadding="2" style="background-color:#cccccc">
+           <tr>
+             <td align="left" style="width:35%;height:30px;">
+              <span style="font-size:11pt"><b>查询日期：
+              <%set {aspxrewriteurl}=bDate.ToString("yyyy年MM月dd日")%>[{aspxrewriteurl}]至 
+              <%set {aspxrewriteurl}=eDate.ToString("yyyy年MM月dd日")%>[{aspxrewriteurl}]
+              </b></span>
+             </td>
+           </tr>
+          </table>
+           <div id="space"></div>
+           <div class="datalist">
+           <table id="title_space" border="0"  class="tBox" cellpadding="0" cellspacing="2" style="width:100%">
+             <tr class="tBar">
+               <td align="center" rowspan="2" style="width:5%;height:30px;"><span style="font-size:larger"><b>编号</b></span></td>
+               <td align="center" rowspan="2" style="width:15%;height:30px;"><span style="font-size:larger"><b>门店名称</b></span></td>
+               <td align="center" rowspan="2" style="width:20%;height:30px;"><span style="font-size:larger"><b>商品名称</b></span></td>
+               <td align="center" rowspan="2" style="width:15%;height:30px;"><span style="font-size:larger"><b>商品条码</b></span></td>
+               <td align="center" colspan="2" style="width:20%;height:15px;"><span style="font-size:larger"><b>商品数量</b></span></td>
+               <td align="center"  style="width:10%;height:15px;"><span style="font-size:larger"><b>发生金额</b></span></td>
+               <td align="center"  colspan="2" style="width:15%;height:30px;"><span style="font-size:larger"><b>操作日期</b></span></td>
+             </tr>
+             <tr class="tBar">
+               <td align="center" style="width:10%;height:15px;"><span style="font-size:11pt"><b>赠品单数量</b></span></td>
+               <td align="center" style="width:10%;height:15px;"><span style="font-size:11pt"><b>销售单数量</b></span></td>
+               <td align="center" style="width:10%;height:15px;"><span style="font-size:11pt"><b>赠品金额</b></span></td>
+               <td align="center" style="width:7.5%;height:15px;"><span style="font-size:11pt"><b>赠品时间</b></span></td>
+               <td align="center" style="width:7.5%;height:15px;"><span style="font-size:11pt"><b>销售时间</b></span></td>
+
+             </tr>
+           </table>
+           </div>
+           <table id="tBoxs"  class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+           <%if gList !=null%>
+           <%loop gl gList%>
+           <tr>
+               <td align="center" style="width:5%;">{gl__loop__id}</td>
+               <td align="center" style="width:15%;">{sName}</td>
+               <td align="center" style="width:20%;">{pName}</td>
+               <td align="center" style="width:15%;">{pBarcode}</td>
+               <td align="center" style="width:10%;">
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({gl[oQuantity]}),2).ToString()%>
+                      {aspxrewriteurl}
+               </td>
+                <td align="center" style="width:10%;">
+                  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({gl[SoQuantity]}),2).ToString()%>
+                      {aspxrewriteurl}
+                </td>
+               <td align="center" style="width:10%;">
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({gl[oMoney]}),2).ToString()%>
+                      {aspxrewriteurl}
+               </td>
+               <td align="center" style="width:7.5%;">
+               <%if gl["gAppendTime"].ToString()=="null"%>无
+               <%else%>
+               {gl[gAppendTime]}
+               <%/if%>
+               
+               </td>
+                <td align="center" style="width:7.5%;">
+               <%if gl["zpAppendTime"].ToString()=="null"%>无
+               <%else%>
+               {gl[zpAppendTime]}
+               <%/if%>
+               </td>
+             </tr>
+          <%/loop%>
+          <%/if%>
+           </table>
+          </div>
+
+        </form>
+      
+        <%template _footer%>
+
+
+

@@ -1,0 +1,32 @@
+﻿<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+		<form name="bForm" id="bForm" action="" method="post">
+	    <b style="font-size:10pt">数据处理该过程需要10-30分钟,请不要刷新,切换或关闭此页面!</b>
+        <img alt="" src="/images/loading.gif"/>更新中...
+		</form>
+		<script language="javascript" type="text/javascript">
+		    setTimeout('bfs()',1500);
+		    function bfs() {
+		        Sys.getObj('bForm').submit();
+		    }
+		</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

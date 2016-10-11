@@ -1,0 +1,534 @@
+﻿<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%> 
+            <%csharp%>
+            foreach(DataTable dtm in dsDetails.Tables)
+            {
+            rCount++;
+            <%/csharp%> 
+           
+<div id="print_box" style="margin-left:100px; margin-right:25px; margin-top:30px">
+    <form name="bForm" id="bForm" action="" method="post" class="print_box">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+            <tr>
+               <td height="40" colspan="2" align="center">
+                <table border="0" cellpadding="0" cellspacing="0" style="width:70%">
+
+                  <tr class="print_box_top">
+                    <td width="25%" align="center"></td>
+                    <td align="center"><b><span style="font-size:x-large; text-decoration:underline"><nobr><%if {sType}==0%>{className}明细账<%/if%><%if {sType}==1%>{zNode}总账<%/if%></nobr></span></b></td>
+                    <td width="25%" align="center">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" align="center"></td>
+                    <td align="left">页号：1-{rCount}</td>
+                   </tr>
+                  <tr>
+                    <td align="center">&nbsp;</td>
+                    <td align="center">月份：{bTime}-{eTime}</td>
+                    <td align="left"><nobr>本币名称：人民币</nobr></td>
+                  </tr>
+                  </table>
+               </td>
+            </tr>
+
+            <tr>
+                <td align="left">科目：<%if sType==0%>{fatherNode}<%else%>{zNode}<%/if%>({classCode})</td>
+            </tr>
+            <tr>
+              <td>
+           <table border="1" cellpadding="1" cellspacing="0" style="width: 100%">
+            <tr>
+                <td colspan="2" align="center" style="width: 10%;">
+                    <span style="font-size: 11pt">
+                     {getYear}年
+                    </span>
+                </td>
+                <td rowspan="2" align="center" style="width: 5%;">
+                    <span style="font-size: 11pt">凭证号数</span>
+                </td>
+                <td rowspan="2" align="center" style="width: 35%;">
+                    <span style="font-size: 11pt">摘要</span>
+                </td>
+                <td rowspan="2" align="center" style="width: 15%;">
+                    <span style="font-size: 11pt">借方</span>
+                </td>
+                <td rowspan="2" align="center" style="width: 15%;">
+                    <span style="font-size: 11pt">贷方</span>
+                </td>
+                <td rowspan="2" align="center" style="width: 5%;">
+                    <span style="font-size: 11pt">方向</span>
+                </td>
+                <td rowspan="2" align="center" style="width: 15%;">
+                    <span style="font-size: 11pt">余额</span>
+                </td>
+            </tr>
+            <tr>
+              <td align="center" style="width: 5%;">月</td>
+              <td align="center" style="width: 5%;">日</td>
+            </tr>
+
+            
+            
+             <!--上年结转-->
+             <%if rCount==1%>
+             <%if {tl}%>
+                <%set {cAccountMoney}={ycAccountMoney}%>
+             <%else%>
+                <%if ysCost !=null%>
+                <%loop yl ysCost%>
+                    <%set {cAccountMoney}=Convert.ToDecimal({yl[cAccountMoney]})%>
+                <%/loop%>
+                <%/if%>
+            <%/if%>
+            <!--上页结转-->
+            <%else%>
+              <%set {cAccountMoney}={upDate}%>
+            <%/if%>
+            <%set {sumC}=0%>
+            <%set {sumJ}=0%>
+            <tr>
+                <td align="center" style="width: 5%;"></td>
+                <td align="center" style="width: 5%;"></td>
+                <td align="center" style="width: 5%;"></td>
+                <td align="left" style="width: 35%;">
+                <%if rCount==1%>
+                <%if oneMonth==1%>上年结转<%else%>期初余额<%/if%></td>
+                <%else%>
+                结转上页
+                <%/if%>
+                </td>
+                <td align="center" style="width: 15%;"></td>
+                <td align="center" style="width: 15%;"></td>
+                <td align="center" style="width: 5%;">
+                <!--上年结转-->
+                <%if rCount==1%>
+                    <%set {oMoney} = decimal.Round({cAccountMoney},2)%>
+                    <%if classDirection==0%>
+                        <%if oMoney>0%>借<%/if%>
+                        <%if oMoney<0%>贷<%/if%>
+                    <%/if%>
+                    <%if classDirection==1%>
+                        <%if oMoney<0%>借<%/if%>
+                        <%if oMoney>0%>贷<%/if%>
+                    <%/if%>
+                <!--上页结转-->
+                <%else%>
+                    <%if upDate>0%>借<%/if%>
+                    <%if upDate<0%>贷<%/if%>
+                <%/if%>
+                </td>
+                <td align="right" style="width: 15%;">
+                
+                <%if rCount==1%>
+                <!--上年结转-->
+                    <%if classDirection==0%>
+                         <%if oMoney>0%>{oMoney}<%else%>
+                    <%set {oMoney} = decimal.Round(-{oMoney},2)%>{oMoney} <%/if%>
+                    <%/if%>
+
+                    <%if classDirection==1%>
+                         <%if oMoney>0%>{oMoney}
+                    <%else%>
+                    <%set {oMoney} = decimal.Round(-{oMoney},2)%>{oMoney} <%/if%>
+                    <%/if%>
+                <!--上页结转-->
+                <%else%>
+                  <%if upDate>0%>{upDate}<%else%><%set {upDate}=decimal.Round(-{upDate},2)%>{upDate}<%/if%>
+                <%/if%>
+                &nbsp;</td>
+            </tr>
+            
+           
+
+
+
+            <%set {tLoopid}=1%>
+            <%set {sumA}=0%>
+            <%set {sumAA}=0%>  
+           <!--明细统计-->
+           <%if {sType}==0%>
+
+                <%if dtm!=null%>
+                <%loop cl dtm%>
+                <%set {cdtMonth}=cl["Cmonth"].ToString()%>
+                <tr>
+                    <td align="left"  style="width: 5%;">{cl[Cmonth]}</td>
+                    <td align="left" style="width: 5%;">{cl[Cday]}</td>
+                    <td align="left" style="width: 5%;"><nobr>
+                    <%set {aspxrewriteurl}=(cl["pzCode"].ToString()).PadLeft(config.CertificateCodeLen,'0')%>{aspxrewriteurl}</nobr>
+                    </td>
+                    <td align="left" style="width: 35%;"><nobr>{cl[cdName]}</nobr></td>
+                    <!--借方-->
+                    <td align="right" style="width: 15%;">
+                            <%set {JDirection} = decimal.Round(Convert.ToDecimal({cl[cdMoney]}),2)%>
+                                <%if JDirection==0%>
+                                <%else%>
+                                {JDirection}
+                                <%/if%>
+
+                            <%set {sumA}=decimal.Round(sumA+{JDirection},2)%>
+                            <%set {sumB}=decimal.Round(sumB+{JDirection},2)%>
+                    &nbsp;</td>
+                    <!--贷方-->
+                    <td align="right" style="width: 15%;">
+                            <%set {DDirection} = decimal.Round(Convert.ToDecimal({cl[cdMoneyB]}),2)%>
+                              <%if DDirection==0%>
+                                <%else%>
+                                {DDirection}
+                                <%/if%>
+                            <%set {sumAA}=decimal.Round(sumAA+{DDirection},2)%>
+                            <%set {sumBB}=decimal.Round(sumBB+{DDirection},2)%>
+                    &nbsp;</td>
+                    <!--余额在借方-->
+                     <%if classDirection==0%>
+                         <!--贷方为0-->
+                         <%if DDirection==0%>
+                              <!--余额大于0在借方或结存余额大于0-->
+                              <%if sumC>=0 || cAccountMoney>=0%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoney]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                              <%else%>
+                              <!--余额小于0在贷方或结存余额大于0-->
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoneyA]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                              <%/if%>   
+                         <%/if%>
+                        
+                         <!--借方为0-->
+                         <%if JDirection==0%>
+                              <!--余额大于0在借方或结存余额大于0-->
+                              <%if sumC>=0 || cAccountMoney>=0%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoneyBB]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                              <%else%>
+                              <!--余额小于0在贷方或结存余额大于0-->
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoneyB]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                              <%/if%>
+                         <%/if%>
+
+
+                         <%if DDirection !=0 && JDirection !=0%>
+                             <!--余额大于0在借方或结存余额大于0-->
+                              <%if sumC>=0 || cAccountMoney>=0%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoney]})-Convert.ToDecimal({cl[cdMoneyB]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                              <%else%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoneyB]})-Convert.ToDecimal({cl[cdMoney]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                              <%/if%>
+                         <%/if%>
+
+                     <%/if%>
+                     
+                     
+                     <!--余额在贷方-->
+                     <%if classDirection==1%>
+                      <%set {cAccountMoney}=decimal.Round(-{cAccountMoney})%>
+                         
+                         <!--贷方无数据-->
+                         <%if DDirection==0%>
+                            <!--余额大于0在借方或结存余额大于0-->
+                            <%if sumC<0 || cAccountMoney<=0%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoney]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                            <%else%>
+                                <%set {aspxrewriteurl}=decimal.Round(-{cAccountMoney}+Convert.ToDecimal({cl[cdMoney]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                            <%/if%>
+                         <%/if%>
+
+                         <!--借方无数据-->
+                         <%if JDirection==0%>
+                            <!--余额小于0在贷方方或结存余额大于0-->
+                             <%if sumC>=0 || cAccountMoney<=0%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoneyBB]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                             <%else%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoneyB]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                             <%/if%>
+                         <%/if%>
+
+                         <%if DDirection !=0 && JDirection !=0%>
+                             <%if sumC<=0 || cAccountMoney<=0%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}-Convert.ToDecimal({cl[cdMoneyB]})+Convert.ToDecimal({cl[cdMoney]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                             <%else%>
+                                <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+Convert.ToDecimal({cl[cdMoney]})-Convert.ToDecimal({cl[cdMoneyB]}),2).ToString()%>
+                                <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                                <%set {cAccountMoney}=0%>
+                             <%/if%>
+                         <%/if%>
+                     <%/if%>
+                    <!--借贷关系判断-->
+                    <td align="center" style="width: 5%;">
+                        <%if sumC>0%>借<%/if%>
+                        <%if sumC<0%>贷<%/if%>
+                    </td>
+                    
+                    <!--余额-->
+                    <td align="right" style="width: 15%;">
+                     <%if sumC>0%>{sumC}<%/if%>
+                     <%if sumC<0%>
+                       <%set {sumCC}=decimal.Round(-sumC,2)%>{sumCC}
+                     <%/if%>
+                    &nbsp;</td>
+                </tr> 
+                <%/loop%>
+                <%/if%>
+            <tr>
+                <td align="left" style="width: 5%;">
+               {cdtMonth}
+                </td>
+                <td align="left" style="width: 5%;"></td>
+                <td align="left" style="width: 5%;"></td>
+                <td align="left" style="width: 35%;"><b>本月合计</b></td>
+                <td align="right" style="width: 15%;">
+                <%if sumA==0%><b>0.00</b>
+                    <%else%>
+                    <b>{sumA}</b>
+                <%/if%>
+                &nbsp;</td>
+                <td align="right" style="width: 15%;">
+                 <%if sumAA==0%><b>0.00</b>
+                    <%else%>
+                    <b>{sumAA}</b>
+                <%/if%>
+                &nbsp;</td>
+                <td align="center" style="width: 5%;">
+                 <%if sumC>0%><b>借</b><%/if%>
+                 <%if sumC<0%><b>贷</b><%/if%>
+                </td>
+                <td align="right" style="width: 15%;">
+                     <%if sumC>0%><b>{sumC}</b><%/if%>
+                     <%if sumC<0%>
+                       <%set {sumCC}=decimal.Round(-sumC,2)%><b>{sumCC}</b>
+                     <%/if%>
+                &nbsp;</td>      
+            </tr>
+            <tr>
+                <td align="left" style="width: 5%;">
+                {cdtMonth}
+                </td>
+                <td align="left" style="width: 5%;"></td>
+                <td align="left" style="width: 5%;"></td>
+                <td align="left" style="width: 35%;"><b>本月累计</b></td>
+                <td align="right" style="width: 15%;">
+                <%if sumB==0%><b>0.00</b>
+                    <%else%>
+                    <b>{sumB}</b>
+                <%/if%>
+                &nbsp;</td>
+                <td align="right" style="width: 15%;">
+                <%if sumBB==0%><b>0.00</b>
+                    <%else%>
+                    <b>{sumBB}</b>
+                <%/if%>
+                &nbsp;</td>
+                <td align="center" style="width: 5%;">
+                 <%if sumC>0%><b>借</b><%/if%>
+                 <%if sumC<0%><b>贷</b><%/if%>
+                </td>
+                <td align="right" style="width: 15%;">
+                      <%if sumC>0%><b>{sumC}</b><%/if%>
+                        <%if sumC<0%>
+                          <%set {sumCC}=decimal.Round(-sumC,2)%><b>{sumCC}</b>
+                        <%/if%>
+                &nbsp;</td>
+            </tr> 
+            <tr>
+            <td colspan="8">
+            <div style="page-break-after: always"></div>
+            </td>
+            </tr>
+           <%/if%>
+          
+ 
+ 
+          
+            <%if nTable !=null%>
+            <%loop ml nTable%>
+            <%set {obj}=getMonthCostTotalDetails({subjectID},{bDate},{eDate},{ml[oMonth]},{sType},{status})%>
+               <!--总账明细-->
+               <%if {sType}==1%>
+               <tr>
+                <td align="left" style="width: 5%;">
+                 <%set {pMonth}=Convert.ToDecimal(ml["oMonth"].ToString())%>
+                 <%if pMonth>0 && pMonth<10%>0{ml[oMonth]}
+                 <%else%>
+                 {ml[oMonth]}
+                 <%/if%>
+                </td>
+                <td align="left" style="width: 5%;"></td>
+                <td align="left" style="width: 5%;"></td>
+                <td align="left" style="width: 35%;"><b>本月合计</b></td>
+                <!--借方-->
+                <td align="right" style="width: 15%;">
+                 <%set {moneyA}=decimal.Round(Convert.ToDecimal({cdMoney}),2)%>
+                 <%set {sumD}=decimal.Round(sumD+{moneyA},2)%>
+                 <%if moneyA==0%>
+                 <%else%>
+                 <b>{moneyA}</b>
+                 <%/if%>
+                &nbsp;</td>
+                <!--贷方-->
+                <td align="right" style="width: 15%;">
+                <%set {moneyB}=decimal.Round(Convert.ToDecimal({cdMoneyB}),2)%>
+                <%set {sumDD}=decimal.Round(sumDD+{moneyB},2)%>
+                 <%if moneyB==0%>
+                 <%else%>
+                 <b>{moneyB}</b>
+                 <%/if%>
+                &nbsp;</td>
+               
+                <!--余额大于0：余额+借方-贷方-->
+                <%if sumE>0 ||cAccountMoney>=0%>
+                    <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+{moneyA}-{moneyB},2).ToString()%>
+                    <%set {sumE}=decimal.Round(sumE+Convert.ToDecimal(aspxrewriteurl),2)%>
+                        <%set {cAccountMoney}=0%>
+                <!--余额小于0：余额+贷方-借方-->
+                <%else%>
+                    <%set {cAccountMoney}=decimal.Round(-{cAccountMoney},2)%>
+                    <%set {aspxrewriteurl}=decimal.Round({cAccountMoney}+{moneyB}-{moneyA},2).ToString()%>
+                    <%set {sumE}=decimal.Round(sumE+Convert.ToDecimal(aspxrewriteurl),2)%>
+                        <%set {cAccountMoney}=0%>
+                <%/if%>
+
+                <td align="center" style="width: 5%;">
+                  <%if sumE>0%>借<%/if%>
+                  <%if sumE<0%>贷<%/if%>
+                </td>
+                <td align="right" style="width: 15%;">
+                  
+                
+                <%if sumE>0%>{sumE}<%/if%>
+                <%if sumE<0%>
+                 <%set {sumCC}=decimal.Round(-sumE,2)%>{sumCC}
+                <%/if%>
+                &nbsp;</td>      
+            </tr>
+               <tr>
+                <td align="left" style="width: 5%;">
+                 <%set {pMonth}=Convert.ToDecimal(ml["oMonth"].ToString())%>
+                 <%if pMonth>0 && pMonth<10%>0{ml[oMonth]}
+                 <%else%>
+                 {ml[oMonth]}
+                 <%/if%>
+                </td>
+                <td align="left" style="width: 5%;"></td>
+                <td align="left" style="width: 5%;"></td>
+                <td align="left" style="width: 35%;">
+                <%if Convert.ToInt32({maxList})==Convert.ToInt32(ml["oMonth"].ToString())%>
+                 本年累计
+                <%else%>
+                <b>本月累计</b>
+                <%/if%>
+                
+                </td>
+                  <td align="right" style="width: 15%;">
+                <%if sumD==0%>
+                 <%else%>
+                 <%if Convert.ToInt32({maxList})==Convert.ToInt32(ml["oMonth"].ToString())%>
+                 {sumD}
+                 <%else%><b>{sumD}</b><%/if%>
+                 <%/if%>
+                 &nbsp;</td>
+                <td align="right" style="width: 15%;">
+                <%if sumDD==0%>
+                 <%else%>
+                 <%if Convert.ToInt32({maxList})==Convert.ToInt32(ml["oMonth"].ToString())%>{sumDD}
+                 <%else%><b>{sumDD}</b><%/if%>
+                 <%/if%>
+                 &nbsp;</td>
+                <td align="center" style="width: 5%;">
+                </td>
+                <td align="right" style="width: 15%;"></td>
+            </tr> 
+               <%/if%>
+           <%/loop%>
+           <%/if%>
+
+
+
+
+           <%if {sType}==0%>
+            <tr>
+             <td align="center" style="width: 5%;"></td>
+                <td align="center" style="width: 5%;"></td>
+                <td align="center" style="width: 5%;"></td>
+                <td align="left" style="width: 35%;">
+                <%if dTable==rCount%>
+                结转下年
+                <%else%>
+                结转下页
+                <%/if%>
+                </td>
+                <td align="center" style="width: 15%;"></td>
+                <td align="center" style="width: 15%;"></td>
+                <td align="center" style="width: 5%;">
+                  <%if sumC>0%>借<%/if%>
+                  <%if sumC<0%>贷<%/if%>
+                </td>
+                <td align="right" style="width: 15%;">
+                <%if sumC>0%>{sumC}
+                <%/if%>
+                <%if sumC<0%>
+                    <%set {sumCC}=decimal.Round(-{sumC},2)%>{sumCC}
+                <%/if%>
+                <%set {upDate}={sumC}%>
+                &nbsp;</td>
+            </tr>
+           <%/if%>
+         
+        </table>
+        </td>
+        </tr>
+            <tr><td></td></tr>
+        </table>
+    </form>
+     <div style="page-break-after: always">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr>
+         <td>&nbsp;核算单位：{config.CompanyName} </td>
+         <td>制表：{uiName.StaffName}</td>
+         <td align="right">打印时间：{pTime}&nbsp;&nbsp;&nbsp;</td>
+       </tr>
+     </table>
+    </div>
+</div><br /><br />
+     
+         <%csharp%>     
+                }
+         <%/csharp%>   
+        
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

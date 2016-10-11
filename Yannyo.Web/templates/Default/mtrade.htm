@@ -1,0 +1,288 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+
+
+    <div class="main" >
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+		<%template _m_sign%>
+<script language="javascript" src="public/js/jTable.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<script src="public/js/mtrade.js" language="javascript" type="text/javascript"></script>
+<form action="" method="post" name="form1" id="form1">
+<div >
+
+<div class="toolbar">
+
+  <table border="0" cellspacing="3" cellpadding="3" >
+  <tr>
+    <td>交易状态<br />
+    <select name="status" id="status">
+    <option value="-1"
+     <%if status == -1%>
+     selected="selected"
+     <%/if%>
+     >所有</option>
+      <option value="1"
+      <%if status == 1%>
+     selected="selected"
+     <%/if%>
+      >等待买家付款</option>
+      <option value="2"
+      <%if status == 2%>
+     selected="selected"
+     <%/if%>
+      >等待卖家发货</option>
+      <option value="3"
+      <%if status == 3%>
+     selected="selected"
+     <%/if%>
+      >等待买家确认收货</option>
+      <option value="4"
+      <%if status == 4%>
+     selected="selected"
+     <%/if%>
+      >买家已签收</option>
+      <option value="5"
+      <%if status == 5%>
+     selected="selected"
+     <%/if%>
+      >交易成功</option>
+      <option value="6"
+      <%if status == 6%>
+     selected="selected"
+     <%/if%>
+      >交易关闭</option>
+      <option value="7"
+      <%if status == 7%>
+     selected="selected"
+     <%/if%>
+      >被淘宝关闭</option>
+    </select></td>
+    <td>发货状态<br />
+	<select name="sendgoods" id="sendgoods">
+	  <option value="-1"
+      <%if sendgoods == -1%>
+     selected="selected"
+     <%/if%>
+      >所有</option>
+	  <option value="0"
+      <%if sendgoods == 0%>
+     selected="selected"
+     <%/if%>
+      >已开单</option>
+	  <option value="1"
+      <%if sendgoods == 1%>
+     selected="selected"
+     <%/if%>
+      >未发货</option>
+	  <option value="2"
+      <%if sendgoods == 2%>
+     selected="selected"
+     <%/if%>
+      >已发货</option>
+    </select></td>
+    <td>平价状态<br />
+      <select name="rate" id="rate">
+        <option value="-1"
+        <%if rate == -1%>
+     selected="selected"
+     <%/if%>
+        >所有</option>
+        <option value="0"
+        <%if rate == 0%>
+     selected="selected"
+     <%/if%>
+        >买家未评价</option>
+        <option value="1"
+        <%if rate == 1%>
+     selected="selected"
+     <%/if%>
+        >买家经评价</option>
+        <option value="2"
+        <%if rate == 2%>
+     selected="selected"
+     <%/if%>
+        >卖家未评价</option>
+        <option value="3"
+        <%if rate == 3%>
+     selected="selected"
+     <%/if%>
+        >卖家已评价</option>
+        <option value="4"
+        <%if rate == 4%>
+     selected="selected"
+     <%/if%>
+        >双方未评价</option>
+        <option value="5"
+        <%if rate == 5%>
+     selected="selected"
+     <%/if%>
+        >双方经评价</option>
+      </select>
+    </td>
+    <td>交易时间<br /><input name="oDateTimeB" id="oDateTimeB" style="width:80px" value="{oDateTimeB}" type="text" onClick="new Calendar().show(this);" readonly="readonly"/>-<input name="oDateTimeE" id="oDateTimeE" style="width:80px" value="{oDateTimeE}" type="text" onClick="new Calendar().show(this);" readonly="readonly"/></td>
+    <td>关键字<br /><input name="S_key" id="S_key" type="text" value="{S_key}" /></td>
+    <td><input type="button" id="bt_Search" style="margin:5px;" class="B_INPUT" value=" 查找 "  /></td>
+    
+    </tr>
+    <tr>
+    <td colspan="6"><input type="button" id="bt_DownLoad" style="margin:5px" class="B_INPUT" value="下载数据" />
+      <input type="button" id="bt_Reload" style="margin:5px" class="B_INPUT" value="更新选中" />
+      <input type="button" id="bt_Delt" style="margin:5px" class="B_INPUT" value="删除选中" />
+      <input type="button" id="bt_Close" style="margin:5px" class="B_INPUT" value="关闭选中" />
+      <input type="button" id="bt_Union" style="margin:5px;width:120px;" class="B_INPUT" value="合并开单发货" />
+      <input type="button" id="bt_Good" style="margin:5px" class="B_INPUT" value="平价选中"  /></td>
+    </tr>
+  
+</table>
+
+</div>
+<div class="mtitleBox"><span>客户:{M_Config.StoresName}-网店:{M_Config.m_Name} </span></div>
+</div>
+<div class="datalist">
+    
+
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tBox" id="tBox" >
+        <thead>
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td >订单编号</td>
+            <td width="10%" >支付宝交易号</td>
+            <td width="10%">买家昵称</td>
+            <td width="6%" align="right" >金额</td>
+            <td width="6%" align="right" >运费</td>
+            <td width="6%" align="right" >总金额</td>
+            <td width="10%" align="center">交易状态</td>
+            <td width="6%" align="right">成交时间</td>
+            <td width="6%" align="right">更新时间</td>
+            <td width="10%" align="center">操作</td>
+          </tr>
+		</thead>
+
+          <%if dList != null%>
+		  <tbody id="dloop">
+          <%loop dl dList%>
+          <tr id="tr_{dl[tid]}" >
+          <td colspan="11">
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" style="background:auto;">
+          <tr >
+            <td width="2%" >
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[m_TradeInfoID]}" tid="{dl[tid]}" />
+            </td>
+		    <td ><a>{dl[tid]}</a></td>
+		    <td width="10%" >{dl[alipay_no]}</td>
+            <td width="10%">{dl[buyer_nick]}</td>
+		    <td width="6%" align="right" id="total_fee_{dl[tid]}">{dl[total_fee]}</td>
+		    <td width="6%" align="right" id="post_fee_{dl[tid]}">{dl[post_fee]}</td>
+            <td width="6%" align="right" id="all_fee_{dl[tid]}">
+              <%set {aspxrewriteurl}=(decimal.Parse(dl["total_fee"].ToString())+decimal.Parse(dl["post_fee"].ToString())).ToString()%>
+              {aspxrewriteurl}</td>
+            <td width="10%" align="center" id="status_{dl[tid]}">
+              <%set {aspxrewriteurl}=GetTradeStatus(dl["status"].ToString())%>
+              {aspxrewriteurl}
+            </td>
+            <td width="6%" align="right">{dl[created]}</td>
+            <td width="6%" align="right" id="modified_{dl[tid]}">{dl[modified]}</td>
+            <td width="10%" align="right">
+			<nobr>
+            <%if GetTradeStatusIndex(dl["status"].ToString()) <= 1%>
+            <a href="javascript:void(0);" onclick="javascript:M_Trade.Edit({dl[m_TradeInfoID]});"><nobr>调整金额</nobr></a>|
+            <%/if%>
+            
+            <%csharp%>
+            if (GetTradeStatusIndex(dl["status"].ToString()) == 2)
+			{
+                M_SendGoodsInfo _ms = new M_SendGoodsInfo();
+                try
+                {
+                    _ms = GetSendGoods(dl["m_TradeInfoID"].ToString());
+                    if(_ms!=null)
+                    {
+                        <%/csharp%>
+                        	<a href="javascript:void(0);" onclick="javascript:M_Trade.SHSendGoods({dl[m_TradeInfoID]});"><nobr id="syh_{dl[tid]}">发货单</nobr></a>|
+                        <%csharp%>
+                    }else{
+                        <%/csharp%>
+                            <a href="javascript:void(0);" onclick="javascript:M_Trade.SendGoods({dl[m_TradeInfoID]});"><nobr>开单发货</nobr></a>|
+                        <%csharp%>
+                    }
+                }
+                finally
+                {
+                    _ms = null;
+                }
+            }else if(GetTradeStatusIndex(dl["status"].ToString()) > 2){
+            	<%/csharp%>
+                	<a href="javascript:void(0);" onclick="javascript:M_Trade.SHSendGoods({dl[m_TradeInfoID]});"><nobr id="syh_{dl[tid]}">发货单</nobr></a>|
+                <%csharp%>
+            }
+            <%/csharp%>
+            
+            
+			<a href="javascript:void(0);" onclick="javascript:M_Trade.SHOrder($('#tr_{dl[tid]}'));"><nobr id="sh_{dl[tid]}">查看</nobr></a>|
+            
+            <a href="javascript:void(0);" onclick="javascript:M_Trade.TradeMemo({dl[m_TradeInfoID]});"><nobr>备注</nobr></a>&nbsp;&nbsp;
+            </nobr>
+            </td>
+          </tr>
+          </table>
+          <div id="order_{dl[tid]}" class="Orders"  >
+          	<%template _mtrade_order%>
+          </div>
+          </td>
+          </tr>
+          
+          <%/loop%>
+		  </tbody>
+		  <tfoot>
+          <tr>
+            <td colspan="11">{PageBarHTML}</td>
+          </tr>
+          </tfoot>
+          <%/if%>
+        </table>
+    
+</div>
+</form>        
+<script language="javascript" type="text/javascript">
+var tf = new TableFixed("tBox");
+
+tf.Clone();
+
+var M_Trade = new TM_Trade();
+M_Trade.MConfigID = {M_Config.m_ConfigInfoID};
+M_Trade.ini();
+function HidBox()
+{
+	M_Trade.HidUserBox();
+	location = location;
+}
+function Close_ReCallMsg(msg)
+{
+	if(msg)
+	{
+		M_Trade.Close(msg);
+		M_Trade.HidUserBox();
+	}
+}
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+        <%/if%>
+    </div>
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

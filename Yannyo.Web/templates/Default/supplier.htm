@@ -1,0 +1,89 @@
+<%template _header%>
+
+
+<script src="public/js/Supplier.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<div class="toolbox">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:SupplierManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:SupplierManage.ShowAddUserBox();"  />
+<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}"><INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:SupplierManage.Search();"  />
+    <input type="button" id="button5" style="margin:5px" class="B_INPUT" value="导入导出" onclick="javascript:SupplierManage.dataAct();" />
+</div>
+<div class="list_title">
+供货商列表
+</div>
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td width="20%">名称</td>
+			<td width="10%">编号</td>
+            <td width="10%">分类</td>
+			<td width="20%">地址</td>
+			<td width="20%">电话</td>
+			<td width="10%">联系人</td>
+			<td width="5%">对账日</td>
+			<td width="10%">期初应付款</td>
+            <td width="5%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[SupplierID]}" />
+            </td>
+            <td><a href="javascript:void(0);" onclick="javascript:SupplierManage.ShowEditUserBox({dl[SupplierID]});">{dl[sName]}</a></td>
+			<td>{dl[sCode]}</td>
+            <td>{dl[SupplierClassName]}</td>
+			<td>{dl[sAddress]}</td>
+			<td>{dl[sTel]}</td>
+			<td>{dl[sLinkMan]}</td>
+
+			<td width="5%" align="right">{dl[sDoDay]}</td>
+			<td width="5%" align="right">{dl[sDoDayMoney]}</td>
+
+			
+            <td>
+			<nobr>
+			<a href="javascript:void(0);" onclick="javascript:SupplierManage.ShowDelUserBox({dl[SupplierID]});">删除</a> 
+			<a href="javascript:void(0);" onclick="javascript:SupplierManage.ShowEditUserBox({dl[SupplierID]});">修改</a>
+			</nobr>
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="10"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+
+      <%/if%>
+    
+	</form></div>
+<script language="javascript" type="text/javascript">
+var SupplierManage = new TSupplierManage();
+SupplierManage.ini();
+
+function HidBox()
+{
+	SupplierManage.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+
+<%template _copyright%>
+<%template _footer%>

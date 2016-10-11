@@ -1,0 +1,82 @@
+﻿<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="OrderListTool">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td valign="top">
+    客 户:
+<%if Act=="v"%>{oi.StoresSupplierName}<%/if%>
+</td>
+    <td valign="top">客户编号: <span id="sCode"><%if Act=="v"%>{oi.StoresSupplierCode}<%/if%></span></td>
+    <td valign="top">
+业务员:
+<%if Act=="v"%>{oi.StaffName}<%/if%>
+    </td>
+    <td valign="top">
+<%set {aspxrewriteurl}=oOrderDateTime.ToString("yyyy-MM-dd")%>
+日期:{aspxrewriteurl}
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+联系人:
+<%if Act=="v"%>{oi.oCustomersContact}<%/if%>
+    </td>
+    <td valign="top">
+联系电话:
+<%if Act=="v"%>{oi.oCustomersTel}<%/if%>
+    </td>
+    <td colspan="2" valign="top">
+      地址:
+<%if Act=="v"%>{oi.oCustomersAddress}<%/if%>
+    </td>
+    </tr>
+  <tr>
+    <td valign="top">客户订单号:
+<%if Act=="v"%>{oi.oCustomersOrderID}<%/if%>
+	</td>
+    <td valign="top">客户指定门店:
+<%if Act=="v"%>{oi.oCustomersNameB}<%/if%>
+	</td>
+    <td colspan="2" valign="top">&nbsp;</td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+  <td>
+  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox">
+	<tr class="tBar">
+	  <td width="80px">仓库</td>
+	  <td width="100px">条码</td>
+	  <td>商品名称</td>
+	  <td width="80px">包装量</td>
+	  <!--<td width="80px">单价(元)</td>-->
+	  <td width="120px">单据数量<br />
+	    (最小单位)</td>
+	  <td width="120px">已出库数量<br />
+	    (最小单位)</td>
+		<td width="120px">
+        剩余数量<br />
+	    (最小单位)
+        </td>
+     <td width="120px">
+        本次出库数量<br />
+	    (最小单位)
+        </td>
+	</tr>
+  </table>
+  <div id="OrderListLoop">
+  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox" id="OrderListLoop_data">
+	
+  </table>
+  </div>
+  </td>
+</tr>
+</table>
+<script language="javascript" type="text/javascript">
+
+ OrderField = '{OrderFieldListJson}';
+ OrderListDataJsonStr = '{OrderListDataJsonStr}';
+ StorageOrderListJsonStr = '{StorageOrderListJsonStr}';
+ 
+</script>

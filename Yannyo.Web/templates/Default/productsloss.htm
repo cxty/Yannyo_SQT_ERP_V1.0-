@@ -1,0 +1,153 @@
+﻿<%template _header%>
+<body>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script src="/public/js/myFrontPageJs/productsLoss.js" type="text/javascript" language="javascript" ></script>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <div class="main">
+        	<form name="bForm" id="bForm" action="" method="post">
+            <div class="toolbar">
+        <div class="toolbox">
+            <input type="hidden" id="_Associated" name="_Associated"/>
+            <table  >
+            <hr style="visibility:hidden" />
+              <tr>
+               <td align="left">查询日期：
+                 <%set {aspxrewriteurl}=sDate.ToString("yyyy-MM-dd")%>
+                 <input name="sDate" id="sDate" type="text" value="{aspxrewriteurl}" onClick="new Calendar().show(this);" />至
+                 <%set {aspxrewriteurl}=eDate.ToString("yyyy-MM-dd")%>
+                 <input name="stDate" id="stDate" type="text" value="{aspxrewriteurl}" onClick="new Calendar().show(this);" />
+                 &nbsp; &nbsp; &nbsp; &nbsp;
+                 联营：<select id="Associated">
+                 <option value="-1" <%if associated.ToString()=="-1"%> selected="selected"<%/if%>>包含</option>
+                 <option value="0" <%if associated.ToString()=="0"%>selected="selected"<%/if%>>剔除</option>
+                 <option value="1" <%if associated.ToString()=="1"%>selected="selected"<%/if%>>仅联营</option>
+                </select>
+               </td>
+               <td align="right">
+                <input type="button" id="submit_btn" name="submit_btn" value="查询" style="width:120px;height:25px" />&nbsp; &nbsp; &nbsp; &nbsp;
+                <input type="button" id="export_data" name="export_data" value="导出数据"  style="width:120px;height:25px" />
+               </td>
+              </tr>
+               
+            </table>
+            </div>
+<div class="list_title">
+报损统计
+</div>
+         </div>
+         <div>
+         <div id="space"></div>
+         <div class="datalist"> 
+         <table id="title_space" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+         <thead style="font-weight:bold">
+          <tr class="tBar">
+           <td align="center" style="width:10%;height:30px;"><span style="font-size:larger">仓库名称</span></td>
+           <td align="center" colspan="2" style="width:10%;height:30px;"><span style="font-size:larger">品牌</span></td>
+           <td align="center" style="width:35%;height:30px;"><span style="font-size:larger">商品名称</span></td>
+           <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">商品条码</span></td>
+           <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">数量</span></td>
+           <td align="center" style="width:15%;height:30px;"><span style="font-size:larger">金额</span></td>
+          </tr>
+         </thead>
+         </table>
+         </div>
+         <table id="tBoxs"  class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+         <%if {ispost}%>
+          <%if wList !=null%>
+          <%loop wl wList%>
+            
+            <%set {rList} = null%>
+            <%set {tLoopid}=1%>
+            <%set {sumA}=0%>
+            <%set {sumB}=0%>
+
+           <!--如果post的话-->
+
+           <%set {rList}=getProductsInfoOnLoad({sDate},{eDate},{associated},{wl[StorageID]})%>
+           <%set {cList}=productsCount({sDate},{eDate},{associated},{wl[StorageID]})%>
+           <tr>
+            <td  <%if cList>0%>rowspan="{cList}"<%/if%> align="center" style="width:10%">{wl[sName]}</td>
+            
+            <%if rList ==null%> 
+              <td colspan="6">无任何商品信息</td>
+            <%/if%>
+
+            <%if rList !=null%>
+            <%loop rl rList%>
+            
+            <%if (tLoopid%2) == 0%>
+                 <tr>
+             <%/if%>
+             <td align="center" style="width:3%">{rl__loop__id}</td>
+             <td align="center" style="width:7%">{rl[pBrand]}</td>
+             <td style="width:35%"><a href="javascript:void(0);" class="orderInfo" onClick="javascript:sendInfo('{wl[StorageID]}','{wl[sName]}','{rl[ProductsID]}','{rl[pName]}','{rl[pBarcode]}','{sDate}','{eDate}')">{rl[pName]}</a></td>
+             <td align="center" style="width:15%">
+             <%if rl["pBarcode"].ToString()==""%>
+             No coding
+             <%else%>
+             <a href="javascript:void(0);" class="orderInfo" onClick="javascript:sendInfo('{wl[StorageID]}','{wl[sName]}','{rl[ProductsID]}','{rl[pName]}','{rl[pBarcode]}','{sDate}','{eDate}')">{rl[pBarcode]}</a>
+             <%/if%>
+             </td>
+             <!--客户端post时候，获取该仓库联营产品详情-->
+                 <td align="right" style="width:15%">
+                  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({rl[oQuantity]}),2).ToString()%>
+                  {aspxrewriteurl}
+                  <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+                 </td>
+                 <%if {Show}.ToString()=="1"%>
+                 <td align="right" style="width:15%">
+                 <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({rl[oMoney]}),2).ToString()%>
+                  {aspxrewriteurl}
+                   <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+                 </td>
+                 <%else%>
+                 <td align="right" style="width:15%">无权限</td>
+                 <%/if%>
+               
+            <%if (tLoopid%2) == 0%>
+   			</tr>
+            <%/if%>
+           
+            <%set {tLoopid}=tLoopid+1%>
+            <%/loop%>
+            <%/if%>
+          </tr>
+
+          <tr>
+           <td align="center" colspan="5" style="height:30px;font-size:larger;"><span style="font-size:large; font-weight:bold">{wl[sName]}</span>&nbsp;报损数据合计</td>
+           <td align="right">{sumA}</td>
+           <td align="right">
+           <%if {Show}=="1"%>
+           {sumB}
+           <%else%>
+           无权限
+           <%/if%>
+           </td>
+          </tr>
+         
+         <%/loop%>
+         <%/if%>
+        
+         <%/if%>
+         </table>
+        </div>
+
+         <div id="winAll">
+          <div id="winLoding"><img alt="" src="/images/loading99.gif"/></div>
+         </div>
+        </form></div>
+        
+        <%/if%>
+    <%/if%>
+
+<%template _copyright%>
+<%template _footer%>

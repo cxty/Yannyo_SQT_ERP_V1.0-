@@ -1,0 +1,94 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<script type="text/javascript" src="public/js/apmoney_bat.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2" >
+                <tr>
+                  <td colspan="4" align="left"><h1>应付信息</h1></td>
+                </tr>
+				
+				<tr>
+					<td width="20%" align="right">(1)应付对象</td>
+					<td align="left">
+					<INPUT class="B_Check" TYPE="radio" NAME="APObjType" id="APObjType_A" value="2" onclick="javascript:ApmoneyManage_Bat.CheckR();" checked >供货商
+					<INPUT class="B_Check" TYPE="radio" NAME="APObjType" id="APObjType_B" value="1" onclick="javascript:ApmoneyManage_Bat.CheckR();" >个人
+					</td>
+<td width="20%" align="right">
+					(2)截止日期:</td>
+					<td align="left">
+<%set {aspxrewriteurl}=eDate.ToString("yyyy-MM-dd")%>
+<input name="eDate" id="eDate" onClick="new Calendar().show(this);ApmoneyManage_Bat.CheckR();" type="text" value="{aspxrewriteurl}" style="width:90px" />
+					</td>
+				</tr>
+
+                <tr>
+					<td colspan="4" align="left">
+
+
+<table width="630px" border="0" cellspacing="0" cellpadding="0" class="tBox">
+  <tr class="tBar">
+    <td width="100px">
+   	 <span id="tObj_Box">供货商</span>
+    </td>
+    <td width="80px">新增应付金额</td>
+    <td width="80px">实际应付金额</td>
+	<td width="80px">已付金额</td>
+	
+	<td width="100px">科目</td>
+	<td width="80px">发生时间</td>
+    <td width="30px">操作</td>
+  </tr>
+  <tr>
+    <td colspan="7">
+    <div style="overflow:scroll;height:300px;overflow-x:hidden;clear:left;" align="left" id="tLoop_box">
+    
+    </div>
+	<INPUT TYPE="hidden" NAME="Act" id="Act">
+	<INPUT TYPE="hidden" NAME="loop_count_obj" id="loop_count_obj">
+	<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="增加" onClick="javascript:ApmoneyManage_Bat.Add();" />
+	<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="(3)确定保存" onClick="javascript:ApmoneyManage_Bat.CheckS();"/>
+    <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+    </td>
+  </tr>
+</table>
+
+
+
+					</td>
+				</tr>
+
+              </table>
+    
+            </form>
+            
+    <script language="javascript" type="text/javascript">
+	var ApmoneyManage_Bat = new TApmoneyManage_Bat();
+	ApmoneyManage_Bat.ini();
+	</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

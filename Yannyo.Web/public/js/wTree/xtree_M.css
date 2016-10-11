@@ -1,0 +1,56 @@
+.treenode_move {
+		position:absolute;
+		width:200px;
+		line-height:18px;
+		filter:alpha(opacity=50);
+		opacity:0.5;
+		z-index:110;
+		display:none;
+		padding-left:20px;
+		background:url('../images/folder.gif') no-repeat 0px 0px;
+	}
+
+	.treenode1_noselected{
+		height:4px;
+		line-height:10px;
+		overflow:hidden;
+		z-index:100;
+		border: 0px #ffffff solid;
+	}
+
+	.treenode0_over{
+		background-color: #FCDFE9;
+		height:6px;
+		line-height:6px;
+		overflow:hidden;
+		z-index:100;
+		border: 0px #933456 solid;
+		
+	}
+	
+	
+	.treenode_selected{
+		line-height:15px;
+		z-index:100;
+		background-color: #B6BDD2;
+		color:#ffffff;	
+		border: 0px #0A246A solid;
+		
+		}
+	
+	.treenode_noselected{
+		line-height:15px;
+		z-index:100;
+		border: 0px #ffffff solid;
+		
+	}
+	
+	.treenode_over{
+		line-height:15px;
+		background-color: #C7CEE3;
+		color:#ffffff;
+		cursor:poiter;		
+		z-index:100;
+		border: 0px #4963A9 solid;
+		
+	}

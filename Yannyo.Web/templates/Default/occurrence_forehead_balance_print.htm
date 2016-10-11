@@ -1,0 +1,290 @@
+﻿<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>  
+            
+            <%csharp%>
+            foreach(DataTable dtm in dsDetails.Tables)
+            {
+            rCount++;
+            <%/csharp%> 
+ 
+<div id="print_box" style="margin-left:100px; margin-right:25px; margin-top:30px">
+    <form name="bForm" id="bForm" action="" method="post" class="print_box">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+               <td height="40" colspan="2" align="center">
+                <table border="0" cellpadding="0" cellspacing="0" style="width:70%">
+                  <tr>
+                    <td width="25%" align="center"></td>
+                    <td align="center"><span style="font-size:x-large; text-decoration:underline"><nobr><b>发生额及余额表</b></nobr></span></td>
+                    <td width="25%" align="center">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" align="center"></td>
+                    <td align="left">页号：1-{rCount}</td>
+                    </tr>
+                  <tr>
+                    <td align="center">&nbsp;</td>
+                    <td align="center">月份：{bTime}-{eTime}</td>
+                    <td align="left"><nobr>本币名称：人民币</nobr></td>
+                  </tr>
+                  </table>
+               </td>
+            </tr>
+            <tr>
+              <td>
+               <table width="100%"  border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 " style= "border-collapse:collapse; ">
+
+             <tr>
+               <td align="center" rowspan="2" style="width:8%;">科目编码</td>
+               <td align="center" rowspan="2" style="width:26%;">科目名称</td>
+               <td align="center" colspan="2" style="width:20%;height:20px;line-height:20px">期初余额</td>
+               <td align="center" colspan="2" style="width:20%;height:20px;line-height:20px">本期发生</td>
+               <td align="center" colspan="2" style="width:20%;height:20px;line-height:20px">期末余额</td>
+             </tr>
+             <tr>
+                <td align="center" style="width:11%; height:20px;line-height:20px">借方</td>
+                <td align="center" style="width:11%; height:20px;line-height:20px">贷方</td>
+                <td align="center" style="width:11%; height:20px;line-height:20px">借方</td>
+                <td align="center" style="width:11%; height:20px;line-height:20px">贷方</td>
+                <td align="center" style="width:11%; height:20px;line-height:20px">借方</td>
+                <td align="center" style="width:11%; height:20px;line-height:20px">贷方</td>
+             </tr>
+           <%if sType==0%>
+           <%if dtm !=null%>
+           <%loop dl dtm%>
+            <tr>
+               <td align="left" style="width:14%;"><nobr>{dl[cCode]}</nobr></td>
+               <td align="left" style="width:20%;"><nobr>
+               <%set {aspxrewriteurl}=GetFeesSubjectClassParentStr(int.Parse(dl["FeesSubjectClassID"].ToString()),">")%>
+			{aspxrewriteurl}
+               </nobr></td>
+               <!--期初余额借方-->
+               <td align="right" style="width:11%"><nobr>
+                   <%set {oMoney} = decimal.Round(Convert.ToDecimal({dl[cAccountMoney]}),2)%>
+                   <%if dl["cDirection"].ToString()=="0"%>
+                        <%if oMoney==0%>
+                          <%else%>
+                          <%if oMoney>0%>{oMoney}<%/if%>
+                        <%/if%>       
+                   <%/if%>
+                     <%if dl["cDirection"].ToString()=="1"%>
+                        <%if oMoney==0%>
+                          <%else%>
+                          <%if oMoney<0%>
+                          <%set {oMoney} = decimal.Round(Convert.ToDecimal(-{oMoney}),2)%>
+                          {oMoney}<%/if%>
+                        <%/if%>
+                        
+                   <%/if%>
+               &nbsp;</nobr></td>
+                <!--期初余额贷方-->
+               <td align="right" style="width:11%"><nobr>
+                    <%set {oMoney} = decimal.Round(Convert.ToDecimal({dl[cAccountMoney]}),2)%>
+                   <%if dl["cDirection"].ToString()=="0"%>
+                        <%if oMoney==0%>
+                          <%else%>
+                          <%if oMoney<0%>
+                           <%set {oMoney} = decimal.Round(Convert.ToDecimal(-{oMoney}),2)%>
+                          {oMoney}<%/if%>
+                        <%/if%>       
+                   <%/if%>
+                     <%if dl["cDirection"].ToString()=="1"%>
+                        <%if oMoney==0%>
+                          <%else%>
+                          <%if oMoney>0%>{oMoney}<%/if%>
+                        <%/if%>
+                        
+                   <%/if%>
+               &nbsp;</nobr></td>
+                <!--本期发生借方-->
+               <td align="right" style="width:11%"><nobr>
+               <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[JcdMoney]}),2).ToString()%>
+                    <%if {aspxrewriteurl}=="0.00"%>
+                          <%else%>
+                          {aspxrewriteurl}
+                        <%/if%>
+               &nbsp;</nobr></td>
+               <!--本期发生贷方-->
+               <td align="right" style="width:11%"><nobr>
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[DcdMoney]}),2).ToString()%>
+                    <%if {aspxrewriteurl}=="0.00"%>
+                          <%else%>
+                          {aspxrewriteurl}
+                        <%/if%>
+              &nbsp;</nobr></td>
+              <!--期末余额借方-->
+               <td align="right" style="width:11%"><nobr>
+                   <%if dl["cDirection"].ToString()=="0"%>
+                      <%if Convert.ToInt32(dl["oMoney"])>0%>
+                          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[oMoney]}),2).ToString()%>
+                          {aspxrewriteurl}
+                      <%/if%>
+                   <%/if%>
+                   <%if dl["cDirection"].ToString()=="1"%>
+                      <%if Convert.ToInt32(dl["iMoney"])<0%>
+                        <%set {jAcount}=decimal.Round(-Convert.ToDecimal({dl[iMoney]}),2)%>{jAcount}
+                      <%/if%>
+                   <%/if%>
+               &nbsp;</nobr></td>
+               <!--期末余额贷方-->
+               <td align="right" style="width:11%"><nobr>
+                  <%if dl["cDirection"].ToString()=="0"%>
+                      <%if Convert.ToInt32(dl["oMoney"])<0%>
+                        <%set {jAcount}=decimal.Round(-Convert.ToDecimal({dl[oMoney]}),2)%>{jAcount}
+                      <%/if%>
+                   <%/if%>
+                    <%if dl["cDirection"].ToString()=="1"%>
+                      <%if Convert.ToInt32(dl["iMoney"])>0%>
+                        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({dl[iMoney]}),2).ToString()%>
+                          {aspxrewriteurl}
+                      <%/if%>
+                   <%/if%>
+               &nbsp;</nobr></td>
+            </tr>
+           <%/loop%>
+           <%/if%>
+           <%/if%>
+
+          <!--按科目打印-->
+           <%if sType==1 && sCost !=null%>
+             <%if newTable !=null%>
+             <%loop cl newTable%>
+             <%set {obj}=getClassDetails({cl[FeesSubjectClassID]})%>
+             <tr>
+               <td align="left" style="width:14%;"><nobr>{cl[cCode]}</nobr></td>
+               <td align="left" style="width:20%;"><nobr>{cl[cClassName]}</nobr></td>
+                <!--期初余额借方-->
+               <td align="right" style="width:9%"><nobr>
+                 <%set {oMoney} = decimal.Round({cAccountMoney},2)%>
+                   <!--科目方向为借：余额>0-->
+                   <%if cl["cDirection"].ToString()=="0"%>
+                        <%if oMoney==0%><%else%>
+                             <%if oMoney>0%>
+                                {oMoney}
+                             <%/if%>
+                        <%/if%>  
+                   <%/if%>
+                   <!--科目方向为贷：余额<0-->
+                   <%if cl["cDirection"].ToString()=="1"%>
+                        <%if oMoney==0%><%else%>
+                          <%if oMoney<0%>
+                            <%set {oMoney} = decimal.Round(Convert.ToDecimal(-{oMoney}),2)%>{oMoney}
+                          <%/if%>
+                        <%/if%>     
+                   
+                   <%/if%>
+               &nbsp;</nobr></td>
+                <!--期初余额贷方-->
+               <td align="right" style="width:9%"><nobr>
+                   <%set {qMoney} = decimal.Round({cAccountMoney},2)%>
+                   <!--科目方向为借：余额<0-->
+                   <%if cl["cDirection"].ToString()=="0"%>
+                        <%if qMoney==0%>
+                          <%else%>
+                          <%if qMoney<0%>
+                             <%set {qMoney} = decimal.Round(Convert.ToDecimal(-{qMoney}),2)%>{qMoney}
+                          <%/if%>
+                        <%/if%>     
+                   <%/if%>
+                   <!--科目方向为贷：余额>0-->
+                   <%if cl["cDirection"].ToString()=="1"%>
+                        <%if qMoney==0%>
+                          <%else%>
+                          <%if qMoney>0%>
+                          {qMoney}
+                          <%/if%>
+                        <%/if%>    
+                   <%/if%>
+               &nbsp;</nobr></td>
+                <!--本期发生借方-->
+               <td align="right" style="width:9%"><nobr>
+               <%set {bMoney} = decimal.Round({JcdMoney},2)%>
+                    <%if {bMoney}==0%>
+                          <%else%>
+                          {bMoney}
+                        <%/if%>
+               &nbsp;</nobr></td>
+               <!--本期发生贷方-->
+               <td align="right" style="width:9%"><nobr>
+                <%set {bMoneyd} = decimal.Round({DcdMoney},2)%>
+                    <%if {bMoneyd}==0%>
+                          <%else%>
+                          {bMoneyd}
+                        <%/if%>
+              &nbsp;</nobr></td>
+              <!--期末余额借方-->
+               <td align="right" style="width:9%"><nobr>
+                   <%if cl["cDirection"].ToString()=="0"%>
+                      <%if OMoney>0%>
+                      <%set {jAcount} = decimal.Round({OMoney},2)%>
+                        {jAcount}
+                      <%/if%>
+                     
+                   <%/if%>
+                   <%if cl["cDirection"].ToString()=="1"%>
+                      <%if iMoney<0%>
+                        <%set {jAcount}=decimal.Round(-Convert.ToDecimal({iMoney}),2)%>
+                        {jAcount}
+                      <%/if%>
+                     
+                   <%/if%>
+              &nbsp;</nobr></td>
+               <!--期末余额贷方-->
+               <td align="right" style="width:9%"><nobr>
+                  <%if cl["cDirection"].ToString()=="0"%>
+                      <%if OMoney<0%>
+                       <%set {DAcount}=decimal.Round(-Convert.ToDecimal({OMoney}),2)%>
+                       {DAcount}
+                      <%/if%>
+                       
+                   <%/if%>
+                    <%if cl["cDirection"].ToString()=="1"%>
+                      <%if iMoney>0%>
+                       <%set {DAcount} = decimal.Round({iMoney},2)%>
+                        {DAcount}
+                      <%/if%>       
+                   <%/if%>
+               &nbsp;</nobr></td>
+             </tr>
+             <%/loop%>
+             <%/if%>
+           <%/if%>
+           </table>
+              </td>
+            </tr>
+        </table>
+    </form>
+     <div style="page-break-after: always">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr>
+         <td>&nbsp;核算单位：{config.CompanyName} </td>
+         <td>制表：{uiName.StaffName}</td>
+         <td align="right">打印时间：{pTime}&nbsp;&nbsp;&nbsp;</td>
+       </tr>
+     </table>
+    </div>
+</div><br /><br />
+
+         <%csharp%>     
+                }
+          <%/csharp%>   
+        
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

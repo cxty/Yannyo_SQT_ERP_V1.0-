@@ -1,0 +1,81 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="/public/js/comm.js"></script>
+<script type="text/javascript" src="/public/js/xml.js"></script>
+<script type="text/javascript" src="/public/js/jquery-1.3.2.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+
+	<%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+				<table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td colspan="2" align="left"><h1>银行明细信息</h1></td>
+                </tr>
+                
+                <tr>
+                  <td  align="right">日期</td>
+                  <td align="left">
+				  <input name="bUpdateTime" id="bUpdateTime" onclick="new Calendar().show(this);" type="text" value="{sDate}">
+					</td>
+                </tr>
+				<tr>
+                  <td colspan="2" align="center">
+<div style="overflow:scroll;height:300px;overflow-x:hidden;">
+<table width="100%" border="0" cellspacing="2" cellpadding="2">
+				<%if fList != null%>
+					<%loop fl fList%>
+				<tr>
+                  <td  align="right">{fl[bName]}:</td>
+                  <td align="left"><input name="Bank_{fl__loop__id}" id="Bank_{fl__loop__id}"  type="text"
+				  <%if Act == "Edit"%>
+					value = "{fl[money]}"
+				  <%/if%>
+				  ></td>
+                </tr>
+
+					<%/loop%>
+				<%/if%>
+					</td>
+				</tr>
+				</table>
+				</div>
+                <tr>
+                  <td colspan="2" align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+			</form>
+
+			<script language="javascript" type="text/javascript">
+			function CheckF()
+			{
+				if(Sys.getObj('bUpdateTime').value != '')
+				{
+
+						Sys.getObj('bForm').submit();
+
+				}else
+				{
+					alert('时间不能为空!');	
+				}
+			}
+			</script>
+		<%/if%>
+    <%/if%>
+
+<%/if%>
+
+<%template _footer%>

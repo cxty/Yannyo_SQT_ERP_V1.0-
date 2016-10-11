@@ -1,0 +1,44 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<script language="javascript" src="public/js/jTable.js"></script>
+<script language="javascript" src="public/js/importdata.js"></script>
+
+<%if {ispost} %>
+	<%if page_err!=0%>
+		<%template _poperrmsgbox%>
+	<%else%>
+		<%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        	<%if steps==2%>
+                <%template _importdata_b%>
+            <%/if%>
+        <%/if%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            
+            	<%if steps==1%>
+            		<%template _importdata_a%>
+    			<%/if%>
+                
+            <%/if%>
+    <%/if%>
+<%/if%>
+<script language="javascript" type="text/javascript">
+var Importdata = new TImportdata();
+Importdata.setps = {steps};
+<%set {aspxrewriteurl}=sDateTime.ToString("yyyy-MM-dd")%>
+Importdata.sDateTime = '{aspxrewriteurl}';
+Importdata.ini();
+
+</script>
+
+<%template _footer%>

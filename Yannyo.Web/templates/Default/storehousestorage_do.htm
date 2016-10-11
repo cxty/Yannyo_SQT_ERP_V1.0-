@@ -1,0 +1,121 @@
+﻿<%template _poppageheader%>
+<body>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript"></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script src="/public/js/myFrontPageJs/storage.js" type="text/javascript" language="javascript"></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form action="" method="post" enctype="multipart/form-data" name="bForm" id="bForm">
+              <table border="0" cellspacing="2" cellpadding="2" style="width: 440px;font-size:9pt;">
+                <tr class="tBar">
+                 <td>门店名称：<input type="text" style="width:150px" id="SName" name="SName" <%if Act=="Edit"%>value="{si.SName}" disabled="disabled"<%/if%> showtitle="可填写少于50个的数字或中英文字符"/>
+                 <INPUT TYPE="hidden" NAME="StoresID" id="StoresID" />
+               
+                </tr>
+                <tr class="tBar">
+                  <td>仓库名称：<input id="stName"  name="stName" disabled="disabled" type="text" style="width:150px" value="默认值" showtitle="可填写少于50个的数字或中英文字符"/>
+
+                </tr>
+                <tr id="time" class="tBar">
+                <%set {aspxrewriteurl}=sDateTime.ToString("yyyy-MM-dd")%>
+                  <td class="style1">时间选择：<input name="sDateTime" id="sDateTime" onclick="new Calendar().show(this);" type="text"  style="width:150px;"  <%if Act=="Edit"%>value="{si.PAppendTime}" disabled="disabled"<%else%>value="{aspxrewriteurl}"<%/if%> />
+                 
+                  </td>
+                </tr>
+                <tr class="tBar">
+                <td align="left">商品编号：<input type="text" style="width:150px" id="proCode" name="proCode"<%if Act=="Edit"%>disabled="disabled"<%/if%> showtitle="允许为空"/>
+            
+                </td>
+                  </tr>
+                  <tr class="tBar">
+                   <td align="left">商品名称：<input type="text" id="pName" name="pName" style="width:150px;" <%if Act=="Edit"%>value="{si.PName}" disabled="disabled"<%/if%> showtitle="输入*可检索" />
+                   <INPUT TYPE="hidden" NAME="ProductID" id="ProductID" >
+                
+                   </td>
+                  </tr>
+                  <tr class="tBar">
+                   <td align="left">商品条码：<input type="text" id="pBarcode" name="pBarcode" style="width:150px;"<%if Act=="Edit"%>disabled="disabled"<%/if%> showtitle="允许为空"/> 
+                     
+                  </tr>
+                  <tr class="tBar">
+                   <td align="left">商品品牌：<input type="text" id="pBrand" name="pBrand" style="width:150px;" <%if Act=="Edit"%>disabled="disabled"<%/if%> showtitle="允许为空"/>
+                     
+                   </td>
+                  </tr> 
+                  <tr class="tBar">
+                   <td align="left">商品规格：<input type="text" id="pStandred" name="pStandred" style="width:150px;" <%if Act=="Edit"%>disabled="disabled"<%/if%> showtitle="允许为空"/>
+                  
+                   </td>
+                  </tr>
+                  <tr class="tBar">
+                   <td align="left">商品数量：<input type="text" id="pNum" name="pNum" style="width:150px;" <%if Act=="Edit"%>value="{si.PNum}"<%/if%> showtitle="只能填写数字格式" />
+                   
+                   </td>
+                  </tr>
+                  <tr class="tBar"> 
+                  <td align="left">商品单价：<input type="text" id="pMoney" name="pMoney" style="width:150px;" <%if Act=="Edit"%>value="{si.PMoney}"<%/if%> showtitle="只能填写数字格式" />
+                  
+                   </td>
+                  </tr>
+                <tr id="submit" class="tBar">
+                  <td colspan="2" align="left">
+                  <input type="hidden" name="text_form" /> <!--隐藏表单-->
+                  <input type="button" id="btn_submit" style="margin-left:100px" class="B_INPUT" value="确定" onclick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin-left:5px" class="B_INPUT" value="取消" onclick="javascript:window.parent.HidBox();"/></td>
+                </tr>
+				<tr id="loading" style="display:none;">
+                  <td colspan="2" align="left"><img src="/images/loading.gif" alt="" />数据处理中,该过程需要10-30分钟,请不要刷新,切换或关闭此页面!</td>
+                </tr>
+              </table>
+    
+            </form>
+            
+			<script language="javascript" type="text/javascript">
+			    $("#btn_submit").click(function () {
+			        var SName = $("#SName").val();
+			        var pName = $("#pName").val();
+			        var pNum = $("#pNum").val();
+			        var pMoney = $("#pMoney").val();
+			        if (SName != '') {
+			            if (pName != '') {
+			                if (pNum != '') {
+			                    if (pNum != '') {
+			                        $("#bForm").submit();
+			                    }
+			                    else {
+			                        jAlert("商品单价不能为空！", "友情提示");
+			                    }
+			                }
+			                else {
+			                    jAlert("商品数量不能为空！", "友情提示");
+			                }
+			            }
+			            else {
+			                jAlert("商品名称不能为空！", "友情提示");
+			            }
+			        }
+			        else {
+			            jAlert("门店名称不能为空！", "友情提示");
+			        }
+
+			    });
+            </script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+

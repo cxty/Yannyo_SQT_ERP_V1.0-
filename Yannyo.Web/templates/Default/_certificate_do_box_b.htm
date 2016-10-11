@@ -1,0 +1,80 @@
+<table border="0" cellspacing="3" cellpadding="3">
+  <tr>
+    <td align="left">
+    凭证类型:<br/>
+    <select name="cType" id="cType">
+<option value="-1"
+<%if cType==-1%>
+ selected="selected"
+<%/if%>
+>全部</option>
+        <option value="0"
+<%if cType==0%>
+ selected="selected"
+<%/if%>
+>收款</option>
+<option value="1"
+<%if cType==1%>
+ selected="selected"
+<%/if%>
+>付款</option>
+<option value="2"
+<%if cType==2%>
+ selected="selected"
+<%/if%>
+>其他</option>
+      </select>
+    </td>
+    <td align="left">凭证时间:<br/><input name="cDateTimeB" id="cDateTimeB" style="width:80px" value="{cDateTimeB}" type="text" onClick="new Calendar().show(this);" readonly="readonly"/>-<input name="cDateTimeE" id="cDateTimeE" style="width:80px" value="{cDateTimeE}" type="text" onClick="new Calendar().show(this);" readonly="readonly"/></td>
+	<td align="left">凭证号:<br/>
+    <input name="cNumber" id="cNumber" value="{cNumber}" type="text" /></td>
+    <td align="left"><input type="button" id="button_Search" name="button_Search" style="margin:5px;width:120px" class="B_INPUT" value=" 凭证查找 "  /></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+<thead>
+  <tr class="tBar">
+    <td width="2%" align="center"><input type="checkbox" name="checkbox_b" id="checkbox_b" class="B_Check"></td>
+    <td width="20%">凭证编号</td>
+    <td width="10%">经办人</td>
+    <td width="10%" align="right">金额</td>
+    <td width="10%" align="right">发生时间</td>
+    </tr>
+</thead>
+<tbody id="dloop">
+<%if dList!=null%>
+<%loop dl dList%>
+  <tr CertificateID="{dl[CertificateID]}">
+    <td width="2%" align="center"><input type="checkbox"
+	<%set {aspxrewriteurl}=Convert.ToDateTime(dl["cDateTime"]).ToString("yyyyMMdd")+"-"+(dl["cNumber"].ToString()).PadLeft(config.CertificateCodeLen,'0')%>
+    cCode="{aspxrewriteurl}"
+    <%set {aspxrewriteurl}=Convert.ToDateTime(dl["cAppendTime"]).ToString("yyyy-MM-dd")%>
+    cAppendTime="{aspxrewriteurl}"
+    cMoney="{dl[cMoney]}"
+    cType="{dl[cType]}"
+    <%set {aspxrewriteurl}=(dl["cType"].ToString() == "0" ? "收款" : (dl["cType"].ToString() == "1") ? "付款" : dl["cType"].ToString() == "2"?"其他":"")%>
+    cTypeStr="{aspxrewriteurl}"
+    UserID="{dl[UserID]}"
+    UserName="{dl[UserName]}"
+    UserStaffName="{dl[UserStaffName]}"
+    StaffName="{dl[StaffName]}"
+    StaffID="{dl[StaffID]}"
+    <%set {aspxrewriteurl}=Convert.ToDateTime(dl["cDateTime"]).ToString("yyyy-MM-dd")%>
+    cDateTime="{aspxrewriteurl}"
+    cObject="{dl[cObject]}"
+    cObjectID="{dl[cObjectID]}"
+     name="checkbox_b" id="checkbox_b_{dl__loop__id}" value="{dl[CertificateID]}" class="B_Check"></td>
+	 <%set {aspxrewriteurl}=Convert.ToDateTime(dl["cDateTime"]).ToString("yyyyMMdd")+"-"+(dl["cNumber"].ToString()).PadLeft(config.CertificateCodeLen,'0')%>
+    <td width="20%"><a href="javascript:void(0);" onClick="javascript:Certificate_do_box.ShowData({dl[CertificateID]},'{aspxrewriteurl}');">{aspxrewriteurl}</a></td>
+    <td width="10%">{dl[StaffName]}</td>
+    <td width="10%" align="right" class="loop_Money">{dl[cMoney]}
+    <%set {SumMoney}=Convert.ToDecimal(SumMoney+Convert.ToDecimal(dl["cMoney"]))%>
+    </td>
+    <td width="10%" align="right">
+      <%set {aspxrewriteurl}=Convert.ToDateTime(dl["cDateTime"]).ToString("yyyy-MM-dd")%>
+      {aspxrewriteurl}</td>
+    </tr>
+<%/loop%>
+<%/if%>
+</tbody>
+</table>

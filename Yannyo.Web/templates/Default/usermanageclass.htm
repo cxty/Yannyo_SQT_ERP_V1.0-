@@ -1,0 +1,65 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/UserManageClass.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="UserManageClass">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+  <input type="button" id="bt_add" style="margin:5px" class="B_INPUT" value="添加" />
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td >组名称</td>
+
+            <td width="10%">操作</td>
+          </tr>
+          <%if UserTypeList != null%>
+          <%loop utl UserTypeList%>
+          <tr>
+            <td><a href="javascript:void(0);" onclick="javascript:UserManageClass.ShowEditBox({utl[id]});">{utl[name]}</a></td>
+            
+            <td>
+			
+			<a href="javascript:void(0);" onclick="javascript:UserManageClass.ShowDelBox({utl[id]});">删除</a>
+			
+			<a href="javascript:void(0);" onclick="javascript:UserManageClass.ShowEditBox({utl[id]});">修改</a></td>
+          </tr>
+          <%/loop%>
+
+          
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var UserManageClass = new TUserManageClass();
+UserManageClass.ini();
+
+function HidBox()
+{
+	UserManageClass.HidUserBox();
+	location=location;
+}
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

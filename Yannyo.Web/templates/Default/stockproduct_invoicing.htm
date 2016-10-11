@@ -1,0 +1,94 @@
+<%template _header%>
+<script language="javascript" src="public/js/jTable.js"></script>
+<script src="public/js/WebCalendar.js" language="javascript" type="text/javascript"></script>
+
+
+<div class="main" id="usermanage">
+    <%if page_err!=0%>
+        <%template _errmsgbox%>
+    <%else%>
+    <script src="public/js/stockproduct_invoicing.js" language="javascript" type="text/javascript"></script>
+    
+    <form action="" method="post" name="form1" id="form1">
+    <div class="toolbar">
+    &nbsp;&nbsp;
+    仓库:<select id="StorageID" name="StorageID" >
+    <option value="0" >全部</option>
+    <%if StorageList!=null%>
+    <%loop sl StorageList%>
+    <option value="{sl[StorageID]}" 
+    <%if sl["StorageID"].ToString() == StorageID.ToString()%>
+     selected="selected"
+     <%/if%>
+     >{sl[sName]}({sl[sCode]})</option>
+    <%/loop%>
+    <%/if%>
+    </select>
+    <INPUT TYPE="hidden" NAME="Act" id="Act">
+    时间点:<input type="text" readonly="readonly" name="sDate" id="sDate" value="{sDate}" onClick="new Calendar().show(this);"/>
+    <input type="button" id="bt_ok" style="margin:5px" class="B_INPUT" value="查找"  />
+	<input type="button" id="bt_reset" style="margin:5px" class="B_INPUT" value="重置该日后数据"  />
+    </div>
+    <div class="datalist">
+    <table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox" id="tBox" >
+        <thead  > 
+          <tr class="tBar">
+          <td width="10%">条码</td>
+          <td>产品名称</td>
+          <td width="5%">期初数量</td>
+          <td width="5%">期初金额</td>
+          <td width="5%">本期进货数量</td>
+          <td width="5%">本期进货金额</td>
+          <td width="5%">本期出货数量</td>
+          <td width="5%">本期出货金额</td>
+          <td width="5%" align="right">结存数量</td>
+          <td width="5%" align="right">结存单价</td>
+          <td width="5%" align="right">结存金额</td>
+		  <td width="10%" align="center">操作</td>
+          </tr>
+          </thead>
+          <tbody id="dLoop">
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr id="tr_{dl[ReportInvoicingID]}">
+            <td>{dl[pBarcode]}</td>
+            <td>{dl[pName]}</td>
+            <td align="right"><input style="width:90%" type="text" id="bQuantity_{dl[ReportInvoicingID]}" name="bQuantity_{dl[ReportInvoicingID]}" value="{dl[bQuantity]}"/></td>
+            <td align="right"><input style="width:90%" type="text" id="bMoney_{dl[ReportInvoicingID]}" name="bMoney_{dl[ReportInvoicingID]}" value="{dl[bMoney]}"/></td>
+            <td align="right"><input style="width:90%" type="text" id="InQuantity_{dl[ReportInvoicingID]}" name="InQuantity_{dl[ReportInvoicingID]}" value="{dl[InQuantity]}"/></td>
+            <td align="right"><input style="width:90%" type="text" id="InMoney_{dl[ReportInvoicingID]}" name="InMoney_{dl[ReportInvoicingID]}" value="{dl[InMoney]}"/></td>
+            <td align="right"><input style="width:90%" type="text" id="OutQuantity_{dl[ReportInvoicingID]}" name="OutQuantity_{dl[ReportInvoicingID]}" value="{dl[OutQuantity]}"/></td>
+            <td align="right"><input style="width:90%" type="text" id="OutMoney_{dl[ReportInvoicingID]}" name="OutMoney_{dl[ReportInvoicingID]}" value="{dl[OutMoney]}"/></td>
+            <td align="right"><input style="width:90%" type="text" id="eQuantity_{dl[ReportInvoicingID]}" name="eQuantity_{dl[ReportInvoicingID]}" value="{dl[eQuantity]}"/></td>
+            <td align="right">
+            <%if Convert.ToDecimal(dl["eQuantity"].ToString())!=0%>
+            <%set {aspxrewriteurl} = (Convert.ToDecimal(dl["eMoney"].ToString())/Convert.ToDecimal(dl["eQuantity"].ToString())).ToString()%>
+            <%else%>
+            <%set {aspxrewriteurl} = "0"%>
+            <%/if%>
+            <input style="width:90%" type="text" id="Price_{dl[ReportInvoicingID]}" name="Price_{dl[ReportInvoicingID]}" value="{aspxrewriteurl}"/></td>
+            <td align="right"><input style="width:90%" type="text" id="eMoney_{dl[ReportInvoicingID]}" name="eMoney_{dl[ReportInvoicingID]}" value="{dl[eMoney]}"/></td>
+			<td align="center"><input type="button" id="bt_ok_{dl[ReportInvoicingID]}" style="margin:5px" class="B_INPUT" value="保存"  /></td>
+          </tr>
+          <%/loop%>
+          <%/if%>
+         </tbody>
+     </table>
+    </div>
+    </form>
+    <script language="javascript" type="text/javascript">
+	var tf = new TableFixed("tBox");
+
+	tf.Clone();
+
+	var StockProduct_invoicing = new TStockProduct_invoicing();
+	StockProduct_invoicing.ini();
+	addTableListener(document.getElementById("tBoxs"),0,0);
+	</script>
+    <%/if%>
+</div>
+
+
+
+<%template _copyright%>
+<%template _footer%>

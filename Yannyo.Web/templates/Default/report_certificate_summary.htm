@@ -1,0 +1,95 @@
+<%template _header%>
+<div class="main" >
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="public/js/dialog.js "></script>
+		<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+        <script src="public/js/report_certificate_summary.js" type="text/javascript" ></script>
+        
+<script src="public/js/LodopFuncs.js" type="text/javascript" ></script>
+
+        <div class="main">
+        <form action="" method="post" name="form1" id="form1">
+        
+        <div class="toolbar">
+        <div class="toolbox">
+        <table border="0" cellspacing="3" cellpadding="3">
+          <tr>
+           
+            <td align="left">凭证时间:<br/><input name="bDate" id="bDate" style="width:80px" value="{bDate}" type="text" onClick="new Calendar().show(this);" readonly="readonly"/>-<input name="eDate" id="eDate" style="width:80px" value="{eDate}" type="text" onClick="new Calendar().show(this);" readonly="readonly"/></td>
+            <td align="left"><input type="button" id="button_Summary" name="button_Summary" style="margin:5px;width:120px" class="B_INPUT" value=" 凭证汇总 "  />&nbsp;
+            <input type="button" id="button_print" name="button_print" style="margin:5px;width:120px" class="B_INPUT" value=" 打印汇总表 "  /></td>
+          </tr>
+        </table>
+</div>
+<div class="list_title">
+凭证汇总
+</div>
+</div>
+<div class="datalist">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+<thead>
+<%if ispost == true%>
+  <tr class="tBar">
+    <td colspan="2"><span style="width:100%">凭证范围:{bDate}~{eDate} </span></td>
+    <td colspan="2" align="right"><span style="width:100%">共{cCount}张 </span></td>
+    </tr>
+    <%/if%>
+  <tr class="tBar">
+    <td width="10%">科目代码</td>
+    <td width="20%">科目名称</td>
+    <td width="20%" align="right">借方金额</td>
+    <td width="15%" align="right">贷方金额</td>
+    </tr>
+</thead>
+<tbody id="dloop">
+<%if dList!=null%>
+<%loop dl dList%>
+  <tr >
+    
+    <td>{dl[cCode]}</td>
+    <td width="20%">{dl[cClassName]}</td>
+    <td width="20%" align="right" >{dl[cdMoney]}
+    <%set {cdMoneySum}=Convert.ToDecimal(cdMoneySum+Convert.ToDecimal(dl["cdMoney"]))%>
+    </td>
+    <td width="15%" align="right">{dl[cdMoneyB]}
+        <%set {cdMoneyBSum}=Convert.ToDecimal(cdMoneyBSum+Convert.ToDecimal(dl["cdMoneyB"]))%>
+    </td>
+    </tr>
+<%/loop%>
+<tr>
+	<td>合计</td>
+    <td width="20%"></td>
+    <td width="20%" align="right">{cdMoneySum}</td>
+    <td width="15%" align="right">{cdMoneyBSum}</td>
+</tr>
+<%/if%>
+</tbody>
+</table>
+</div>
+        <script language="javascript" type="text/javascript">
+		var Report_Certificate_Summary = new TReport_Certificate_Summary();
+        Report_Certificate_Summary.PrintPageWidth = '{config.PrintCertificatePageWidth}';
+		Report_Certificate_Summary.UserCode = '{UserCode}';
+        Report_Certificate_Summary.ini();
+        
+        function HidBox()
+        {
+            Report_Certificate_Summary.HidUserBox();
+            location = location;
+        }
+		addTableListener(document.getElementById("tBoxs"),0,0);
+		</script>
+    </form></div>
+<object id="LODOP" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0> 
+	<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="/public/install_lodop.exe"></embed>
+</object>
+      <%/if%>
+</div>
+
+
+
+<%template _copyright%>
+<%template _footer%>

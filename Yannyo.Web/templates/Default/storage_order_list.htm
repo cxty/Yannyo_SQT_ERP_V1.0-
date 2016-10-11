@@ -1,0 +1,163 @@
+﻿<%template _header%>
+<script src="/public/js/pqgrid/jquery.min.js"></script>
+<script src="/public/js/pqgrid/jquery-ui.min.js"></script>
+
+<!--<script src="/public/js/jquery.js" language="javascript" type="text/javascript"></script>-->
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script src="/public/js/WebCalendar.js" language="javascript" type="text/javascript"></script>
+<script src="/public/js/stockproducts.js" language="javascript" type="text/javascript"></script>
+<script language="javascript" src="/public/js/jTable.js"></script>
+
+
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+
+
+
+<!--PQ Grid files-->
+    <link rel="stylesheet" href="/public/js/pqgrid/pqgrid.min.css" />
+    <script src="/public/js/pqgrid/pqgrid.min.js"></script>
+<!--PQ Grid Office theme-->
+    <link rel="stylesheet" href="/public/js/pqgrid/themes/office/pqgrid.css" />
+
+<script type="text/javascript" src="/public/js/storage_order_list.js"></script>
+
+
+<div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1">
+            <div class="toolbar">
+            <div class="toolbox">
+            仓库分类：
+            <input name="StorageClassName" id="StorageClassName" type="text" <%if {Act} !=""%>value="{className}"<%/if%> style="width:145px"/>
+            <input type="hidden" id="StorageClassNum" name="StorageClassNum" <%if {Act} !=""%>value="{StorageClassID}"<%/if%>/>
+            &nbsp;&nbsp;
+            仓库：
+            <%if StorageName !=null && {Act} !=""%>
+            <select id="StorageID" name="StorageID" >
+            <option value="0">选择全部</option>
+            <%loop sl StorageName%>
+            <option value="{sl[StorageID]}"<%if Convert.ToInt32(sl["StorageID"].ToString())=={StorageID}%> selected="selected"<%/if%>>{sl[sName]}({sl[sCode]})</option>
+                <%/loop%>
+            </select>
+            <%else%>
+            <select id="StorageID" name="StorageID" >
+            <option value="0">选择全部</option>
+            </select>
+            <%/if%>
+            商品：<input TYPE="text" NAME="S_key" id="S_key" value="{S_key}" style="width:145px">(可输入名称,条码或者*查询)
+            <INPUT TYPE="hidden" NAME="ProductID" id="ProductID" value="{ProductID}">
+            <INPUT TYPE="hidden" NAME="Act" id="Act">
+            <%set {aspxrewriteurl}=bDate.ToString("yyyy-MM-dd")%>
+            时间：<input type="text" readonly name="bDate" id="bDate" value="{aspxrewriteurl}" onClick="new Calendar().show(this);" style="width:145px"/>
+            -
+            <%set {aspxrewriteurl}=eDate.ToString("yyyy-MM-dd")%>
+            <input type="text" readonly name="eDate" id="eDate" value="{aspxrewriteurl}" onClick="new Calendar().show(this);" style="width:145px"/>
+            <input type="button" id="button_Search" style="margin:5px" class="B_INPUT" value="查找"  />
+            <!--<input type="button" id="export_data" name="export_data" style="margin:5px" class="B_INPUT" value="导出数据" />-->
+            <input type="button" id="edit_data" name="edit_data" style="margin:5px" class="B_INPUT" value="数据调整" />
+</div>
+
+</div>
+<div class="datalist">
+            
+            <div id="dataTable" style="width:100%">
+            </div>
+            
+            
+</div>
+<div id="winType">
+            <div id="winbody">
+               <table border="0" cellpadding="0" cellspacing="0" style="width:100%;height:100%; border-color:White">
+               <tr>
+                <td style="background-color:#AABE4D;height:35px"><span style="color:White;font-size:larger; padding-left:10px"><b>仓库分类</b></span><span id="winClose">关闭</span></td>
+               </tr>
+               <tr>
+                 <td>
+                  <div id="treeNode"></div>
+                 </td>
+               </tr>
+               </table>
+            </div>
+           </div>
+      <div id="winAll">
+          <div id="winLoding"><img alt="" src="/images/loading99.gif"/></div>
+         </div>
+
+<script language="javascript" type="text/javascript">
+var bData = '';
+var dData = '';
+
+$().ready(function () {
+
+ //仓库分类树
+    $("#treeNode").jstree({   
+	"json_data":{"data":[{"data":"仓库分类","state":"closed","children":[{StorageClassJson}]}
+                ]}, 
+	
+	"types" : {  
+			 "valid_children" : [ "dt" ],  
+			 "types" : {
+				 "dt" : {
+					 "icon" : { 
+						"image" : "/images/dot.png" 
+					},
+					 "valid_children" : [ "default" ],
+					 "max_depth" : 2,
+					 "hover_node" : true,
+					 "open_node":false,
+					 "select_node" : true
+				 } 
+			 }  
+		}, 
+	 "plugins" : [ "themes", "json_data", "ui", "crrm", "types", "hotkeys","cCode"] 
+	
+	}).bind("select_node.jstree", function (e,data) {
+		var sID = data.rslt.obj.attr("id").replace('t_','');
+		//var sName = data.rslt.obj.context.text;
+        var sName = $("#treeNode").jstree('get_text');
+        //document.getElementById("StorageClassName").value=sName;
+        $("#StorageClassName").val(sName);
+        $("#StorageClassNum").val(sID);
+
+        $("#winType").fadeOut("slow");
+        if(sID !='')
+        {
+            $.post('/stockproduct.aspx?Aclass=aclass&sClassID='+sID,'',function(data){
+                 var sName=eval("("+data+")").sName.split(",");
+                 var sID=eval("("+data+")").sID.split(",");
+                 var count=sName.length;
+                 var StorageID=document.getElementById("StorageID");;
+                 if(count>1)
+                 {
+                     StorageID.length=0;
+                     StorageID.options.add(new Option("选择全部", "0"));
+                     for (var i = 0; i < count - 1; i++) {
+                       StorageID.options.add(new Option(sName[i], sID[i]));
+                     }
+                 }
+                 else
+                 {
+                    StorageID.length=0;
+                    StorageID.options.add(new Option("选择全部", "0"));
+                 }
+            });
+        }
+       
+	 });
+ });
+
+</script>
+</form>
+      <%/if%>
+    </div>
+
+
+
+<%template _copyright%>
+<%template _footer%>

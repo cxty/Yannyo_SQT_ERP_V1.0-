@@ -1,0 +1,266 @@
+﻿<%template _header%>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script src="/public/js/myFrontPageJs/products_sales.js" type="text/javascript" language="javascript" ></script>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        	<form name="bForm" id="bForm" action="" method="post">
+            <div style="background-color:#cccccc">
+            <input type="hidden" id="reginID" name="tType" />
+            <table  style="width:100%">
+            <hr style="visibility:hidden" />
+              <tr>
+               <td align="left" style="width:15%">统计类型：
+                  <select id="tType" style="width:50%">
+                    <option value="0"<%if tType==0%> selected="selected"<%/if%>>时间段</option>
+                    <option value="1"<%if tType==1%> selected="selected"<%/if%>>年统计</option>
+                    <option value="2"<%if tType==2%> selected="selected"<%/if%>>月统计</option>
+                  </select> 
+               </td>
+               <td align="right" style="width:20%">日期选择：
+                 <%set {aspxrewriteurl}=bDate.ToString("yyyy-MM-dd")%>
+                 <input name="bDate" id="bDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />
+               </td>
+              
+               <td align="left" style="width:15%">
+               <%if {tType}==0%>
+                <div class="showOrhidden" style="visibility:visible">
+                 <%set {aspxrewriteurl}=eDate.ToString("yyyy-MM-dd")%>
+                 至<input name="eDate" class="eDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />
+                </div>
+                <%else%>
+                <div class="showOrhidden" style="visibility:hidden">
+                 <%set {aspxrewriteurl}=eDate.ToString("yyyy-MM-dd")%>
+                 至<input name="eDate" class="eDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />
+                </div>
+               <%/if%>
+               
+               </td>
+               <td align="right">
+                <input type="button" id="submit_btn" name="submit_btn" value="查询" style="width:120px;height:25px; cursor:pointer" />
+                <input type="button" id="export_data" name="export_data" value="导出数据" style="width:120px;height:25px; cursor:pointer" />
+               </td>
+              </tr>
+            </table>
+         </div>
+         <div>
+         <div id="space"></div>
+         <div class="datalist">
+         <table id="title_space" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+         <thead style="font-weight:bold">
+          <tr class="tBar">
+           <td align="center"  rowspan="2"  style="width:10%;"><span style="font-size:larger">编号</span></td>
+           <td align="center"  rowspan="2"  style="width:28%;height:30px"><span style="font-size:larger">商品名称</span></td>
+           <td align="center"  rowspan="2"  style="width:20%"><span style="font-size:larger">商品条码</span></td>
+           <!--环比控制-->
+           <%if {tType}==2%>
+           <td align="center"  colspan="3"  style="width:21%"><span style="font-size:larger">购销日均销量</span></td>
+           <%else%>
+           <td align="center"  colspan="2"  style="width:21%"><span style="font-size:larger">购销日均销量</span></td>
+           <%/if%>
+           <%if {tType}==2%>
+           <td align="center"  colspan="3"  style="width:21%"><span style="font-size:larger">客户日均销量</span></td>
+           <%else%>
+           <td align="center"  colspan="2"  style="width:21%"><span style="font-size:larger">客户日均销量</span></td>
+           <%/if%>
+          </tr>
+          <tr class="tBar">
+            <!--购销-->
+            <td align="center" style="width:7%">日均销量</td>
+            <td align="center" style="width:7%">同比销量</td>
+            <!--环比控制-->
+            <%if {tType}==2%>
+            <div style=" visibility:visible">
+            <td align="center" style="width:7%">环比销量</td>
+            </div>
+            <%/if%>
+            <!--门店销售-->
+            <td align="center" style="width:7%">日均销量</td>
+            <td align="center" style="width:7%">同比销量</td>
+            <%if {tType}==2%>
+            <div style=" visibility:visible">
+            <td align="center" style="width:7%">环比销量</td>
+            </div>
+            <%/if%>
+          </tr>
+         </thead>
+         </table>
+         </div>
+         <table id="tBoxs"  class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+         <%if pList !=null%>
+          <%loop pl pList%>
+          <%set {tpList}=getProductsDay_Sales_Details({tType},{pl[ProductsID]},{bDate},{eDate})%>
+         
+           <tr>
+             <td align="center"   style="width:10%">{pl__loop__id}</td>
+             <td align="left"   style="width:28%"><a href="javascript:void(0);" onclick="javascript:sendInFo('{pl[ProductsID]}','{pl[pName]}','{pl[pBarcode]}','{tType}','{bDate}','{eDate}')">{pl[pName]}</a></td>
+             <td align="center"   style="width:20%"><a href="javascript:void(0);" onclick="javascript:sendInFo('{pl[ProductsID]}','{pl[pName]}','{pl[pBarcode]}','{tType}','{bDate}','{eDate}')">{pl[pBarcode]}</a></td>
+             <%if {tType}==2%>
+             <%set {hpList}=getProducts_Sale_Details_year_annulus({tType},{pl[ProductsID]},{bDate},{eDate})%>
+             <!--购销：日均销量：如果是时间段选择-->
+             <td align="center"   style="width:7%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[oQuantity]}),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+                <!--购销：同比日均销量：如果是时间段选择-->
+                <%if tpList !=null%>
+                <%loop tl tpList%>
+                <td align="center" style="width:7%">
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({tl[oQuantity]}),2).ToString()%>
+                {aspxrewriteurl}
+                <%set {sumAA}=decimal.Round(sumAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+                </td>
+                <%/loop%>
+                <%else%>
+                <td align="center" style="width:7%">0.00</td>
+                <%/if%>
+             <!--购销：如果是月选择：显示环比-->
+             <div style=" visibility:visible">
+              <%if hpList !=null%>
+               <%loop hl hpList%>
+                 <td align="center" style="width:7%">&nbsp;
+                 <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({hl[oQuantity]}),2).ToString()%>
+                {aspxrewriteurl}
+                <%set {sumAAA}=decimal.Round(sumAAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+                 </td>
+               <%/loop%>
+              <%else%>
+              <td align="center" style="width:7%">0.00</td>
+              <%/if%>
+             </div>
+             <%else%>
+             <!--购销：日均销量：如果是年选择、月选择-->
+             <td align="center"   style="width:10.5%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[oQuantity]}),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+               <%if tpList !=null%>
+                <%loop tl tpList%>
+                <!--购销：同比日均销量：如果是年选择、月选择-->
+                <td align="center" style="width:10.5%">
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({tl[oQuantity]}),2).ToString()%>
+                {aspxrewriteurl}
+                <%set {sumAA}=decimal.Round(sumAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+                </td>
+                <%/loop%>
+                <%else%>
+                 <td align="center" style="width:10.5%">0.00</td>
+                <%/if%>
+             <%/if%>
+             
+              
+             
+             <%if {tType}==2%>
+             <%set {hpList}=getProducts_Sale_Details_year_annulus({tType},{pl[ProductsID]},{bDate},{eDate})%>
+             <!--门店销售：日均销量：如果是时间段选择--> 
+             <td align="center" style="width:7%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[sNum]}),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+              <%if tpList !=null%>
+                <%loop tl tpList%>
+                <!--门店销售：同比销量：如果是时间段选择--> 
+                <td align="center" style="width:7%">
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({tl[sNum]}),2).ToString()%>
+                {aspxrewriteurl}
+                <%set {sumBB}=decimal.Round(sumBB+Convert.ToDecimal(aspxrewriteurl),2)%>
+                </td>
+                <%/loop%>
+               <%else%>
+                 <td align="center" style="width:7%">0.00</td>
+               <%/if%>
+               <!--环比控制-->
+              <div style=" visibility:visible">
+              <%if hpList !=null%>
+               <%loop hl hpList%>
+                 <td align="center" style="width:7%">&nbsp;
+                 <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({hl[sNum]}),2).ToString()%>
+                {aspxrewriteurl}
+                <%set {sumBBB}=decimal.Round(sumBBB+Convert.ToDecimal(aspxrewriteurl),2)%>
+                 </td>
+               <%/loop%>
+              <%else%>
+              <td align="center" style="width:7%">0.00</td>
+              <%/if%>
+             </div>
+             <!--门店销售：日均销量：如果是年选择、月选择-->
+             <%else%>
+             <td align="center" style="width:10.5%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[sNum]}),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+             <!--门店销售：[同比]日均销量：如果是年选择、月选择-->
+             <%if tpList !=null%>
+                <%loop tl tpList%>
+                <!--门店销售：同比销量：如果是时间段选择--> 
+                <td align="center" style="width:10.5%">
+                <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({tl[sNum]}),2).ToString()%>
+                {aspxrewriteurl}
+                <%set {sumBB}=decimal.Round(sumBB+Convert.ToDecimal(aspxrewriteurl),2)%>
+                </td>
+                <%/loop%>
+                <%else%>
+                <td align="center" style="width:10.5%">0.00</td>
+                <%/if%>
+             <%/if%>
+           </tr> 
+           <%/loop%> 
+          
+           <%if {pl__loop__id}==0 && {ispost}%>
+           <tr>
+           <td align="center" colspan="3" style="height:30px"><span style="font-size:larger"><b>无信息</b></span></td>
+           <td align="center" style="width:7%">0.00</td>
+           <td align="center" style="width:7%">0.00</td>
+           <td align="center" style="width:7%">0.00</td>
+           <td align="center" style="width:7%">0.00</td>
+           <td align="center" style="width:7%">0.00</td>
+           <td align="center" style="width:7%">0.00</td>
+           </tr>
+           <%/if%>
+          <%/if%>
+          
+          <%if {ispost}%> 
+          <tr>
+           <td align="center" colspan="3" style="height:30px"><span style="font-size:larger"><b>日均销量合计</b></span></td>
+           <td align="center"><b>{sumA}</b></td>
+           <td align="center"><b>{sumAA}</b></td>
+           <!--购销：环比控制-->
+           <%if {tType}==2%>
+             <div style=" visibility:visible">
+               <td align="center"><b>{sumAAA}</b></td>
+             </div>
+           <%/if%>
+           <td align="center"><b>{sumB}</b></td>
+           <td align="center"><b>{sumBB}</b></td>
+           <!--门店：环比控制-->
+           <%if {tType}==2%>
+             <div style=" visibility:visible">
+               <td align="center"><b>{sumBBB}</b></td>
+             </div>
+           <%/if%>
+          </tr> 
+          <%/if%>
+         </table>
+        <div id="winAll">
+          <div id="winLoding"><img alt=""  src="/images/loading99.gif"/></div>
+        </div>
+        </div>
+        </form>
+        
+        <%/if%>
+    <%/if%>
+
+<%template _copyright%>
+<%template _footer%>
+

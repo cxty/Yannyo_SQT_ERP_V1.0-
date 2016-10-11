@@ -1,0 +1,67 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<script type="text/javascript" src="/public/js/usermanageclass_do.js"></script>        
+<form name="bForm" id="bForm" action="" method="post">
+  <div style="height:30px">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="30%" align="right">用户组名称:</td>
+        <td> <input name="cName" id="cName" type="text" showtitle="可填写少于50个的中英文字符"
+                  <%if Act=="Edit"%>value="{name}"<%/if%>
+                  /></td>
+      </tr>
+      <tr>
+        <td colspan="2" align="left" valign="top">权限:
+        <div id="UserPopedomList" class="UserPopedomList" style="height:300px;overflow:scroll;"><img src="images/loading.gif" alt="" />加载中</div></td>
+      </tr>
+    </table>
+  </div>
+<div id="footer_tool">
+<INPUT TYPE="hidden" NAME="Popedoms" id="Popedoms">
+<input type="button" id="bt_ok" style="margin:5px" class="B_INPUT" value="确定" />
+<input type="button" id="bt_cl" style="margin:5px" class="B_INPUT" value="取消"  />
+</div>
+</form>
+<script language="javascript" type="text/javascript">
+var UserManageClass_do = new TUserManageClass_do();
+<%if Act=="Edit"%>
+UserManageClass_do.Permissions = '{Popedoms}';
+<%/if%>
+
+UserManageClass_do.ini();
+
+$(function () {
+ $("#UserPopedomList").jstree({   
+
+         "json_data":{"data":[{UserPopedomJson}]},  
+
+         "plugins" : [ "themes", "json_data", "ui", "crrm", "types", "hotkeys", "checkbox" ] 
+
+     });
+$("#UserPopedomList").jstree('open_all');
+<%if Act=="Edit"%>
+UserManageClass_do.Checked();
+<%/if%>
+});
+
+
+</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

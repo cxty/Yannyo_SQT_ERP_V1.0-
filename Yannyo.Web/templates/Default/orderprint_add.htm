@@ -1,0 +1,133 @@
+<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<div id="print_box">
+<form name="bForm" id="bForm" action="" method="post" class="print_box">    
+            <%csharp%>
+            foreach(DataTable dList in OrderListDataSet.Tables)
+            {
+            pageindex++;
+            <%/csharp%>
+
+			<DIV 
+            <%if pageindex>1%>
+            STYLE="page-break-before:always"
+            <%/if%>
+            >
+            
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td height="110" colspan="2" align="center">&nbsp;</td>
+              </tr>
+              <tr>
+                <td colspan="2" align="center" style="font-size:18px"><%set {aspxrewriteurl}=oi.oOrderDateTime.ToString("yyyy  MM  dd")%>
+                {aspxrewriteurl}</td>
+              </tr>
+              <tr>
+                <td width="120">&nbsp;</td>
+                <td style="font-size:18px">{oi.StoresSupplierName}</td>
+              </tr>
+              <tr>
+                <td height="45" colspan="2">&nbsp;</td>
+              </tr>
+            </table>
+            <%if dList!=null%>
+            <table border="0" cellpadding="0" cellspacing="0"  >
+                <%loop ol dList%>
+                <%if ol["IsGifts"].ToString() =="0"%>
+                    <tr>
+                    <td width="50" height="35">
+                    </td>
+                      <td width="150">
+                      <%set {aspxrewriteurl} = Utils.CutString(ol["ProductsName"].ToString(),0,15)%>
+                      {aspxrewriteurl}</td>
+                      <td width="70" align="center" >1*{ol[ProductsToBoxNo]}</td>
+                      <td width="60" align="center">{ol[ProductsUnits]}</td>
+                      <td width="60" align="center">
+                      <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"]),2).ToString()%>
+                      <nobr>{aspxrewriteurl}</nobr>
+                      </td>
+                      <td width="70"  align="center">
+                          
+                        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oPrice"]),2).ToString()%>
+                                 <!-- <nobr>{aspxrewriteurl}&nbsp;</nobr> -->
+                      </td>
+                      <td width="70" align="center">
+                        <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oMoney"]),2).ToString()%>
+                                 <!-- <nobr>{aspxrewriteurl}&nbsp;</nobr> -->
+                      </td>
+                        <td width="60" align="center">
+                        <nobr>{ol[ProductsAddress]}</nobr>
+                        </td>
+            
+                      <%if OrderFieldList!=null%>
+                        <%if OrderFieldValueList!=null%>
+                            <%loop ofl OrderFieldList%>
+                                <%if ofl["fPrintAdd"].ToString()=="0"%>
+              <td width="70" align="center" ><nobr>
+                                <%loop ofvl OrderFieldValueList%>
+                                    <%if ofvl["OrderListID"].ToString() == ol["OrderListID"].ToString() && ofvl["OrderFieldID"].ToString()==ofl["OrderFieldID"].ToString()%>
+                                        {ofvl[oFieldValue]}
+<%/if%>
+                                <%/loop%>
+                                </nobr>
+                      </td>
+                                <%/if%>
+                            <%/loop%>
+                        <%/if%>
+                     <%/if%>
+              </tr>
+                  <%/if%>
+                <%/loop%>
+</table>
+              <%if ol__loop__id < config.PrintAddRow%>
+<table width="100%" border="0" cellpadding="0" cellspacing="0"  >
+                    <%csharp%>
+                    for(int k=1;k<(config.PrintAddRow-ol__loop__id);k++)
+                    {
+                    <%/csharp%>
+                    
+                    <tr>
+                    <td height="20">&nbsp;</td>
+                  </tr>
+                    
+                    <%csharp%>
+                    }
+                    <%/csharp%>
+              </table>
+                <%/if%>
+            <%/if%>
+            
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td height="40"  align="right" style="font-size:18px">{print_ui.StaffName}&nbsp;&nbsp;</td>
+              </tr>
+            </table>
+            <br>
+            <br>
+            <div STYLE="page-break-before:always;height:10px"></div>
+            </DIV>
+
+            <%csharp%>
+            }
+            <%/csharp%>
+</form>
+</div>
+<%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

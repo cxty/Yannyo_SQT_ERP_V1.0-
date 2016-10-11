@@ -1,0 +1,58 @@
+<div class="toolbar">
+    	<div style="float:left">
+        <ul>
+			<li>
+            	时间：<br/><input style="width:60px" name="bDateTime" id="bDateTime" onclick="new Calendar().show(this);" value="{bDateTime}" type="text" />-<input style="width:60px" name="eDateTime" id="eDateTime" onclick="new Calendar().show(this);" value="{eDateTime}" type="text" />
+            </li>
+
+            <li id="StoresName_box">
+                门店、客户：<input name="StoresName" id="StoresName" type="text" value="{StoresName}" />
+                <INPUT TYPE="hidden" NAME="StoresID" id="StoresID" value="{StoresID}" />
+            </li>
+			<li id="YHsysName_box">
+                系统：<input name="YHsysName" id="YHsysName" type="text" value="{YHsysName}" />
+                <INPUT TYPE="hidden" NAME="YHsysID" id="YHsysID" value="{YHsysID}" />
+            </li>
+            <li id="StaffName_box">
+                业务员：<input name="StaffName" id="StaffName" type="text" value="{StaffName}" />
+                <INPUT TYPE="hidden" NAME="StaffID" id="StaffID" value="{StaffID}" />
+            </li>
+            <li id="StaffNameB_Box">
+                促销员：<input name="StaffNameB" id="StaffNameB" type="text" value="{StaffNameB}" />
+                <INPUT TYPE="hidden" NAME="StaffIDB" id="StaffIDB" value="{StaffIDB}" />
+            </li>
+			<li id="ProductName_Box">
+                产品：<input name="ProductName" id="ProductName" type="text" value="{ProductName}" />
+                <INPUT TYPE="hidden" NAME="ProductID" id="ProductID" value="{ProductID}" />
+            </li>
+            <li id="pBrand_box">
+                品牌：<input name="pBrand" id="pBrand" type="text" value="{pBrand}" />
+            </li>
+            
+            <li id="RegionBox_Box">
+            	<nobr>地区：
+				<input type="hidden" id="RegionID" name="RegionID" 
+                  value="{RegionID}"
+                  />
+                  <input type="text" name="category" id="category" value="" />
+                  <ul id="categorymenu" class="mcdropdown_menu">{Region}</ul>
+				  <script language="javascript" type="text/javascript">
+					<%if RegionID>0%>
+					$(document).ready(function (){
+
+					var dd = $("#category").mcDropdown();
+							dd.setValue({RegionID});
+
+					});
+					<%/if%>
+				  </script>
+                  </td>
+				
+            </li>
+			
+        <ul>
+        
+        </div>
+        <div style="float:left;clear:left"><nobr><input type="button" value="确定" style="margin:5px;width:80px" class="B_INPUT" onclick="javascript:DataAnalysis.CheckF();" />
+        <input type="button" value="重置分析条件" onclick="javascript:DataAnalysis.ReSet();" style="margin:5px;width:80px" class="B_INPUT"/></nobr></div>
+    </div>

@@ -1,0 +1,48 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<script src="public/js/LodopFuncs.js" type="text/javascript" ></script>
+<object classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width="1100" height="650" align="middle" id="LODOP"> 
+	<embed width="1200" height="650" align="middle" id="LODOP_EM" type="application/x-print-lodop" pluginspage="/public/install_lodop.exe"></embed>
+</object>
+<script type="text/javascript">
+var LODOP;
+function CreatePage() {
+		LODOP=getLodop(document.getElementById('LODOP'),document.getElementById('LODOP_EM'));
+		LODOP.PRINT_INITA("0mm","0mm","{m_exp.mWidth}mm", "{m_exp.mHeight}mm","运单打印");
+		//LODOP.PRINT_INIT("运单打印");
+		LODOP.SET_PRINT_PAGESIZE(2,0,0,'');
+		LODOP.SET_PRINT_STYLE("FontSize",13);
+		LODOP.SET_PRINT_STYLE("Bold",1);
+		{m_exp.mData}
+	};
+function ShowPrint() {		
+		CreatePage();
+		LODOP.ADD_PRINT_SETUP_BKIMG("<img border='0' src='{m_exp.mPIC}'>");
+		LODOP.SET_SHOW_MODE("PREVIEW_IN_BROWSE",1);
+		//LODOP.SET_SHOW_MODE("HIDE_PAPER_BOARD",1);
+		LODOP.SET_SHOW_MODE("BKIMG_IN_PREVIEW",1);
+		LODOP.PREVIEW();
+	};
+$(function(){
+	ShowPrint();
+});
+</script>
+        <%/if%>
+	<%/if%>
+<%/if%>
+
+<%template _footer%>

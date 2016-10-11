@@ -1,0 +1,77 @@
+﻿<%template _poppageheader%>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form action="" method="post" enctype="multipart/form-data" name="bForm" id="bForm">
+              <table border="0" cellspacing="2" cellpadding="2" style="width: 400px;font-size:9pt;">
+                <tr>
+                <%if storageName !=null%>
+                 <%loop dls storageName%>
+                    <td align="left">仓库名称：<input type="text" id="storageName" name="storageName" style="width:150px;" <%if Act=="Edit"%>value="{dls[sName]}"<%/if%>  readonly="readonly" /> 
+                        <span style="color:Red">为只读项</span>
+                      </td>
+                  <%/loop%>
+                  <%/if%>
+                </tr>
+                <tr>
+                 <%if productsName !=null%>
+                 <%loop dlp productsName%>
+                 <td align="left">产品名称：<input type="text" id="productsName" name="productsName" style="width:150px;" <%if Act=="Edit"%>value="{dlp[pName]}"<%/if%>  readonly="readonly"  /> 
+                    <span style="color:Red">为只读项</span>
+                  </td>
+                  <%/loop%>
+                  <%/if%>
+                </tr>
+                  <tr>
+                   <td align="left">盘点时间：<input type="text" id="sAppendTime" name="sAppendTime" style="width:150px;" <%if Act=="Edit"%>value="{si.SAppendTime}" readonly="readonly" <%/if%>  />
+                    <span style="color:Red">为只读项</span>
+                   </td>
+                  </tr>
+                  <tr>
+                   <td align="left">盘点数量：<input type="text" id="Quantity" name="Quantity" style="width:150px;" <%if Act=="Edit"%>value="{si.Quantity}"<%/if%>  /> 
+                      <span style="color:Red">不能为空</span></td>
+                  </tr>
+                <tr id="submit">
+                  <td colspan="2" align="left">
+                  <input type="hidden" name="text_form" /> <!--隐藏表单-->
+                  <input type="button" id="button1" style="margin-left:100px" class="B_INPUT" value="确定" onclick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin-left:5px" class="B_INPUT" value="取消" onclick="javascript:window.parent.HidBox();"/></td>
+                </tr>
+				<tr id="loading" style="display:none;">
+                  <td colspan="2" align="left"><img src="/images/loading.gif" alt="" />数据处理中,该过程需要10-30分钟,请不要刷新,切换或关闭此页面!</td>
+                </tr>
+              </table>
+    
+            </form>
+			<script language="javascript" type="text/javascript">
+			    function CheckF() {
+			        if (Sys.getObj('Quantity').value != '') {
+			            Sys.getObj('loading').style.display = "";
+			            Sys.getObj('bForm').submit();
+			        }
+			        else {
+			            alert("门店名称不能为空！");
+			        }
+			    }
+
+            </script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+

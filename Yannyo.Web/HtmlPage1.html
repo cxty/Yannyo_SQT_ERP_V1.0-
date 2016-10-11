@@ -1,0 +1,965 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+    <meta name="generator" content="Yannyo" />
+    <title>燕游商企通   打印单据</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <!-- 调用样式表 -->
+    <link rel="stylesheet" href="templates/default/default.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="templates/default/index.css" type="text/css" media="all" />
+
+    <script type="text/javascript" src="/public/js/comm.js"></script>
+    <script type="text/javascript" src="/public/js/xml.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.js"></script>
+    <script type="text/javascript" src="/public/js/swfobject.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+    <link type="text/css" rel="stylesheet" href="templates/default/syntax/!style.css" />
+    <link type="text/css" rel="stylesheet" href="templates/default/!style.css" />
+    <link type="text/css" rel="stylesheet" href="templates/default/syntax/style.css" />
+    <!--<script type="text/javascript" src="templates/default/syntax/!script.js"></script>-->
+    <script type="text/javascript" src="/public/js/jquery.alerts.js"></script>
+    <link rel="stylesheet" type="text/css" href="public/js/jquery.alerts.css"></link>
+    <script type="text/javascript">
+        var aspxrewrite = 1;
+    </script>
+
+    <script type="text/javascript" src="/public/js/public.js"></script>
+</head>
+<body>
+    <div id="print_box">
+        <form name="bForm" id="bForm" action="" method="post" class="print_box">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="print_box_top">
+                    <td align="center">
+                        &nbsp;
+                        福州燕游网络科技有限公司
+                        采购入库单
+                        <!--
+                            (新单已审核)-->
+                        &nbsp;
+                        <br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="top">
+                        <!--采购-->
+                        <table width="100%" border="0" cellspacing="1" cellpadding="1">
+                            <tr>
+                                <td class="OrderListTool">
+                                    <table width="98%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                单号:<br />2125072
+                                            </td>
+                                            <td>
+                                                供货商:<br />
+                                                6666
+                                            </td>
+                                            <td>
+                                                日期:<br />2015-06-25
+                                            </td>
+                                            <td align="center"><img src="qrcode-29.aspx" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="98%" border="1" cellpadding="1" cellspacing="0" bordercolor="#000000 " style="border-collapse:collapse; ">
+                                        <tr>
+                                            <td width="30" align="center">仓库</td>
+                                            <td width="40" align="center">条码</td>
+                                            <td align="center">商品名称</td>
+                                            <td width="30" align="center">包装量</td>
+                                            <td width="50" align="center">
+                                                单价<br />
+                                                (元)
+                                            </td>
+                                            <td width="50" align="center">数量</td>
+                                            <td width="50" align="center">件数</td>
+                                            <td width="50" align="center">金额</td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>11&nbsp;</td>
+                                            <td>
+                                                22&nbsp;
+                                            </td>
+                                            <td>2</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>111.00瓶&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.50件&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>111.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>11212&nbsp;</td>
+                                            <td>
+                                                2222&nbsp;
+                                            </td>
+                                            <td>2</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.00瓶&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>11.00件&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>f&nbsp;</td>
+                                            <td>
+                                                f&nbsp;
+                                            </td>
+                                            <td>6</td>
+                                            <td align="right">
+                                                <nobr>8.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>33.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>5.503&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>264.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>ss&nbsp;</td>
+                                            <td>
+                                                dd&nbsp;
+                                            </td>
+                                            <td>8</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>44.00h&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>5.50j&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>44.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>111111&nbsp;</td>
+                                            <td>
+                                                qq2&nbsp;
+                                            </td>
+                                            <td>1</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>3&nbsp;</td>
+                                            <td>
+                                                3w&nbsp;
+                                            </td>
+                                            <td>1</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>6&nbsp;</td>
+                                            <td>
+                                                6t&nbsp;
+                                            </td>
+                                            <td>4</td>
+                                            <td align="right">
+                                                <nobr>5.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>77.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>19.253&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>385.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>6y6&nbsp;</td>
+                                            <td>
+                                                6tw&nbsp;
+                                            </td>
+                                            <td>4</td>
+                                            <td align="right">
+                                                <nobr>5.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>88.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.003&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>440.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>e&nbsp;</td>
+                                            <td>
+                                                e3&nbsp;
+                                            </td>
+                                            <td>5</td>
+                                            <td align="right">
+                                                <nobr>6.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>99.003&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>19.804&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>594.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>合计:</td>
+                                            <td colspan="4"></td>
+                                            <td align="right">
+                                                <nobr>595.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>259.55&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>1981.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div><!--合计:&yen;1981.000000 &nbsp;&nbsp;&nbsp;&nbsp;-->大写:人民币壹仟玖佰捌拾壹圆整</div>
+                            </tr>
+                        </table>
+                        <div>
+                            <!--
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:10px;" class="print_othermsg">
+                                <tr>
+                                    <td>白联:存根联 </td>
+                                    <td>红联:财务联 </td>
+                                    <td>绿联:回单联 </td>
+                                    <td>蓝联:客户联</td>
+                                    <td>黄联:仓管联</td>
+                                </tr>
+                            </table>
+                            -->
+
+                            <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin:10px;' class='print_othermsg'>
+                                <tr>
+                                    <td>白联:存根联 </td>
+                                    <td>红联:财务联 </td>
+                                    <td>绿联:回单联 </td>
+                                    <td>蓝联:客户联</td>
+                                    <td>黄联:仓管联</td>
+                                </tr>
+                            </table>
+
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:10px;" class="print_othermsg">
+                                <tr style="font-weight:bold">
+                                    <td>
+                                        制单:
+                                    </td>
+                                    <td>
+                                        审核:
+
+                                    </td>
+                                    <td>仓管员:</td>
+                                    <td>送货员:</td>
+                                    <td>客户签收:</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" valign="top">
+                                        福建省工商行政管理机关提示： 该供货凭证可作为出货台账，请注意保存两年。 <br />
+                                        备注:
+                                    </td>
+                                    <td colspan="2" align="center" valign="top"><!--<img src="/barcode.aspx?codestr=2125072&codetype=UPC-A" width="190" height="46" />--></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" valign="top">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" valign="top">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--销售-->
+                        <!--调整,坏货-->
+                        <!--调拨-->
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <p style="page-break-after:always">&nbsp;</p>
+    <div id="print_box">
+        <form name="bForm" id="bForm" action="" method="post" class="print_box">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="print_box_top">
+                    <td align="center">
+                        &nbsp;
+                        福州燕游网络科技有限公司
+                        采购入库单
+                        <!--
+                            (新单已审核)-->
+                        &nbsp;
+                        <br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="top">
+                        <!--采购-->
+                        <table width="100%" border="0" cellspacing="1" cellpadding="1">
+                            <tr>
+                                <td class="OrderListTool">
+                                    <table width="98%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                单号:<br />2125072
+                                            </td>
+                                            <td>
+                                                供货商:<br />
+                                                6666
+                                            </td>
+                                            <td>
+                                                日期:<br />2015-06-25
+                                            </td>
+                                            <td align="center"><img src="qrcode-29.aspx" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="98%" border="1" cellpadding="1" cellspacing="0" bordercolor="#000000 " style="border-collapse:collapse; ">
+                                        <tr>
+                                            <td width="30" align="center">仓库</td>
+                                            <td width="40" align="center">条码</td>
+                                            <td align="center">商品名称</td>
+                                            <td width="30" align="center">包装量</td>
+                                            <td width="50" align="center">
+                                                单价<br />
+                                                (元)
+                                            </td>
+                                            <td width="50" align="center">数量</td>
+                                            <td width="50" align="center">件数</td>
+                                            <td width="50" align="center">金额</td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>11&nbsp;</td>
+                                            <td>
+                                                22&nbsp;
+                                            </td>
+                                            <td>2</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>111.00瓶&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.50件&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>111.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>11212&nbsp;</td>
+                                            <td>
+                                                2222&nbsp;
+                                            </td>
+                                            <td>2</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.00瓶&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>11.00件&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>f&nbsp;</td>
+                                            <td>
+                                                f&nbsp;
+                                            </td>
+                                            <td>6</td>
+                                            <td align="right">
+                                                <nobr>8.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>33.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>5.503&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>264.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>ss&nbsp;</td>
+                                            <td>
+                                                dd&nbsp;
+                                            </td>
+                                            <td>8</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>44.00h&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>5.50j&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>44.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>111111&nbsp;</td>
+                                            <td>
+                                                qq2&nbsp;
+                                            </td>
+                                            <td>1</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>3&nbsp;</td>
+                                            <td>
+                                                3w&nbsp;
+                                            </td>
+                                            <td>1</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>6&nbsp;</td>
+                                            <td>
+                                                6t&nbsp;
+                                            </td>
+                                            <td>4</td>
+                                            <td align="right">
+                                                <nobr>5.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>77.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>19.253&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>385.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>6y6&nbsp;</td>
+                                            <td>
+                                                6tw&nbsp;
+                                            </td>
+                                            <td>4</td>
+                                            <td align="right">
+                                                <nobr>5.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>88.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.003&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>440.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>e&nbsp;</td>
+                                            <td>
+                                                e3&nbsp;
+                                            </td>
+                                            <td>5</td>
+                                            <td align="right">
+                                                <nobr>6.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>99.003&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>19.804&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>594.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>合计:</td>
+                                            <td colspan="8"></td>
+                                            <td align="right">
+                                                <nobr>1190.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>519.10&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>1981.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div><!--合计:&yen;1981.000000 &nbsp;&nbsp;&nbsp;&nbsp;-->大写:人民币壹仟玖佰捌拾壹圆整</div>
+                            </tr>
+                        </table>
+                        <div>
+                            <!--
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:10px;" class="print_othermsg">
+                                <tr>
+                                    <td>白联:存根联 </td>
+                                    <td>红联:财务联 </td>
+                                    <td>绿联:回单联 </td>
+                                    <td>蓝联:客户联</td>
+                                    <td>黄联:仓管联</td>
+                                </tr>
+                            </table>
+                            -->
+
+                            <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin:10px;' class='print_othermsg'>
+                                <tr>
+                                    <td>白联:存根联 </td>
+                                    <td>红联:财务联 </td>
+                                    <td>绿联:回单联 </td>
+                                    <td>蓝联:客户联</td>
+                                    <td>黄联:仓管联</td>
+                                </tr>
+                            </table>
+
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:10px;" class="print_othermsg">
+                                <tr style="font-weight:bold">
+                                    <td>
+                                        制单:
+                                    </td>
+                                    <td>
+                                        审核:
+
+                                    </td>
+                                    <td>仓管员:</td>
+                                    <td>送货员:</td>
+                                    <td>客户签收:</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" valign="top">
+                                        福建省工商行政管理机关提示： 该供货凭证可作为出货台账，请注意保存两年。 <br />
+                                        备注:
+                                    </td>
+                                    <td colspan="2" align="center" valign="top"><!--<img src="/barcode.aspx?codestr=2125072&codetype=UPC-A" width="190" height="46" />--></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" valign="top">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" valign="top">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--销售-->
+                        <!--调整,坏货-->
+                        <!--调拨-->
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <p style="page-break-after:always">&nbsp;</p>
+    <div id="print_box">
+        <form name="bForm" id="bForm" action="" method="post" class="print_box">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="print_box_top">
+                    <td align="center">
+                        &nbsp;
+                        福州燕游网络科技有限公司
+                        采购入库单
+                        <!--
+                            (新单已审核)-->
+                        &nbsp;
+                        <br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="top">
+                        <!--采购-->
+                        <table width="100%" border="0" cellspacing="1" cellpadding="1">
+                            <tr>
+                                <td class="OrderListTool">
+                                    <table width="98%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                单号:<br />2125072
+                                            </td>
+                                            <td>
+                                                供货商:<br />
+                                                6666
+                                            </td>
+                                            <td>
+                                                日期:<br />2015-06-25
+                                            </td>
+                                            <td align="center"><img src="qrcode-29.aspx" /></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table width="98%" border="1" cellpadding="1" cellspacing="0" bordercolor="#000000 " style="border-collapse:collapse; ">
+                                        <tr>
+                                            <td width="30" align="center">仓库</td>
+                                            <td width="40" align="center">条码</td>
+                                            <td align="center">商品名称</td>
+                                            <td width="30" align="center">包装量</td>
+                                            <td width="50" align="center">
+                                                单价<br />
+                                                (元)
+                                            </td>
+                                            <td width="50" align="center">数量</td>
+                                            <td width="50" align="center">件数</td>
+                                            <td width="50" align="center">金额</td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>11&nbsp;</td>
+                                            <td>
+                                                22&nbsp;
+                                            </td>
+                                            <td>2</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>111.00瓶&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.50件&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>111.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>11212&nbsp;</td>
+                                            <td>
+                                                2222&nbsp;
+                                            </td>
+                                            <td>2</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.00瓶&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>11.00件&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>f&nbsp;</td>
+                                            <td>
+                                                f&nbsp;
+                                            </td>
+                                            <td>6</td>
+                                            <td align="right">
+                                                <nobr>8.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>33.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>5.503&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>264.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>ss&nbsp;</td>
+                                            <td>
+                                                dd&nbsp;
+                                            </td>
+                                            <td>8</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>44.00h&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>5.50j&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>44.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>111111&nbsp;</td>
+                                            <td>
+                                                qq2&nbsp;
+                                            </td>
+                                            <td>1</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>55.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>3&nbsp;</td>
+                                            <td>
+                                                3w&nbsp;
+                                            </td>
+                                            <td>1</td>
+                                            <td align="right">
+                                                <nobr>1.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.001&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>66.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>6&nbsp;</td>
+                                            <td>
+                                                6t&nbsp;
+                                            </td>
+                                            <td>4</td>
+                                            <td align="right">
+                                                <nobr>5.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>77.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>19.253&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>385.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>6y6&nbsp;</td>
+                                            <td>
+                                                6tw&nbsp;
+                                            </td>
+                                            <td>4</td>
+                                            <td align="right">
+                                                <nobr>5.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>88.002&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>22.003&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>440.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>test&nbsp;</td>
+                                            <td>e&nbsp;</td>
+                                            <td>
+                                                e3&nbsp;
+                                            </td>
+                                            <td>5</td>
+                                            <td align="right">
+                                                <nobr>6.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>99.003&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>19.804&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>594.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>合计:</td>
+                                            <td colspan="12"></td>
+                                            <td align="right">
+                                                <nobr>1785.00&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>778.65&nbsp;</nobr>
+                                            </td>
+                                            <td align="right">
+                                                <nobr>1981.00&nbsp;</nobr>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div><!--合计:&yen;1981.000000 &nbsp;&nbsp;&nbsp;&nbsp;-->大写:人民币壹仟玖佰捌拾壹圆整</div>
+                            </tr>
+                        </table>
+                        <div>
+                            <!--
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:10px;" class="print_othermsg">
+                                <tr>
+                                    <td>白联:存根联 </td>
+                                    <td>红联:财务联 </td>
+                                    <td>绿联:回单联 </td>
+                                    <td>蓝联:客户联</td>
+                                    <td>黄联:仓管联</td>
+                                </tr>
+                            </table>
+                            -->
+
+                            <table width='100%' border='0' cellspacing='0' cellpadding='0' style='margin:10px;' class='print_othermsg'>
+                                <tr>
+                                    <td>白联:存根联 </td>
+                                    <td>红联:财务联 </td>
+                                    <td>绿联:回单联 </td>
+                                    <td>蓝联:客户联</td>
+                                    <td>黄联:仓管联</td>
+                                </tr>
+                            </table>
+
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:10px;" class="print_othermsg">
+                                <tr style="font-weight:bold">
+                                    <td>
+                                        制单:
+                                    </td>
+                                    <td>
+                                        审核:
+
+                                    </td>
+                                    <td>仓管员:</td>
+                                    <td>送货员:</td>
+                                    <td>客户签收:</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" valign="top">
+                                        福建省工商行政管理机关提示： 该供货凭证可作为出货台账，请注意保存两年。 <br />
+                                        备注:
+                                    </td>
+                                    <td colspan="2" align="center" valign="top"><!--<img src="/barcode.aspx?codestr=2125072&codetype=UPC-A" width="190" height="46" />--></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" valign="top">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" valign="top">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--销售-->
+                        <!--调整,坏货-->
+                        <!--调拨-->
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <p style="page-break-after:always">&nbsp;</p>
+</body>
+</html>

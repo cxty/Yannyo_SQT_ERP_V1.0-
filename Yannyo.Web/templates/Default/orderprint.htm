@@ -1,0 +1,24 @@
+﻿<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <%if act == "pl"%>
+                <%template _orderprint_pl%>
+            <%else%>
+                <%template _orderprint%>
+            <%/if%>
+        <%/if%>
+    <%/if%>
+<%/if%>
+<%template _footer%>

@@ -1,0 +1,59 @@
+<div class="dlist">
+	<%if {ispost} %>
+	<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+	<tr class="tBar">
+		<td width="5%">排名</td>
+		<td >名称</td>
+		<td width="10%">销售额</td>
+		<td width="5%">占比</td>
+		<%if ShowType==4%>
+		<td width="10%">销售量</td>
+		<%/if%>
+		<%if ShowType==6%>
+		<td width="5%">门店数</td>
+		<td width="10%">平均销售额</td>
+		<%/if%>
+	  </tr>
+	<%if dList != null%>
+	  <%loop dl dList%>
+	  <tr>
+		<td >{dl__loop__id}</td>
+		<td >{dl[0]}</td>
+		<td align="right">{dl[1]}</td>
+		<td align="right">
+		<%set {aspxrewriteurl}=(decimal.Parse(dl[1].ToString()) / AllSumValue).ToString("P")%>
+		{aspxrewriteurl}
+		</td>
+		<%if ShowType==4 || ShowType==6%>
+		<td align="right">
+		{dl[2]}
+		</td>
+			<%if ShowType==6%>
+			<td align="right">
+				<%if int.Parse(dl[2].ToString())!=0%>
+				<%set {aspxrewriteurl}=(decimal.Parse(dl[1].ToString()) / int.Parse(dl[2].ToString())).ToString("f2")%>
+				{aspxrewriteurl}
+				<%else%>
+				0.00%
+				<%/if%>
+			</td>
+			<%/if%>
+		<%/if%>
+	  </tr>
+	 <%/loop%>
+	  <tr>
+		<td >合计</td>
+		<td align="right"></td>
+		<td align="right">{AllSumValue}</td>
+		<td align="right"></td>
+		<%if ShowType==4 || ShowType==6%>
+		<td align="right"></td>
+			<%if ShowType==6%>
+			<td align="right"></td>
+			<%/if%>
+		<%/if%>
+	  </tr>
+	<%/if%>
+	</table>
+	<%/if%>
+</div>

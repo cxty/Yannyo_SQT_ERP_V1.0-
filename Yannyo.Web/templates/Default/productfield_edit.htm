@@ -1,0 +1,189 @@
+﻿<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script type="text/javascript" src="public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="public/js/jquery.bgiframe.js"></script>
+
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                
+<tr>
+                  <td align="right" class="ltd">分类</td>
+                  <td align="left" class="rtd">
+                  <input type="hidden" id="ProductClassID" name="ProductClassID" 
+                  <%if Act=="update"%>value="{pf.ProductClassID}"<%else%>value="{ProductClassID}"<%/if%>
+                  />
+                  <input type="text" name="category" id="category" value="" />
+                  <ul id="categorymenu" class="mcdropdown_menu"><li rel="0">商品根分类<ul>{ProductClassStr}</ul></li></ul>
+                  </td>
+                </tr>
+                
+
+				<tr>
+                  <td  align="right" class="ltd">名称</td>
+                  <td align="left" class="rtd">
+                  <input name="pfName" id="pfName" type="text" 
+                  <%if Act=="update"%>value="{pf.pfName}" oldvalue="{pf.pfName}" <%/if%> showtitle="可填写少于50个的中英文字符"
+                  /></td>
+                </tr>
+
+				<tr>
+                  <td align="right" class="ltd">类型:</td>
+                  <td align="left" class="rtd">
+				  <select name="pfType" id="pfType">
+                  	<%if ProductFieldTypeList !=null%>
+                        <%loop pft ProductFieldTypeList%>
+                        	<option value="{pft[ID]}">{pft[Name]}</option>
+                        <%/loop%>
+                	<%/if%>
+                  </select>
+                  </td>
+                </tr>
+
+				<tr>
+                  <td align="right" class="ltd">状态:</td>
+                  <td align="left" class="rtd">
+				  <input name="pState" type="checkbox" value="0" id="pState" class="B_Check"
+                  <%if Act=="update"%>
+                    <%if pf.pfState.ToString() == "0"%>
+                        checked="checked"
+                    <%/if%>
+                  <%else%>
+						checked="checked"
+                  <%/if%>
+                  />
+                    正常</td>
+                </tr>
+              </table>
+<div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                  	<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+			
+$(document).ready(function (){
+	$("#category").mcDropdown("#categorymenu");
+});
+<%if Act=="update"%>
+$(document).ready(function (){
+var dd = $("#category").mcDropdown();
+		dd.setValue({pf.ProductClassID});
+});
+<%else%>
+$(document).ready(function (){
+var dd = $("#category").mcDropdown();
+		dd.setValue({ProductClassID});
+});
+<%/if%>
+
+$().ready(function(){
+$('#pBarcode').autocomplete('Services/CAjax.aspx',{ 
+			
+			width: 200,
+			scroll: true,
+			autoFill: true,
+			scrollHeight: 200,
+			matchContains: true,
+			dataType: 'json',
+			extraParams:{
+				'do':'GetProductsList',
+				'RCode':Math.random(),
+				'ProductsName':function(){return $('#pBarcode').val();}
+			},
+			parse: function(data) {
+					var rows = [];  
+					var tArray = data.results;
+					 for(var i=0; i<tArray.length; i++){  
+					  rows[rows.length] = {    
+						data:tArray[i].value +"("+ tArray[i].info+")",    
+						value:tArray[i].value,
+						code:tArray[i].info,    
+						result:tArray[i].info    
+						};    
+					  }
+				   return rows; 
+				 },
+			formatItem: function(row, i, max) {  
+				   return row;
+			},
+			formatMatch: function(row, i, max) {
+						return row[i].code; 
+			},
+			formatResult: function(row) { 
+						return row.code;
+			}
+		  }).result(function(event, data, formatted) {
+				$("#pName").val((formatted!=null)?formatted:"");
+			}
+		  );
+});
+
+			function CheckF()
+			{
+				var dd = $("#category").mcDropdown();
+				if(dd!=''){
+				var ddarray = dd.getValue();
+				if(ddarray.length>0)
+				{
+					if(Number(ddarray[0])>-1){
+						Sys.getObj('ProductClassID').value = Number(ddarray[0]);
+						if(Sys.getObj('pfName').value != '')
+						{
+							
+							Sys.getObj('bForm').submit();
+								
+							
+						}
+						else
+						{
+							alert('名称不能为空!');
+						}
+					}else
+				{
+					alert('请选择商品分类!');	
+				}
+				}else
+				{
+					alert('请选择商品分类!');	
+				}
+				}else
+				{
+					alert('请选择商品分类!');	
+				}
+				
+			}
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

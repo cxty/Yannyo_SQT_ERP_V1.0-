@@ -1,0 +1,500 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="public/js/jquery.bgiframe.js"></script>
+<link rel="stylesheet" rev="stylesheet" href="/public/js/jquery-ui.css" />
+<script type="text/javascript" src="/public/js/jquery-ui.min.js"></script>
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+<script type="text/javascript" src="/public/js/jquery.maskedinput-1.2.2.min.js"></script>
+<script type="text/javascript" src="/public/js/dialog.js"></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="/public/js/staff_do.js"></script>
+        <script type="text/javascript" src="/public/js/jquery.uploadify/jquery.uploadify.js"></script>
+		<script type="text/javascript" src="/public/js/jquery.uploadify/swfobject.js"></script>
+
+		<link rel="stylesheet" rev="stylesheet" href="/public/js/jquery.uploadify/uploadify.css" />
+            <form name="bForm" id="bForm" action="" method="post">
+            <div id="tabs" >
+            	<ul>
+					<li><a href="#tabs-1">&nbsp;基础信息&nbsp;</a></li>
+                    <li><a href="#tabs-2">&nbsp;详细信息&nbsp;</a></li>
+                    <li><a href="#tabs-3">&nbsp;教育背景&nbsp;</a></li>
+                    <li><a href="#tabs-4">&nbsp;工作背景&nbsp;</a></li>
+                    <li><a href="#tabs-5">&nbsp;家庭情况&nbsp;</a></li>
+                    <li><a href="#tabs-6">&nbsp;面试考评&nbsp;</a></li>
+                </ul>
+                <div id="tabs-1">
+                	<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                        <tr>
+                          <td width="20%" align="right" class="ltd">姓名</td>
+                          <td align="left" class="rtd">
+                          <input name="sName" id="sName" type="text" 
+                          <%if Act=="Edit"%>value="{si.sName}"<%/if%> showtitle="可填写少于50个的中英文字符"
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">部门</td>
+                          <td align="left" class="rtd">
+                          <input type="hidden" id="DepartmentsClassID" name="DepartmentsClassID" 
+                          <%if Act=="Edit"%>value="{si.DepartmentsClassID}"<%/if%>
+                          />
+                          <input type="text" name="category" id="category" value="" />
+                          <ul id="categorymenu" class="mcdropdown_menu">{DepartmentsClass}</ul>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td  align="right" class="ltd">性别</td>
+                          <td align="left" class="rtd">
+                          <INPUT class="B_Check" TYPE="radio" NAME="sSex" value="男"
+                          <%if Act=="Edit"%>
+                              <%if si.sSex == "男"%>
+                                checked
+                              <%/if%>
+                          <%else%>
+                                checked
+                          <%/if%>
+                          >男
+                          <INPUT class="B_Check" TYPE="radio" NAME="sSex" value="女"
+                          <%if Act=="Edit"%>
+                          <%if si.sSex == "女"%>
+                            checked
+                          <%/if%>
+                          <%/if%>
+                          >女
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="20%" align="right" class="ltd">身份证</td>
+                          <td align="left" class="rtd">
+                          <input name="sCarID" id="sCarID" type="text" 
+                          <%if Act=="Edit"%>value="{si.sCarID}"<%/if%> showtitle="请填写有效身份证信息"
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td width="20%" align="right" class="ltd">电话</td>
+                          <td align="left" class="rtd">
+                          <input name="sTel" id="sTel" type="text" 
+                          <%if Act=="Edit"%>value="{si.sTel}"<%/if%>   showtitle="请填写有效联系电话"
+                          /></td>
+                        </tr>
+        <tr>
+                          <td width="20%" align="right" class="ltd">Email</td>
+                          <td align="left" class="rtd">
+                          <input name="sEmail" id="sEmail" type="text" 
+                          <%if Act=="Edit"%>value="{si.sEmail}"<%/if%> showtitle="请填写有效邮箱地址"
+                          /></td>
+                      </tr>
+                        <tr>
+                          <td  align="right" class="ltd">类型</td>
+                          <td align="left" class="rtd">
+                          <select name="sType" id="sType">
+                            <option value="0" 
+                          <%if Act=="Edit"%>
+                          <%if si.sType.ToString() == "0"%>
+                            selected
+                          <%/if%>
+                          <%/if%>
+                            >公司</option>
+                            <option value="1"
+                            <%if Act=="Edit"%>
+                          <%if si.sType.ToString() == "1"%>
+                            selected
+                          <%/if%>
+                          <%/if%>
+                          >业务员</option>
+                            <option value="2"
+                            <%if Act=="Edit"%>
+                          <%if si.sType.ToString() == "2"%>
+                            selected
+                          <%/if%>
+                          <%/if%>
+                            >促销员</option>
+                            <option value="3"
+                            <%if Act=="Edit"%>
+                          <%if si.sType.ToString() == "3"%>
+                            selected
+                          <%/if%>
+                          <%/if%>
+                            >其他</option>
+                          </select>
+                          </td>
+                        </tr>
+        
+                        <tr>
+                          <td align="right" class="ltd">状态:</td>
+                          <td align="left" class="rtd"><input name="sState" type="checkbox" value="0" id="sState" class="B_Check"
+                          <%if Act=="Edit"%>
+                            <%if si.sState.ToString() == "0"%>
+                                checked="checked"
+                            <%/if%>
+                          <%else%>
+                                checked="checked"
+                          <%/if%>
+                          />
+                            正常</td>
+                        </tr>
+        
+                  </table>
+                </div>
+                <div id="tabs-2">
+                <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                        <tr>
+                          <td width="20%" align="right" class="ltd">出生日期</td>
+                          <td align="left" class="rtd">
+                          <input name="sBirthDay" id="sBirthDay" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>
+                          value="{sd.sBirthDay}"
+                          <%/if%>
+                          <%/if%>
+                          /></td>
+                          <td colspan="4" rowspan="7" align="center" class="rtd">
+                          <input type="hidden" id="sPhotos" name="sPhotos" <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sPhotos}"
+                          <%/if%><%/if%> />
+                          <div id="sPic">
+						  <%if Act=="Edit"%>
+                          <%if sd!=null%>
+                          <%if sd.sPhotos!=""%>
+						  <img src="{sd.sPhotos}" style="width:98%" onClick="javascript:window.open('{sd.sPhotos}');"/>
+                          <%/if%>
+						  <%/if%><%/if%>
+                          </div>
+                          <div id="sPic_bt">
+                            <table width="100%" border="0" cellspacing="2" cellpadding="0">
+                              <tr>
+                                <td align="right" valign="middle"><input type="button" id="bt_pic_camera" style="margin:5px" class="B_INPUT" value="摄像头" /></td>
+                                <td align="left" valign="middle"><input id="file_upload" type="file" name="PicData" /></td>
+                              </tr>
+                            </table>
+                          </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">政治面貌</td>
+                          <td align="left" class="rtd"><input name="sPolitical" id="sPolitical" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sPolitical}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">籍贯</td>
+                          <td align="left" class="rtd"><input name="sBirthplace" id="sBirthplace" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sBirthplace}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">出生地</td>
+                          <td align="left" class="rtd"><input name="sHometown" id="sHometown" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sHometown}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">最高学历</td>
+                          <td align="left" class="rtd"><input name="sEducation" id="sEducation" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sEducation}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">专业</td>
+                          <td align="left" class="rtd"><input name="sProfessional" id="sProfessional" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sProfessional}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td width="20%" align="right" class="ltd">身体状况</td>
+                          <td align="left" class="rtd"><input name="sHealth" id="sHealth" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sHealth}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">身高</td>
+                          <td width="10%" align="left" class="rtd"><input name="sHeight" id="sHeight" type="text" 
+                          <%if Act=="edit"%>
+                          <%if sd!=null%>value="{sd.sHeight}"
+                          <%/if%><%/if%>
+                          />
+                          cm</td>
+                          <td width="20%" align="right" class="ltd">体重</td>
+                          <td colspan="3" align="left" class="rtd"><input name="sWeight" id="sWeight" type="text" 
+                          <%if Act=="edit"%>
+                          <%if sd!=null%>value="{sd.sWeight}"
+                          <%/if%><%/if%>
+                          />
+                          kg</td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">技能特长</td>
+                          <td align="left" class="rtd"><input name="sSpecialty" id="sSpecialty" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sSpecialty}"
+                          <%/if%><%/if%>
+                          /></td>
+                          <td align="right" class="ltd">兴趣爱好</td>
+                          <td colspan="3" align="left" class="rtd"><input name="sHobbies" id="sHobbies" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sHobbies}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">联系地址</td>
+                          <td colspan="5" align="left" class="rtd"><input name="sContactAddress" id="sContactAddress" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sContactAddress}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">就业情况</td>
+                          <td align="left" class="rtd"><input name="sEmployment" id="sEmployment" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sEmployment}"
+                          <%/if%><%/if%>
+                          /></td>
+                          <td align="right" class="ltd">可报道时间</td>
+                          <td colspan="3" align="left" class="rtd"><input name="sCanBeDate" id="sCanBeDate" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>
+                          
+                          value="{sd.sCanBeDate}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">期望待遇</td>
+                          <td colspan="5" align="left" class="rtd"><input name="sTreatment" id="sTreatment" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sd!=null%>value="{sd.sTreatment}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                </table>
+                </div>
+                <div id="tabs-3">
+                <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                <tbody>
+                        <tr>
+                          <td align="left" >
+                              <ul id="EduDataList">
+                              
+                              </ul>
+                          </td>
+                        </tr>
+                 </tbody>
+                 <tfoot>
+                 	<tr>
+                          <td align="center"><a href="javascript:void(0);" id="EduData_bt">添加</a></td>
+                   </tr>
+                 </tfoot>
+                 </table>
+                </div>
+                <div id="tabs-4">
+                  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                    <tbody>
+                      <tr>
+                        <td align="left" >
+                        <ul id="WorkDataList">
+                        
+                        </ul>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td align="center"><a href="javascript:void(0);" id="WorkData_bt">添加</a></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div id="tabs-5">
+                  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                    <tbody>
+                      <tr>
+                        <td align="left" >
+                        <ul id="FamilyDataList">
+                        
+                        </ul>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td align="center" ><a href="javascript:void(0);" id="FamilyData_bt">添加</a></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div id="tabs-6">
+                <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                        <tr>
+                          <td align="right" class="ltd">面试时间</td>
+                          <td align="left" class="rtd"><input name="aDateTime" id="aDateTime" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>
+                          
+                          <%set {aspxrewriteurl}=DateTime.Parse(sad.aDateTime.ToString()).ToString("yyyy-MM-dd")%>
+                          value="{aspxrewriteurl}"
+
+                          <%/if%><%/if%>
+                          /></td>
+                          <td align="right" class="ltd">综合评价</td>
+                          <td align="left" class="rtd"><input name="aEvaluation" id="aEvaluation" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aEvaluation}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td width="20%" align="right" class="ltd">形象</td>
+                          <td width="30%" align="left" class="rtd">
+                          <input name="aWearing" id="aWearing" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aWearing}"
+                          <%/if%><%/if%>
+                          /></td>
+                          <td width="20%" align="right" class="ltd">教育</td>
+                          <td width="30%" align="left" class="rtd"><input name="aEducation" id="aEducation" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aEducation}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">工作经验</td>
+                          <td align="left" class="rtd"><input name="aWork" id="aWork" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aWork}"
+                          <%/if%><%/if%>
+                          /></td>
+                          <td align="right" class="ltd">沟通能力</td>
+                          <td align="left" class="rtd"><input name="aCommunication" id="aCommunication" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aCommunication}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">自信心</td>
+                          <td align="left" class="rtd"><input name="aConfidence" id="aConfidence" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aConfidence}"
+                          <%/if%><%/if%>
+                          /></td>
+                          <td align="right" class="ltd">领导能力</td>
+                          <td align="left" class="rtd"><input name="aLeadership" id="aLeadership" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aLeadership}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">工作稳定性</td>
+                          <td align="left" class="rtd"><input name="aJobstability" id="aJobstability" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aJobstability}"
+                          <%/if%><%/if%>
+                          /></td>
+                          <td align="right" class="ltd">计算机操作</td>
+                          <td align="left" class="rtd"><input name="aComputer" id="aComputer" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aComputer}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">英语水平</td>
+                          <td align="left" class="rtd"><input name="aEnglish" id="aEnglish" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aEnglish}"
+                          <%/if%><%/if%>
+                          /></td>
+                          <td align="right" class="ltd">笔试成绩</td>
+                          <td align="left" class="rtd"><input name="aWritten" id="aWritten" type="text" 
+                          <%if Act=="Edit"%>
+                          <%if sad!=null%>value="{sad.aWritten}"
+                          <%/if%><%/if%>
+                          /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" class="ltd">备注</td>
+                          <td colspan="3" align="left" class="rtd"><textarea name="aEvaluationMSG" id="aEvaluationMSG" style="width:90%" cols="45" rows="10"></textarea></td>
+                        </tr>
+                 </table>
+                </div>
+            </div>
+              
+<div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+					<INPUT TYPE="hidden" NAME="EduDataListJson" id="EduDataListJson">
+					<INPUT TYPE="hidden" NAME="WorkDataListJson" id="WorkDataListJson">
+					<INPUT TYPE="hidden" NAME="FamilyDataListJson" id="FamilyDataListJson">
+                  	<input type="button" id="bt_s" style="margin:5px" class="B_INPUT" value="确定" />
+                  	<input type="button" id="bt_c" style="margin:5px" class="B_INPUT" value="取消"  />
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+			$(document).ready(function (){
+				$("#tabs").tabs();
+				$('#sBirthDay').mask('9999-99-99');
+
+				$('#sCanBeDate').mask('9999-99-99');
+				
+
+				$('#aDateTime').mask('9999-99-99');
+				
+				$("#category").mcDropdown("#categorymenu");
+				<%if Act=="Edit"%>
+				var dd = $("#category").mcDropdown();
+				dd.setValue({si.DepartmentsClassID});
+				<%/if%>
+			});
+			
+			var Staff_do = new TStaff_do();
+			Staff_do.EduDataListJsonStr = '{EduDataListJson}';
+			Staff_do.WorkDataListJsonStr = '{WorkDataListJson}';
+			Staff_do.FamilyDataListJsonStr = '{FamilyDataListJson}';
+			Staff_do.StaffID={StaffID};
+			Staff_do.ReCode = '{ucode}';
+			Staff_do.ini();
+			
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

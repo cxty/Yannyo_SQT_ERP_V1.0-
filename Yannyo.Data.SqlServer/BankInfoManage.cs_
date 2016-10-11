@@ -1,0 +1,208 @@
+﻿using System;
+using System.Text;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using Yannyo.Data;
+using Yannyo.Config;
+using Yannyo.Common;
+using Yannyo.Entity;
+
+namespace Yannyo.Data.SqlServer
+{
+    public partial class DataProvider : IDataProvider
+    {
+        /// <summary>
+        /// 是否存在该记录
+        /// </summary>
+        public bool ExistsBank(string bName)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select count(1) from tbBankInfo");
+            strSql.Append(" where bName=@bName ");
+            SqlParameter[] parameters = {
+					new SqlParameter("@bName", SqlDbType.VarChar,50)};
+            parameters[0].Value = bName;
+
+            return ((int)DbHelper.ExecuteScalar(CommandType.Text, strSql.ToString(), parameters)) > 0;
+        }
+
+
+        /// <summary>
+        /// 增加一条数据
+        /// </summary>
+        public int AddBank(BankInfo model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("insert into tbBankInfo(");
+            strSql.Append("bName,bAppendTime)");
+            strSql.Append(" values (");
+            strSql.Append("@bName,@bAppendTime)");
+            strSql.Append(";select @@IDENTITY");
+            SqlParameter[] parameters = {
+					new SqlParameter("@bName", SqlDbType.VarChar,128),
+					new SqlParameter("@bAppendTime", SqlDbType.DateTime)};
+            parameters[0].Value = model.bName;
+            parameters[1].Value = model.bAppendTime;
+
+            object obj = DbHelper.ExecuteScalar(CommandType.Text, strSql.ToString(), parameters);
+            if (obj == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return Convert.ToInt32(obj);
+            }
+        }
+        /// <summary>
+        /// 更新一条数据
+        /// </summary>
+        public void UpdateBank(BankInfo model)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("update tbBankInfo set ");
+            strSql.Append("bName=@bName,");
+            strSql.Append("bAppendTime=@bAppendTime");
+            strSql.Append(" where BankID=@BankID ");
+            SqlParameter[] parameters = {
+					new SqlParameter("@BankID", SqlDbType.Int,4),
+					new SqlParameter("@bName", SqlDbType.VarChar,128),
+					new SqlParameter("@bAppendTime", SqlDbType.DateTime)};
+            parameters[0].Value = model.BankID;
+            parameters[1].Value = model.bName;
+            parameters[2].Value = model.bAppendTime;
+
+            DbHelper.ExecuteNonQuery(CommandType.Text, strSql.ToString(), parameters);
+        }
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public void DeleteBank(int BankID)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from tbBankInfo ");
+            strSql.Append(" where BankID=@BankID ");
+            SqlParameter[] parameters = {
+					new SqlParameter("@BankID", SqlDbType.Int,4)};
+            parameters[0].Value = BankID;
+
+            DbHelper.ExecuteNonQuery(CommandType.Text, strSql.ToString(), parameters);
+        }
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        public void DeleteBank(string BankID)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("delete from tbBankInfo ");
+            strSql.Append(" where BankID in(" + BankID + ") ");
+
+            DbHelper.ExecuteNonQuery(CommandType.Text, strSql.ToString());
+        }
+
+
+        /// <summary>
+        /// 得到一个对象实体
+        /// </summary>
+        public BankInfo GetBankModel(int BankID)
+        {
+
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select  top 1 BankID,bName,bAppendTime,isnull((select top 1 bMoney from tbBankMoneyInfo where BankID=tbBankInfo.BankID and isBegin=1),0) as BeginMoney from tbBankInfo ");
+            strSql.Append(" where BankID=@BankID ");
+            SqlParameter[] parameters = {
+					new SqlParameter("@BankID", SqlDbType.Int,4)};
+            parameters[0].Value = BankID;
+
+            BankInfo model = new BankInfo();
+            DataSet ds = DbHelper.ExecuteDataset(CommandType.Text,strSql.ToString(), parameters);
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (ds.Tables[0].Rows[0]["BankID"].ToString() != "")
+                {
+                    model.BankID = int.Parse(ds.Tables[0].Rows[0]["BankID"].ToString());
+                }
+                model.bName = ds.Tables[0].Rows[0]["bName"].ToString();
+                if (ds.Tables[0].Rows[0]["bAppendTime"].ToString() != "")
+                {
+                    model.bAppendTime = DateTime.Parse(ds.Tables[0].Rows[0]["bAppendTime"].ToString());
+                }
+                if (ds.Tables[0].Rows[0]["BeginMoney"].ToString() != "")
+                {
+
+                    model.BeginMoney = decimal.Parse(ds.Tables[0].Rows[0]["BeginMoney"].ToString());
+                }
+                return model;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 获得数据列表
+        /// </summary>
+        public DataSet GetBankList(string strWhere)
+        {
+            StringBuilder strSql = new StringBuilder();
+            strSql.Append("select BankID,bName,bAppendTime,isnull((select top 1 bMoney from tbBankMoneyInfo where BankID=tbBankInfo.BankID and isBegin=1),0) as BeginMoney ");
+            strSql.Append(" FROM tbBankInfo ");
+            if (strWhere.Trim() != "")
+            {
+                strSql.Append(" where " + strWhere);
+            }
+            return DbHelper.ExecuteDataset(CommandType.Text,strSql.ToString());
+        }
+
+        /// <summary>
+        /// 分页获取数据列表
+        /// </summary>
+        public DataTable GetBankList(int PageSize, int PageIndex, string strWhere, out int pagetotal, int OrderType, string showFName)
+        {
+            SqlParameter[] parameters = {
+                    new SqlParameter("@tblName", SqlDbType.VarChar, 255),
+                    new SqlParameter("@fldName", SqlDbType.VarChar, 255),
+                    new SqlParameter("@PageSize", SqlDbType.Int),
+                    new SqlParameter("@PageIndex", SqlDbType.Int),
+                    new SqlParameter("@IsReCount", SqlDbType.Bit),
+                    new SqlParameter("@OrderType", SqlDbType.Bit),
+                    new SqlParameter("@strWhere", SqlDbType.VarChar,1000),
+                    new SqlParameter("@showFName", SqlDbType.VarChar,1000),
+                    };
+            parameters[0].Value = "tbBankInfo";
+            parameters[1].Value = "BankID";
+            parameters[2].Value = PageSize;
+            parameters[3].Value = PageIndex;
+            parameters[4].Value = 1;
+            parameters[5].Value = OrderType;
+            parameters[6].Value = strWhere;
+            parameters[7].Value = showFName + ",isnull((select top 1 bMoney from tbBankMoneyInfo where BankID=tbBankInfo.BankID and isBegin=1),0) as BeginMoney";
+            DataSet ds = DbHelper.ExecuteDataset(CommandType.StoredProcedure, "UP_" + BaseConfigs.GetTablePrefix + "GetRecordByPage", parameters);
+            if (ds.Tables.Count > 1)
+            {
+                int total = (int)ds.Tables[0].Rows[0][0];
+
+                if (total % PageSize == 0)
+                {
+                    pagetotal = total / PageSize;
+                }
+                else
+                {
+                    pagetotal = total / PageSize + 1;
+                }
+                return ds.Tables[1];
+            }
+            else
+            {
+                pagetotal = 0;
+                return null;
+            }
+        }
+    }
+}

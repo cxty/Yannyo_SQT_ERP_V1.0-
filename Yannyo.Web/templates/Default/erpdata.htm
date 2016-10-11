@@ -1,0 +1,124 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/erpdata.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:ErpDataManage.Delt();"  />
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="导入Erp数据" onclick="javascript:ErpDataManage.ShowimportErpdataBox();"  />
+<input type="button" id="button6" style="margin:5px" class="B_INPUT" value="匹配数据" onclick="javascript:ErpDataManage.ShowSyncErpdataBox();"  />
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+			<td width="10%">单据编号</td>
+			<td >产品名称</td>
+			<td width="5%">单价</td>
+			<td width="5%">数量</td>
+			<td width="5%">小计</td>
+			<td width="20%">客户名称</td>
+			<td width="8%">单据类型</td>
+			<td width="5%">业务员</td>
+			<td width="10%">单据时间</td>
+            <td width="10%">导入时间</td>
+            <td width="5%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[ErpOrderID]}" />
+            </td>
+			<td>{dl[O_ORDERNUM]}</td>
+			<td>
+			<%if dl["ProductsName"].ToString().Trim() != ""%>
+			{dl[ProductsName]}
+				<%if dl["PROMOTIONS"].ToString().Trim() == "1"%>
+				<span style="color:##FF0000">[促销]</span>
+				<%/if%>
+			<%else%>
+			<span style="color:#cccccc">
+			({dl[P_CODE]})<br/>{dl[P_NAME]}
+			</span>
+			<%/if%>
+			</td>
+            <td align="right">{dl[S_PRICE]}</td>
+			<td align="right">{dl[S_QUANTITY]}</td>
+			<td align="right">{dl[S_TOTAL]}</td>
+			<td>
+			<%if dl["R_ID"].ToString() =="4" || dl["R_ID"].ToString() =="8"%>
+				<%if dl["SupplierName"].ToString().Trim() != ""%>
+				{dl[SupplierName]}
+				<%else%>
+				<span style="color:#cccccc">
+				{dl[C_NAME]}
+				</span>
+				<%/if%>
+
+			<%else%>
+				<%if dl["StoresName"].ToString().Trim() != ""%>
+				{dl[StoresName]}
+				<%else%>
+				<span style="color:#cccccc">
+				{dl[C_NAME]}
+				</span>
+				<%/if%>
+			<%/if%>
+			</td>
+			<td>{dl[R_NAME]}</td>
+			<td>
+			<%if dl["StaffID"].ToString().Trim() != "0"%>
+			{dl[SA_NAME]}
+			<%else%>
+			<span style="color:#cccccc">
+			{dl[SA_NAME]}
+			</span>
+			<%/if%>
+			</td>
+			<td>{dl[O_CREATETIME]}</td>
+			<td>{dl[eAppendTime]}</td>
+            <td>
+			<a href="javascript:void(0);" onclick="javascript:ErpDataManage.ShowDelUserBox({dl[ErpOrderID]});">删除</a> 
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="12"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var ErpDataManage = new TErpDataManage();
+ErpDataManage.ini();
+
+function HidBox()
+{
+	ErpDataManage.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

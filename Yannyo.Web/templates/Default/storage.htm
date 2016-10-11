@@ -1,0 +1,100 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/Storage.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="Storage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+<div class="toolbox">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:Storage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:Storage.ShowAddUserBox();"  />
+    <input type="button" id="button5" style="margin:5px" class="B_INPUT" value="导入导出" onclick="javascript:Storage.dataAct();" />
+</div>
+<div class="list_title">
+仓库列表
+</div>
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td >仓库名称</td>
+            <td width="20%">所属分类</td>
+            <td width="10%">编码</td>
+            <td width="10%">管理员</td>
+            <td width="10%">联系电话</td>
+			<td width="10%">地址</td>
+            <td width="10%">创建时间</td>
+			<td width="5%">状态</td>
+            <td width="5%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[StorageID]}" />
+            
+            </td>
+            <td><a href="javascript:void(0);" onclick="javascript:Storage.ShowEditUserBox({dl[StorageID]});">{dl[sName]}</a></td>
+            <td>{dl[storageName]}</td>
+            <td>{dl[sCode]}</td>
+            <td>{dl[Manager]}</td>
+            <td>{dl[sTel]}</td>
+            <td>{dl[sAddress]}</td>
+			<td>{dl[sAppendTime]}</td>
+			<td align="center">
+			<a href="javascript:void(0);" onclick="javascript:Storage.State({dl[StorageID]});" id="s_{dl[StorageID]}">
+			<%if dl["sState"].ToString() == "0"%>
+            正常
+            <%/if%>
+            <%if dl["sState"].ToString() == "1"%>
+            <span style="color:#F00" >屏蔽</span>
+            <%/if%>
+			</a></td>
+            <td>
+			<a href="javascript:void(0);" onclick="javascript:Storage.ShowDelUserBox({dl[StorageID]});">删除</a>
+			<a href="javascript:void(0);" onclick="javascript:Storage.ShowEditUserBox({dl[StorageID]});">修改</a></td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="10">
+			<%if PageBarHTML!=null%>
+			{PageBarHTML}
+			<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var Storage = new TStorage();
+Storage.ini();
+
+function HidBox()
+{
+	Storage.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

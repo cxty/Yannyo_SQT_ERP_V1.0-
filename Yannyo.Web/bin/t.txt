@@ -1,0 +1,1557 @@
+
+/****** Object:  StoredProcedure [dbo].[sp_GetSalesReport_XP]    Script Date: 03/17/2015 15:13:56 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[sp_GetSalesReport_XP]
+
+	(
+
+	@ReType int = 1,		--商品销售=1,客户销售=2,结算系统=3,业务员（岗位变动）=4,促销员=5,地区统计=6,业务员（单据）=7,出货统计(商品)=8，出货统计(客户)=9
+
+	@bDate datetime,		--开始时间
+
+	@eDate datetime,		--结束时间
+
+	@NOJoinSales int = 0,	--剔除联营数据,不剔除=0,剔除=1,仅联营=2
+
+	@StoresID int=0,		--指定客户
+
+	@PaymentSystemID int=0,	--指定结算系统
+
+	@oSteps int=5,			--单据状态,默认=5,为已验收确认单据
+
+	@dType int=0,			--统计类型,
+
+							--0=销售统计按区间统计,1=发出商品按区间统计,
+
+							--2=备货商品统计(审核后发货前),
+
+							--3=销售统计按时间点,4=发出商品按时间点统计,
+
+							--5=业务员单据统计,
+
+							--6=出货商品统计按区间统计,7=出货商品统计按时间点统计
+
+	@CostPrice int=0,		--是否计算成本,0=显示,1=不显示
+	@SingleMemberID int =0,	--指定开单员
+	@OrderNumber varchar(1024)--指定单据
+	)
+
+AS
+
+begin
+
+	set @bDate = convert(datetime,convert(varchar,DATEPART(year,@bDate))+'-'+convert(varchar,DATEPART(month,@bDate))+'-'+convert(varchar,DATEPART(day,@bDate))+' 00:00:00');
+
+	set @eDate = convert(datetime,convert(varchar,DATEPART(year,@eDate))+'-'+convert(varchar,DATEPART(month,@eDate))+'-'+convert(varchar,DATEPART(day,@eDate))+' 23:59:59');
+
+	declare @tBDate datetime,@tEDate datetime;
+
+	set @tBDate = dateadd(DAY,-365,getdate());
+
+	set @tEDate = dateadd(DAY,365,getdate());
+
+	--整理单据,初级范围
+	declare @Orders Table(
+
+					OrderID int ,
+
+					oOrderNum varchar(50),
+
+					oType int,
+
+					StoresID int,
+
+					oCustomersName varchar(128),
+
+					oCustomersContact varchar(50),
+
+					oCustomersTel varchar(50),
+
+					oCustomersAddress varchar(512),
+
+					oCustomersOrderID varchar(50),
+
+					oCustomersNameB varchar(128),
+					
+					StaffID int,
+					
+					UserID int,
+
+					oAppendTime datetime,
+					
+					oOrderDateTime datetime,
+
+					oState	int,
+
+					oPrepay int,
+					
+					oSteps int,
+					
+					oReMake varchar(512)
+
+			);
+
+	--整理单据
+	declare @OrderList Table(
+
+				--keyid int primary key IDENTITY(1,1),
+
+				OrderID int ,
+
+				StorageID int,
+
+				ProductsID int,
+
+				oQuantity numeric(18,6),
+
+				oPrice numeric(18,6),
+
+				oMoney numeric(18,6),
+
+				StoresID int,
+
+				StoresSupplierID int,
+
+				oType int,
+
+				oOrderDateTime datetime,
+
+				oWorkingDateTime datetime,
+
+				IsGifts	int,
+
+				StaffID int,
+				SingleMemberID int
+
+			);
+			
+		
+
+	--商品列表,含成本
+
+	declare @Products Table(
+
+		--keyid	int	primary key identity(1,1),
+
+		ProductsID	int,
+
+		pPrice			numeric(18,6),
+
+		CoPrice			numeric(18,6),
+
+		pBarcode		varchar(50),
+
+		pName			varchar(128),
+
+		ProductClassID	int,
+
+		pBrand			varchar(128),
+
+		pStandard	varchar(50),
+
+		pUnits			varchar(50),
+
+		pMaxUnits	varchar(50),
+
+		pToBoxNo	int
+
+	);
+
+	--人员列表
+
+	declare @Staff Table(
+
+		StaffID int,			--人员编号
+
+		DepartmentsClassID int,	--部门编号
+
+		StoresID int,			--客户/门店编号
+
+		sName varchar(50),		--姓名
+
+		sType int,				--类型
+
+		bDate datetime,			--上岗时间
+
+		eDate datetime			--离岗时间
+
+	);
+
+	
+
+	if @CostPrice=0
+
+	begin
+
+		insert into @Products(ProductsID,pPrice,CoPrice,pBarcode,pName,ProductClassID,pBrand,pStandard,pUnits,pMaxUnits,pToBoxNo)
+
+						select p.ProductsID,p.pPrice,(dbo.fun_GetProductPriceXP(p.ProductsID,@bDate,@eDate)),p.pBarcode,p.pName,p.ProductClassID,p.pBrand,p.pStandard,p.pUnits,p.pMaxUnits,p.pToBoxNo from tbProductsInfo p ;--where p.pState=0;
+
+	end
+
+	else
+
+	begin
+
+		insert into @Products(ProductsID,pPrice,CoPrice,pBarcode,pName,ProductClassID,pBrand,pStandard,pUnits,pMaxUnits,pToBoxNo)
+
+						select p.ProductsID,p.pPrice,0,p.pBarcode,p.pName,p.ProductClassID,p.pBrand,p.pStandard,p.pUnits,p.pMaxUnits,p.pToBoxNo from tbProductsInfo p ;--where p.pState=0;
+
+	end
+
+
+	--初级过滤统计数据
+	if @OrderNumber != null
+	begin
+		insert into @Orders(OrderID,oOrderNum,oType,StoresID,oCustomersName,oCustomersContact,oCustomersTel,oCustomersAddress,oCustomersOrderID,oCustomersNameB,StaffID,UserID,oAppendTime,oOrderDateTime,oState,oPrepay,oSteps,oReMake)
+		select OrderID,oOrderNum,oType,StoresID,oCustomersName,oCustomersContact,oCustomersTel,oCustomersAddress,oCustomersOrderID,oCustomersNameB,StaffID,UserID,oAppendTime,oOrderDateTime,oState,oPrepay,oSteps,oReMake from tbOrderInfo where oOrderNum in(@OrderNumber) and oState=0 and OrderID in(select OrderID from tbOrderWorkingLogInfo where pAppendTime between @bDate and @eDate);
+		
+	end
+	else
+	begin
+		insert into @Orders(OrderID,oOrderNum,oType,StoresID,oCustomersName,oCustomersContact,oCustomersTel,oCustomersAddress,oCustomersOrderID,oCustomersNameB,StaffID,UserID,oAppendTime,oOrderDateTime,oState,oPrepay,oSteps,oReMake)
+				select OrderID,oOrderNum,oType,StoresID,oCustomersName,oCustomersContact,oCustomersTel,oCustomersAddress,oCustomersOrderID,oCustomersNameB,StaffID,UserID,oAppendTime,oOrderDateTime,oState,oPrepay,oSteps,oReMake from tbOrderInfo where oState = 0 and OrderID in(select OrderID from tbOrderWorkingLogInfo where pAppendTime between @bDate and @eDate);
+				
+	end
+
+	--销售统计,既指定单据步骤内数据
+	if @dType=0
+
+	begin
+
+	insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+					select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+					(select max(pAppendTime) from tbOrderWorkingLogInfo where oType=5 and OrderID=o.OrderID) as pAppendTime
+
+					,ol.IsGifts,o.StaffID,o.UserID
+
+						from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+							where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,4,5,6,10) and o.oState=0 and o.oSteps>=@oSteps and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where pAppendTime between @bDate and @eDate and oType=5) and ol.oWorkType=2;
+
+	end
+
+	--发出商品统计,既指定单据步骤前数据(发货后,收货中,核销前)
+
+	if @dType=1
+
+	begin
+
+			insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+							select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+							(select max(pAppendTime) from tbOrderWorkingLogInfo where oType in(3,4) and OrderID=o.OrderID) as pAppendTime
+
+							,ol.IsGifts,o.StaffID,o.UserID
+
+								from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+									where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,4,5,6,10) and o.oState=0 --and o.oSteps>=@oSteps 
+
+									and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where oType in(3,4) and pAppendTime between @bDate and @eDate) 
+
+									--and ol.OrderID not in(select OrderID from tbOrderWorkingLogInfo where oType in(5,11,12,13,14,15) and pAppendTime between @bDate and @eDate )
+									
+									and ol.oWorkType = 0;
+									--and ol.oWorkType>=1;
+
+					
+
+					--select od.OrderID,od.StorageID,od.ProductsID,od.oQuantity,od.oPrice,(isnull(od.oQuantity,0)*isnull(od.oPrice,0)) as oMoney,od.StoresID,od.StoresSupplierID,od.oType,od.oOrderDateTime,
+
+					--(select max(pAppendTime) from tbOrderWorkingLogInfo where oType in(3,4) and OrderID=od.OrderID) as pAppendTime
+
+					--,od.IsGifts from ( 
+
+					--					select ol.*,o.oSteps,o.StoresID,o.oType,o.oOrderDateTime from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID where o.oType in(3,4,5,6,10) and o.oState=0 and ol.oWorkType >=1--核销后 in(1,2)
+
+					--				 ) as od   
+
+					--where od.OrderID in(select OrderID from tbOrderWorkingLogInfo where oType in(3,4) and pAppendTime between @bDate and @eDate ) 
+
+					----ow.oType =(select MAX(oType) from tbOrderWorkingLogInfo where oType in(3,4) and pAppendTime between @bDate and @eDate and OrderID=od.OrderID) and ow.pAppendTime between @bDate and @eDate
+
+					--		and od.OrderID not in(select OrderID from tbOrderWorkingLogInfo where oType=5 and pAppendTime between @bDate and @eDate )--过滤该期间内已核销的
+
+					--select od.OrderID,od.StorageID,od.ProductsID,od.oQuantity,od.oPrice,(isnull(od.oQuantity,0)*isnull(od.oPrice,0)) as oMoney,od.StoresID,od.StoresSupplierID,od.oType,od.oOrderDateTime,ow.pAppendTime,od.IsGifts from (
+
+					--		select ol.*,o.oSteps,o.StoresID,o.oType,o.oOrderDateTime from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID where o.oType in(3,4,5,6,10) and o.oState=0 and ol.oWorkType=1
+
+					--	) as od left join tbOrderWorkingLogInfo as ow on od.OrderID=ow.OrderID  
+
+					--	where ow.oType=od.oSteps and ow.oType in(2,3,4) and ow.pAppendTime between @bDate and @eDate
+
+					--select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,ow.pAppendTime,ol.IsGifts
+
+					--	from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID left join tbOrderWorkingLogInfo ow on o.OrderID=ow.OrderID and o.oSteps=ow.oType
+
+					--		where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,4,5,6,10) and o.oState=0 and o.oSteps in(2,3,4) and ow.pAppendTime between @bDate and @eDate  and ow.oType in(2,3,4) and ol.oWorkType=1;
+
+	end
+
+	
+
+	--备货商品统计
+
+	if @dType=2
+
+	begin
+
+		insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+					select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+					(select max(pAppendTime) from tbOrderWorkingLogInfo where oType=2 and OrderID=o.OrderID) as pAppendTime
+
+					,ol.IsGifts,o.StaffID,o.UserID
+
+						from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+							where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,4,5,6,10) and o.oState=0 --and o.oSteps>=@oSteps 
+
+							and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where oType = 2 and pAppendTime between @bDate and @eDate) 
+
+							and ol.OrderID not in(select OrderID from tbOrderWorkingLogInfo where oType in (3,4,5) and pAppendTime between @bDate and @eDate )
+
+							and ol.oWorkType>=1;
+
+					
+
+					
+
+					--select od.OrderID,od.StorageID,od.ProductsID,od.oQuantity,od.oPrice,(isnull(od.oQuantity,0)*isnull(od.oPrice,0)) as oMoney,od.StoresID,od.StoresSupplierID,od.oType,od.oOrderDateTime,
+
+					--(select max(pAppendTime) from tbOrderWorkingLogInfo where oType=2 and OrderID=od.OrderID) as pAppendTime
+
+					--,od.IsGifts from (
+
+					--							select ol.*,o.oSteps,o.StoresID,o.oType,o.oOrderDateTime from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID where o.oType in(3,4,5,6,10) and o.oState=0 and ol.oWorkType >=1--核销后 in(1,2)
+
+					--						) as od 
+
+					--where  od.OrderID in(select OrderID from tbOrderWorkingLogInfo where oType=2 and pAppendTime between @bDate and @eDate )  --ow.oType = 2 and ow.pAppendTime between @bDate and @eDate
+
+					--		and od.OrderID not in(select OrderID from tbOrderWorkingLogInfo where oType in (3,4,5) and pAppendTime between @bDate and @eDate and OrderID=od.OrderID)--过滤该期间内发货,收货,已核销的
+
+	end
+
+	
+
+	--销售统计,按时间点
+
+	if @dType=3
+
+	begin
+
+	insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+					select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+					(select max(pAppendTime) from tbOrderWorkingLogInfo where oType=5 and OrderID=o.OrderID) as pAppendTime
+
+					,ol.IsGifts,o.StaffID,o.UserID
+
+						from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+							where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,4,5,6,10) 
+
+							and o.oState=0 and o.oSteps>=@oSteps and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where pAppendTime <= @eDate and oType=5) 
+
+							and ol.oWorkType=2;
+
+	end
+
+	
+
+	--发出商品统计,按时间点
+
+	if @dType=4
+
+	begin
+
+		insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+						select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+							(select max(pAppendTime) from tbOrderWorkingLogInfo where oType in(3,4) and OrderID=o.OrderID) as pAppendTime
+
+							,ol.IsGifts,o.StaffID,o.UserID
+
+								from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+									where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,4,5,6,10) and o.oState=0 --and o.oSteps>=@oSteps 
+
+									and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where oType in(3,4) and pAppendTime <= @eDate) 
+
+									and ol.OrderID not in(select OrderID from tbOrderWorkingLogInfo where oType in(5,11,12,13,14,15) and pAppendTime <= @eDate )
+
+									and ol.oWorkType>=1;
+
+									
+
+								--select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+								--(select max(pAppendTime) from tbOrderWorkingLogInfo where oType in(3,4) and OrderID=o.OrderID) as pAppendTime
+
+								--,ol.IsGifts
+
+								--	from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+								--		where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,4,5,6,10) and o.oState=0 --and o.oSteps in(3,4) 
+
+								--		and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where oType in(3,4) and pAppendTime <= @eDate) 
+
+								--		and ol.OrderID not in(select OrderID from tbOrderWorkingLogInfo where oType in(5,11,12,13,14,15) and pAppendTime >= @eDate )
+
+								--		and ol.oWorkType>=1;
+
+	end
+
+	
+
+	--出货商品统计,按区间
+
+	if @dType=6
+
+	begin
+
+		--出货时间:销售,赠品,样品,坏货 单据的发货时间
+
+		insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+						select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+						(select max(pAppendTime) from tbOrderWorkingLogInfo where oType=3 and OrderID=o.OrderID) as pAppendTime
+
+						,ol.IsGifts,o.StaffID,o.UserID
+
+							from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+								where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,5,6,10) and o.oState=0 and o.oSteps>=3 and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where pAppendTime between @bDate and @eDate and oType=3) and ol.oWorkType in(1,2);
+
+		--退货时间:退货单的 收货时间
+
+		insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+						select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+						(select max(pAppendTime) from tbOrderWorkingLogInfo where oType=4 and OrderID=o.OrderID) as pAppendTime
+
+						,ol.IsGifts,o.StaffID,o.UserID
+
+							from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+								where ol.ProductsID in(select ProductsID from @Products) and o.oType=4 and o.oState=0 and o.oSteps>=4 and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where pAppendTime between @bDate and @eDate and oType=4) and ol.oWorkType in(1,2);
+
+	end
+
+	
+
+	--出货统计,按时间点
+
+	if @dType=7
+
+	begin
+
+		--出货时间:销售,赠品,样品,坏货 单据的发货时间
+
+		insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+						select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+						(select max(pAppendTime) from tbOrderWorkingLogInfo where oType=3 and OrderID=o.OrderID) as pAppendTime
+
+						,ol.IsGifts,o.StaffID,o.UserID
+
+							from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+								where ol.ProductsID in(select ProductsID from @Products) and o.oType in(3,5,6,10) 
+
+								and o.oState=0 and o.oSteps>=3 and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where pAppendTime <= @eDate and oType=3) 
+
+								and ol.oWorkType in(1,2);
+
+		--退货时间:退货单的 收货时间
+
+		insert into @OrderList(OrderID,StorageID,ProductsID,oQuantity,oPrice,oMoney,StoresID,StoresSupplierID,oType,oOrderDateTime,oWorkingDateTime,IsGifts,StaffID,SingleMemberID)
+
+						select ol.OrderID,ol.StorageID,ol.ProductsID,ol.oQuantity,ol.oPrice,(isnull(ol.oQuantity,0)*isnull(ol.oPrice,0)) as oMoney,o.StoresID,ol.StoresSupplierID,o.oType,o.oOrderDateTime,
+
+						(select max(pAppendTime) from tbOrderWorkingLogInfo where oType=4 and OrderID=o.OrderID) as pAppendTime
+
+						,ol.IsGifts,o.StaffID,o.UserID
+
+							from tbOrderListInfo ol left join @Orders as o on o.OrderID=ol.OrderID 
+
+								where ol.ProductsID in(select ProductsID from @Products) and o.oType=4
+
+								and o.oState=0 and o.oSteps>=4 and ol.OrderID in(select OrderID from tbOrderWorkingLogInfo where pAppendTime <= @eDate and oType=4) 
+
+								and ol.oWorkType in(1,2);
+
+	end
+
+	
+
+	--条件表
+
+	declare @OrderList_t Table(
+
+				OrderID int
+
+			);
+
+			
+
+	insert into @OrderList_t(OrderID) values(0);
+
+	--剔除联营
+
+	if @NOJoinSales=1
+
+	begin
+
+		insert into @OrderList_t(OrderID)
+
+			select OrderID from @OrderList where dbo.fun_CheckProductIsPool(ProductsID,oWorkingDateTime)=1
+
+	end
+
+	
+
+	--仅联营
+
+	if @NOJoinSales=2
+
+	begin
+
+		insert into @OrderList_t(OrderID)
+
+			select OrderID from @OrderList where dbo.fun_CheckProductIsPool(ProductsID,oWorkingDateTime)=0
+
+	end
+
+	
+
+	--指定客户
+
+	if @StoresID>0
+
+	begin
+
+		insert into @OrderList_t(OrderID)
+
+			select OrderID from @OrderList where StoresID<>@StoresID;
+
+	end
+
+	
+	--指定开单员
+	if @SingleMemberID>0
+	begin
+		insert into @OrderList_t(OrderID)
+
+			select OrderID from @OrderList where SingleMemberID<>@SingleMemberID;
+	end
+
+
+	--指定结算系统
+
+	if @PaymentSystemID>0
+
+	begin
+
+		insert into @OrderList_t(OrderID)
+
+			select OrderID from @OrderList as o where not exists(select StoresID from tbStoresInfo where o.StoresID=tbStoresInfo.StoresID and  PaymentSystemID=@PaymentSystemID);
+
+	end
+
+	
+
+	--整理后的单据数据
+
+	declare @OrderList_tem Table(
+
+			OrderID int,
+
+			StaffID int,
+
+			StoresID int,
+
+			ProductsID int,
+
+			oQuantity numeric(18,6),
+
+			oMoney numeric(18,6),
+
+			IsGifts int,
+
+			oType int,
+			SingleMemberID int
+
+		);
+
+	
+
+	--商品销售
+
+	if @ReType = 1
+
+	begin
+
+		
+
+		insert into @OrderList_tem(OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID)
+
+					select OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID from @OrderList o where NOT EXISTS (select null from @OrderList_t as t where o.OrderID=t.OrderID);
+
+		
+
+		select pss.ProductsID,pss.pPrice,pss.CoPrice,pss.pBarcode,pss.pName,pss.ProductClassID,pss.pBrand,pss.pStandard,pss.pUnits,pss.pMaxUnits,pss.pToBoxNo,pss.pClassName,
+
+		pss.oQuantity,pss.oMoney,
+
+		pss.oQuantity_t,pss.oMoney_t,
+
+		pss.oQuantity_z,pss.CostPrice_z as oMoney_z,
+
+		pss.oQuantity_y,pss.CostPrice_y as oMoney_y,
+
+		pss.oQuantity_h,pss.CostPrice_h as oMoney_h,
+
+		pss.oQuantity_sz,pss.CostPrice_sz as oMoney_sz,
+
+		pss.CostPrice,pss.CostPrice_s,pss.CostPrice_t,pss.CostPrice_z,pss.CostPrice_y,pss.CostPrice_h,pss.CostPrice_sz from (
+
+			select ps.*,(ps.oQuantity*ISNULL(ps.CostPrice,0)) CostPrice_s,		--销售成本
+
+						(ps.oQuantity_t*ISNULL(ps.CostPrice,0)) CostPrice_t,	--退货成本
+
+						(ps.oQuantity_z*ISNULL(ps.CostPrice,0)) CostPrice_z,	--赠品成本
+
+						(ps.oQuantity_y*ISNULL(ps.CostPrice,0)) CostPrice_y,	--样品成本
+
+						(ps.oQuantity_h*ISNULL(ps.CostPrice,0)) CostPrice_h,	--坏货成本
+
+						(ps.oQuantity_sz*ISNULL(ps.CostPrice,0)) CostPrice_sz		--坏货成本
+
+			 from(
+
+				select p.*,pc.pClassName,
+
+					isnull(oo.oQuantity,0) oQuantity,			--销售数量
+
+					isnull(oo.oMoney,0) oMoney,					--销售金额
+
+					isnull(ool.oQuantity,0) oQuantity_t,		--销售退货数量
+
+					isnull(ool.oMoney,0) oMoney_t,				--销售退货金额
+
+					isnull(oool.oQuantity,0) oQuantity_z,		--赠品数量
+
+					--isnull(oool.oQuantity*isnull(p.CoPrice,0),0) oMoney_z,				--赠品单据金额
+
+					isnull(ooool.oQuantity,0) oQuantity_y,		--样品数量
+
+					--isnull(ooool.oQuantity*isnull(p.CoPrice,0),0) oMoney_y,			--样品单据金额
+
+					isnull(oooool.oQuantity,0) oQuantity_h,		--坏货数量
+
+					--isnull(oooool.oQuantity*isnull(p.CoPrice,0),0) oMoney_h,			--坏货单据金额
+
+					isnull(ooooool.oQuantity,0) oQuantity_sz,	--销售赠品数量
+
+					--isnull(ooooool.oQuantity*isnull(p.CoPrice,0),0) oMoney_sz,			--销售赠品单据金额
+
+					isnull(p.CoPrice,0) as CostPrice			--成本
+
+					from @Products as p left join tbProductClassInfo pc on pc.ProductClassID=p.ProductClassID 
+
+					--销售--,sum(isnull(oMoney,0)) oMoney
+
+					left join 
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=3  group by ProductsID) as oo on oo.ProductsID=p.ProductsID
+
+					--退货
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=4  group by ProductsID) as ool on ool.ProductsID=p.ProductsID
+
+					--赠品
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=5  group by ProductsID) as oool on oool.ProductsID=p.ProductsID
+
+					--样品
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=6  group by ProductsID) as ooool on ooool.ProductsID=p.ProductsID
+
+					--坏货
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=10  group by ProductsID) as oooool on oooool.ProductsID=p.ProductsID
+
+					--销售赠品
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=3 and IsGifts<>0  group by ProductsID) as ooooool on ooooool.ProductsID=p.ProductsID
+
+			) ps  ) as pss 
+
+			where pss.oQuantity<>0 or pss.oMoney<>0 or pss.oQuantity_t<>0 or pss.oMoney_t<>0 or pss.oQuantity_t<>0 or pss.oMoney_t<>0
+
+			or pss.oQuantity_z<>0  or pss.oQuantity_y<>0  or pss.oQuantity_h<>0  or pss.oQuantity_sz<>0 
+
+			order by  pss.ProductClassID,pss.ProductsID desc;
+
+		
+
+	end
+
+	--客户销售
+
+	if @ReType = 2
+
+	begin
+
+		
+
+			insert into @OrderList_tem(OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID)
+
+					select OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID from @OrderList o where NOT EXISTS (select null from @OrderList_t as t where o.OrderID=t.OrderID);
+
+		
+
+			select ps.CustomersClassID,ps.StoresID,ps.sName,
+
+					ppp.CoPrice as CostPrice,
+
+					ppp.pPrice,
+
+					ppp.pBarcode,ppp.pName,ppp.pToBoxNo,
+
+					ss.oQuantity,ss.oMoney,
+
+					ss.oQuantity_t,ss.oMoney_t,
+
+					ss.oQuantity_z,(ss.oQuantity_z*isnull(ppp.CoPrice,0)) as oMoney_z,
+
+					ss.oQuantity_y,(ss.oQuantity_y*isnull(ppp.CoPrice,0)) as oMoney_y,
+
+					ss.oQuantity_sz,(ss.oQuantity_sz*isnull(ppp.CoPrice,0)) as oMoney_sz
+
+			from tbStoresInfo as ps left join (
+
+				select s.StoresID,s.ProductsID,
+
+						sum(isnull(oo.oQuantity,0)) oQuantity,			--销售数量
+
+						sum(isnull(oo.oMoney,0)) oMoney,				--销售金额
+
+						sum(isnull(ool.oQuantity,0)) oQuantity_t,		--销售退货数量
+
+						sum(isnull(ool.oMoney,0)) oMoney_t,			--销售退货金额
+
+						sum(isnull(oool.oQuantity,0)) oQuantity_z,		--赠品数量
+
+						--sum(isnull(oool.oMoney,0)) oMoney_z,			--赠品单据金额
+
+						sum(isnull(ooool.oQuantity,0)) oQuantity_y,	--样品数量
+
+						--sum(isnull(ooool.oMoney,0)) oMoney_y,			--样品单据金额
+
+						sum(isnull(oooool.oQuantity,0)) oQuantity_sz	--销售赠品数量
+
+						--sum(isnull(oooool.oMoney,0)) oMoney_sz			--销售赠品单据金额
+
+						
+
+					from (select _s.StoresID,_p.ProductClassID,_p.ProductsID,_p.CoPrice
+
+					 from tbStoresInfo _s ,@Products _p) as s
+
+					--销售
+
+					left join 
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=3  group by StoresID,ProductsID) as oo on oo.StoresID=s.StoresID and oo.ProductsID=s.ProductsID
+
+					--退货
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=4  group by StoresID,ProductsID) as ool on ool.StoresID=s.StoresID and ool.ProductsID=s.ProductsID
+
+					--赠品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=5  group by StoresID,ProductsID) as oool on oool.StoresID=s.StoresID and oool.ProductsID=s.ProductsID
+
+					--样品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=6  group by StoresID,ProductsID) as ooool on ooool.StoresID=s.StoresID and ooool.ProductsID=s.ProductsID
+
+					--销售赠品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=3 and IsGifts<>0  group by StoresID,ProductsID) as oooool on oooool.StoresID=s.StoresID and oooool.ProductsID=s.ProductsID
+
+				
+
+					group by s.StoresID,s.ProductsID
+
+					) as ss on ps.StoresID=ss.StoresID
+
+				left join @Products ppp on ppp.ProductsID=ss.ProductsID
+
+			where (ss.oQuantity<>0 or ss.oMoney<>0 or ss.oQuantity_t<>0 or ss.oMoney_t<>0 or ss.oQuantity_t<>0 or ss.oMoney_t<>0
+
+			or ss.oQuantity_z<>0  or ss.oQuantity_y<>0  or ss.oQuantity_sz<>0 )
+
+			order by  ps.CustomersClassID,ps.StoresID,ppp.ProductClassID,ppp.ProductsID desc;
+
+			
+
+	end
+
+	
+
+	--商品出货
+
+	if @ReType = 8
+
+	begin
+
+		insert into @OrderList_tem(OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID)
+
+					select OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID from @OrderList o where NOT EXISTS (select null from @OrderList_t as t where o.OrderID=t.OrderID);
+
+		
+
+		select pss.ProductsID,pss.pPrice,pss.CoPrice,pss.pBarcode,pss.pName,pss.ProductClassID,pss.pBrand,pss.pStandard,pss.pUnits,pss.pMaxUnits,pss.pToBoxNo,pss.pClassName,
+
+		pss.oQuantity,pss.oMoney,
+
+		pss.oQuantity_t,pss.oMoney_t,
+
+		pss.oQuantity_z,pss.CostPrice_z as oMoney_z,
+
+		pss.oQuantity_y,pss.CostPrice_y as oMoney_y,
+
+		pss.oQuantity_h,pss.CostPrice_h as oMoney_h,
+
+		pss.oQuantity_sz,pss.CostPrice_sz as oMoney_sz,
+
+		pss.CostPrice,pss.CostPrice_s,pss.CostPrice_t,pss.CostPrice_z,pss.CostPrice_y,pss.CostPrice_h,pss.CostPrice_sz from (
+
+			select ps.*,(ps.oQuantity*ISNULL(ps.CostPrice,0)) CostPrice_s,		--销售成本
+
+						(ps.oQuantity_t*ISNULL(ps.CostPrice,0)) CostPrice_t,	--退货成本
+
+						(ps.oQuantity_z*ISNULL(ps.CostPrice,0)) CostPrice_z,	--赠品成本
+
+						(ps.oQuantity_y*ISNULL(ps.CostPrice,0)) CostPrice_y,	--样品成本
+
+						(ps.oQuantity_h*ISNULL(ps.CostPrice,0)) CostPrice_h,	--坏货成本
+
+						(ps.oQuantity_sz*ISNULL(ps.CostPrice,0)) CostPrice_sz		--坏货成本
+
+			 from(
+
+				select p.*,pc.pClassName,
+
+					isnull(oo.oQuantity,0) oQuantity,			--销售数量
+
+					isnull(oo.oMoney,0) oMoney,					--销售金额
+
+					isnull(ool.oQuantity,0) oQuantity_t,		--销售退货数量
+
+					isnull(ool.oMoney,0) oMoney_t,				--销售退货金额
+
+					isnull(oool.oQuantity,0) oQuantity_z,		--赠品数量
+
+					--isnull(oool.oQuantity*isnull(p.CoPrice,0),0) oMoney_z,				--赠品单据金额
+
+					isnull(ooool.oQuantity,0) oQuantity_y,		--样品数量
+
+					--isnull(ooool.oQuantity*isnull(p.CoPrice,0),0) oMoney_y,			--样品单据金额
+
+					isnull(oooool.oQuantity,0) oQuantity_h,		--坏货数量
+
+					--isnull(oooool.oQuantity*isnull(p.CoPrice,0),0) oMoney_h,			--坏货单据金额
+
+					isnull(ooooool.oQuantity,0) oQuantity_sz,	--销售赠品数量
+
+					--isnull(ooooool.oQuantity*isnull(p.CoPrice,0),0) oMoney_sz,			--销售赠品单据金额
+
+					isnull(p.CoPrice,0) as CostPrice			--成本
+
+					from @Products as p left join tbProductClassInfo pc on pc.ProductClassID=p.ProductClassID 
+
+					--销售--,sum(isnull(oMoney,0)) oMoney
+
+					left join 
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=3  group by ProductsID) as oo on oo.ProductsID=p.ProductsID
+
+					--退货
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=4  group by ProductsID) as ool on ool.ProductsID=p.ProductsID
+
+					--赠品
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=5  group by ProductsID) as oool on oool.ProductsID=p.ProductsID
+
+					--样品
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=6  group by ProductsID) as ooool on ooool.ProductsID=p.ProductsID
+
+					--坏货
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=10  group by ProductsID) as oooool on oooool.ProductsID=p.ProductsID
+
+					--销售赠品
+
+					left join
+
+					(select ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=3 and IsGifts<>0  group by ProductsID) as ooooool on ooooool.ProductsID=p.ProductsID
+
+			) ps  ) as pss 
+
+			where pss.oQuantity<>0 or pss.oMoney<>0 or pss.oQuantity_t<>0 or pss.oMoney_t<>0 or pss.oQuantity_t<>0 or pss.oMoney_t<>0
+
+			or pss.oQuantity_z<>0  or pss.oQuantity_y<>0  or pss.oQuantity_h<>0  or pss.oQuantity_sz<>0 
+
+			order by  pss.ProductClassID,pss.ProductsID desc;
+
+	end
+
+	--客户出货
+
+	if @ReType = 9
+
+	begin
+
+		insert into @OrderList_tem(OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID)
+
+					select OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID from @OrderList o where NOT EXISTS (select null from @OrderList_t as t where o.OrderID=t.OrderID);
+
+		
+
+			select ps.CustomersClassID,ps.StoresID,ps.sName,
+
+					ppp.CoPrice as CostPrice,
+
+					ppp.pPrice,
+
+					ppp.pBarcode,ppp.pName,ppp.pToBoxNo,
+
+					ss.oQuantity,ss.oMoney,
+
+					ss.oQuantity_t,ss.oMoney_t,
+
+					ss.oQuantity_z,(ss.oQuantity_z*isnull(ppp.CoPrice,0)) as oMoney_z,
+
+					ss.oQuantity_y,(ss.oQuantity_y*isnull(ppp.CoPrice,0)) as oMoney_y,
+
+					ss.oQuantity_sz,(ss.oQuantity_sz*isnull(ppp.CoPrice,0)) as oMoney_sz
+
+			from tbStoresInfo as ps left join (
+
+				select s.StoresID,s.ProductsID,
+
+						sum(isnull(oo.oQuantity,0)) oQuantity,			--销售数量
+
+						sum(isnull(oo.oMoney,0)) oMoney,				--销售金额
+
+						sum(isnull(ool.oQuantity,0)) oQuantity_t,		--销售退货数量
+
+						sum(isnull(ool.oMoney,0)) oMoney_t,			--销售退货金额
+
+						sum(isnull(oool.oQuantity,0)) oQuantity_z,		--赠品数量
+
+						--sum(isnull(oool.oMoney,0)) oMoney_z,			--赠品单据金额
+
+						sum(isnull(ooool.oQuantity,0)) oQuantity_y,	--样品数量
+
+						--sum(isnull(ooool.oMoney,0)) oMoney_y,			--样品单据金额
+
+						sum(isnull(oooool.oQuantity,0)) oQuantity_sz	--销售赠品数量
+
+						--sum(isnull(oooool.oMoney,0)) oMoney_sz			--销售赠品单据金额
+
+						
+
+					from (select _s.StoresID,_p.ProductClassID,_p.ProductsID,_p.CoPrice
+
+					 from tbStoresInfo _s ,@Products _p) as s
+
+					--销售
+
+					left join 
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=3  group by StoresID,ProductsID) as oo on oo.StoresID=s.StoresID and oo.ProductsID=s.ProductsID
+
+					--退货
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=4  group by StoresID,ProductsID) as ool on ool.StoresID=s.StoresID and ool.ProductsID=s.ProductsID
+
+					--赠品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=5  group by StoresID,ProductsID) as oool on oool.StoresID=s.StoresID and oool.ProductsID=s.ProductsID
+
+					--样品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=6  group by StoresID,ProductsID) as ooool on ooool.StoresID=s.StoresID and ooool.ProductsID=s.ProductsID
+
+					--销售赠品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=3 and IsGifts<>0  group by StoresID,ProductsID) as oooool on oooool.StoresID=s.StoresID and oooool.ProductsID=s.ProductsID
+
+				
+
+					group by s.StoresID,s.ProductsID
+
+					) as ss on ps.StoresID=ss.StoresID
+
+				left join @Products ppp on ppp.ProductsID=ss.ProductsID
+
+			where (ss.oQuantity<>0 or ss.oMoney<>0 or ss.oQuantity_t<>0 or ss.oMoney_t<>0 or ss.oQuantity_t<>0 or ss.oMoney_t<>0
+
+			or ss.oQuantity_z<>0  or ss.oQuantity_y<>0  or ss.oQuantity_sz<>0 )
+
+			order by  ps.CustomersClassID,ps.StoresID,ppp.ProductClassID,ppp.ProductsID desc;
+
+	end
+
+	
+
+	--结算系统
+
+	if @ReType = 3
+
+	begin
+
+			insert into @OrderList_tem(OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID)
+
+				select OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID from @OrderList o where NOT EXISTS (select null from @OrderList_t as t where o.OrderID=t.OrderID);
+
+			select pps.*,p.pName as ProductName,p.pBarcode,p.pToBoxNo,p.pUnits,p.pMaxUnits,
+
+				isnull(p.CoPrice,0) as CostPrice	--成本
+
+			 from  @Products as p left join(
+
+				select ps.PaymentSystemID,ps.pName,ssss.ProductsID,
+
+					sum(isnull(ssss.oQuantity,0)) oQuantity,			--销售数量
+
+					sum(isnull(ssss.oMoney,0)) oMoney,					--销售金额
+
+					sum(isnull(ssss.oQuantity_t,0)) oQuantity_t,		--销售退货数量
+
+					sum(isnull(ssss.oMoney_t,0)) oMoney_t,			--销售退货金额
+
+					sum(isnull(ssss.oQuantity_z,0)) oQuantity_z,		--赠品数量
+
+					sum(isnull(ssss.oMoney_z,0)) oMoney_z,			--赠品单据金额
+
+					sum(isnull(ssss.oQuantity_y,0)) oQuantity_y,	--样品数量
+
+					sum(isnull(ssss.oMoney_y,0)) oMoney_y			--样品单据金额 
+
+				
+
+				
+
+				from tbPaymentSystemInfo ps left join(
+
+					select ss.*,sss.PaymentSystemID from(
+
+						select s.StoresID,s.ProductsID,
+
+							sum(isnull(oo.oQuantity,0)) oQuantity,			--销售数量
+
+							sum(isnull(oo.oMoney,0)) oMoney,					--销售金额
+
+							sum(isnull(ool.oQuantity,0)) oQuantity_t,		--销售退货数量
+
+							sum(isnull(ool.oMoney,0)) oMoney_t,			--销售退货金额
+
+							sum(isnull(oool.oQuantity,0)) oQuantity_z,		--赠品数量
+
+							sum(isnull(oool.oQuantity,0)*isnull(s.CoPrice,0)) oMoney_z,			--赠品单据金额
+
+							sum(isnull(ooool.oQuantity,0)) oQuantity_y,	--样品数量
+
+							sum(isnull(ooool.oQuantity,0)*isnull(s.CoPrice,0)) oMoney_y			--样品单据金额
+
+						
+
+						from (select _s.StoresID,_p.ProductClassID,_p.ProductsID,_p.CoPrice
+
+							from tbStoresInfo _s ,@Products _p) as s
+
+						--销售
+
+						left join 
+
+						(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=3  group by StoresID,ProductsID) as oo on oo.StoresID=s.StoresID and oo.ProductsID=s.ProductsID
+
+						--退货
+
+						left join
+
+						(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=4  group by StoresID,ProductsID) as ool on ool.StoresID=s.StoresID and ool.ProductsID=s.ProductsID
+
+						--赠品
+
+						left join
+
+						(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=5  group by StoresID,ProductsID) as oool on oool.StoresID=s.StoresID and oool.ProductsID=s.ProductsID
+
+						--样品
+
+						left join
+
+						(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=6  group by StoresID,ProductsID) as ooool on ooool.StoresID=s.StoresID and ooool.ProductsID=s.ProductsID
+
+						group by s.StoresID,s.ProductsID
+
+						) as ss right join tbStoresInfo sss on ss.StoresID=sss.StoresID where sss.sState=0
+
+					) as ssss 
+
+					on ssss.PaymentSystemID = ps.PaymentSystemID 
+
+					group by ps.PaymentSystemID,ps.pName,ssss.ProductsID
+
+				)as pps on p.ProductsID=pps.ProductsID
+
+				where (pps.oQuantity<>0 or pps.oMoney<>0 or pps.oQuantity_t<>0 or pps.oMoney_t<>0 or pps.oQuantity_t<>0 or pps.oMoney_t<>0
+
+			or pps.oQuantity_z<>0 or pps.oMoney_z<>0 or pps.oQuantity_y<>0 or pps.oMoney_y<>0 )
+
+			order by pps.PaymentSystemID,p.ProductClassID,p.ProductsID desc;
+
+		
+
+	end
+
+	
+
+	--人员（岗位变动）,业务员,促销员,部门
+
+	if @ReType = 4 or @ReType=5
+
+	begin
+
+		declare @sType int;	--人员类型
+
+	
+
+		if @ReType = 4	--业务员
+
+		begin
+
+			set @sType = 1;
+
+		end
+
+		
+
+		if @ReType = 5	--促销员
+
+		begin
+
+			set @sType = 2;
+
+		end
+
+		
+
+		--按人员岗位变动统计
+
+		
+
+		insert into @Staff(StaffID,DepartmentsClassID,sName,sType,bDate,eDate,StoresID)
+
+				select s.StaffID, s.DepartmentsClassID,s.sName,s.sType,ss.bdate,ss.edate,ss.StoresID from 
+
+				(select StaffID,StoresID,MIN(bdate) bdate,MAX(edate) edate from tbSales_Staff_StoresDataInfo group by StaffID,StoresID)  ss 
+
+					left join tbStaffInfo s on ss.StaffID=s.StaffID
+
+					where (@bDate between ss.bdate and ss.edate) and (@eDate between ss.bdate and ss.edate) and s.sType=@sType;	
+
+		--select * from @Staff order by StaffID
+
+		
+
+		insert into @OrderList_tem(OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID)
+
+			select o.OrderID,s.StaffID,o.StoresID,o.ProductsID,o.oQuantity ,o.oMoney,o.IsGifts,o.oType,o.SingleMemberID 
+
+				from @OrderList as o left join @Staff as s on o.StoresID=s.StoresID  
+
+				where NOT EXISTS (select null from @OrderList_t as t where o.OrderID=t.OrderID) 
+
+						and s.StaffID > 0 and (o.oWorkingDateTime between s.bDate and s.eDate)
+
+				order by s.StaffID,o.ProductsID desc;
+
+		
+
+		--select * from @OrderList_tem where oType=3 order by StaffID,ProductsID desc;
+
+		
+
+		select os.StaffID,os.ProductsID,ss.sName,
+
+					isnull(p.CoPrice,0) as CostPrice,
+
+					p.pPrice,
+
+					p.pBarcode,p.pName,p.pToBoxNo,
+
+					os.oQuantity,os.oMoney,
+
+					os.oQuantity_t,os.oMoney_t,
+
+					os.oQuantity_z,(os.oQuantity_z*isnull(p.CoPrice,0)) as oMoney_z,
+
+					os.oQuantity_y,(os.oQuantity_y*isnull(p.CoPrice,0)) as oMoney_y,
+
+					os.oQuantity_sz,(os.oQuantity_sz*isnull(p.CoPrice,0)) as oMoney_sz
+
+		 from (
+
+			select s.StaffID,s.ProductsID,
+
+				(isnull(oo.oQuantity,0)) oQuantity,			--销售数量
+
+				(isnull(oo.oMoney,0)) oMoney,				--销售金额
+
+				(isnull(ool.oQuantity,0)) oQuantity_t,		--销售退货数量
+
+				(isnull(ool.oMoney,0)) oMoney_t,			--销售退货金额
+
+				(isnull(oool.oQuantity,0)) oQuantity_z,		--赠品数量
+
+				--(isnull(oool.oMoney,0)) oMoney_z,			--赠品单据金额
+
+				(isnull(ooool.oQuantity,0)) oQuantity_y,	--样品数量
+
+				--(isnull(ooool.oMoney,0)) oMoney_y,			--样品单据金额
+
+				(isnull(oooool.oQuantity,0)) oQuantity_sz	--销售赠品数量
+
+				--(isnull(oooool.oMoney,0)) oMoney_sz			--销售赠品单据金额
+
+			from 
+
+				(select _s.StaffID,_p.ProductsID from (select StaffID from tbStaffInfo where sType=@sType) _s ,@Products _p) as s
+
+			
+
+				--销售
+
+				left join 
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem  where oType=3  group by StaffID,ProductsID) as oo on oo.StaffID=s.StaffID  and oo.ProductsID=s.ProductsID  
+
+				--退货
+
+				left join
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem  where oType=4  group by StaffID,ProductsID) as ool on ool.StaffID=s.StaffID  and ool.ProductsID=s.ProductsID 
+
+				--赠品
+
+				left join
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem  where oType=5  group by StaffID,ProductsID) as oool on oool.StaffID=s.StaffID  and oool.ProductsID=s.ProductsID 
+
+				--样品
+
+				left join
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem  where oType=6  group by StaffID,ProductsID) as ooool on ooool.StaffID=s.StaffID  and ooool.ProductsID=s.ProductsID 
+
+				--销售赠品
+
+				left join
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem  where oType=3 and IsGifts<>0  group by StaffID,ProductsID) as oooool on oooool.StaffID=s.StaffID  and oooool.ProductsID=s.ProductsID 
+
+				
+
+				--group by s.StaffID,s.ProductsID
+
+				--order by s.StaffID,s.ProductsID desc
+
+				
+
+			) as os left join (select StaffID,DepartmentsClassID,sName from tbStaffInfo where sType=@sType) ss on ss.StaffID = os.StaffID
+
+			left join @Products p on os.ProductsID = p.ProductsID
+
+			where (os.oQuantity<>0 or os.oMoney<>0 or os.oQuantity_t<>0 or os.oMoney_t<>0 or os.oQuantity_z<>0  or os.oQuantity_y<>0  or os.oQuantity_sz<>0 )
+
+			order by  ss.DepartmentsClassID,ss.StaffID,p.ProductClassID,p.ProductsID desc;
+
+	end
+
+	
+
+	--地区统计
+
+	if @ReType=6
+
+	begin
+
+		insert into @OrderList_tem(OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID)
+
+					select OrderID,0,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID from @OrderList o where NOT EXISTS (select null from @OrderList_t as t where o.OrderID=t.OrderID);
+
+		
+
+			select ps.CustomersClassID,ps.StoresID,ps.sName,isnull(r.RegionID,0) as RegionID,isnull(r.rName,'未归类') as rName,isnull(r.rUpID,0) as rUpID,
+
+					ppp.CoPrice as CostPrice,
+
+					ppp.pPrice,
+
+					ppp.pBarcode,ppp.pName,ppp.pToBoxNo,
+
+					ss.oQuantity,ss.oMoney,
+
+					ss.oQuantity_t,ss.oMoney_t,
+
+					ss.oQuantity_z,(ss.oQuantity_z*isnull(ppp.CoPrice,0)) as oMoney_z,
+
+					ss.oQuantity_y,(ss.oQuantity_y*isnull(ppp.CoPrice,0)) as oMoney_y,
+
+					ss.oQuantity_sz,(ss.oQuantity_sz*isnull(ppp.CoPrice,0)) as oMoney_sz
+
+			from tbStoresInfo as ps left join (
+
+				select s.StoresID,s.ProductsID,
+
+						sum(isnull(oo.oQuantity,0)) oQuantity,			--销售数量
+
+						sum(isnull(oo.oMoney,0)) oMoney,				--销售金额
+
+						sum(isnull(ool.oQuantity,0)) oQuantity_t,		--销售退货数量
+
+						sum(isnull(ool.oMoney,0)) oMoney_t,			--销售退货金额
+
+						sum(isnull(oool.oQuantity,0)) oQuantity_z,		--赠品数量
+
+						--sum(isnull(oool.oMoney,0)) oMoney_z,			--赠品单据金额
+
+						sum(isnull(ooool.oQuantity,0)) oQuantity_y,	--样品数量
+
+						--sum(isnull(ooool.oMoney,0)) oMoney_y,			--样品单据金额
+
+						sum(isnull(oooool.oQuantity,0)) oQuantity_sz	--销售赠品数量
+
+						--sum(isnull(oooool.oMoney,0)) oMoney_sz			--销售赠品单据金额
+
+						
+
+					from (select _s.StoresID,_p.ProductClassID,_p.ProductsID,_p.CoPrice
+
+					 from tbStoresInfo _s ,@Products _p) as s
+
+					--销售
+
+					left join 
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=3  group by StoresID,ProductsID) as oo on oo.StoresID=s.StoresID and oo.ProductsID=s.ProductsID
+
+					--退货
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=4  group by StoresID,ProductsID) as ool on ool.StoresID=s.StoresID and ool.ProductsID=s.ProductsID
+
+					--赠品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=5  group by StoresID,ProductsID) as oool on oool.StoresID=s.StoresID and oool.ProductsID=s.ProductsID
+
+					--样品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=6  group by StoresID,ProductsID) as ooool on ooool.StoresID=s.StoresID and ooool.ProductsID=s.ProductsID
+
+					--销售赠品
+
+					left join
+
+					(select StoresID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=3 and IsGifts<>0  group by StoresID,ProductsID) as oooool on oooool.StoresID=s.StoresID and oooool.ProductsID=s.ProductsID
+
+				
+
+					group by s.StoresID,s.ProductsID
+
+					) as ss on ps.StoresID=ss.StoresID
+
+				left join @Products ppp on ppp.ProductsID=ss.ProductsID
+
+				left join tbRegionInfo r on ps.RegionID=r.RegionID
+
+			where (ss.oQuantity<>0 or ss.oMoney<>0 or ss.oQuantity_t<>0 or ss.oMoney_t<>0 or ss.oQuantity_t<>0 or ss.oMoney_t<>0
+
+			or ss.oQuantity_z<>0  or ss.oQuantity_y<>0  or ss.oQuantity_sz<>0 )
+
+			order by  ps.CustomersClassID,ps.StoresID,ppp.ProductClassID,ppp.ProductsID desc;
+
+	end
+
+	
+
+	--人员（单据）
+
+	if @ReType=7
+
+	begin
+
+	--按单据上的人员统计	
+
+	insert into @OrderList_tem(OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID)
+
+				select OrderID,StaffID,StoresID,ProductsID,oQuantity,oMoney,IsGifts,oType,SingleMemberID from @OrderList o where NOT EXISTS (select null from @OrderList_t as t where o.OrderID=t.OrderID);
+
+		select ps.DepartmentsClassID,ps.StaffID,ps.sName,
+
+				ppp.CoPrice as CostPrice,
+
+				ppp.pPrice,
+
+				ppp.pBarcode,ppp.pName,ppp.pToBoxNo,
+
+				ss.oQuantity,ss.oMoney,
+
+				ss.oQuantity_t,ss.oMoney_t,
+
+				ss.oQuantity_z,(ss.oQuantity_z*isnull(ppp.CoPrice,0)) as oMoney_z,
+
+				ss.oQuantity_y,(ss.oQuantity_y*isnull(ppp.CoPrice,0)) as oMoney_y,
+
+				ss.oQuantity_sz,(ss.oQuantity_sz*isnull(ppp.CoPrice,0)) as oMoney_sz
+
+		from  tbStaffInfo as ps left join (/*(select * from tbStaffInfo /*where sType=1*/)*/
+
+			select s.StaffID,s.ProductsID,
+
+					sum(isnull(oo.oQuantity,0)) oQuantity,			--销售数量
+
+					sum(isnull(oo.oMoney,0)) oMoney,				--销售金额
+
+					sum(isnull(ool.oQuantity,0)) oQuantity_t,		--销售退货数量
+
+					sum(isnull(ool.oMoney,0)) oMoney_t,			--销售退货金额
+
+					sum(isnull(oool.oQuantity,0)) oQuantity_z,		--赠品数量
+
+					--sum(isnull(oool.oMoney,0)) oMoney_z,			--赠品单据金额
+
+					sum(isnull(ooool.oQuantity,0)) oQuantity_y,	--样品数量
+
+					--sum(isnull(ooool.oMoney,0)) oMoney_y,			--样品单据金额
+
+					sum(isnull(oooool.oQuantity,0)) oQuantity_sz	--销售赠品数量
+
+					--sum(isnull(oooool.oMoney,0)) oMoney_sz			--销售赠品单据金额
+
+
+				from (select _s.StaffID,_p.ProductClassID,_p.ProductsID,_p.CoPrice
+
+				 from tbStaffInfo _s ,@Products _p) as s
+
+				--销售
+
+				left join 
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=3  group by StaffID,ProductsID) as oo on oo.StaffID=s.StaffID and oo.ProductsID=s.ProductsID
+
+				--退货
+
+				left join
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity,sum(isnull(oMoney,0)) oMoney from @OrderList_tem as o where oType=4  group by StaffID,ProductsID) as ool on ool.StaffID=s.StaffID and ool.ProductsID=s.ProductsID
+
+				--赠品
+
+				left join
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=5  group by StaffID,ProductsID) as oool on oool.StaffID=s.StaffID and oool.ProductsID=s.ProductsID
+
+				--样品
+
+				left join
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=6  group by StaffID,ProductsID) as ooool on ooool.StaffID=s.StaffID and ooool.ProductsID=s.ProductsID
+
+				--销售赠品
+
+				left join
+
+				(select StaffID,ProductsID,sum(isnull(oQuantity,0)) oQuantity from @OrderList_tem as o where oType=3 and IsGifts<>0  group by StaffID,ProductsID) as oooool on oooool.StaffID=s.StaffID and oooool.ProductsID=s.ProductsID
+
+			
+				group by s.StaffID,s.ProductsID
+
+				) as ss on ps.StaffID=ss.StaffID
+
+			left join @Products ppp on ppp.ProductsID=ss.ProductsID
+
+		where (ss.oQuantity<>0 or ss.oMoney<>0 or ss.oQuantity_t<>0 or ss.oMoney_t<>0 or ss.oQuantity_t<>0 or ss.oMoney_t<>0
+
+		or ss.oQuantity_z<>0  or ss.oQuantity_y<>0  or ss.oQuantity_sz<>0 )
+
+		order by  ps.DepartmentsClassID,ps.StaffID,ppp.ProductClassID,ppp.ProductsID desc;
+
+	end
+
+end
+
+

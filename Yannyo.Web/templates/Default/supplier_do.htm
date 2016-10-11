@@ -1,0 +1,166 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+
+<script type="text/javascript" src="public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="public/js/jquery.bgiframe.js"></script>
+
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                <tr>
+                  <td width="20%" align="right" class="ltd">供应商名称</td>
+                  <td align="left" class="rtd">
+                  <input name="sName" id="sName" type="text" 
+                  <%if Act=="Edit"%>value="{si.sName}"<%/if%> showtitle="可填写少于50个的中英文字符"
+                  /></td>
+                </tr>
+                
+                <tr>
+                  <td  align="right" class="ltd">供应商编号</td>
+                  <td align="left" class="rtd">
+                  <input name="sCode" id="sCode" type="text" 
+                  <%if Act=="Edit"%>value="{si.sCode}"<%/if%> showtitle="可填写少于50个的数字或英文字符"
+                  /></td>
+                </tr>
+				<tr>
+                  <td  align="right" class="ltd">工商注册号</td>
+                  <td align="left" class="rtd">
+                  <input name="sLicense" id="sLicense" type="text" 
+                  <%if Act=="Edit"%>value="{si.sLicense}"<%/if%> showtitle="可填写少于50个的数字或英文字符"
+                  /></td>
+                </tr>
+                <tr>
+                  <td align="right" class="ltd">供应商分类</td>
+                  <td align="left" class="rtd">
+                  <input type="hidden" id="SupplierClassID" name="SupplierClassID" 
+                  <%if Act=="Edit"%>value="{si.SupplierClassID}"<%/if%>
+                  />
+                  <input type="text" name="category" id="category" value="" />
+                  <ul id="categorymenu" class="mcdropdown_menu">{SupplierClass}</ul>
+                  </td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">地址</td>
+                  <td align="left" class="rtd">
+                  <input name="sAddress" id="sAddress" type="text" 
+                  <%if Act=="Edit"%>value="{si.sAddress}"<%/if%> showtitle="供应商的具体地址"
+                  /></td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">电话</td>
+                  <td align="left" class="rtd">
+                  <input name="sTel" id="sTel" type="text" 
+                  <%if Act=="Edit"%>value="{si.sTel}"<%/if%> showtitle="供应商的联系电话"
+                  />
+				 
+				  </td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">联系人</td>
+                  <td align="left" class="rtd">
+                  <input name="sLinkMan" id="sLinkMan" type="text" 
+                  <%if Act=="Edit"%>value="{si.sLinkMan}"<%/if%> showtitle="供应商的联系人"
+                  />
+				 
+				  </td>
+                </tr>
+				
+				
+				<tr>
+                  <td  align="right" class="ltd">对账日</td>
+                  <td align="left" class="rtd">
+                  <input name="sDoDay" id="sDoDay" type="text" 
+                  <%if Act=="Edit"%>value="{si.sDoDay}"<%/if%> showtitle="对账的日期"
+                  /></td>
+                </tr>
+				
+				<tr>
+                  <td  align="right" class="ltd">期初应付款</td>
+                  <td align="left" class="rtd">
+                  <input name="sDoDayMoney" id="sDoDayMoney" type="text" 
+                  <%if Act=="Edit"%>value="{si.sDoDayMoney}"<%/if%> showtitle="只能填写数字格式"
+                  /></td>
+                </tr>
+              </table>
+<div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                  	<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+$(document).ready(function (){
+	$("#category").mcDropdown("#categorymenu");
+});
+<%if Act=="Edit"%>
+$(document).ready(function (){
+var dd = $("#category").mcDropdown();
+		dd.setValue({si.SupplierClassID});
+});
+<%/if%>
+			
+			function CheckF()
+			{
+				var dd = $("#category").mcDropdown();
+				if(dd!=''){
+					var ddarray = dd.getValue();
+					if(ddarray.length>0)
+					{
+						if(Number(ddarray[0])>0){
+							Sys.getObj('SupplierClassID').value = Number(ddarray[0]);
+							if(Sys.getObj('sName').value != '')
+							{
+			
+								Sys.getObj('bForm').submit();
+			
+							}else
+							{
+								alert('供货商名称不能为空!');	
+							}
+						}else
+						{
+							alert('请选择供货商分类!');	
+						}
+					}else
+					{
+						alert('请选择供货商分类!');	
+					}
+				}else
+				{
+					alert('请选择供货商分类!');	
+				}
+			}
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

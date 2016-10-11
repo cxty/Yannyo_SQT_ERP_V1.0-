@@ -1,0 +1,115 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+            <%if oi!=null%>
+            <h2>单据编号:{oi.oOrderNum}</h2>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+                <tr class="tBar">
+                  <td width="25%">操作时间</td>
+                  <td width="20%">操作员</td>
+                  <td width="20%">操作类型</td>
+                  <td>备注</td>
+                </tr>
+                <%if dList != null%>
+          <%loop dl dList%>
+                <tr>
+                  <td>{dl[pAppendTime]}</td>
+                  <td>
+                  <%if dl["UserStaffName"].ToString()==""%>
+            {dl[UserName]}
+            <%else%>
+            {dl[UserStaffName]}
+            <%/if%>
+                  </td>
+                  <td>
+                  <%if dl["oType"].ToString() == "-1"%>
+                  作废
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "0"%>
+                  开单
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "1"%>
+                  修改
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "2"%>
+                  审核
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "3"%>
+                  发货
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "4"%>
+                  收货
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "5"%>
+                  核销
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "6"%>
+                  打印
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "7"%>
+                  差额去向处理(调拨)
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "8"%>
+                  差额转单处理
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "9"%>
+                  随附凭证
+                  <%/if%>
+                  <%if dl["oType"].ToString() == "10"%>
+                  打印随附单
+                  <%/if%>
+				   <%if dl["oType"].ToString() == "11"%>
+                  正在对账
+                  <%/if%>
+				   <%if dl["oType"].ToString() == "12"%>
+                  对账完成
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "13"%>
+                  完成收付款
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "14"%>
+                  结账
+                  <%/if%>
+				  <%if dl["oType"].ToString() == "15"%>
+                  重新对账
+                  <%/if%>
+                  </td>
+                  <td>{dl[oMsg]}</td>
+                </tr>
+                <%/loop%>
+          <%/if%>
+                <tr>
+                  <td colspan="4">
+<%if PageBarHTML!=null%>
+{PageBarHTML}
+<%/if%>
+                  </td>
+                </tr>
+              </table>
+             <%/if%>
+    
+</form>
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

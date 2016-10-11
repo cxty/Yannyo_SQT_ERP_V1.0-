@@ -1,0 +1,40 @@
+﻿<%template _poppageheader%>
+
+<body>
+
+    <%if {ispost} %>
+        <%if page_err==0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <%template _poperrmsgbox%>
+        <%/if%>
+    <%else%>
+        <%if page_err!=0%>
+            <%template _poperrmsgbox%>
+        <%else%>
+            <%if page_msg!=0%>
+                <%template _popmsgbox%>
+            <%else%>
+                <script type="text/javascript" language="javascript" src="/public/js/jquery.js"></script>
+    <script type="text/javascript" language="javascript" src="/public/js/data_import_export.js"></script>
+    <form name="bForm" id="bForm" action="" method="post" enctype="multipart/form-data">
+        <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+            <tr>
+                <td width="20%" align="right" class="ltd">选择文件:</td>
+                <td align="left" class="rtd">
+                    <input type="file" name="upfile" id="upfile" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="button" id="down_bt" name="down_bt" style="margin:5px" class="B_INPUT" value="导出" />
+                    <input type="button" id="upload_bt" name="upload_bt" style="margin:5px" class="B_INPUT" value="导入" />
+                </td>
+            </tr>
+        </table>
+    </form>
+    
+        <%/if%>
+    <%/if%>
+<%/if%>
+<%template _footer%>

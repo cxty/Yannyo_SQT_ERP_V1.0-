@@ -1,0 +1,64 @@
+﻿<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="/public/js/jquery.js"></script>
+          <form name="bForm" id="bForm" action="" method="post">
+          <input type="hidden" id="tValue" name="tValue" />
+          <input type="hidden" id="lastName" name="lastName" <%if Act=="update"%>value="{pi.dClassName}"<%/if%> />
+             <table id="tTable" width="100%" border="0" cellspacing="2" cellpadding="2">
+              <tr class="tBar">
+               <td align="left" colspan="3"><span style="font-size:10pt"><%if Act=="update"%>当前选择：<%else%>上级分类：<%/if%><%if departmentClassID==0%>顶级<%else%>{pi.dClassName}<%/if%></span></td>
+              </tr>
+              <tr class="tBar" >
+                <td align="left">分类名称：<input showtitle="可填写少于50个的中英文字符" type="text" id="tName" name="tName" <%if Act=="update"%> value="{pi.dClassName}"<%/if%>/></td>
+              </tr>
+              <tr class="tBar">
+                <td align="left">排&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;序：<input type="text" id="tOrder" name="tOrder" disabled="disabled"  <%if Act=="update"%>value="{pi.dOrder}"<%else%>value="0"<%/if%>/></td>
+              </tr>
+              <tr class="tBar">
+                <td align="left">操作时间：<input type="text" id="tTime" name="tTime" disabled="disabled" <%if Act=="update"%> value="{pi.dAppendTime}"<%else%>value="{dAppendTime}"<%/if%>/></td>
+              </tr>
+  
+            </table>
+<div style="height:30px"></div>
+<div id="footer_tool">
+<input type="button" name="bt_ok" id="bt_ok" value=" 确定 " class="B_INPUT" style="cursor:pointer"/>&nbsp; &nbsp;<input type="button" name="bt_cancel" id="bt_cancel" value=" 取消 " class="B_INPUT" onClick="javascript:window.parent.HidBox();" style="cursor:pointer"/>
+
+              </div>  
+        </form>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#tName").click(function () {
+            $("#tName").get(0).select();
+        });
+        //提交数据
+        $("#bt_ok").click(function () {
+            var tName = $("#tName").val();
+            var tOrder = $("#tOrder").val();
+            if (tName != '') {
+                $("#bForm").submit();
+            }
+            else {
+                jAlert("请确保部门分类名称不为空！", "友情提示");
+            }
+        });
+    });
+</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

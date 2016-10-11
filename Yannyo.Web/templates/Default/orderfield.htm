@@ -1,0 +1,100 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/OrderField.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="OrderField">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:OrderField.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:OrderField.ShowAddUserBox();"  />
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td width="20%">单据类型</td>
+            <td>字段名称</td>
+            <td width="10%">类型</td>
+            <td width="10%">单据打印显示</td>
+			<td width="10%">随附单打印显示</td>
+            <td width="10%">状态</td>
+            <td width="10%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[OrderFieldID]}" />
+
+            </td>
+			 <td><%set {aspxrewriteurl} = GetOrderType(dl["OrderType"].ToString())%>{aspxrewriteurl}</td>
+            <td><a href="javascript:void(0);" onclick="javascript:OrderField.ShowEditUserBox({dl[OrderFieldID]});">{dl[fName]}</a></td>
+			<td><%set {aspxrewriteurl} = GetFieldType(dl["fType"].ToString())%>{aspxrewriteurl}</td>
+             <td>
+            <%if dl["fPrint"].ToString() == "0"%>
+            显示
+            <%/if%>
+            <%if dl["fPrint"].ToString() == "1"%>
+            不显示
+            <%/if%>
+            </td>
+			<td>
+            <%if dl["fPrintAdd"].ToString() == "0"%>
+            显示
+            <%/if%>
+            <%if dl["fPrintAdd"].ToString() == "1"%>
+            不显示
+            <%/if%>
+            </td>
+            <td>
+            <%if dl["fState"].ToString() == "0"%>
+            正常
+            <%/if%>
+            <%if dl["fState"].ToString() == "1"%>
+            屏蔽
+            <%/if%>
+            </td>
+            <td>
+			<a href="javascript:void(0);" onclick="javascript:OrderField.ShowDelUserBox({dl[OrderFieldID]});">删除</a>
+			<a href="javascript:void(0);" onclick="javascript:OrderField.ShowEditUserBox({dl[OrderFieldID]});">修改</a></td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="8">{PageBarHTML}</td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var OrderField = new TOrderField();
+OrderField.ini();
+
+function HidBox()
+{
+	OrderField.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

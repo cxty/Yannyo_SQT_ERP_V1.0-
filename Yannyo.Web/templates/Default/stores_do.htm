@@ -1,0 +1,366 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<script type="text/javascript" src="public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="public/js/jquery.bgiframe.js"></script>
+
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<link rel="stylesheet" rev="stylesheet" href="/public/js/jquery-ui.css" />
+<script type="text/javascript" src="/public/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/public/js/stores_do.js"></script>
+            <form name="bForm" id="bForm" action="" method="post">
+            <div id="tabs" >
+            	<ul>
+					<li><a href="#tabs-1">&nbsp;基础信息&nbsp;</a></li>
+                    <li><a href="#tabs-2">&nbsp;联系信息&nbsp;</a></li>
+                    <li><a href="#tabs-3">&nbsp;业务员&nbsp;</a></li>
+					<li><a href="#tabs-4">&nbsp;促销员&nbsp;</a></li>
+                    <li><a href="#tabs-5">&nbsp;财务信息&nbsp;</a></li>
+                </ul>
+			    <div id="tabs-1">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                <tr>
+                  <td width="20%" align="right" class="ltd">客户名称</td>
+                  <td align="left" class="rtd">
+                  <input name="sName" id="sName" type="text" 
+                  <%if Act=="Edit"%>value="{si.sName}"<%/if%> showtitle="可填写少于50个的中英文字符"
+                  /></td>
+                </tr>
+                
+                <tr>
+                  <td  align="right" class="ltd">客户编号</td>
+                  <td align="left" class="rtd">
+                  <input name="sCode" id="sCode" type="text" 
+                  <%if Act=="Edit"%>value="{si.sCode}"<%/if%> showtitle="可填写少于50个的数字或英文字符"
+                  /></td>
+                </tr>
+				<tr>
+                  <td  align="right" class="ltd">工商注册号</td>
+                  <td align="left" class="rtd">
+                  <input name="sLicense" id="sLicense" type="text" 
+                  <%if Act=="Edit"%>value="{si.sLicense}"<%/if%> showtitle="可填写少于50个的数字或英文字符"
+                  /></td>
+                </tr>
+				<tr>
+                  <td align="right" class="ltd">客户分类</td>
+                  <td align="left" class="rtd">
+                  <input type="hidden" id="CustomersClassID" name="CustomersClassID" 
+                  <%if Act=="Edit"%>value="{si.CustomersClassID}"<%/if%>
+                  />
+                  <input type="text" name="category" id="category" value="" />
+                  <ul id="categorymenu" class="mcdropdown_menu">{CustomersClass}</ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="right" class="ltd">价格分类</td>
+                  <td align="left" class="rtd">
+                  <input type="hidden" id="PriceClassID" name="PriceClassID" 
+                  <%if Act=="Edit"%>value="{si.PriceClassID}"<%/if%>
+                  />
+                  <input type="text" name="category_c" id="category_c" value="" />
+                  <ul id="categorymenu_c" class="mcdropdown_menu">{PriceClass}</ul>
+                  </td>
+                </tr>
+				<tr>
+                  <td  align="right" class="ltd">类型</td>
+                  <td align="left" class="rtd">
+                  <input name="sType" id="sType" type="text" 
+                  <%if Act=="Edit"%>value="{si.sType}"<%/if%> showtitle="客户等级类型,例如(A,B,C...)"
+                  /></td>
+                </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">所属超市系统</td>
+                  <td align="left" class="rtd">
+
+					<input type="text" name="category_d" id="category_d" value="" />
+					<ul id="categorymenu_d" class="mcdropdown_menu">
+						<%if YHsysList!=null%>
+							<%loop sl YHsysList%>
+							<li rel="{sl[YHsysID]}">{sl[yName]}</li>
+							<%/loop%>
+						<%/if%>
+					</ul>
+
+				  <INPUT TYPE="hidden" NAME="YHsysID" id="YHsysID" <%if Act=="Edit"%>value="{si.YHsysID}"<%/if%>>
+				 </td>
+                </tr>
+
+<tr>
+                  <td  align="right" class="ltd">所属结算系统</td>
+                  <td align="left" class="rtd">
+
+					<input type="text" name="category_e" id="category_e" value="" />
+					<ul id="categorymenu_e" class="mcdropdown_menu">
+						<%if PaymentSystemList!=null%>
+							<%loop pl PaymentSystemList%>
+							<li rel="{pl[PaymentSystemID]}">{pl[pName]}</li>
+							<%/loop%>
+						<%/if%>
+					</ul>
+
+				  <INPUT TYPE="hidden" NAME="PaymentSystemID" id="PaymentSystemID" <%if Act=="Edit"%>value="{si.PaymentSystemID}"<%/if%>>
+				  </td>
+      </tr>
+
+				<tr>
+                  <td  align="right" class="ltd">地区</td>
+                  <td align="left" class="rtd">
+                  <input type="hidden" id="RegionID" name="RegionID" 
+                  <%if Act=="Edit"%>value="{si.RegionID}"<%/if%>
+                  />
+                  <input type="text" name="category_b" id="category_b" value="" />
+                  <ul id="categorymenu_b" class="mcdropdown_menu">{Region}</ul>
+                  
+                  </td>
+                </tr>
+
+				
+
+				<tr>
+                  <td align="right" class="ltd">是否为福州永辉系统:</td>
+                  <td align="left" class="rtd"><input name="sIsFZYH" type="checkbox" value="1" id="sIsFZYH" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if si.sIsFZYH.ToString() == "1"%>
+                        checked="checked"
+                    <%/if%>
+                  <%/if%>
+                  />
+                    是</td>
+                </tr>
+
+
+
+				<tr>
+                  <td align="right" class="ltd">状态:</td>
+                  <td align="left" class="rtd"><input name="sState" type="checkbox" value="0" id="sState" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if si.sState.ToString() == "0"%>
+                        checked="checked"
+                    <%/if%>
+                  <%else%>
+						checked="checked"
+                  <%/if%>
+                  />
+                    正常</td>
+                </tr>
+              </table>
+                </div>
+                
+			    <div id="tabs-2">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+<tr>
+  <td width="20%"  align="right" class="ltd">联系人</td>
+  <td align="left" class="rtd">
+  <input name="sContact" id="sContact" type="text" 
+  <%if Act=="Edit"%>value="{si.sContact}"<%/if%> showtitle="可填写少于20个中英文字符"
+  /></td>
+</tr>
+<tr>
+  <td  align="right" class="ltd">联系电话</td>
+  <td align="left" class="rtd">
+  <input name="sTel" id="sTel" type="text" 
+  <%if Act=="Edit"%>value="{si.sTel}"<%/if%> showtitle="客户的联系电话"
+  /></td>
+</tr>
+<tr>
+  <td  align="right" class="ltd">地址</td>
+  <td align="left" class="rtd">
+  <input name="sAddress" id="sAddress" type="text" 
+  <%if Act=="Edit"%>value="{si.sAddress}"<%/if%> showtitle="可填写少于50个中文字符"
+  /></td>
+</tr>
+<tr>
+  <td  align="right" class="ltd">邮箱</td>
+  <td align="left" class="rtd">
+  <input name="sEmail" id="sEmail" type="text" 
+  <%if Act=="Edit"%>value="{si.sEmail}"<%/if%> showtitle="客户的邮箱地址"
+  /></td>
+</tr>
+</table>
+
+                </div>
+                
+			    <div id="tabs-3">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+<tr>
+<td width="20%"  align="right" class="ltd">当前业务员</td>
+<td align="left" class="rtd">
+<%if sti!=null%>
+<%if sti.sName != null%>
+<a href="javascript:void(0);">{sti.sName}</a>
+<%else%>
+<a href="javascript:void(0);">设置业务员</a>
+<%/if%>
+<%else%>
+<a href="javascript:void(0);">设置业务员</a>
+<%/if%>
+</td>
+</tr>
+<tr>
+  <td  align="right" valign="top" class="ltd">历史记录</td>
+  <td align="left" class="rtd"><table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox">
+  <thead>
+    <tr class="tBar">
+      <td>业务员</td>
+      <td width="20%">上岗时间</td>
+      <td width="20%">离岗时间</td>
+    </tr>
+    </thead>
+    <tbody>
+    <%if StaffList!=null%>
+    <%loop sfl StaffList%>
+    <tr>
+      <td>{sfl[StaffName]}</td>
+      <td><%set {aspxrewriteurl} = DateTime.Parse(sfl["bdate"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}</td>
+      <td> <%if DateTime.Parse(sfl["edate"].ToString())<=DateTime.Now%>
+					 <%set {aspxrewriteurl} = DateTime.Parse(sfl["edate"].ToString()).ToShortDateString().ToString()%>
+						{aspxrewriteurl}
+				 <%/if%></td>
+    </tr>
+    <%/loop%>
+    <%/if%>
+    </tbody>
+  </table></td>
+</tr>
+</table>
+                </div>
+
+<div id="tabs-4">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+<tr>
+<td width="20%"  align="right" class="ltd">当前促销员</td>
+<td align="left" class="rtd">
+<%if sti_b!=null%>
+<%if sti_b.sName != null%>
+<a href="javascript:void(0);">{sti_b.sName}</a>
+<%else%>
+<a href="javascript:void(0);">设置促销员</a>
+<%/if%>
+<%else%>
+<a href="javascript:void(0);">设置促销员</a>
+<%/if%>
+</td>
+</tr>
+<tr>
+  <td  align="right" valign="top" class="ltd">历史记录</td>
+  <td align="left" class="rtd"><table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox">
+  <thead>
+    <tr class="tBar">
+      <td>业务员</td>
+      <td width="20%">上岗时间</td>
+      <td width="20%">离岗时间</td>
+    </tr>
+    </thead>
+    <tbody>
+    <%if StaffList_b!=null%>
+    <%loop sfl_b StaffList_b%>
+    <tr>
+      <td>{sfl_b[StaffName]}</td>
+      <td><%set {aspxrewriteurl} = DateTime.Parse(sfl_b["bdate"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}</td>
+      <td> <%if DateTime.Parse(sfl_b["edate"].ToString())<=DateTime.Now%>
+					 <%set {aspxrewriteurl} = DateTime.Parse(sfl_b["edate"].ToString()).ToShortDateString().ToString()%>
+						{aspxrewriteurl}
+				 <%/if%></td>
+    </tr>
+    <%/loop%>
+    <%/if%>
+    </tbody>
+  </table></td>
+</tr>
+</table>
+                </div>
+
+			    <div id="tabs-5">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+<tr>
+                  <td width="20%"  align="right" class="ltd">对账日</td>
+                  <td align="left" class="rtd">
+          <input name="sDoDay" id="sDoDay" type="text" 
+                  <%if Act=="Edit"%>value="{si.sDoDay}"<%/if%> showtitle="客户的对账日"
+                  /></td>
+      </tr>
+				
+				<tr>
+                  <td  align="right" class="ltd">期初应收款</td>
+                  <td align="left" class="rtd">
+                  <input name="sDoDayMoney" id="sDoDayMoney" type="text" 
+                  <%if Act=="Edit"%>value="{si.sDoDayMoney}"<%/if%> showtitle="只能填写数字格式"
+                  /></td>
+                </tr>
+                </table>
+                </div>
+              
+<div style="height:35px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                  	<input type="button" id="bt_ok" style="margin:5px" class="B_INPUT" value="确定" />
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+
+$(document).ready(function (){
+	$( "#tabs" ).tabs();
+	
+	$("#category").mcDropdown("#categorymenu");
+	$("#category_b").mcDropdown("#categorymenu_b");
+	$("#category_c").mcDropdown("#categorymenu_c");
+	$("#category_d").mcDropdown("#categorymenu_d");
+	$("#category_e").mcDropdown("#categorymenu_e");
+	 
+});
+
+
+<%if Act=="Edit"%>
+$(document).ready(function (){
+var dd = $("#category").mcDropdown();
+		dd.setValue({si.CustomersClassID});
+var dd_b = $("#category_b").mcDropdown();
+		dd_b.setValue({si.RegionID});
+var dd_c = $("#category_c").mcDropdown();
+		dd_c.setValue({si.PriceClassID});
+var dd_d = $("#category_d").mcDropdown();
+		dd_d.setValue({si.YHsysID});
+var dd_e = $("#category_e").mcDropdown();
+		dd_e.setValue({si.PaymentSystemID});
+});
+<%/if%>
+
+var Stores_do = new TStores_do();
+Stores_do.ini();
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

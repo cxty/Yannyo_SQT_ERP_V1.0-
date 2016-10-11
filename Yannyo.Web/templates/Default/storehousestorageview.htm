@@ -1,0 +1,123 @@
+﻿<%template _header%>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="/public/js/storehouse_storage.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+    <td>
+    <input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:sManage.Delt();"  />
+    <input type="button" id="addData" style="margin:5px" class="B_INPUT" value="添加数据"  onclick="javascript:sManage.ShowAddUserBox();" />
+    <input type="button" id="button4" style="margin:5px;width:100px" class="B_INPUT" value="导入仓库数据" onclick="javascript:sManage.ShowimportdataBox();"  />
+    <input type="button" id="button5" style="margin:5px" class="B_INPUT" value="匹配数据" onclick="javascript:sManage.ShowSyndataBox();"  />
+    </td>
+    <td align="right">
+    <input type="button" id="button6" style="margin:5px;width:150px" class="B_INPUT" value="查看导入详情" onclick="javascript:sManage.ShowImportData();"  />
+    <input type="button" id="download" style="margin:5px;width:150px;" class="B_INPUT" value="导入格式点击下载" onclick="javascript:ShowDownloadBox('../../images/excl/导入表格式.xls');"/>
+    </td>
+ </tr>
+</table>
+</div>
+
+
+
+ 
+<div style="background-color:#cccccc">
+<hr />
+ <b><span style="color:Red;font-size:10pt">注意：产品名称为【灰色】表示该产品未匹配或存在多条，请选择按钮【匹配数据】，若任然未匹配产品名称，请查找产品名称或编号后再次导入库！</span></b><br />
+ <b><span style="color:Red;font-size:10pt">提示：产品名称可以在【添加数据】或【导入数据】按钮中进行查询</span></b>
+</div>
+<div id="center">
+    <form action="" method="post" name="form1" id="form1">
+      <div>
+       <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs" style="font-size:9pt">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td width="8%" align="left" rowspan="1">门店编号</td>
+            <td width="12%">门店名称</td>
+            <td width="8%">仓库名称</td>
+			<td width="10%">产品条码</td>
+			<td width="20%">产品名称</td>
+			<td width="8%" align="right">产品数量</td>
+            <td width="10%" align="right">产品单价</td>
+			<td width="8%" align="right">创建时间</td>
+            <td width="8%" align="right">更新时间</td>
+            <td width="10%" align="center">操作</td>
+          </tr>
+          </table>
+          </div>
+          <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="Table1" style="font-size:9pt">
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td width="2%">
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[productStorageID]}" />
+            </td>
+            <td  width="8%"><%if dl["sCode"].ToString()==""%>无编号
+            <%else%>
+            {dl[sCode]}<%/if%></td>
+            <td width="12%">{dl[sName]}</td>
+            <td width="8%">{dl[stName]}</td>
+            <td width="10%"><%if dl["PBarcode"].ToString()=="null"%>无条码
+            <%else%>
+            {dl[PBarcode]}
+            <%/if%>
+            </td>
+			<td  width="20%"><%if dl["ProductsID"].ToString() != "0"%>
+            {dl[pName]}
+            <%else%>            
+			<span style="color:#cccccc">{dl[pName]}</span>
+            <%/if%></td>
+            <td align="right"  width="8%">{dl[pRelityStorage]}</td>
+            <td align="right"  width="10%">{dl[pMoney]}</td>
+			<td align="right" width="8%">
+			<%set {aspxrewriteurl} = DateTime.Parse(dl["pAppendTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+			</td>
+			<td align="right" width="8%">
+            <%set {aspxrewriteurl} = DateTime.Parse(dl["pUpdateTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}</td>
+            <td width="10%" align="center">
+			<a href="javascript:void(0);" onclick="javascript:sManage.ShowDelUserBox({dl[productStorageID]});">删除</a>
+            <a href="javascript:void(0);" onclick="javascript:sManage.ShowEditUserBox({dl[productStorageID]});">修改</a>			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="11"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+    var sManage = new StorehouseStorageManage();
+        sManage.ini();
+    function HidBox() {
+        sManage.HidUserBox();
+        location=location;
+    }
+    addTableListener(document.getElementById("tBoxs"), 0, 0);
+    function ShowDownloadBox(str) {
+        window.location.href = str;
+    }
+</script>
+<%/if%>
+
+
+<%template _copyright%>
+<%template _footer%>

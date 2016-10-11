@@ -1,0 +1,147 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td width="20%" align="right">单据类型</td>
+                  <td align="left">
+
+<select name="OrderType" id="OrderType">
+<%if Order_Type!=null%>
+	<%loop ol Order_Type%>
+		<option value="{ol[ID]}" 
+		<%if Act=="Edit"%>
+		<%if oi.OrderType.ToString() == ol["ID"].ToString()%>
+		selected
+		<%/if%>
+		<%/if%>
+		>{ol[Name]}</option>
+	<%/loop%>
+<%/if%>
+</select>
+
+</td>
+                </tr>
+                
+                <tr>
+                  <td  align="right">字段名称</td>
+                  <td align="left">
+				  <input name="fName" id="fName" type="text" 
+                  <%if Act=="Edit"%>value="{oi.fName}"<%/if%>
+                  />
+					</td>
+                </tr>
+				<tr>
+                  <td width="20%" align="right">字段类型</td>
+                  <td align="left">
+
+<select name="fType" id="fType">
+<%if OrderFieldTypes!=null%>
+	<%loop fl OrderFieldTypes%>
+		<option value="{fl[ID]}" 
+		<%if Act=="Edit"%>
+		<%if oi.fType.ToString() == fl["ID"].ToString()%>
+		selected
+		<%/if%>
+		<%/if%>
+		>{fl[Name]}</option>
+	<%/loop%>
+<%/if%>
+</select>
+
+                  </td>
+                </tr>
+<tr>
+                  <td align="right">单据打印时显示:</td>
+                  <td align="left"><input name="fPrint" type="checkbox" value="0" id="fPrint" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if oi.fPrint.ToString() == "0"%>
+                        checked="checked"
+                    <%/if%>
+				  <%else%>
+						checked="checked"
+                  <%/if%>
+                  />
+                    显示</td>
+                </tr>
+<tr>
+                  <td align="right">随附单打印时显示:</td>
+                  <td align="left"><input name="fPrintAdd" type="checkbox" value="0" id="fPrintAdd" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if oi.fPrintAdd.ToString() == "0"%>
+                        checked="checked"
+                    <%/if%>
+				  <%else%>
+						checked="checked"
+                  <%/if%>
+                  />
+                    显示</td>
+                </tr>
+
+				<tr>
+                  <td align="right">对应产品库中的字段名</td>
+                  <td align="left">
+				  <input name="fProductField" id="fProductField" type="text" 
+                  <%if Act=="Edit"%>value="{oi.fProductField}"<%/if%>
+                  />
+					</td>
+                </tr>
+
+				<tr>
+                  <td align="right">状态:</td>
+                  <td align="left"><input name="fState" type="checkbox" value="0" id="fState" class="B_Check"
+                  <%if Act=="Edit"%>
+                    <%if oi.fState.ToString() == "0"%>
+                        checked="checked"
+                    <%/if%>
+				  <%else%>
+						checked="checked"
+                  <%/if%>
+                  />
+                    正常</td>
+                </tr>
+
+                <tr>
+                  <td colspan="2" align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+    
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+			
+			function CheckF()
+			{
+				if(Sys.getObj('fName').value != '')
+				{
+					Sys.getObj('bForm').submit();
+				}else
+				{
+					alert('字段名称不能为空!');	
+				}
+				
+			}
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

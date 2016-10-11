@@ -1,0 +1,85 @@
+<%template _header%>
+
+
+<script src="public/js/productpool.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<div class="toolbox">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:ProductPoolManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:ProductPoolManage.ShowAddUserBox();"  />
+<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}"><INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:ProductPoolManage.Search();"  />
+</div>
+<div class="list_title">
+联营商品列表
+</div>
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+			<td width="10%">条码</td>
+			<td >名称</td>
+			
+			<td width="5%">状态</td>
+			<td width="5%">发生时间</td>
+            <td width="10%">创建时间</td>
+            <td width="5%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[ProductPoolID]}" />
+            </td>
+			<td><a href="javascript:void(0);" onclick="javascript:ProductPoolManage.ShowEditUserBox({dl[ProductPoolID]});">{dl[pBarcode]}</a></td>
+			<td><a href="javascript:void(0);" onclick="javascript:ProductPoolManage.ShowEditUserBox({dl[ProductPoolID]});">{dl[pName]}</a></td>
+            
+			<td align="center"><%if dl["pType"].ToString() == "0"%>
+            开始联营
+            <%/if%>
+            <%if dl["pType"].ToString() == "1"%>
+            结束联营
+            <%/if%></td>
+			<td> <%set {aspxrewriteurl}=Convert.ToDateTime(dl["pDateTime"]).ToString("yyyy-MM-dd")%>
+                    {aspxrewriteurl}</td>
+			<td>{dl[pAppendTime]}</td>
+            <td align="center">
+			<a href="javascript:void(0);" onclick="javascript:ProductPoolManage.ShowDelUserBox({dl[ProductPoolID]});">删除</a> 
+			<!--<a href="javascript:void(0);" onclick="javascript:ProductPoolManage.ShowEditUserBox({dl[ProductPoolID]});">修改</a>-->
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="7"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+<script language="javascript" type="text/javascript">
+var ProductPoolManage = new TProductPoolManage();
+ProductPoolManage.ini();
+
+function HidBox()
+{
+	ProductPoolManage.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+      <%/if%>
+    </form></div>
+
+
+
+<%template _copyright%>
+<%template _footer%>

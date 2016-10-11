@@ -1,0 +1,143 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+
+
+    <div class="main" >
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+		<%template _m_sign%>
+<script language="javascript" src="public/js/jTable.js"></script>
+<script src="public/js/m_product.js" language="javascript" type="text/javascript"></script>
+<div >
+<div class="toolbar">
+
+<input type="button" id="bt_DownLoad" style="margin:5px" class="B_INPUT" value="下载数据" />
+<input type="button" id="bt_Delt" style="margin:5px" class="B_INPUT" value="删除选中" />
+<input type="button" id="bt_UpList" style="margin:5px" class="B_INPUT" value="上架选中"  />
+<input type="button" id="bt_DownList" style="margin:5px" class="B_INPUT" value="下架选中" />
+<input type="button" id="bt_Recommend" style="margin:5px" class="B_INPUT" value="推荐选中" />
+<input type="button" id="bt_NORecommend" style="margin:5px" class="B_INPUT" value="取消推荐选中" />
+<input type="button" id="bt_UpdateNum" style="margin:5px" class="B_INPUT" value="设置商品库存" />
+
+</div>
+<div class="mtitleBox"><span>客户:{M_Config.StoresName}-网店:{M_Config.m_Name} </span></div>
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBox" >
+        <thead>
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td width="10%">所属网店分类</td>
+            <td width="18%">网店商品名称</td>
+            <td width="10%">对应商品名称</td>
+            <td width="5%" align="center">商品类型</td>
+            <td width="5%">消保类型</td>
+            <td width="5%">上架时间</td>
+            <td width="5%">下架时间</td>
+            <td width="5%" align="right">有效期</td>
+            <td width="5%" align="right">价格</td>
+            <td width="5%" align="center">会员打折</td>
+            <td width="5%" align="center">橱窗推荐</td>
+            <td width="5%">修改时间</td>
+            <td width="5%" align="center">商品状态</td>
+            <td width="5%" align="center">是否违规</td>
+            <td width="5%" align="center">操作</td>
+          </tr>
+		</thead>
+
+          <%if dList != null%>
+		  <tbody id="dloop">
+          <%loop dl dList%>
+          <tr id="tr_{dl[num_iid]}">
+            <td width="2%">
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[m_GoodsID]}" num_iid="{dl[num_iid]}" cid="{dl[cid]}"/>
+            </td>
+		    <td width="10%">{dl[mCatName]}</td>
+            <td width="18%"><a href="javascript:void(0);" onclick="javascript:M_Product.Edit({dl[m_GoodsID]});">{dl[title]}</a></td>
+			<td width="10%">{dl[ProductsName]}</td>
+            <td width="5%" align="center">
+			<%set {aspxrewriteurl}=GetGoods_Typess(dl["type"].ToString())%>
+			{aspxrewriteurl}
+			</td>
+            <td width="5%">{dl[promoted_service]}</td>
+            <td width="5%">{dl[list_time]}</td>
+            <td width="5%">{dl[delist_time]}</td>
+            <td width="5%" align="right">{dl[valid_thru]}</td>
+            <td width="5%" align="right">{dl[price]}</td>
+            <td width="5%" align="center">
+            <%if Convert.ToBoolean(dl["has_discount"])==true %>
+            是
+            <%else%>
+            否
+            <%/if%>
+            </td>
+            <td width="5%" align="center" id="recommend_{dl[num_iid]}">
+            <%if Convert.ToBoolean(dl["has_showcase"])==true %>
+            是
+            <%else%>
+            否
+            <%/if%>
+            </td>
+            <td width="5%">{dl[modified]}</td>
+            <td width="5%" align="center" id="list_{dl[num_iid]}">
+			<%set {aspxrewriteurl}=GetApprove_status(dl["approve_status"].ToString())%>
+			{aspxrewriteurl}
+			</td>
+            <td width="5%" align="center">
+            <%if Convert.ToBoolean(dl["violation"])==true %>
+            是
+            <%else%>
+            否
+            <%/if%>
+            </td>
+            <td width="10%" align="center">
+			
+			<a href="javascript:void(0);" onclick="javascript:M_Product.Edit({dl[m_GoodsID]});">修改</a>
+            </td>
+          </tr>
+          <%/loop%>
+		  </tbody>
+		  <tfoot>
+          <tr>
+            <td colspan="16">{PageBarHTML}</td>
+          </tr>
+          </tfoot>
+          <%/if%>
+        </table>
+    </form>
+</div>
+<script language="javascript" type="text/javascript">
+var tf = new TableFixed("tBox");
+
+tf.Clone();
+
+var M_Product = new TM_Product();
+M_Product.MConfigID = {M_Config.m_ConfigInfoID};
+M_Product.ini();
+
+function HidBox()
+{
+	M_Product.HidUserBox();
+	location = location;
+}
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+      <%/if%>
+    </div>
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

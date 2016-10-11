@@ -1,0 +1,49 @@
+
+<table width="100%"  border="0" cellspacing="1" cellpadding="1" class="tBox" id="tBox" >
+<thead>
+  <tr class="tBar">
+    <td width="3%" align="center">序号</td>
+    <td width="82%" align="center">客户名称</td>
+    <td width="5%" align="center">分类</td>
+    <td width="5%" align="center" >出货</td>
+    <td width="5%" align="center" >退货</td>
+  </tr>
+</thead>
+
+ <tbody>
+ <%if dList!=null%>
+ <%loop dl dList%>
+  <tr>
+    <td  align="center">{dl__loop__id}</td>
+    <td  align="left">{dl[sName]}</td>
+    <td align="left">&nbsp;{dl[cClassName]}</td>
+    <td  align="right">
+    <%set {aspxrewriteurl} =  decimal.Round(Convert.ToDecimal(dl["oMoney"]),2).ToString()%>
+    {aspxrewriteurl}
+    <%set {MoneyA} = Convert.ToDecimal(MoneyA+Convert.ToDecimal(aspxrewriteurl))%>
+    </td>
+
+
+    <td align="right">
+      <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oMoney_t"]),2).ToString()%>
+      {aspxrewriteurl}
+      <%set {MoneyB} = Convert.ToDecimal(MoneyB+Convert.ToDecimal(aspxrewriteurl))%>
+    </td>
+  </tr>
+  <%/loop%>
+ <%/if%>
+
+</tbody>
+<%if ShowPrice==true%>
+<tfoot>
+  <tr>
+    <td align="center">合计:</td>
+    <td colspan="2" align="center">&nbsp;</td>
+
+    <td align="right"><span>{MoneyA}</span></td>
+
+    <td align="right"><span>{MoneyB}</span></td>
+  </tr>
+</tfoot>
+<%/if%>
+</table>

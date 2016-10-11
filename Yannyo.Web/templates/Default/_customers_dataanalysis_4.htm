@@ -1,0 +1,40 @@
+<div id="shiyan" class="topbar" style="width:100%">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" >
+        <thead id="col_head" >
+          <tr class="tBar">
+          	<td width="5%" align="center">排行</td>
+          	<td align="left">品名</td>
+            <td width="20%" align="right">销售额</td>
+            <td width="20%" align="right">占比</td>
+          </tr>
+        </thead>
+</table>
+</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+        <%if dList!=null%>
+        <tbody>
+        	<%loop dl dList%>
+        	<tr>
+            	<td align="center" width="5%">{dl__loop__id}</td>
+       		  <td align="left">{dl[0]}</td>
+            	<td align="right" width="20%">{dl[1]}</td>
+            	<td align="right" width="20%">
+                <%if AllSumMoney>0%>
+                <%set {aspxrewriteurl}=(decimal.Parse(dl[1].ToString()) / AllSumMoney).ToString("P")%>
+				{aspxrewriteurl}
+                <%else%>
+                0.00%
+                <%/if%></td>
+            </tr>
+            <%/loop%>
+        </tbody>
+        <tfoot>
+        	<tr>
+            	<td align="center">合计</td>
+       		  <td align="left"></td>
+            	<td align="right">{AllSumMoney}</td>
+            	<td align="right"></td>
+            </tr>
+        </tfoot>
+        <%/if%>
+        </table>

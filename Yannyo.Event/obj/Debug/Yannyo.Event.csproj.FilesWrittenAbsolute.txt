@@ -1,0 +1,4 @@
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Web/bin/Yannyo.Event.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Web/bin/Yannyo.Event.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Event/obj/Debug/Yannyo.Event.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Event/obj/Debug/Yannyo.Event.dll.mdb

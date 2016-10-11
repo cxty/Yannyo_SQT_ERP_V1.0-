@@ -1,0 +1,224 @@
+<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+
+
+
+            <form name="bForm" id="bForm" action="" method="post" class="print_box">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr class="print_box_top">
+                  <td align="center">
+{config.CompanyName} 对账单
+
+                  <%if msi.sState==1%>
+                  	(已经作废)
+                  <%else%>
+
+                  <%/if%>
+
+                  </td>
+                </tr>
+                <tr>
+                
+                  <td align="left" valign="top" >
+<table width="100%" border="0" cellspacing="2" cellpadding="0">
+<tr>
+  <td colspan="2" class="OrderListTool">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>对账单号:<br />{msi.sCode}</td>
+    <td>对账单位:<br />
+{msi.sObjectName} </td>
+    <td>
+对账单日期:<br /><%set {aspxrewriteurl}=msi.sDateTime.ToString("yyyy-MM-dd")%>
+{aspxrewriteurl}</td>
+    <td rowspan="2" align="right"><img src="qrcode-d-{msi.MonthlyStatementID}.aspx" /></td>
+  </tr>
+  <!--
+  <tr>
+    <td>上期余额:<br />{msi.sUpMoney} </td>
+    <td>本期新增金额:<br />{msi.sThisMoney}</td>
+    <td>本期实际对账金额:<br />{msi.sMoney}</td>
+    </tr>
+    -->
+  </table>
+  </td>
+  </tr>
+<tr>
+  <td width="50%" valign="top" ><table width="100%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 "   style= "border-collapse:collapse; ">
+    <tr >
+      <td colspan="5"><b>单据列表</b></td>
+    </tr>
+    <tr>
+      <td width="10%" align="center">单号</td>
+        <td width="15%" align="center">单据类型</td>
+        <td align="center" >业务员</td>
+        <td width="15%" align="center">单据时间</td>
+        <td width="15%" align="center">金额</td>
+    </tr>
+    <%if msdList!=null%>
+    <%loop msdl msdList%>
+    <tr>
+      <td>{msdl[oOrderNum]}</td>
+      <td>
+      <%set {aspxrewriteurl}=GetOrderType(msdl["oType"].ToString()) %>
+      {aspxrewriteurl}
+      </td>
+      <td>{msdl[StaffName]}</td>
+      <td align="right">
+      <%set {aspxrewriteurl}=Convert.ToDateTime(msdl["oOrderDateTime"]).ToString("yyyy-MM-dd")%>
+      &nbsp;{aspxrewriteurl}&nbsp;</td>
+      <td align="right">
+      <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(msdl["oMoney"]),2).ToString()%>
+		  <nobr>{aspxrewriteurl}&nbsp;</nobr>
+      <%set {SumA} = SumA+Convert.ToDecimal(msdl["oMoney"])%>
+      </td>
+    </tr>
+    <%/loop%>
+    <%/if%>
+    <tr>
+      <td colspan="4">合计</td>
+      <td align="right">
+      <%set {aspxrewriteurl} = decimal.Round(SumA,2).ToString()%>
+		  <nobr>{aspxrewriteurl}&nbsp;</nobr></td>
+    </tr>
+  </table>
+    <br></td>
+</tr>
+<tr>
+  <td colspan="2" valign="top" >
+  <table width="100%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 "   style= "border-collapse:collapse; ">
+    <tr >
+      <td colspan="5"><b>凭证列表</b></td>
+    </tr>
+    <tr>
+      <td width="15%" align="center">凭证号</td>
+        <td align="center">经办人</td>
+        <td width="15%" align="center">凭证时间</td>
+        <td width="15%" align="center">金额</td>
+    </tr>
+    <%if msadList!=null%>
+    <%loop msadl msadList%>
+    <tr>
+      <td>{msadl[cCode]}</td>
+      <td>{msadl[StaffName]}</td>
+      <td align="right">
+      <%set {aspxrewriteurl}=Convert.ToDateTime(msadl["cDateTime"]).ToString("yyyy-MM-dd")%>
+      {aspxrewriteurl}&nbsp;</td>
+      <td align="right">
+      <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(msadl["cMoney"]),2).ToString()%>
+		  <nobr>{aspxrewriteurl}&nbsp;</nobr></td>
+    </tr>
+    <%/loop%>
+    <%/if%>
+  </table>
+  <br></td>
+  </tr>
+<tr>
+  <td colspan="2" valign="top" >
+  <table width="100%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 "   style= "border-collapse:collapse; " >
+    <tr>
+      <td colspan="3"><b>收付款列表</b></td>
+    </tr>
+    <tr>
+      <td width="15%" align="center">发生金额</td>
+        <td width="15%" align="center">发生时间</td>
+        <td align="center">备注</td>
+
+        </tr>
+    <%if msmdList!=null%>
+    <%loop msmdl msmdList%>
+    <tr>
+      <td align="right">
+       <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(msmdl["mMoney"]),2).ToString()%>
+		  <nobr>{aspxrewriteurl}&nbsp;</nobr></td>
+      <td align="right">
+        <%set {aspxrewriteurl} = Convert.ToDateTime(msmdl["mDateTime"]).ToString("yyyy-MM-dd")%>
+        {aspxrewriteurl}&nbsp;
+      </td>
+      <td>{msmdl[mRemake]}</td>
+      </tr>
+    <%/loop%>
+    <%/if%>
+
+  </table>
+  <br></td>
+  </tr>
+<tr>
+  <td colspan="2"  >
+  <div style="margin:5px"></div>
+  </td>
+  </tr>
+  </table>
+                  </td>
+                  
+                </tr>
+              </table>
+              
+              
+			</form>
+            <!--
+<script language="JavaScript">
+var hkey_root,hkey_path,hkey_key
+hkey_root="HKEY_CURRENT_USER"
+hkey_path="\\Software\\Microsoft\\Internet Explorer\\PageSetup\\"
+//设置网页打印的页眉页脚为空
+function pagesetup_null(){
+try{
+var RegWsh = new ActiveXObject("WScript.Shell")
+hkey_key="header"
+RegWsh.RegWrite(hkey_root+hkey_path+hkey_key,"")
+hkey_key="footer"
+RegWsh.RegWrite(hkey_root+hkey_path+hkey_key,"")
+
+}catch(e){}
+}
+
+    </script>
+<OBJECT classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height="0" id="wb" name="wb" width="0"></OBJECT>
+<script language="JavaScript">
+try
+{
+	if(wb)
+	{
+		wb.execwb(7,1); 
+		window.close();
+	}
+	else
+	{
+		try{
+			window.print();
+		}catch(e){
+			alert("打印控件启动失败,请查看帮助!");
+			window.open("help_print.html","_blank");
+		}
+	}
+}catch(e){
+	try{
+		window.print();
+	}catch(e){
+		alert("打印控件启动失败,请查看帮助!");
+		window.open("help_print.html","_blank");
+	}
+}
+</script>
+-->
+<div style="page-break-after: always"></div>
+<%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

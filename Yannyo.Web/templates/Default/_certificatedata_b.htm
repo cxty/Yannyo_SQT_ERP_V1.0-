@@ -1,0 +1,51 @@
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="tBox" id="tBoxs">
+  <tr>
+    <td width="10%">发生时间</td>
+    <td>摘要</td>
+    <td width="20%">科目</td>
+    <td width="20%" align="right">借方金额</td>
+    <td width="20%" align="right">贷方金额</td>
+    <td width="20%" align="right">余额</td>
+  </tr>
+  <%if dList != null%>
+          <%loop dl dList%>
+  <tr>
+    <td>
+    <%set {aspxrewriteurl} = DateTime.Parse(dl["cDateTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+    </td>
+    <td>
+	<%set {aspxrewriteurl} = DateTime.Parse(dl["cDateTime"].ToString()).ToString("yyyyMMdd")%>
+					
+	<a href="javascript:void(0);" onClick="javascript:CertificateData.ShowBox({dl[CertificateID]},'{aspxrewriteurl}-{dl[cNumber]}');">{dl[cdName]}</a></td>
+    <td>
+	<%set {aspxrewriteurl}=GetFeesSubjectClassParentStr( int.Parse(dl["FeesSubjectID"].ToString()),">")%>
+			{aspxrewriteurl}
+	</td>
+    <td align="right">
+
+    <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["cdMoney"]),2).ToString()%>
+    {aspxrewriteurl}
+
+    </td>
+    <td align="right">
+
+    <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["cdMoneyB"]),2).ToString()%>
+    {aspxrewriteurl}
+
+    </td>
+    <td align="right">&nbsp;</td>
+  </tr>
+  <%/loop%>
+  <tr>
+    <td colspan="3"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(SumMoneyA,2).ToString()%>
+    {aspxrewriteurl}
+    </td>
+    <td align="right"><%set {aspxrewriteurl} = decimal.Round(SumMoneyB,2).ToString()%>
+    {aspxrewriteurl}</td>
+    <td align="right">&nbsp;</td>
+  </tr>
+  <%/if%>
+</table>

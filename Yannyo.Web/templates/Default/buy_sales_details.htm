@@ -1,0 +1,305 @@
+﻿<%template _header%>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script src="/public/js/myFrontPageJs/productsLoss.js" type="text/javascript" language="javascript" ></script>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <form action="" id="bForm" class="bForm" method="post">
+          <div id="Query List">
+            <input type="hidden" id="getCategory" name="getCategory" />
+            <table style=" background-color:#cccccc; width:100%">
+             <tr>
+              <td align="left">查询类别：
+                <select id="category" name="category">
+                  <option value="0"<%if selectClasses.ToString()=="0"%> selected="selected"<%/if%>>客户</option>
+                  <option value="1"<%if selectClasses.ToString()=="1"%> selected="selected"<%/if%>>品牌</option>
+                  <option value="2"<%if selectClasses.ToString()=="2"%> selected="selected"<%/if%>>单品</option>
+                  <option value="3"<%if selectClasses.ToString()=="3"%> selected="selected"<%/if%>>区域</option>
+                  <option value="4"<%if selectClasses.ToString()=="4"%> selected="selected"<%/if%>>业务员</option>
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                查询日期：
+                 <%set {aspxrewriteurl}=sDate.ToString("yyyy-MM-dd")%>
+                 <input name="sDate" id="sDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />至
+                <%set {aspxrewriteurl}=stDate.ToString("yyyy-MM-dd")%>
+                <input name="stDate" id="stDate" type="text" value="{aspxrewriteurl}" onclick="new Calendar().show(this);" />
+              </td>
+              <td align="right">
+              <input type="button" id="tbn_submit" name="btn_submit" value="查询"  style="width:120px;height:25px; cursor:pointer"/>
+               &nbsp;&nbsp;&nbsp;&nbsp;
+              <input type="button" id="export_data" name="export_data" value="导出数据" style="width:120px;height:25px;cursor:pointer" />
+             </td>
+             </tr>
+            </table>
+          </div>
+          <div id="tb_title">
+           <div id="space"></div>
+           <div class="datalist"> 
+           <table id="title_space" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+            <thead style="font-weight:bold">
+             <tr class="tBar">
+              <%if {ispost}%>
+              <!--选择类别-->
+               <!--客户-->
+               <%if selectClasses==0%>
+               <td align="center" style="width:5%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="left" style="width:35%;height:30px;"><span style="font-size:larger">客户名称</span></td>
+               <td align="center" style="width:10%;height:30px;"><span style="font-size:larger">类别</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">数量</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">金额</span></td>
+               <%/if%>
+               <!--品牌-->
+               <%if selectClasses==1%>
+               <td align="center" style="width:5%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="left" style="width:35%;height:30px;"><span style="font-size:larger">品牌名称</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">数量</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">金额</span></td>
+               <%/if%>
+               <!--单品-->
+               <%if selectClasses==2%>
+               <td align="center" style="width:5%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="left" style="width:35%;height:30px;"><span style="font-size:larger">商品名称</span></td>
+               <td align="center" style="width:10%;height:30px;"><span style="font-size:larger">商品条码</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">数量</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">金额</span></td>
+               <%/if%>
+               <!--区域-->
+               <%if selectClasses==3%>
+               <td align="center" style="width:5%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="left" style="width:35%;height:30px;"><span style="font-size:larger">区域名称</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">数量</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">金额</span></td>
+               <%/if%>
+               <!--业务员-->
+               <%if selectClasses==4%>
+               <td align="center" style="width:5%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="left" style="width:35%;height:30px;"><span style="font-size:larger">业务员名称</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">数量</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">金额</span></td>
+               <%/if%>
+              <!--页面加载-->
+              <%else%>
+               <td align="center" style="width:5%;height:30px;"><span style="font-size:larger">编号</span></td>
+               <td align="left" style="width:35%;height:30px;"><span style="font-size:larger">客户名称</span></td>
+               <td align="center" style="width:10%;height:30px;"><span style="font-size:larger">类别</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">数量</span></td>
+               <td align="right" style="width:15%;height:30px;"><span style="font-size:larger">金额</span></td>
+              <%/if%>
+             </tr>
+            </thead>
+           </table>
+           </div>
+           <table id="tBoxs" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+           <tbody>
+           <%if {ispost}%>
+           <!--客户-->
+           <%if selectClasses==0%>
+               <%if spList !=null%>
+               <%loop sp spList%>
+                 <tr>
+                   <td align="center" style="width:5%">{sp__loop__id}</td>
+                   <td align="left" style="width:35%">{sp[sName]}</td>
+                   <td align="center" style="width:10%">
+                   <%if sp["sType"].ToString() !=""%>
+                   {sp[sType]}
+                   <%else%>
+                   [无类别]
+                   <%/if%>
+                   </td>
+                   <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oQuantity]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                   <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oMoney]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumAA}=decimal.Round(sumAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                 </tr>
+               <%/loop%>
+             <!--数据合计-->
+            <tr>
+             <td align="center" colspan="3"  style="height:30px;font-size:larger;"><span style="font-size:large; font-weight:bold">客户</span>&nbsp;数据合计</td>
+             <td align="right">{sumA}</td>
+             <td align="right">{sumAA}</td>
+            </tr>
+               <%/if%>
+            <%/if%>
+            <!--品牌-->
+           <%if selectClasses==1%>
+               <%if spList !=null%>
+               <%loop sp spList%>
+                 <tr>
+                   <td align="center" style="width:5%">{sp__loop__id}</td>
+                   <td align="left" style="width:35%">{sp[pBrand]}</td>
+                    <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oQuantity]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                   <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oMoney]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumBB}=decimal.Round(sumBB+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                 </tr>
+               <%/loop%>
+            <!--数据合计-->
+            <tr>
+             <td align="center" colspan="2"  style="height:30px;font-size:larger;"><span style="font-size:large; font-weight:bold">品牌</span>&nbsp;数据合计</td>
+             <td align="right">{sumB}</td>
+             <td align="right">{sumBB}</td>
+            </tr>
+               <%/if%>
+            <%/if%>
+           <!--单品-->
+           <%if selectClasses==2%>
+               <%if spList !=null%>
+               <%loop sp spList%>
+                 <tr>
+                   <td align="center" style="width:5%">{sp__loop__id}</td>
+                   <td align="left" style="width:35%">{sp[pName]}</td>
+                   <td align="center" style="width:10%">
+                   <%if sp["pBarcode"].ToString() !=""%>
+                   {sp[pBarcode]}
+                   <%else%>
+                   No Coding
+                   <%/if%>
+                   </td>
+                   <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oQuantity]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumC}=decimal.Round(sumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                   <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oMoney]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumCC}=decimal.Round(sumCC+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                 </tr>
+               <%/loop%>
+           <!--数据合计-->
+            <tr>
+             <td align="center" colspan="3"  style="height:30px;font-size:larger;"><span style="font-size:large; font-weight:bold">单品</span>&nbsp;数据合计</td>
+             <td align="right">{sumC}</td>
+             <td align="right">{sumCC}</td>
+            </tr>
+               <%/if%>
+            <%/if%>
+           <!--地区-->
+           <%if selectClasses==3%>
+               <%if spList !=null%>
+               <%loop sp spList%>
+                 <tr>
+                   <td align="center" style="width:5%">{sp__loop__id}</td>
+                   <td align="left" style="width:35%">
+                   <%if sp["rName"].ToString() !=""%>
+                   {sp[rName]}
+                   <%else%>
+                   [区域信息不详]
+                   <%/if%>
+                   </td>
+                   <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oQuantity]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumD}=decimal.Round(sumD+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                   <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oMoney]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumDD}=decimal.Round(sumDD+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                 </tr>
+               <%/loop%>
+           <!--数据合计-->
+            <tr>
+             <td align="center" colspan="2"  style="height:30px;font-size:larger;"><span style="font-size:large; font-weight:bold">区域</span>&nbsp;数据合计</td>
+             <td align="right">{sumD}</td>
+             <td align="right">{sumDD}</td>
+            </tr>
+               <%/if%>
+            <%/if%>
+           <!--业务员-->
+           <%if selectClasses==4%>
+               <%if spList !=null%>
+               <%loop sp spList%>
+                 <tr>
+                   <td align="center" style="width:5%">{sp__loop__id}</td>
+                   <td align="left" style="width:35%">
+                   <%if sp["sName"].ToString() !=""%>
+                   {sp[sName]}
+                   <%else%>
+                   [业务员信息不详]
+                   <%/if%>
+                   </td>
+                    <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oQuantity]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumE}=decimal.Round(sumE+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                   <td align="right" style="width:15%">
+                   <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sp[oMoney]}),2).ToString()%>
+                   {aspxrewriteurl}
+                    <%set {sumEE}=decimal.Round(sumEE+Convert.ToDecimal(aspxrewriteurl),2)%>
+                   </td>
+                 </tr>
+               <%/loop%>
+            <!--数据合计-->
+            <tr>
+             <td align="center" colspan="2"  style="height:30px;font-size:larger;"><span style="font-size:large; font-weight:bold">业务员</span>&nbsp;数据合计</td>
+             <td align="right">{sumE}</td>
+             <td align="right">{sumEE}</td>
+            </tr>
+               <%/if%>
+            <%/if%>
+         
+            <%/if%>
+           </tbody>
+           </table>
+          </div>
+            <div id="winAll">
+          <div id="winLoding"><img alt="" src="/images/loading99.gif"/></div>
+         </div>
+        </form>
+        <script language="javascript" type="text/javascript">
+            //点击查询时候
+            $(document).ready(function () {
+                $("#tbn_submit").click(function () {
+                    var bDate = $("#sDate").val();
+                    var eDate = $("#stDate").val();
+                    $("#getCategory").val($("#category").children('option:selected').val());
+                    
+                    if (bDate > eDate) {
+                        jAlert("日期选择错误，请重新选择！");
+                    }
+                    else {
+                        $("div#winAll").fadeIn("slow");
+                        $("#bForm").submit();
+                    }
+                });
+            });
+            //导出数据
+            $("#export_data").click(function () {
+                var getCategory = $("#category").children('option:selected').val();
+         
+                var _url = '/buy_sales_details.aspx?Act=act&getCategory=' + getCategory + '&sDate=' + $("#sDate").val() + '&stDate=' + $("#stDate").val();
+                window.open('', "top");
+                setTimeout(window.open(_url,"top"),100);
+                
+            });
+        </script>
+        
+        <%/if%>
+    <%/if%>
+
+<%template _copyright%>
+<%template _footer%>
+

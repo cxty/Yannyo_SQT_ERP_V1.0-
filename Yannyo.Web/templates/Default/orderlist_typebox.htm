@@ -1,0 +1,58 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+		<script type="text/javascript" src="public/js/orderlist_selecttype.js "></script>
+
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="right">&nbsp;</td>
+                  <td align="left">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td align="right">&nbsp;</td>
+                  <td align="left">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td width="50%" align="right">单据类型:</td>
+                  <td align="left">
+                  <select id="Order_Type" name="Order_Type">
+                  <%if Order_Type!= null%>
+                  <%loop ot Order_Type%>
+                  <option value="{ot[ID]}">{ot[Name]}</option>
+                  <%/loop%>
+                  <%/if%>
+                  </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value=" 确 定 " onClick="javascript:OrderList_Selecttype.CheckF();"/></td>
+                </tr>
+              </table>
+            
+            </form>
+            
+<script language="javascript" type="text/javascript">
+var OrderList_Selecttype = new TOrderList_Selecttype();
+OrderList_Selecttype.ini();
+</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

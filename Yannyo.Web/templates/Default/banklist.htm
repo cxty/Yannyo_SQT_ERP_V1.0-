@@ -1,0 +1,132 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<div class="main" >
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="/public/js/banklist.js"></script>
+        <div class="toolbar" >
+        <div class="toolbox">
+        <input type="button" id="bt_del" style="margin:5px; cursor:pointer" class="B_INPUT" value="删除选中"  />
+        <input type="button" id="bt_add" style="margin:5px; cursor:pointer" class="B_INPUT" value="添加"  />
+        </div>
+        <div class="list_title">
+        资金帐户
+        </div>
+        
+        </div>
+        <div class="datalist">
+        <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tBox" id="tBoxs">
+        <tr class="tBar">
+          <td rowspan="2" style="width:2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+          <td rowspan="2" align="center" style="width:5%;"><span style="font-size:11pt"><b>编号</b></span></td>
+          <td rowspan="2" align="center" style="width:40%;"><span style="font-size:11pt"><b>账户名称</b></span></td>
+          <td colspan="2" align="center" style="width:20%;"><span style="font-size:11pt"><b>账户金额</b></span></td>
+          <td rowspan="2" align="right" style="width:10%;"><span style="font-size:11pt"><b>创建日期</b></span></td>
+          <td width="10%" rowspan="2" align="center"><span style="font-size:11pt"><b>操作</b></span></td>
+          </tr>
+        <tr class="tBar">
+          <td align="right" ><span style="font-size:11pt"><b>借方金额</b></span></td>
+          <td align="right" ><span style="font-size:11pt"><b>贷方金额</b></span></td>
+        </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <%set {count}=getCount({dl[FeesSubjectClassID]})%>
+          <tr >
+            <td style="width:2%">
+            <%if count==0%>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[CapitalAccountID]}" />
+            <%else%>
+            <%if count_x==1%>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[CapitalAccountID]}" />
+            <%else%>
+            <input type="checkbox" class="B_Check" disabled="disabled" />
+            <%/if%>
+            <%/if%></td>
+            <td style="width:5%" align="left">{dl[cCode]}</td>
+            <td align="left" style="width:20%">
+            <%set {aspxrewriteurl}=GetFeesSubjectClassParentStr(int.Parse(dl["FeesSubjectClassID"].ToString()),">")%> 
+            {aspxrewriteurl}
+            </td>
+            <td align="right" >
+            <%set {cMoney} = decimal.Round(Convert.ToDecimal({dl[cAccountMoney]}),2)%>
+            <%if dl["cDirection"].ToString()=="0"%>
+              <%if cMoney>=0%>{cMoney}<%set {sumA}=decimal.Round(sumA+{cMoney},2)%><%/if%>
+               
+            <%else%>
+              <%if cMoney<0%>
+               <%set {cMoney} = decimal.Round(Convert.ToDecimal(-{cMoney}),2)%>{cMoney}  <%set {sumA}=decimal.Round(sumA+{cMoney},2)%>
+              <%/if%>
+             
+            <%/if%>
+            </td>
+            <td align="right" >
+            <%set {cMoney} = decimal.Round(Convert.ToDecimal({dl[cAccountMoney]}),2)%>
+            <%if dl["cDirection"].ToString()=="1"%>
+               <%if cMoney>=0%>
+               {cMoney}<%set {sumB}=decimal.Round(sumB+{cMoney},2)%>  
+               <%/if%>
+               
+             <%else%>
+              <%if cMoney<0%>
+                <%set {cMoney} = decimal.Round(Convert.ToDecimal(-{cMoney}),2)%>
+              {cMoney}<%set {sumB}=decimal.Round(sumB+{cMoney},2)%>
+              <%/if%>
+               
+             <%/if%>
+            </td>
+            <td align="right" style="width:10%">
+            <%set {aspxrewriteurl}=Convert.ToDateTime(dl["pAppendTime"]).ToString("yyyy-MM-dd")%>
+            {aspxrewriteurl}
+            </td>
+            <td align="center" style="width:10%">
+            <%if count==0%><a href="javascript:void(0);" onclick="javascript:BankList.ShowEditBox({dl[CapitalAccountID]});">修改</a>
+			<a href="javascript:void(0);" onclick="javascript:BankList.ShowDelBox({dl[CapitalAccountID]});">删除</a> 
+            <%else%>
+            <%if count_x==1%>
+            <a href="javascript:void(0);" onclick="javascript:BankList.ShowEditBox({dl[CapitalAccountID]});">修改</a>
+			<a href="javascript:void(0);" onclick="javascript:BankList.ShowDelBox({dl[CapitalAccountID]});">删除</a>
+            <%else%>
+            [无法操作]
+            <%/if%> 
+            <%/if%> 
+			</td>
+          </tr>
+          <%/loop%>
+          <%/if%>
+          <tr>
+              <td align="center" colspan="3" style="height:30px;"><span style="font-size:larger"><b>合&nbsp;&nbsp;计</b></span></td>
+             
+              <td align="right" style="width:10%;"><span style="font-size:11pt"><b>{sumA}</b></span></td>
+              <td align="right" style="width:10%;"><span style="font-size:11pt"><b>{sumB}</b></span></td>
+              <td align="right" style="width:10%;"><span style="font-size:11pt"><b></b></span></td>
+              <td align="right" style="width:10%;"><span style="font-size:11pt"><b></b></span></td>
+          </tr>
+        </table>
+        </form>
+<script language="javascript" type="text/javascript">
+var BankList = new TBankList();
+BankList.ini();
+
+function HidBox()
+{
+	BankList.HidBox();
+}
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+        </div>
+        <%/if%>
+</div>
+<%/if%>
+<%template _copyright%>
+<%template _footer%>

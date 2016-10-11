@@ -1,0 +1,64 @@
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="tBox" id="order_box">
+          <tr class="tBar">
+            <td width="15" align="center"><input name="cCheck" type="checkbox" class="B_Check" value="" onClick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td colspan="2">商品名称</td>
+            <td width="20%">对应商品</td>
+            <td width="8%">条码</td>
+            <td width="8%" align="right">单价</td>
+            <td width="8%" align="right">数量</td>
+            <td width="8%" align="right">应付金额</td>
+            <td width="8%" align="right">优惠金额</td>
+            <td width="8%" align="right">调整金额</td>
+            <td width="8%" align="right">实付金额</td>
+          </tr>
+          <tbody id="order_loop">
+          <%if oList!=null%>
+          <%loop ol oList%>
+
+          
+          <tr id="tr_{ol__loop__id}" pid="{ol[outer_iid]}" OrderListID="0" OrderID="0" StorageID="0" payment="{ol[payment]}">
+            <td width="24" align="center" ><input name="cCheck" type="checkbox" class="B_Check" tpid="c_{ol__loop__id}" value="{ol[num_iid]}"  />
+           </td>
+            <td width="25" valign="middle"> <%if ol["pic_path"].ToString().Trim()!=""%>
+            <img src="{ol[pic_path]}" alt="{ol[title]}" width="50" height="50" />
+            <%/if%></td>
+            <td valign="middle">{ol[title]} </td>
+            <td width="20%">{ol[ProductsName]}
+            </td>
+            <td width="8%">{ol[ProductsBarcode]}</td>
+            <td width="8%" align="right" ><INPUT TYPE="hidden" id="Price_{ol__loop__id}" name="Price_{ol__loop__id}" value="{ol[price]}">{ol[price]}</td>
+            <td width="8%" align="right" >
+			<INPUT TYPE="hidden" id="oQuantity_{ol__loop__id}" name="oQuantity_{ol__loop__id}" value="{ol[num]}">
+			{ol[num]}
+            <%set {sum_a}={sum_a}+decimal.Parse(ol["num"].ToString())%>
+            </td>
+            <td width="8%" align="right">{ol[total_fee]}
+             <%set {sum_b}={sum_b}+decimal.Parse(ol["total_fee"].ToString())%>
+            </td>
+            <td width="8%" align="right">{ol[discount_fee]}
+            <%set {sum_c}={sum_c}+decimal.Parse(ol["discount_fee"].ToString())%>
+            </td>
+            <td width="8%" align="right">{ol[adjust_fee]}
+            <%set {sum_d}={sum_d}+decimal.Parse(ol["adjust_fee"].ToString())%>
+            </td>
+            <td width="8%" align="right" id="sum_{ol__loop__id}">{ol[payment]}
+            <%set {sum_e}={sum_e}+decimal.Parse(ol["payment"].ToString())%>
+            </td>
+          </tr>
+          
+
+          <%/loop%>
+          <%set {loop_count}=ol__loop__id%>
+          <%/if%>
+          </tbody>
+          <tr>
+            <td colspan="3">合计:</td>
+            <td colspan="2">&nbsp;</td>
+            <td align="right">&nbsp;</td>
+            <td align="right">{sum_a}</td>
+            <td align="right">{sum_b}</td>
+            <td align="right">{sum_c}</td>
+            <td align="right">{sum_d}</td>
+            <td align="right" id="SumMoney">{sum_e}</td>
+          </tr>
+        </table><br/>

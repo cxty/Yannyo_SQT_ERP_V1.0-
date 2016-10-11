@@ -1,0 +1,814 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<div class="main">
+	<%if page_err!=0%>
+		<%template _errmsgbox%>
+	<%else%>
+<link rel="stylesheet" rev="stylesheet" href="/public/js/kandytabs.css" />
+<script type="text/javascript" src="/public/js/kandytabs.pack.js"></script>
+
+<div style="width:100%">
+
+<table width="100%" border=0 align="center" cellPadding="3" cellSpacing="3">
+  <tbody>
+  <tr height="70">
+    <td width="15%" height="70" align="center" vAlign="bottom" >
+
+
+
+
+</td>
+    <td height="70" valign="top">
+    <div style="height:50px"></div>
+
+<dl id="rollleft" >
+    <dt>&nbsp;销&nbsp;售&nbsp;</dt>
+    <dd>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+    <td align="center" valign="top" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+    <td align="center" >&nbsp;</td>
+  </tr>
+  <%if Order!=null%>
+  <%loop ol Order%>
+  <tr>
+  <td align="center" ><div class="erp_028"></div></td>
+  <td align="center" ><div class="erp_002"></div></td>
+    <td align="center" ><div class="erp_001"></div></td>
+    <td align="center" ><div class="erp_002"></div></td>
+    <td align="center" ><div class="erp_003"></div></td>
+    <td align="center" valign="top" ><div class="erp_002"></div></td>
+    <td align="center" ><div class="erp_004"></div></td>
+    <td align="center" ><div class="erp_002"></div></td>
+    <td align="center" ><div class="erp_005"></div></td>
+    <td align="center" ><div class="erp_002"></div></td>
+    <td align="center" ><div class="erp_027"></div></td>
+    
+    </tr>
+  
+  <tr>
+  <td align="center"><a href="#">商品销售</a></td>
+  <td align="center"></td>
+    <td align="center"><a href="/orderlist-0.aspx?oSteps=1&oState=0&ordertypeStr=|3|4|5|6|7|">审核中<br />
+      ({ol[steps_s_a]})</a></td>
+    <td align="center"></td>
+    <td align="center"><a href="/orderlist-0.aspx?oSteps=2&oState=0&ordertypeStr=|3|4|5|6|7|">备货中<br />
+      ({ol[steps_s_b]})</a></td>
+    <td align="center" valign="top" >&nbsp;</td>
+    <td align="center"><a href="/orderlist-0.aspx?oSteps=3&oState=0&ordertypeStr=|3|4|5|6|7|">发货中<br />
+      ({ol[steps_s_c]})</a></td>
+    <td align="center">&nbsp;</td>
+    <td align="center"><a href="/orderlist-0.aspx?oSteps=4&oState=0&ordertypeStr=|3|4|5|6|7|">等待核销<br />
+      ({ol[steps_s_d]})</a></td>
+    <td align="center">&nbsp;</td>
+    <td align="center"><a href="#">财务环节</a></td>
+    
+    </tr>
+  <tr>
+  <td align="center">&nbsp;</td>
+  <td align="center">&nbsp;</td>
+    <td align="center"></td>
+    <td align="center"></td>
+    <td align="center">&nbsp;</td>
+    <td align="center" valign="top" >&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center"></td>
+    <td align="center"></td>
+    
+    </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center"></td>
+    <td align="center"></td>
+    <td align="center">&nbsp;</td>
+    <td align="center" valign="top" >&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td align="center"></td>
+    <td align="center"></td>
+  </tr>
+  
+  <%/loop%>
+  <%/if%>
+</table>
+    
+    </dd>
+    <dt>&nbsp;采&nbsp;购&nbsp;</dt>
+    <dd>
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+        </tr>
+        <%if Order!=null%>
+        <%loop ol Order%>
+        <tr>
+          <td align="center" ><div class="erp_029"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_001"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_003"></div></td>
+          <td align="center" valign="top" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_004"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_005"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_027"></div></td>
+          </tr>
+        
+        <tr>
+          <td align="center"><a href="#">商品采购</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=1&oState=0&ordertypeStr=|1|2|">审核中<br />
+({ol[steps_c_a]})</a></td>
+          <td align="center"></td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=2&oState=0&ordertypeStr=|1|2|">备货中<br />
+({ol[steps_c_b]})</a></td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=3&oState=0&ordertypeStr=|1|2|">发货中<br />
+            ({ol[steps_c_c]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=4&oState=0&ordertypeStr=|1|2|">等待核销<br />
+            ({ol[steps_c_d]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="#">财务环节</a></td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center"><div class="erp_008"></div></td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"><div class="erp_017"></div></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=2&oState=0&ordertypeStr=|1|2|">等待付款<br />
+({ol[steps_k]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <%/loop%>
+        <%/if%>
+      </table>
+    </dd>
+    <dt>&nbsp;仓&nbsp;库&nbsp;</dt>
+    <dd>
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+        </tr>
+        <%if Order!=null%>
+        <%loop ol Order%>
+        <tr>
+          <td align="center"><div class="erp_031"></div></td>
+          <td align="center"><div class="erp_002"></div></td>
+          <td align="center"><div class="erp_014"></div></td>
+          <td><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_003"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_004"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_005"></div></td>
+          <td align="center"><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_027"></div></td>
+          </tr>
+        <tr>
+          <td align="center"><a href="#">换货</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=1&oState=0&ordertypeStr=|11|">换货审核中<br />
+            ({ol[steps_aa]})</a></td>
+          <td align="center"></td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=2&oState=0&ordertypeStr=|11|">备货中<br />
+            ({ol[steps_bb]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=3&oState=0&ordertypeStr=|11|">发货中<br />
+            ({ol[steps_cc]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=4&oState=0&ordertypeStr=|11|">等待核销<br />
+            ({ol[steps_dd]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="#">财务环节</a></td>
+          </tr>
+          <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+          
+        <tr>
+          <td align="center" ><div class="erp_011"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_001"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_003"></div></td>
+          <td align="center" valign="top" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_004"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_005"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_027"></div></td>
+          </tr>
+        
+        <tr>
+          <td align="center"><a href="#">库存调整</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=1&oState=0&ordertypeStr=|8|">审核中<br />
+            ({ol[steps_k_t_a]})</a></td>
+          <td align="center"></td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=2&oState=0&ordertypeStr=|8|">备货中<br />
+            ({ol[steps_k_t_b]})</a></td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=3&oState=0&ordertypeStr=|8|">调整中<br />
+            ({ol[steps_k_t_c]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=4&oState=0&ordertypeStr=|8|">等待核销<br />
+            ({ol[steps_k_t_d]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="#">财务环节</a></td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center"><div class="erp_030"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_001"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_003"></div></td>
+          <td align="center" valign="top" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_004"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_005"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_027"></div></td>
+          </tr>
+        <tr>
+          <td align="center"><a href="#">库存调拨</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=1&oState=0&ordertypeStr=|9|">审核中<br />
+            ({ol[steps_k_d_a]})</a></td>
+          <td align="center"></td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=2&oState=0&ordertypeStr=|9|">备货中<br />
+            ({ol[steps_k_d_b]})</a></td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=3&oState=0&ordertypeStr=|9|">发货中<br />
+            ({ol[steps_k_d_c]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=4&oState=0&ordertypeStr=|9|">等待核销<br />
+            ({ol[steps_k_d_d]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="#">财务环节</a></td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center"><div class="erp_007"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_001"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_003"></div></td>
+          <td align="center" valign="top" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_004"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_005"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_027"></div></td>
+          </tr>
+        <tr>
+          <td align="center"><a href="#">坏货报损</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=1&oState=0&ordertypeStr=|10|">审核中<br />
+            ({ol[steps_k_b_a]})</a></td>
+          <td align="center"></td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=2&oState=0&ordertypeStr=|10|">备货中<br />
+            ({ol[steps_k_b_b]})</a></td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=3&oState=0&ordertypeStr=|10|">处理中<br />
+            ({ol[steps_k_b_c]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=4&oState=0&ordertypeStr=|10|">等待核销<br />
+            ({ol[steps_k_b_d]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="#">财务环节</a></td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        
+        <%/loop%>
+        <%/if%>
+      </table>
+    </dd>
+    <dt>&nbsp;财&nbsp;务&nbsp;</dt>
+    <dd>
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center"  >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+          <td align="center" >&nbsp;</td>
+        </tr>
+        <%if Order!=null%>
+        <%loop ol Order%>
+        <tr>
+          <td align="center" ><div class="erp_028"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_006"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+    <td align="center" ><div class="erp_001"></div></td>
+    <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_016"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_017"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center" ><div class="erp_021"></div></td>
+          </tr>
+        
+        <tr>
+          <td align="center"><a href="#">销售对账</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=5&ordertypeStr=|3|4|5|6|7|&oState=0">等待对账<br />
+            ({ol[steps_e]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=2&sSteps=0&sState=0">新应收对账单<br />
+          ({ol[steps_l]})</a></td>
+          <td align="center" valign="top" >&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=2&sSteps=1&sState=0">等待回款<br />
+            ({ol[steps_la]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=2&sSteps=2&sState=0">等待结账<br />
+            ({ol[steps_ld]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=2&sSteps=3&sState=0">已结账<br />
+            ({ol[steps_lc]})</a></td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"><div class="erp_008"></div></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><div class="erp_018"></div></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=2&sSteps=1&sState=0&y=y">非全额回款<br />
+            ({ol[steps_lb]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center"><div class="erp_029"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center"><div class="erp_006"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+    <td align="center" ><div class="erp_001"></div></td>
+    <td align="center" ><div class="erp_002"></div></td>
+          <td align="center"><div class="erp_016"></div></td>
+          <td align="center"><div class="erp_002"></div></td>
+          <td align="center"><div class="erp_017"></div></td>
+          <td align="center" ><div class="erp_002"></div></td>
+          <td align="center"><div class="erp_021"></div></td>
+          </tr>
+        <tr>
+          <td align="center"><a href="#">采购对账</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/orderlist-0.aspx?oSteps=5&ordertypeStr=|1|2|&oState=0">等待对账<br />
+            ({ol[steps_eb]}) </a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=1&sSteps=0&sState=0">新应付对账单<br />
+          ({ol[steps_m]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=1&sSteps=1&sState=0">等待付款<br />
+            ({ol[steps_ma]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=1&sSteps=2&sState=0">等待结账<br />
+            ({ol[steps_md]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=1&sSteps=3&sState=0">已结账<br />
+            ({ol[steps_mc]})</a></td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><div class="erp_008"></div></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"><div class="erp_018"></div></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"><a href="/monthlystatementlist.aspx?sType=1&sSteps=1&sState=0&y=y">非全额付款<br />
+            ({ol[steps_mb]})</a></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"></td>
+          <td align="center"></td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td align="center">&nbsp;</td>
+        </tr>
+        <%/loop%>
+        <%/if%>
+      </table>
+    </dd>
+    <dt>&nbsp;其&nbsp;他&nbsp;</dt>
+    <dd>
+    
+    <table border="0" cellspacing="0" cellpadding="0">
+    
+        <tr>
+          <td align="center">&nbsp;</td>
+          <td>&nbsp;</td>
+          <td align="center">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <%if Order!=null%>
+        <%loop ol Order%>
+        <tr>
+    <td align="center"><div class="erp_007"></div></td>
+    <td><div class="erp_002"></div></td>
+    <td align="center"><div class="erp_011"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="center"><a href="/orderlist-0.aspx?oSteps=-2&oState=0" >非全额收货单<br />
+      ({ol[steps_h]})</a></td>
+    <td>&nbsp;</td>
+    <td align="center"><a href="/orderlist-0.aspx?oSteps=-2&NextID=0&oState=0">已处理非全额<br />
+      收货单<br/>
+      ({ol[steps_i]})</a></td>
+    <td>&nbsp;</td>
+  </tr>
+  <%/loop%>
+  <%/if%>
+  <tr>
+    <td align="center">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td align="center">&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  
+</table>
+
+    </dd>
+</dl>
+
+    
+
+</td>
+    <td width="20%" valign="top">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+    <td width="30%" valign="top">
+    <div style="height:50px"></div>
+    <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr class="tBar">
+    <td>商品库存警报</td>
+  </tr>
+<tr>
+<td>
+  <div style="height:300px;overflow:scroll;overflow-x:hidden;" >
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="tBoxs" class="tBox">
+  <%if ProductAlarm!=null%>
+  <%loop pa ProductAlarm%>
+  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pa["QuantityA"]),config.QuantityDecimal).ToString()%>
+<tr title="
+仓库:{pa[StorageName]}
+10日出库:{aspxrewriteurl},
+<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pa["QuantityB"]),config.QuantityDecimal).ToString()%>
+20日出库:{aspxrewriteurl},
+<%set {aspxrewriteurl}=decimal.Round((Convert.ToDecimal(pa["pStorage"])+Convert.ToDecimal(pa["BeginQuantity"])+Convert.ToDecimal(pa["pStorageIn"])-Convert.ToDecimal(pa["pStorageOut"])),config.QuantityDecimal).ToString()%>
+目前库存:{aspxrewriteurl}">
+    <td align="left">[{pa[StorageName]}]{pa[pName]}</td>
+    <td width="24">
+    <%if (Convert.ToDecimal(pa["pStorage"])+Convert.ToDecimal(pa["BeginQuantity"])+Convert.ToDecimal(pa["pStorageIn"])-Convert.ToDecimal(pa["pStorageOut"]))<=Convert.ToDecimal(pa["QuantityA"])%>
+    <div class="erp_009" title="库存偏少"></div>
+    <%else%>
+    <div class="erp_010" title="库存偏多"></div>
+    <%/if%>
+    </td>
+    <td width="20"></td>
+  </tr>
+  <%/loop%>
+  <%/if%>
+  </table>
+  </div>
+  </td>
+</tr>
+  
+</table>
+ 
+    
+    </td>
+  </tr>
+</table>
+
+
+
+
+
+	  </td>
+  </tr>
+  <tr height="7">
+    <td></td></tr></tbody></table>
+<div style="height:50px;width:100%"></div>
+</div>
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+$("#rollleft").KandyTabs({
+	action:"roll",
+	trigger:"mouseup",
+	direct:"left"
+}); 
+</script>   
+
+	<%/if%>
+</div>
+<%/if%>
+<script type="text/javascript" src="/public/js/activebar2.js"></script>
+<script type="text/javascript" src="/public/js/msg.js"></script>
+<%template _copyright%>
+<%template _footer%>

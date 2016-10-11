@@ -1,0 +1,296 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td colspan="2" align="left"><h1>应付信息</h1></td>
+                </tr>
+				
+				<tr>
+					<td width="20%" align="right">应付对象</td>
+					<td align="left">
+					<INPUT class="B_Check" TYPE="radio" NAME="APObjType" id="APObjType_A" value="2" onclick="javascript:CheckR();" 
+					<%if Act=="Edit"%> 
+						<%if ai.APObjType.ToString()=="2"%>
+							checked
+						<%/if%>
+					<%else%>
+					checked
+					<%/if%>
+					>供货商
+					<INPUT class="B_Check" TYPE="radio" NAME="APObjType" id="APObjType_B" value="1" onclick="javascript:CheckR();" 
+					<%if Act=="Edit"%> 
+						<%if ai.APObjType.ToString()=="1"%>
+							checked
+						<%/if%>
+					<%/if%>
+					>个人
+					</td>
+				</tr>
+
+                <tr id="APObjType_A_box">
+                  <td width="20%" align="right">供货商</td>
+                  <td align="left">
+                  <input name="SupplierName" id="SupplierName" type="text" 
+                  <%if Act=="Edit"%>value="{ai.APObjName}"<%/if%>
+                  />
+				  <INPUT TYPE="hidden" NAME="SupplierID" id="SupplierID" <%if Act=="Edit"%>value="{ai.APObjID}"<%/if%>>
+				  检索可输入*</td>
+                </tr>
+                
+                <tr id="APObjType_B_box">
+                  <td  align="right">人员</td>
+                  <td align="left">
+				  <input name="StaffName" id="StaffName" type="text" 
+                  <%if Act=="Edit"%>value="{ai.APObjName}"<%/if%> />
+				  <INPUT TYPE="hidden" NAME="StaffID" id="StaffID" <%if Act=="Edit"%>value="{ai.APObjID}"<%/if%>>
+					检索可输入*</td>
+                </tr>
+				<tr>
+                  <td  align="right">科目</td>
+                  <td align="left">
+				  <input name="FeesSubjectName" id="FeesSubjectName" type="text" 
+                  <%if Act=="Edit"%>value="{ai.FeesSubjectName}"<%/if%> />
+				  <INPUT TYPE="hidden" NAME="FeesSubjectID" id="FeesSubjectID" <%if Act=="Edit"%>value="{ai.FeesSubjectID}"<%/if%>>
+					检索可输入*</td>
+                </tr>
+				<tr>
+                  <td align="right">新增应付金额</td>
+                  <td align="left">
+				  <input name="aNPMoney" id="aNPMoney" type="text" 
+                  <%if Act=="Edit"%>value="{ai.aNPMoney}"<%/if%> />
+				  </td>
+                </tr>
+				<tr>
+                  <td align="right">实际应付金额</td>
+                  <td align="left">
+				  <input name="aPMoney" id="aPMoney" type="text" 
+                  <%if Act=="Edit"%>value="{ai.aPMoney}"<%/if%> />
+				  </td>
+                </tr>
+				<tr>
+                  <td  align="right">已付金额</td>
+                  <td align="left">
+				  <input name="aPayMoney" id="aPayMoney" type="text" 
+                  <%if Act=="Edit"%>value="{ai.aPayMoney}"<%/if%> />
+				  </td>
+                </tr>
+				<tr>
+                  <td  align="right">发生时间</td>
+                  <td align="left">
+                  <input name="aDoDateTime" id="aDoDateTime" onclick="new Calendar().show(this);" type="text" 
+                  <%if Act=="Edit"%>value="{ai.aDoDateTime}"<%/if%>>
+                  </td>
+                </tr>
+				
+				
+                <tr>
+                  <td colspan="2" align="center">
+				  <INPUT TYPE="hidden" NAME="APObjID" id="APObjID" <%if Act=="Edit"%>value="{ai.APObjID}"<%/if%> >
+				  <input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+    
+            </form>
+            
+<script language="javascript" type="text/javascript">
+
+$().ready(function(){
+	$('#SupplierName').autocomplete('Services/CAjax.aspx',{
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetSupplierList',
+			'RCode':Math.random(),
+			'SupplierName':function(){return $('#SupplierName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value,
+					ApMoney:tArray[i].ApMoney,
+					NpMoney:tArray[i].NpMoney
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#SupplierID").val((formatted!=null)?formatted:"0");      
+		}
+	  );
+	
+	$('#FeesSubjectName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetFeesSubjectList',
+			'RCode':Math.random(),
+			'FeesSubjectName':function(){return $('#FeesSubjectName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value,    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#FeesSubjectID").val((formatted!=null)?formatted:"0");
+		}
+	  );
+
+	$('#StaffName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStaffList',
+			'RCode':Math.random(),
+			'StaffName':function(){return $('#StaffName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StaffID").val((formatted!=null)?formatted:"0");
+		}
+	  );
+});
+
+	function CheckR()
+	{
+		var APObjType_A = Sys.getObj('APObjType_A');
+
+		var APObjType_A_box = Sys.getObj('APObjType_A_box');
+		var APObjType_B_box = Sys.getObj('APObjType_B_box');
+		if(APObjType_A.checked)
+		{
+			APObjType_A_box.style.display = "";
+			APObjType_B_box.style.display = "none";
+		}
+		else
+		{
+			APObjType_A_box.style.display = "none";
+			APObjType_B_box.style.display = "";
+		}
+
+		APObjType_A = null;
+
+		APObjType_A_box = null;
+		APObjType_B_box = null;
+	}
+	CheckR();
+
+	function CheckF()
+	{
+		var APObjType_A = Sys.getObj('APObjType_A');
+		
+		if(APObjType_A.checked)
+		{
+			if(Sys.getObj('SupplierName').value == '')
+			{
+				alert('供货商名称不能为空!');	
+			}else
+			{
+				Sys.getObj('APObjID').value=Sys.getObj('SupplierID').value;
+				Sys.getObj('bForm').submit();
+			}
+		
+		}else{
+			if(Sys.getObj('StaffName').value == '')
+			{
+				alert('人员不能为空!');	
+			}else
+			{
+				Sys.getObj('APObjID').value=Sys.getObj('StaffID').value;
+				Sys.getObj('bForm').submit();
+			}
+		}
+	}
+	</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

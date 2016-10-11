@@ -1,0 +1,317 @@
+﻿<%template _header%>
+
+<%if page_err!=0%>
+    <%template _errmsgbox%>
+<%else%>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+<script language="javascript" src="public/js/jTable.js"></script>
+<script language="javascript" src="public/js/jquery.jFlash.js"></script>
+<script language="javascript" src="public/js/storage_order.js"></script>
+
+<div class="main" id="OrderList">
+       <form action="" method="post" name="form1" id="form1"> 
+       <div class="toolbar">
+        <div class="toolbox">
+        </div>
+        <table border="0" cellspacing="2" cellpadding="2" id="s_box">
+          <tr>
+            <td>
+            仓库:(检索输入*)<br/>
+                <input name="StorageName" id="StorageName" type="text" value="{StorageName}" />
+                <input name="StorageID" id="StorageID" type="hidden" value="{StorageID}" />
+            </td>
+            
+			<td>
+商品:(检索可输入*)<br />
+              <input name="ProductsName" id="ProductsName" type="text" value="{ProductsName}" />
+            <input name="ProductsID" id="ProductsID" type="hidden" value="{ProductsID}" />
+            
+            </td>
+			<td> 单据号:<br/>
+            <input name="oOrderNum" style="width:140px" id="oOrderNum" value="{oOrderNum}" type="text" /></td>
+            <td>
+ 客户订单号:<br/>
+            <input name="oCustomersOrderID" style="width:120px" id="oCustomersOrderID" value="{oCustomersOrderID}" type="text" />
+            
+            </td>
+            <td>
+            
+            <input class="B_Check" type="radio" name="sType" id="sType_a" value="1" <%if sType==1%> checked="checked"<%/if%> />
+            <label for="sType_a">单据时间:</label><br/>
+              <nobr>
+              <input name="oOrderDateTimeB" id="oOrderDateTimeB" style="width:70px" value="{oOrderDateTimeB}" type="text" onclick="new Calendar().show(this);" readonly/>
+              -
+              <input name="oOrderDateTimeE" id="oOrderDateTimeE" style="width:70px" value="{oOrderDateTimeE}" type="text" onclick="new Calendar().show(this);" readonly/>
+            </nobr>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5">
+            <INPUT TYPE="hidden" NAME="Act" id="Act">
+            <INPUT TYPE="hidden" NAME="ordertype" id="ordertype">
+              <nobr>
+              <input type="button" id="button7" style="margin:3px;width:88px" class="B_INPUT" value="所有单据查找" onclick="javascript:OrderList.SearchB();"  />
+
+              
+              
+              </nobr>            </td>
+          </tr>
+        </table>
+        <div class="list_title">
+       <%if ordertype!=0%>
+               <%set {aspxrewriteurl}=GetOrderType(ordertype.ToString())%>
+                      {aspxrewriteurl}单   
+            <%else%>
+            	<%if ordertypeStr=="|3|4|5|6|7|"%>
+                		销售(出货/退货),赠品,样品,代购
+                        
+                <%else if ordertypeStr=="|3|4|"%>
+                		销售(出货/退货)
+                        
+                <%else if ordertypeStr=="|1|2|"%>
+                		采购(进货/退货)
+                        
+                <%else if ordertypeStr=="|11|"%>
+                		换货
+                        
+                <%else if ordertypeStr=="|8|"%>
+                		库存调整
+                        
+                <%else if ordertypeStr=="|9|"%>
+                		库存调拨
+                        
+                <%else if ordertypeStr=="|10|"%>
+                		坏货报损
+                        
+                <%else%>
+                所有类型
+                <%/if%>
+单据
+            <%/if%>
+       </div>
+        </div>
+       
+       <div class="datalist">
+       <table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox" id="tBoxs">
+                  <thead> 
+                  <tr class="tBar">
+                    <td width="5%"><nobr>单据编号</nobr></td>
+                     <td width="5%"><nobr>单据类型</nobr></td>
+                    <%if ordertype!=8 && ordertype!=10%>
+                        <%if ordertype==1 || ordertype==2 || ordertypeStr=="|1|2|"%>
+                        <td >供货商</td>
+                        <%else%>
+                        	<%if ordertype==9 %>
+                            	<td >仓库</td>
+                            <%else%>
+                                <td >客户</td>
+                                <td width="10%">客户订单号</td>
+                                <td width="10%">客户门店</td>
+                        	<%/if%>
+                        <%/if%>
+                    <%/if%>
+                    
+                    <td width="8%" align="right">单据时间</td>
+        
+                    <%if ordertype!=8 && ordertype!=9 && ordertype!=10 && ordertype!=1 && ordertype!=2%>
+                    <td width="5%" align="center">业务员</td>
+                    <%/if%>
+                    <td width="5%" align="center">操作员</td>
+                    <td width="10%" align="center">完成步骤</td>
+                    <td width="5%" align="center">状态</td>
+                    <td width="5%" align="center">发货状态</td>
+                    </tr>
+                  </thead> 
+                  <tbody>
+                  
+                  <%if dList != null%>
+
+                  <%loop dl dList%>
+
+                  <tr >
+                    <td width="5%"><a href="javascript:void(0);" onclick="javascript:OrderList.ShowEditUserBox({dl[OrderID]},{dl[oType]});">{dl[oOrderNum]}</a></td>
+                    <td width="5%">
+                    <%set {aspxrewriteurl}=GetOrderType(dl["oType"].ToString())%>
+                    {aspxrewriteurl}
+                    </td>
+                    <%if ordertype!=8 && ordertype!=10%>
+                        <%if ordertype==1 || ordertype==2 || ordertypeStr=="|1|2|"%>
+                        <td >
+						{dl[StoresSupplierName]}
+						</td>
+                        <%else%>
+                        	<%if ordertype==9 %>
+                            <td >
+                            {dl[StoresSupplierName]}
+                            </td>
+                            <%else%>
+                            <td >
+                            {dl[StoresSupplierName]}
+                            </td>
+                            <td width="10%">{dl[oCustomersOrderID]}</td>
+                            <td width="10%">{dl[oCustomersNameB]}</td>
+                             <%/if%>
+                        <%/if%>
+                    <%/if%>
+                    
+                    <td  width="8%" align="right">
+                    <%set {aspxrewriteurl}=Convert.ToDateTime(dl["oOrderDateTime"]).ToString("yyyy-MM-dd")%>
+                    {aspxrewriteurl}</td>
+                    
+        
+                    <%if ordertype!=8 && ordertype!=9 && ordertype!=10 && ordertype!=1 && ordertype!=2%>
+                    <td width="5%" align="center" >
+					{dl[StaffName]}
+					</td>
+                    <%/if%>
+					
+
+                    <td width="5%" align="center" >
+					<%if dl["UserStaffName"].ToString() == ""%>
+                    {dl[UserName]}
+					<%else%>
+					{dl[UserStaffName]}
+					<%/if%>
+					</td>
+                    <td width="10%" align="center"><%set {aspxrewriteurl} = GetOrderStpes(dl["oSteps"].ToString())%>{aspxrewriteurl}</td>
+                    <td width="5%" align="center">
+                    <%if dl["oState"].ToString() == "0"%>
+                    正常
+                    <%else%>
+                    <span style="color:#F00" >作废</span>
+                    <%/if%></td>
+                    <td width="5%" align="center">
+                    	<%set {aspxrewriteurl} = GetIsOK(Convert.ToInt32(dl["OrderID"].ToString()))%>
+                        {aspxrewriteurl}
+                    </td>
+                    </tr>
+                  
+                  <%/loop%>
+        
+                  <%/if%>
+                  </tbody>
+                  
+                </table>
+
+                <%if PageBarHTML!=null%>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr class="tBar">
+            <td>{PageBarHTML} </td>
+            <td align="right"></td>
+          </tr>
+          </table>
+        
+               
+                <%/if%>
+       </div>
+       </form> 
+</div>
+
+<script language="javascript" type="text/javascript">
+
+$().ready(function(){
+
+		$('#ProductsName').autocomplete('Services/CAjax.aspx',{ 
+			
+			width: 200,
+			scroll: true,
+			autoFill: true,
+			scrollHeight: 200,
+			matchContains: true,
+			dataType: 'json',
+			extraParams:{
+				'do':'GetProductsList',
+				'RCode':Math.random(),
+				'ProductsName':function(){return $('#ProductsName').val();}
+			},
+			parse: function(data) {
+					var rows = [];  
+					var tArray = data.results;
+					 for(var i=0; i<tArray.length; i++){  
+					  rows[rows.length] = {    
+						data:tArray[i].value +"("+ tArray[i].info+")",    
+						value:tArray[i].id,    
+						result:tArray[i].value    
+						};    
+					  }
+				   return rows; 
+				 },
+			formatItem: function(row, i, max) {  
+				   return row;
+			},
+			formatMatch: function(row, i, max) {
+						return row.value; 
+			},
+			formatResult: function(row) { 
+						return row.value;
+			}
+		  }).result(function(event, data, formatted) {
+				$("#ProductsID").val((formatted!=null)?formatted:"0");
+			}
+		  );
+		  
+		  $('#StorageName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStorageList',
+			'sType':'1',
+			'RCode':Math.random(),
+			'StorageName':function(){return $('#StorageName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StorageID").val((formatted!=null)?formatted:"0");
+		}
+	  );
+
+
+});
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+var tf = new TableFixed("tBoxs");
+
+tf.Clone();//表格结构修改后应重新Clone一次
+
+var OrderList = new TOrderList();
+OrderList.ordertypeStr = '{ordertypeStr}';
+OrderList.ini();
+OrderList.ordertype = {ordertype};
+
+function HidBox()
+{
+	OrderList.HidUserBox();
+}
+</script>
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

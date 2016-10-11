@@ -1,0 +1,12 @@
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.SOAP.dll.config
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.SOAP.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.SOAP.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/obj/Debug/Yannyo.SOAP.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/obj/Debug/Yannyo.SOAP.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.Common.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.Config.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.Config.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.Data.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.Data.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.Entity.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.SOAP/bin/Debug/Yannyo.Entity.dll.mdb

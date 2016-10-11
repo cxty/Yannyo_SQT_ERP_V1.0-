@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Yannyo.SOAP.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Yannyo_SOAP_MailQueueServiceRe_MailQueueService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://mailqueue.yannyo.com/MailQueueService.asmx</Value>
+    </Setting>
+    <Setting Name="Yannyo_SOAP_WeatherWebService_WeatherWebService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://www.webxml.com.cn/WebServices/WeatherWebService.asmx</Value>
+    </Setting>
+    <Setting Name="Yannyo_SOAP_bdu9erpDataEngine_DataEngine" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://erp.bdu9.com/DataEngine.asmx</Value>
+    </Setting>
+    <Setting Name="Yannyo_SOAP_DBOwnerMailQServiceRe_DBOwnerManage" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://messagequeue.dbowner.com/soap.php?wsdl</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

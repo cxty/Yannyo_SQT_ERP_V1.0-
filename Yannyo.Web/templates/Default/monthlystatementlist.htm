@@ -1,0 +1,258 @@
+<%template _header%>
+<%if page_err!=0%>
+    <%template _errmsgbox%>
+<%else%>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="public/js/monthlystatementlist.js"></script>
+<div class="main" >
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1">        
+        <div class="toolbar">
+        <div class="toolbox">
+        <table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>对账单号:<br/><input name="sCode" id="sCode" value="{sCode}" type="text" /></td>
+    <td><span id="sObject">对象:</span><br />
+      <input name="sObjectName" id="sObjectName" type="text" value="{sObjectName}" />
+      <input name="sObjectID" id="sObjectID" type="hidden" value="{sObjectID}" /></td>
+    <td>账单类型:<br />
+        <select name="sType" id="sType">
+          <option value="-1" 
+<%if sType==-1%>
+ selected="selected"
+<%/if%>
+ >所有</option>
+          <option value="2"
+<%if sType==2%>
+ selected="selected"
+<%/if%>
+>应收</option>
+          <option value="1"
+<%if sType==1%>
+ selected="selected"
+<%/if%>
+>应付</option>
+          <option value="3"
+<%if sType==3%>
+ selected="selected"
+<%/if%>
+>其他</option>
+          </select></td>
+    <td>对账对象:<br /><select name="sObjectType" id="sObjectType">
+          <option value="-1" 
+<%if sObjectType==-1%>
+ selected="selected"
+<%/if%>
+ >所有</option>
+          <option value="0" 
+<%if sObjectType==0%>
+ selected="selected"
+<%/if%>
+ >客户</option>
+          <option value="1"
+<%if sObjectType==1%>
+ selected="selected"
+<%/if%>
+>供应商</option>
+          <option value="2"
+<%if sObjectType==2%>
+ selected="selected"
+<%/if%>
+>人员</option>
+          </select></td>
+    <td>系统状态:<br><select name="sState" id="sState">
+          <option value="-1" 
+<%if sState==-1%>
+ selected="selected"
+<%/if%>
+ >所有</option>
+          <option value="0"
+<%if sState==0%>
+ selected="selected"
+<%/if%>
+>正常</option>
+          <option value="1"
+<%if sState==1%>
+ selected="selected"
+<%/if%>
+>作废</option>
+          </select></td>
+    <td colspan="3" rowspan="2"><input type="button" id="button_Search" name="button_Search" style="margin:5px;width:120px" class="B_INPUT" value=" 对账单查找 "  />
+    <input type="button" id="button_add" name="button_add" style="margin:5px;width:120px" class="B_INPUT" value=" 开对账单 "  /></td>
+    </tr>
+  <tr>
+  
+  <td>
+    凭证号:<br />
+    <input name="cCode" id="cCode" value="{cCode}" type="text" /></td>
+  <td> 对账单时间:<br />
+    <input name="sDateTimeB" id="sDateTimeB" style="width:80px" value="{sDateTimeB}" type="text" onclick="new Calendar().show(this);" readonly="readonly"/>
+    -
+    <input name="sDateTimeE" id="sDateTimeE" style="width:80px" value="{sDateTimeE}" type="text" onclick="new Calendar().show(this);" readonly="readonly"/></td>
+  <td>处理步骤:<br />
+        <select name="sSteps" id="sSteps">
+          <option value="-1" 
+<%if sSteps==-1%>
+ selected="selected"
+<%/if%>
+ >所有</option>
+          <%if sStepsList!=null%>
+          <%loop sl sStepsList%>
+          <option value="{sl[id]}"
+    <%if sSteps.ToString()==sl["id"].ToString()%>
+     selected="selected"
+    <%/if%>
+    >{sl[Name]}</option>
+          <%/loop%>
+          <%/if%>
+          </select></td>
+  <td colspan="2">是否已开票:<br />
+        <select name="sReceiptState" id="sReceiptState">
+          <option value="-1" 
+<%if sReceiptState==-1%>
+ selected="selected"
+<%/if%>
+ >所有</option>
+          <option value="1"
+<%if sReceiptState==1%>
+ selected="selected"
+<%/if%>
+>已开</option>
+          <option value="2"
+<%if sReceiptState==2%>
+ selected="selected"
+<%/if%>
+>未开</option>
+          </select></td>
+    </tr>
+        </table>
+</div>
+<div class="list_title">
+<%if sType==2%>
+应收
+<%else if sType==1%>
+应付
+<%else if sType==3%>
+其他
+<%else%>
+所有
+<%/if%>
+对账单
+</div>
+        </div>
+        <div class="datalist">
+        <table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox" id="tBoxs">
+  <thead>
+  <tr class="tBar">
+    <td width="5%">对账单号</td>
+    <td width="5%">对账类型</td>
+    <td>对账对象</td>
+    <td width="5%">账单类型</td>
+    <td width="10%" align="right">本期对账金额</td>
+    <td width="5%" align="center">处理状态</td>
+    <td width="5%" align="center">发票</td>
+    <td width="5%" align="right">对账时间</td>
+    <td width="5%" align="center">状态</td>
+  </tr>
+  </thead>
+  <tbody>
+  <%if dList != null%>
+  <%loop dl dList%>
+  <tr >
+    <td><a href="javascript:void(0);" onclick="javascript:MonthlyStatementList.ShowData({dl[MonthlyStatementID]},'{dl[sCode]}',{dl[sType]});">{dl[sCode]}</a></td>
+    <td>
+    <%if dl["sObjectType"].ToString() == "0"%>
+    客户
+    <%/if%>
+    <%if dl["sObjectType"].ToString() == "1"%>
+    供应商
+    <%/if%>
+    <%if dl["sObjectType"].ToString() == "2"%>
+    人员
+    <%/if%>
+    <%if dl["sObjectType"].ToString() == "3"%>
+    商超系统
+    <%/if%>
+    </td>
+    <td>{dl[sObjectName]}</td>
+    <td><%if dl["sType"].ToString() == "2"%>
+      应收
+      <%/if%>
+      <%if dl["sType"].ToString() == "1"%>
+      应付
+      <%/if%>
+      <%if dl["sType"].ToString() == "3"%>
+      其他
+      <%/if%></td>
+    <td align="right">{dl[sThisMoney]}</td>
+    <td align="center">
+	  <%if dl["sSteps"].ToString() == "0"%>
+      新建
+      <%/if%>
+      <%if dl["sSteps"].ToString() == "1"%>
+      已对账
+      <%/if%>
+      <%if dl["sSteps"].ToString() == "2"%>
+      已到款
+      <%/if%>
+      <%if dl["sSteps"].ToString() == "3"%>
+      已结账
+      <%/if%></td>
+    
+    <td align="center"><%if dl["sReceiptState"].ToString() == "1"%>
+    有
+    <%/if%>
+    <%if dl["sReceiptState"].ToString() == "2"%>
+    无
+    <%/if%></td>
+    <td align="right">
+    <%set {aspxrewriteurl}=Convert.ToDateTime(dl["sDateTime"]).ToString("yyyy-MM-dd")%>
+    {aspxrewriteurl}</td>
+    <td align="center"><%if dl["sState"].ToString() == "0"%>
+    正常
+    <%/if%>
+    <%if dl["sState"].ToString() == "1"%>
+    <span style="color:#F00" >作废</span>
+    <%/if%></td>
+  </tr>
+  <%/loop%>
+  <%/if%>
+  </tbody>
+</table>
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr class="tBar">
+    <td><%if PageBarHTML!=null%>
+{PageBarHTML}
+<%/if%></td>
+    <td width="50%" align="right">合计:{SumMoney}</td>
+  </tr>
+</table>
+
+        </div>
+  </form>
+<script language="javascript" type="text/javascript">
+var MonthlyStatementList = new TMonthlyStatementList();
+MonthlyStatementList.sType={sType};//对账单类型,应收=2,应付=1
+
+MonthlyStatementList.ini();
+
+function HidBox()
+{
+	MonthlyStatementList.HidUserBox();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+        <%/if%>
+</div>
+<%/if%>
+
+
+
+<%template _copyright%>
+<%template _footer%>

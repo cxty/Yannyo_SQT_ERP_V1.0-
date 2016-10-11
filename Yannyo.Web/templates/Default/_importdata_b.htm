@@ -1,0 +1,62 @@
+<h2>第二步 核对提交数据</h2>
+                <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+                <thead >
+                <tr class="tBar">
+               	  <td>门店编码</td>
+                    <td>门店名</td>
+                    <td>商品编码</td>
+                    <td>商品条码</td>
+                    <td>商品名称</td>
+                    <td>品牌名称</td>
+                    <td width="8%" align="center">商品规格</td>
+                  	<td width="8%" align="center">单位</td>
+                    <td width="8%" align="right">件装数</td>
+                    <td width="8%" align="right">销售数量</td>
+                    <td width="8%" align="right">销售金额</td>
+
+                </tr>
+                </thead>
+                <tbody>
+                <%if dList!=null%>
+                <%loop dl dList%>
+                <tr id="tr_{dl__loop__id}" sStoresID="{dl[0]}" sStoresName="{dl[1]}" sProductsName="{dl[4]}" sNum="{dl[9]}" sPrice="{dl[10]}" pBarcode="{dl[3]}">
+               	  <td>{dl[0]}</td>
+                    <td>{dl[1]}</td>
+                    <td>{dl[2]}</td>
+                    <td>{dl[3]}</td>
+                    <td>{dl[4]}</td>
+                    <td>{dl[5]}</td>
+                    <td width="8%" align="center">{dl[6]}</td>
+                  	<td width="8%" align="center">{dl[7]}</td>
+                    <td width="8%" align="right">{dl[8]}</td>
+                    <td width="8%" align="right">{dl[9]}</td>
+                    <td width="8%" align="right">{dl[10]}</td>
+
+                </tr>
+                <%/loop%>
+                <%/if%>
+                </tbody>
+                </table>
+<div style="height:40px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td width="45%" align="center">
+                  <%if dList!=null%>
+                  共<b id="add_count">{dList.Rows.Count}</b>条&nbsp;
+                  
+                  成功提交<b><span id="add_ok">0</span></b>条
+                  <%/if%>
+                  </td>
+                  <td align="left"><input type="button" id="bt_sub" style="margin:5px" class="B_INPUT" value=" 提交数据 " />
+                  <input type="button" id="bt_re" style="margin:5px" class="B_INPUT" value=" 撤销数据 " />
+                  </td>
+                </tr>
+              </table>
+</div>
+                <script language="javascript" type="text/javascript">
+				var tf = new TableFixed("tBoxs");
+
+				tf.Clone();
+                addTableListener(document.getElementById("tBoxs"),0,0);
+				</script>

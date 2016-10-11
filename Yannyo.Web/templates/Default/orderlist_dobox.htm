@@ -1,0 +1,97 @@
+<%template _poppageheader%>
+<body >
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="public/js/jquery.bgiframe.js"></script>
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+		<script type="text/javascript" src="public/js/orderlist_dobox.js "></script>
+
+            <form name="bForm" id="bForm" action="" method="post">
+            <%if ordertype!=9%>
+              <table width="100%" border="0" cellspacing="2" cellpadding="2" class="dBox">
+                <tr>
+                  <td width="20%" align="right" class="ltd">商品名称:</td>
+                  <td align="left" id="ProductInfo" class="rtd">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td align="right" class="ltd">仓库:</td>
+                  <td align="left" class="rtd">
+                  <select id="StorageID" name="StorageID" >
+                    <%if StorageList!=null%>
+                    <%loop sl StorageList%>
+                    <option value="{sl[StorageID]}">{sl[sCode]}_{sl[sName]}</option>
+                    <%/loop%>
+                    <%/if%>
+                  </select></td>
+                </tr>
+                <tr>
+                  <td align="right" class="ltd">库存:</td>
+                  <td align="left" id="StorageInfo" class="rtd">&nbsp;</td>
+                </tr>
+                <tbody id="MStockInfoBox">
+				<tr>
+				  <td align="right" class="ltd">价格体系:</td>
+				  <td align="left" class="rtd" >
+                  
+                  <input type="text" name="category_c" id="category_c" value="" />
+                  <ul id="categorymenu_c" class="mcdropdown_menu">{PriceClass}</ul>
+                  </td>
+			    </tr>
+				<tr >
+                  <td align="right" class="ltd">配额:</td>
+                  <td align="left" class="rtd" id="MStockInfo">&nbsp;</td>
+                </tr>
+                </tbody>
+                <tr>
+                  <td align="right" class="ltd">数量:</td>
+                  <td align="left" class="rtd"><input name="Quantity" type="text" id="Quantity" style="width:60px" value="0"><span id="pUnits" name="pUnits"></span>/<span id="pToBoxNo" name="pToBoxNo"></span>=
+                  <input name="MaxQuantity" type="text" id="MaxQuantity" style="width:60px" value="0"><span id="pMaxUnits" name="pMaxUnits"></span></td>
+                </tr>
+                <tr>
+                  <td width="20%" align="right" class="ltd">单价:</td>
+                  <td align="left" class="rtd"><input name="Price" type="text" id="Price" style="width:60px" value="0">
+                  *<input name="Quantity_b" type="text" id="Quantity_b" style="width:60px" value="0"><span id="pUnits_b" name="pUnits_b"></span>
+                  =<input name="SumMoney" type="text" id="SumMoney" style="width:60px" value="0"></td>
+                </tr>
+              </table>
+<div style="width:100%;height:30px;float:left"></div>
+                <div id="footer_tool">
+					<input type="hidden" id="PriceClassID" name="PriceClassID" value="0">
+                    <input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:OrderDOBox.CheckF();"/>
+                </div>
+              <%else%>
+              <%template _orderlist_dobox_b%>
+    		<%/if%>
+            </form>
+            
+<script language="javascript" type="text/javascript">
+var OrderDOBox = new TOrderDOBox();
+OrderDOBox.OrdeType = {ordertype};
+OrderDOBox.ProductID = {productid};
+OrderDOBox.MoneyDecimal = {config.MoneyDecimal};
+OrderDOBox.QuantityDecimal = {config.QuantityDecimal};
+OrderDOBox.tObj = '{tObj}';
+OrderDOBox.ini();
+</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

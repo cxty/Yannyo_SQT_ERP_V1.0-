@@ -1,0 +1,305 @@
+﻿<%template _poppageheader%>
+<body>
+    <link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+    <script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+    <script type="text/javascript" src="public/js/dialog.js "></script>
+    <script src="public/js/WebCalendar.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.maskedinput-1.2.2.min.js"></script>
+
+    <script type="text/javascript" src="/public/js/orderdo.js"></script>
+
+    <script src="public/js/LodopFuncs.js" type="text/javascript"></script>
+
+
+    <%if {ispost} %>
+    <%if page_err==0%>
+    <%template _popmsgbox%>
+    <%else%>
+    <%template _poperrmsgbox%>
+    <%/if%>
+    <%else%>
+    <%if page_err!=0%>
+    <%template _poperrmsgbox%>
+    <%else%>
+    <%if page_msg!=0%>
+    <%template _popmsgbox%>
+    <%else%>
+    <form name="bForm" id="bForm" action="" method="post">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td colspan="2" align="left">
+                    <%set {aspxrewriteurl}=GetOrderType(ordertype.ToString())%>
+                    <h2>
+                        {aspxrewriteurl}
+                        <%if Act=="v"%>
+
+                        <%if oi.oState==1%>
+                        (已经作废)
+                        <%else%>
+                        <%set {aspxrewriteurl} = GetOrderStpes(oi.oSteps.ToString())%>
+                        ({aspxrewriteurl})
+                        <%/if%>
+                        &nbsp;&nbsp;&nbsp;&nbsp;单号:{oi.oOrderNum}
+                        <%/if%>
+                    </h2>
+                </td>
+            </tr>
+            <tr>
+
+                <td width="20%" align="left" valign="top" id="tTreeBox">
+                    <%if Act=="1" || ShowTree == true%>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="left" valign="top"><div id="tTree" class="tTree"></div></td>
+                        </tr>
+                    </table>
+                    <%else%>
+                    <script language="javascript" type="text/javascript">
+                        $('#tTreeBox').hide();
+                        $('#hide_tree_p_box').hide();
+                    </script>
+                    <%/if%>
+                </td>
+
+
+                <td align="left" valign="top">
+                    <!--采购-->
+                    <%if ordertype==1 || ordertype ==2%>
+                    <%template _order_list_do_a%>
+                    <%/if%>
+                    <!--销售-->
+                    <%if ordertype==3 || ordertype == 4 || ordertype==5 || ordertype==6 || ordertype==7 || ordertype==11 %>
+                    <%template _order_list_do_b%>
+                    <%/if%>
+                    <!--调整,坏货-->
+                    <%if ordertype==8 || ordertype==10%>
+                    <%template _order_list_do_c%>
+                    <%/if%>
+                    <!--调拨-->
+                    <%if ordertype==9%>
+                    <%template _order_list_do_c%>
+                    <%/if%>
+
+
+                </td>
+
+            </tr>
+        </table>
+
+
+        <div style="width:100%;height:200px"></div>
+        <div id="footer_tool">
+            <div style="width:100%">
+                <%if Act=="1" || ShowTree == true%>
+                <div id="hide_tree_p_box" class="tBar" style="text-align:left">
+                    <input name="hide_p" type="checkbox" id="hide_p" form="hide_p_box" style="width:30px;"
+                    <%if ordertype!=1 && ordertype !=2%>
+                    checked
+                    <%/if%>
+                    />过滤“0”库存商品
+                </div>
+                <%/if%>
+                <table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox">
+
+                    <tr class="tBar">
+                        <td style="width:80px;" align="left">浏览地址:</td>
+                        <td align="left"><input style="width:90%;text-align:left" readonly value="{Order_QRCode_URL}" /></td>
+                    </tr>
+                    <tr class="tBar">
+                        <td align="left">备注:</td>
+                        <td align="left">
+                            <input name="oReMake" type="text" id="oReMake" style="width:90%;
+      text-align:left" maxlength="500" <%if Act == "v"%>value="{oi.oReMake}"<%/if%> >
+                        </td>
+                    </tr>
+                    <tr class="tBar">
+                        <td align="left">合计:</td>
+                        <td align="right" id="SumMoney"></td>
+                    </tr>
+                </table>
+            </div>
+            <%if Act=="v"%>
+            <!--随附凭证-->
+            <div id="CertificateList" style="text-align:left;width:100%;">
+                <div class="tBar" id="CertificateList_tool" style="width:100%;">随附凭证</div>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxsb">
+                    <thead>
+                        <tr class="tBar">
+                            <td width="5%">序号</td>
+                            <td>凭证编号</td>
+                            <td width="20%">单位</td>
+                            <td width="10%">经办人</td>
+                            <td width="10%" align="right">金额</td>
+                            <td width="10%" align="right">发生时间</td>
+                        </tr>
+                    </thead>
+                    <tbody id="dloop">
+                        <%if CertificateList!=null%>
+                        <%loop cl CertificateList%>
+                        <tr certificateid="{cl[CertificateID]}">
+                            <td width="5%">{cl__loop__id}</td>
+                            <td>{cl[cCode]}</td>
+                            <td>{cl[toObjectName]}</td>
+                            <td width="10%">{cl[StaffName]}</td>
+                            <td width="10%" align="right" class="loop_Money">
+                                {cl[cMoney]}
+                                <%set {cSumMoney}=Convert.ToDecimal(cSumMoney+Convert.ToDecimal(cl["cMoney"]))%>
+                            </td>
+                            <td width="10%" align="right">
+                                <%set {aspxrewriteurl}=Convert.ToDateTime(cl["cDateTime"]).ToString("yyyy-MM-dd")%>
+                                {aspxrewriteurl}
+                            </td>
+
+                        </tr>
+
+                        <%/loop%>
+                        <%/if%>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>合计</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td align="right" class="loop_Money">{cSumMoney}</td>
+                            <td align="right">&nbsp;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <%/if%>
+            <input id="StoresSupplierID" name="StoresSupplierID" type="hidden" />
+            <input id="OrderListDataJson" name="OrderListDataJson" type="hidden" />
+            <input id="pagecode" name="pagecode" type="hidden" value="{pagecode}" />
+
+
+
+            <%if Act == "1"%>
+            <input type="button" name="subbutton_add" id="subbutton_add" value=" 提  交 " class="B_INPUT">
+            <%/if%>
+
+            <%if Act == "v" && IsVerify == true%>
+            <input type="button" name="subbutton_update" id="subbutton_update" value=" 更  新 " class="B_INPUT">
+            <input type="button" name="subbutton_verify" id="subbutton_verify" value=" 审  核 " class="B_INPUT">
+            <!--<input type="button" name="subbutton_print_t" id="subbutton_print_t" value=" 打印订单 " class="B_INPUT">-->
+            <%/if%>
+
+            <%if Act == "v" && IsVerify == false%>
+            <%if IsFirst == true%>
+            <input type="button" name="subbutton_return" id="subbutton_return" value=" 返回 " class="B_INPUT">
+            <%else%>
+            <%if oi.oState == 0%>
+            <%if oi.oSteps == 2%>
+            <%if oi.oPrepay == 1%>
+            <!--需预付款操作-->
+            <input type="button" name="subbutton_prepay" id="subbutton_prepay" value=" 预付款 " class="B_INPUT">
+            -&gt;
+            <%/if%>
+            <%if IsPrepayOK==true%>
+            <input type="button" name="subbutton_delivery" id="subbutton_delivery" value=" 发  货 " class="B_INPUT">
+            -&gt;
+            <%/if%>
+            <%/if%>
+            <%if oi.oSteps <= 3%>
+            <input type="button" name="subbutton_receiving" id="subbutton_receiving" value=" 收  货 " class="B_INPUT">
+            -&gt;
+            <%/if%>
+            <%if oi.oSteps <= 4%>
+
+            <input type="button" name="subbutton_verification" id="subbutton_verification" value=" 核  销 " class="B_INPUT">
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <%/if%>
+
+            <%if oi.oSteps == 3%>
+            <!--<input type="button" name="subbutton_update" id="subbutton_update" value=" 更  新 " class="B_INPUT">-->
+            <%/if%>
+            <%/if%>
+            <%if IsNOFull == true%>
+            <input type="button" name="subbutton_isnofull" id="subbutton_isnofull" style="width:120px" value=" 商品差额去向 " class="B_INPUT">
+            <%/if%>
+            <%if IsNOFullAndNOToDo == true%>
+            <input type="button" name="subbutton_isnofullandnotodo" id="subbutton_isnofullandnotodo" style="width:120px" value=" 差额需转新单 " class="B_INPUT">
+            <input type="button" name="subbutton_isnofullandnotodo_no" id="subbutton_isnofullandnotodo_no" style="width:120px" value=" 差额无需转新单 " class="B_INPUT">
+            <%/if%>
+            <input type="button" name="subbutton_first" id="subbutton_first" value=" 查看订单 " class="B_INPUT">
+            <input type="button" name="subbutton_log" id="subbutton_log" value=" 操作记录 " class="B_INPUT">
+            <input type="button" name="subbutton_print" id="subbutton_print" value=" 打  印 " class="B_INPUT">
+
+            <%if oi.oType == 3%>
+            <%if oi.oSteps >= 2 && oi.oSteps <= 3%>
+            <input type="button" name="subbutton_print_add" id="subbutton_print_add" value=" 打印随附单 " class="B_INPUT">
+            <%/if%>
+            <%/if%>
+
+            <%if IsMOrder == true%>
+            <input type="button" name="subbutton_print_exp" id="subbutton_print_exp" value=" 打印运单 " class="B_INPUT">
+            <%/if%>
+            <%if oi.oSteps == 2 && oi.oState == 0%>
+            <input type="button" name="subbutton_invalid" id="subbutton_invalid" value=" 作  废 " class="B_INPUT">
+            <%/if%>
+            <%/if%>
+            <%/if%>
+        </div>
+
+    </form>
+
+
+    <%/if%>
+    <%/if%>
+    <%/if%>
+
+    <script language="javascript" type="text/javascript">
+
+        var OrderDO = new TOrderDO();
+        OrderDO.PrintPageWidth = '{config.PrintPageWidth}';
+        OrderDO.PrintAddPageWidth = '{config.PrintAddPageWidth}';
+        OrderDO.PrinterName = '{config.PrinterName}';
+        OrderDO.Order_lock = {config.Order_lock};
+        OrderDO.UserCode = '{UserCode}';
+        OrderDO.ShowEdit = '{ShowEdit}'=='False'?false:true;
+        OrderDO.OrderType = {ordertype};
+        OrderDO.OrderID = {orderid};
+        OrderDO.MoneyDecimal = {config.MoneyDecimal};
+        OrderDO.QuantityDecimal = {config.QuantityDecimal};
+
+        <%if ordertype==9%>
+            OrderDO.EditDefaultPrice = true;
+        <%else%>
+            OrderDO.EditDefaultPrice = '{EditDefaultPrice}'=='False'?false:true;
+        <%/if%>
+
+        <%if CheckUserPopedoms("X") || CheckUserPopedoms("3-1-1-9") || CheckUserPopedoms("3-1-2-9") || CheckUserPopedoms("3-2-1-9") || CheckUserPopedoms("3-2-2-9") || CheckUserPopedoms("3-2-3-9") || CheckUserPopedoms("3-2-4-9") || CheckUserPopedoms("3-2-5-9") || CheckUserPopedoms("3-3-1-9") || CheckUserPopedoms("3-3-2-9") || CheckUserPopedoms("3-3-3-9")%>
+        OrderDO.ShowPrice = true;
+        <%/if%>
+        <%if Act == "v"%>
+        OrderDO.Steps = {oi.oSteps};
+        $().ready(function(){
+            OrderDO.ReSetDataList();
+        });
+        <%/if%>
+
+        <%if IsMOrder == true%>
+        <%if _ms.mExpName!=null%>
+        OrderDO.IsMOrder = true;
+        OrderDO.ExpID = '{_ms.mExpName}';
+        OrderDO.mExpNO = '{_ms.mExpNO}';
+        OrderDO.m_configid = '{_ms.m_ConfigInfoID}';
+        <%/if%>
+        <%/if%>
+        //调拨单用
+
+        OrderDO.ini();
+        <%if Act == "v" %>
+        OrderDO.sel_StorageIDB = {oi.StoresSupplierID};
+        <%/if%>
+        addTableListener(document.getElementById("tBoxsb"),0,0);
+    </script>
+
+    <object id="LODOP" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+        <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0 pluginspage="/public/install_lodop.exe"></embed>
+    </object>
+    <%template _footer%>

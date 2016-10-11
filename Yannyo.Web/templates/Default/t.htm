@@ -1,0 +1,54 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MESSAGER插件</title>
+<script src="jquery-1.3.2.js"></script>
+<script src="jquery.messager.js"></script>
+<script>
+$(document).ready(function(){
+    $.messager.show(0,'送你一个Jquery Messager消息弹出插件！');
+    $("#showMessager300x200").click(function(){
+        $.messager.lays(300, 200);
+        $.messager.show(0, '300x200的消息');
+    });
+    $("#showMessagerFadeIn").click(function(){
+        $.messager.anim('fade', 2000);
+        $.messager.show(0, 'fadeIn动画消息');
+    });
+    $("#showMessagerShow").click(function(){
+        $.messager.anim('show', 1000);
+        $.messager.show(0, 'show动画消息');
+    });
+    $("#showMessagerDim").click(function(){
+        $.messager.show('<font color=red>自定义标题</font>', '<font color=green style="font-size:14px;font-weight:bold;">自定义内容</font>');
+    });
+    $("#showMessagerSec").click(function(){
+        $.messager.show(0, '一秒钟关闭消息', 1000);
+    });
+});
+</script>
+<style type="text/css">
+<!--
+body,td,th { font-size: 12px; }
+body { background-color: #fefefe; }
+p    { width:80%; height:auto; padding:10px; background-color:#D6F097; border:solid 1px #FF9900; color:#333; margin-left:auto; margin-right:auto;}
+input    { background-color:#F5D99E; color:#333; border:solid 1px #993300; font-size:12px;}
+-->
+</style></head>
+
+<body>
+<h2>JQUEYR PLUGIN - Messager 版权所有 &copy; <a href="http://www.corrie.net.cn" target="_blank">www.corrie.net.cn</a>赵戈</h2>
+<p><input type="button" id="showMessager300x200" value="显示一个300x200的消息" /></p>
+<p><input type="button" id="showMessagerFadeIn" value="显示一个fadeIn动画消息" /></p>
+<p><input type="button" id="showMessagerShow" value="显示一个show动画消息" /></p>
+<p><input type="button" id="showMessagerDim" value="显示定义内容和标题消息" /></p>
+<p><input type="button" id="showMessagerSec" value="一秒钟关闭消息" /></p>
+<div>讨论技术和有任何问题请发邮件，非诚勿扰！corrie#sina.com</div>
+<div align="center"><!-- *** Vdoing Code *** -->
+<script type="text/javascript">var wea_sid = 13864;</script>
+<script type="text/javascript" charset="UTF-8" src="http://s.vdoing.com/u/27/13864.js"></script>
+<noscript><a href="http://www.vdoing.com" title="Vdoing StatsX No.13864"><img src="http://simg.vdoing.com/m/13864/x01.gif?noscript" border="0"></a></noscript>
+<!-- *** End of Vdoing Code *** --> </div>
+</body>
+
+</html>

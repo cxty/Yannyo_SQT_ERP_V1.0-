@@ -1,0 +1,57 @@
+<div class="dlist">
+	<%if {ispost} %>
+		<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+			<tr class="tBar">
+				<td width="2%">排名</td>
+
+				<td width="10%">名称</td>
+
+
+				<td width="5%">品牌</td>
+				
+				<td width="5%">库存量</td>
+				<td width="3%">规格</td>
+
+				<td width="3%">单位</td>
+				<td width="3%">装箱数</td>
+				<td width="3%">箱数</td>
+				<td width="5%">金额</td>
+			</tr>
+			<%if dList != null%>
+			  <%loop dl dList%>
+			  <tr>
+				<td >{dl__loop__id}</td>
+				
+				<td >{dl[pName]}</td>
+				
+				<td >{dl[pBrand]}</td>
+				
+				<td align="right">
+				<%set {aspxrewriteurl}=(decimal.Parse(dl["S_QUANTITY"].ToString())+decimal.Parse(dl["pDoDayQuantity"].ToString())).ToString()%>
+			{aspxrewriteurl}
+				</td>
+				<td align="right">{dl[pStandard]}</td>
+				<td align="right">{dl[pUnits]}</td>
+				<td align="right">{dl[pToBoxNo]}</td>
+				<td align="right">
+				<%set {aspxrewriteurl}=((decimal.Parse(dl["S_QUANTITY"].ToString())+decimal.Parse(dl["pDoDayQuantity"].ToString())) / decimal.Parse(dl["pToBoxNo"].ToString())).ToString("0.00")%>
+				{aspxrewriteurl}
+				</td>
+				<td align="right">{dl[sumPrice]}</td>
+			  </tr>
+			  <%/loop%>
+			  <tr>
+				<td >合计</td>
+				<td align="right"></td>
+				<td align="right"></td>
+				<td align="right"></td>
+				<td align="right"></td>
+				<td align="right"></td>
+				<td align="right"></td>
+				<td align="right"></td>
+				<td align="right">{AllSumValue}</td>
+			  </tr>
+			 <%/if%>
+		</table>
+	<%/if%>
+</div> 

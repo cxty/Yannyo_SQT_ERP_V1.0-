@@ -1,0 +1,63 @@
+<%template _poppageheader%>
+<body>
+
+<script type="text/javascript" src="public/js/stockproducts_do.js "></script>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+			<%if dList != null%>
+			<%loop dl dList%>
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+				<tr>
+					<td width="20%" align="right">产品</td>
+					<td align="left">
+					{dl[pName]}
+					</td>
+				</tr>
+
+                <tr id="ARObjType_A_box">
+                  <td width="20%" align="right">条码</td>
+                  <td align="left">
+                  {dl[pBarcode]}
+				  </td>
+                </tr>
+                <%if StorageList!=null%>
+				<%loop sl StorageList%>
+				<tr>
+                  <td  align="right">{sl[sName]}<br>{sl[sCode]}</td>
+                  <td align="left">
+				  <INPUT TYPE="hidden" NAME="StorageID_{sl__loop__id}" id="StorageID_{sl__loop__id}" value="{sl[StorageID]}">
+                  <input name="Bad_{sl__loop__id}" id="Bad_{sl__loop__id}" type="text" value="{sl[Bad]}"/></td>
+                </tr>
+				<%/loop%>
+				<INPUT TYPE="hidden" NAME="loop" id="loop" value="{sl__loop__id}">
+				<%/if%>
+				
+                <tr>
+                  <td colspan="2" align="center">
+
+				  <input type="submit" id="button_Sub" name="button_Sub" style="margin:5px" class="B_INPUT" value="确定" />
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+			<%/loop%>
+          <%/if%>
+</form>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

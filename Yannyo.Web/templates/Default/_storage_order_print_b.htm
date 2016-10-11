@@ -1,0 +1,99 @@
+﻿<table width="100%" border="0" cellspacing="1" cellpadding="1">
+<tr>
+  <td class="OrderListTool">
+
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>单号:{oi.oOrderNum}</td>
+    <td> 客 户:
+{oi.StoresSupplierName} </td>
+    <td> 业务员:
+      {oi.StaffName} </td>
+    <td><%set {aspxrewriteurl}=oi.oOrderDateTime.ToString("yyyy-MM-dd")%>
+      日期:
+      {aspxrewriteurl} </td>
+    <td rowspan="4" align="center"><img src="qrcode-{oi.OrderID}.aspx" /></td>
+  </tr>
+  <tr>
+    <td>
+联系人:{oi.oCustomersContact}
+    </td>
+    <td> 联系电话:{oi.oCustomersTel} </td>
+    <td colspan="2">
+      地址:{oi.oCustomersAddress}    </td>
+    </tr>
+  <tr>
+    <td>客户订单号:{oi.oCustomersOrderID}</td>
+    <td colspan="3">客户指定门店:{oi.oCustomersNameB}</td>
+    </tr>
+  <tr>
+    <td>企业注册号:{config.RegistrationNo}</td>
+    <td colspan="2">单位地址：{config.Address}</td>
+    <td>电话：{config.Phone}</td>
+    </tr>
+</table>
+
+</td>
+</tr>
+<tr>
+  <td>
+  <table width="98%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 "   style= "border-collapse:collapse; ">
+	<tr >
+	  <!--<td width="50">仓库</td>-->
+	  <td width="40" align="center">条码</td>
+	  <td align="center">商品名称</td>
+	  <td width="40" align="center">包装量</td>
+	  
+	 <td width="50" align="center">数量</td>
+	  <td width="50" align="center">件数</td>
+	  
+     
+	</tr>
+
+<%if OrderList!=null%>
+	<%loop ol OrderList%>
+		<tr>
+		  <!--<td width="80">{ol[StorageName]}</td>-->
+		  <td >{ol[ProductsBarcode]}</td>
+		  <td>
+		  <%if ol["IsGifts"].ToString() !="0"%>
+		  (赠)
+		  <%/if%>
+		  {ol[ProductsName]}</td>
+		  <td align="center" >{ol[ProductsToBoxNo]}</td>
+		  
+		   <td  align="right">
+           <%set {sumQuantityM} = Convert.ToDecimal(sumQuantityM+Convert.ToDecimal(ol["oQuantity"]))%>
+		  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"]),config.QuantityDecimal).ToString()%>
+		  <nobr>{aspxrewriteurl}{ol[ProductsUnits]}&nbsp;</nobr>
+</td>
+<td  align="right">
+			<%set {sumQuantityB} = Convert.ToDecimal(sumQuantityB+Convert.ToDecimal(ol["oQuantity"])/Convert.ToDecimal(ol["ProductsToBoxNo"]))%>
+		  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"])/Convert.ToDecimal(ol["ProductsToBoxNo"]),config.QuantityDecimal).ToString()%>
+		  <nobr>{aspxrewriteurl}{ol[ProductsMaxUnits]}&nbsp;</nobr>
+</td>
+		  
+		 
+		</tr>
+	<%/loop%>
+    
+    
+    
+    <tr>
+    <td>合计:</td>
+    <td colspan="2"></td>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(sumQuantityM,config.QuantityDecimal).ToString()%>
+    <nobr>{aspxrewriteurl}&nbsp;</nobr></td>
+    <td align="right">
+    <%set {aspxrewriteurl} = decimal.Round(sumQuantityB,config.QuantityDecimal).ToString()%>
+    <nobr>{aspxrewriteurl}&nbsp;</nobr>
+    </td>
+    
+    </tr>
+<%/if%>
+
+  </table>
+  
+</tr>
+</table>

@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A1A66329-FE25-47D7-98FE-5F1EC3D2A872}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yannyo.Data.SqlServer</RootNamespace>
+    <AssemblyName>Yannyo.Data.SqlServer</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Yannyo.Web\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Yannyo.Web\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FileAlignment>4096</FileAlignment>
+    <BaseAddress>4194304</BaseAddress>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Interop.SQLDMO">
+      <HintPath>..\Interop.SQLDMO.dll</HintPath>
+    </Reference>
+    <Reference Include="Yannyo.Common">
+      <HintPath>..\Yannyo.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APMoneyInfoManage.cs" />
+    <Compile Include="ARMoneyInfoManage.cs" />
+    <Compile Include="BankInfoManage.cs" />
+    <Compile Include="BankMoneyInfoManage.cs" />
+    <Compile Include="BuySaleDetals.cs" />
+    <Compile Include="CertificateManage.cs" />
+    <Compile Include="CostDetails.cs" />
+    <Compile Include="CostValenceInfoManage.cs" />
+    <Compile Include="DataAnalysis.cs" />
+    <Compile Include="DataClassManage.cs" />
+    <Compile Include="DataToMailInfoManage.cs" />
+    <Compile Include="ErpOrderInfoManage.cs" />
+    <Compile Include="EventLogInfoManage.cs" />
+    <Compile Include="FeesSubjectInfoManage.cs" />
+    <Compile Include="GiftsInfoManage.cs" />
+    <Compile Include="GlobalManage.cs" />
+    <Compile Include="MarketingFeesInfoManage.cs" />
+    <Compile Include="MonthlyStatementAppendMoneyDataInfoManage.cs" />
+    <Compile Include="MonthlyStatementManage.cs" />
+    <Compile Include="M_AppSubscribeInfo.cs" />
+    <Compile Include="M_ConfigInfo.cs" />
+    <Compile Include="M_ConfirmFeeInfo.cs" />
+    <Compile Include="M_CreditInfo.cs" />
+    <Compile Include="M_ExpressTemplatesInfo.cs" />
+    <Compile Include="M_GoodsCatInfo.cs" />
+    <Compile Include="M_GoodsExtraInfo.cs" />
+    <Compile Include="M_GoodsInfo.cs" />
+    <Compile Include="M_GoodsSkuExtraInfo.cs" />
+    <Compile Include="M_GoodsSkuInfo.cs" />
+    <Compile Include="M_ImgInfo.cs" />
+    <Compile Include="M_LocationInfo.cs" />
+    <Compile Include="M_MemberInfo.cs" />
+    <Compile Include="M_MessageImgInfo.cs" />
+    <Compile Include="M_MessageInfo.cs" />
+    <Compile Include="M_OrderInfo.cs" />
+    <Compile Include="M_OrderPromotionDetailInfo.cs" />
+    <Compile Include="M_OrderRefundInfo.cs" />
+    <Compile Include="M_ProductInfo.cs" />
+    <Compile Include="M_PropImgInfo.cs" />
+    <Compile Include="M_SendGoodsInfo.cs" />
+    <Compile Include="M_ShippingInfo.cs" />
+    <Compile Include="M_ShoppingAddressInfo.cs" />
+    <Compile Include="M_StockInfo.cs" />
+    <Compile Include="M_TimeOutInfo.cs" />
+    <Compile Include="M_TradeInfo.cs" />
+    <Compile Include="M_UserInfo.cs" />
+    <Compile Include="M_VideoInfo.cs" />
+    <Compile Include="OrderManage.cs" />
+    <Compile Include="PaymentSystemInfoManage.cs" />
+    <Compile Include="PriceClassDefaultPriceInfoManage.cs" />
+    <Compile Include="ProductPoolInfoManage.cs" />
+    <Compile Include="ProductsInfoManage.cs" />
+    <Compile Include="ProductsLossInfo.cs" />
+    <Compile Include="ProductsStorageManage.cs" />
+    <Compile Include="PurchasingPayment.cs" />
+    <Compile Include="purchasingreceivables.cs" />
+    <Compile Include="RegionInfoManage.cs" />
+    <Compile Include="SalesInfoManage.cs" />
+    <Compile Include="SqlServerProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlServerPublic.cs" />
+    <Compile Include="StaffInfoManage.cs" />
+    <Compile Include="StaffStoresInfoManage.cs" />
+    <Compile Include="StockProductInfoManage.cs" />
+    <Compile Include="StocktakeInventoryInfo.cs" />
+    <Compile Include="StorageInfoManage.cs" />
+    <Compile Include="StorehouseManage.cs" />
+    <Compile Include="storehouseproductspriceinfo.cs" />
+    <Compile Include="StoresInfoManage.cs" />
+    <Compile Include="SupplierInfoManage.cs" />
+    <Compile Include="UserInfoManage.cs" />
+    <Compile Include="ValenceInfoManage.cs" />
+    <Compile Include="YHsysInfoManage.cs" />
+    <Compile Include="ProductFieldInfoManage.cs" />
+    <Compile Include="ProductsFieldValueInfoManage.cs" />
+    <Compile Include="StorageProductLogInfoManage.cs" />
+    <Compile Include="StorageProductLogDataInfoManage.cs" />
+    <Compile Include="ProductPriceNOAutoInfoManage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Yannyo.Config\Yannyo.Config.csproj">
+      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Name>Yannyo.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Data\Yannyo.Data.csproj">
+      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
+      <Name>Yannyo.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Entity\Yannyo.Entity.csproj">
+      <Project>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</Project>
+      <Name>Yannyo.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,23 @@
+<table width="100%"  border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 " style= "border-collapse:collapse; ">
+                <tr>
+                    <td width="30%">摘要</td>
+                    <td width="20%">科目</td>
+                    <td width="20%">单位</td>
+                    <td width="15%" align="right">借方金额</td>
+                    <td width="105%" align="right">贷方金额</td>
+                </tr>
+                <%if CertificateDataList!=null%>
+                <%loop cdl CertificateDataList%>
+                <tr>
+                  <td>{cdl[cdName]}</td>
+                  <td>
+				  <%set {aspxrewriteurl}=GetFeesSubjectClassParentStr( int.Parse(cdl["FeesSubjectID"].ToString()),">")%>
+			{aspxrewriteurl}
+				  </td>
+                  <td>{cdl[ObjectName]}</td>
+                  <td align="right"><nobr>{cdl[cdMoney]}&nbsp;&nbsp;</nobr></td>
+                  <td align="right"><nobr>{cdl[cdMoneyB]}&nbsp;&nbsp;</nobr></td>
+                </tr>
+                <%/loop%>
+                <%/if%>
+                </table>

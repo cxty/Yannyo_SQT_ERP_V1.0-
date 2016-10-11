@@ -1,0 +1,118 @@
+<%template _header%>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<script type="text/javascript" src="/public/js/jquery.js"></script>
+<script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+<script type="text/javascript" src="/public/js/priceclass.js"></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<form action="" method="post" name="form1" id="form1">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="left" style="height:100%;width:100%">
+         <table width="100%" border="0" align="left" cellpadding="0" cellspacing="0" style="height:100%;">
+         <tr>
+           <td align="left" style="width:25%">
+               <table width="100%" border="0" cellpadding="4" cellspacing="1" style=" background-color:#cccccc;height:100%">
+               <tr><td><b>价格分类</b></td></tr>
+               </table>
+           </td>
+           <td style="width:75%">
+                <table width="100%" border="0" cellpadding="4" cellspacing="1" style=" background-color:#cccccc;height:100%">
+                <tr><td colspan="6"> 
+                <b>当前选择：</b><input type="text"  id="tSel" disabled="disabled" />&nbsp;&nbsp;&nbsp;
+                <input type="hidden" id="dClassID" name="dClassID" />
+                </td></tr>
+                </table>
+           </td>
+         </tr>
+
+         <tr>
+         <td align="left">
+             <table width="100%" border="0" cellpadding="4" cellspacing="1"  style="background-color:#EDEDED">
+             <tr><td style="height:26px">&nbsp;</td></tr>
+                 <tr>
+                     <td>
+                      <div id="tTree" class="tTree" style="width:90%;height:370px; border:1px solid #cccccc"></div>
+                     </td>
+                 </tr>
+             <tr>
+              <td style="background-color:#EDEDED;height:26px"></td>
+             </tr>
+             </table>
+         </td>
+         <td >
+               <table  border="0" cellpadding="4" cellspacing="1" style="background-color:#EDEDED;width:100%;height:100%">
+               <tr style="height:24px">
+                 <td colspan="5">
+                    <input type="button" id="btn_delete" name="btn_del" value="选中删除 - " class="B_INPUT" style="cursor:pointer" />
+                    <input type="button" id="add_folder" class="B_INPUT" name="add_folder" value="添加分类 + "  style="cursor:pointer"/>
+                 </td>
+               </tr>
+               <tr>
+               <td colspan="5" style="background-color:#EDEDED">
+               <!--选项卡1-->
+               <div align="center" id="divOne" style="height:372px;width:100%; overflow-y:scroll;background-color:#ffffff; border:1px solid #cccccc">
+                <table id="edTable" width="100%" border="0" cellspacing="2" cellpadding="2" style="margin-top:0px">
+                <tr class="tBar" align="center">
+                    <td align="center" style="width:5%"><input id="Checkbox1" class="B_Check" name="Checkbox1" type="checkbox"  style="width:25px"/></td>
+                    <td style="width:25%">名称</td>
+                    <td style="width:20%">上级分类</td>
+                    <td style="width:10%">排序</td>
+                    <td style="width:20%">操作时间</td>
+                    <td style="width:20%">操作</td>
+                </tr>
+               
+                <%if pParent !=null%>
+                <%loop pl pParent%>
+                 <tr class="tBar"  align="center" style="font-weight:normal">
+                    <td style="width:5%">
+                      <input class="checkID" name="checkID" type="checkbox" value="{pl[PriceClassID]}" style="width:25px"/>
+                    </td>
+                    <td align="left" style="width:25%">{pl[pClassName]}</td>
+                    <td align="left" style="width:20%">
+                    <%if pl["parentName"].ToString()==""%>
+                    顶级
+                    <%else%>{pl[parentName]}<%/if%>
+                    </td>
+                    <td style="width:10%">{pl[pOrder]}</td>
+                    <td style="width:20%">{pl[pAppendTime]}</td>
+                    <td style="width:20%">
+                    <a id="upd" onclick="javascript:upDate('{pl[PriceClassID]}')" style="cursor:pointer">修改</a>&nbsp;&nbsp;<a class="remove" onclick="javascript:delData('{pl[PriceClassID]}','{pl[pParentID]}','{pl[pClassName]}')" style="cursor:pointer">删除</a>
+                    </td>
+                </tr>
+                <%/loop%>
+                <%/if%>
+                </table>
+                    
+                </div>
+               </td>
+               </tr>
+               <tr><td style="height:26px"></td></tr>
+               </table>
+         </td>
+         </tr>
+     </table>
+    </td>
+  </tr>
+</table>
+      <%/if%>
+
+</form>
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

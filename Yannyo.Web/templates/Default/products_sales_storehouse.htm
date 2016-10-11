@@ -1,0 +1,220 @@
+﻿<%template _poppageheader%>
+<body>
+<script src="/public/js/jquery.js" type="text/javascript" ></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script src="/public/js/myFrontPageJs/products_sales.js" type="text/javascript" language="javascript" ></script>
+        <form action="" method="post" name="form1" id="form1">
+          <div>
+           <table border="0" cellpadding="0" cellspacing="2" style="width:100%; background-color:#cccccc">
+            <tr>
+             <td colspan="5">
+             <span style="font-size:11pt">
+             <b>[统计类型：</b>
+             <%if sID==0%>
+              <b>时间段]</b>
+             <%/if%>
+              <%if sID==1%>
+              <b>年统计]</b>
+             <%/if%>
+              <%if sID==2%>
+              <b>月统计]</b>
+             <%/if%>
+             <b>[统计时间：</b>
+             <%if sID==0%>
+             <b><%set {aspxrewriteurl}=bDate.ToString("yyyy年MM月dd日")%>{aspxrewriteurl}至<%set {aspxrewriteurl}=eDate.ToString("yyyy年MM月dd日")%>{aspxrewriteurl}]</b>
+              <%/if%>
+               <%if sID==1%>
+             <b><%set {aspxrewriteurl}=bDate.ToString("yyyy")%>{aspxrewriteurl}年]</b>
+              <%/if%>
+               <%if sID==2%>
+             <b><%set {aspxrewriteurl}=bDate.ToString("yyyy年MM")%>{aspxrewriteurl}月]</b>
+              <%/if%>
+             </span>
+             </td>
+            </tr>
+            <tr>
+             <td colspan="8"><hr /></td>
+            </tr>
+           </table>
+           <div id="space"></div>
+           <div class="datalist">
+           <table id="title_space" class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+            <tr class="tBar">
+              <td align="center" rowspan="2" style="width:5%;height:30px"><span style="font-size:larger"><b>编号</b></span></td>
+              <td align="center" rowspan="2" style="width:13%"><span style="font-size:larger"><b>门店名称</b></span></td>
+              <td align="center" rowspan="2" style="width:30%"><span style="font-size:larger"><b>商品名称</b></span></td>
+              <td align="center" rowspan="2" style="width:10%"><span style="font-size:larger"><b>商品条码</b></span></td>
+              <%if {sID}==2%>
+              <td align="center" colspan="3" style="width:21%"><span style="font-size:larger"><b>购销日均销量</b></span></td>
+              <%else%>
+              <td align="center" colspan="2" style="width:21%"><span style="font-size:larger"><b>购销日均销量</b></span></td>
+              <%/if%>
+
+              <%if {sID}==2%>
+              <td align="center" colspan="3" style="width:21%"><span style="font-size:larger"><b>客户日均销量</b></span></td>
+              <%else%>
+              <td align="center" colspan="2" style="width:21%"><span style="font-size:larger"><b>客户日均销量</b></span></td>
+              <%/if%>
+            </tr>
+            <tr class="tBar">
+              <!--购销日均销量-->
+              <td align="center" style="width:7%"><b>日均销量</b></td>
+              <td align="center" style="width:7%"><b>同比销量</b></td>
+              <%if {sID}==2%>
+              <div style="visibility:visible">
+              <td align="center" style="width:7%"><b>环比销量</b></td>
+              </div>
+              <%/if%>
+              <!--门店日均销量-->
+              <td align="center" style="width:7%"><b>日均销量</b></td>
+              <td align="center" style="width:7%"><b>同比销量</b></td>
+              <%if {sID}==2%>
+              <div style="visibility:visible">
+              <td align="center" style="width:7%"><b>环比销量</b></td>
+              </div>
+              <%/if%>
+            </tr>
+           </table>
+           </div>
+           <table id="tBoxs"  class="tBox" border="0" cellpadding="0" cellspacing="2" style="width:100%">
+             <%if sList !=null%>
+             <%loop sl sList%>
+             <%set {tList}=Products_sales_storehouse_basis({pID},{sl[StoresID]},{bDate},{eDate},{sID}) %>
+             <tr>
+              <td align="center"  style="width:5%">{sl__loop__id}</td>
+              <td align="left"  style="width:13%">{sl[sName]}</td>
+              <td align="left"  style="width:30%">{pName}</td>
+              <td align="center"  style="width:10%">{pBarcode}</td>
+           <%if {sID}!=2%>
+              <!--[购销]日均销量-->
+              <td align="center"  style="width:10.5%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sl[oQuantity]}),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>
+              <%if tList !=null%>
+              <%loop tl tList%> 
+              <!--[购销]同比销量-->
+              <td align="center"  style="width:10.5%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({tl[oQuantity]}),2).ToString()%>
+              {aspxrewriteurl}
+              <%set {sumAA}=decimal.Round(sumAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>             
+              <%/loop%>
+              <%else%>
+              <td align="center"  style="width:10.5%">0.00</td>
+              <%/if%>
+
+           <%else%>
+            <%set {hList}=Products_sales_storehouse_annulus({pID},{sl[StoresID]},{bDate},{eDate},{sID}) %>
+             <!--[购销]日均销量-->
+              <td align="center"  style="width:7%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sl[oQuantity]}),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>
+              <%if tList !=null%>
+              <%loop tl tList%> 
+              <!--[购销]同比销量-->
+              <td align="center"  style="width:7%">
+               <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({tl[oQuantity]}),2).ToString()%>
+              {aspxrewriteurl}
+               <%set {sumAA}=decimal.Round(sumAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>
+              <%/loop%>
+              <%else%>
+              <td align="center"  style="width:7%">0.00</td>
+              <%/if%>
+
+              <%if hList !=null%>
+              <%loop hl hList%>
+               <!--[购销]环比销量-->
+              <td align="center"  style="width:7%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({hl[oQuantity]}),2).ToString()%>
+              {aspxrewriteurl}
+              <%set {sumAAA}=decimal.Round(sumAAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>
+              <%/loop%>
+              <%else%>
+              <td align="center"  style="width:7%">0.00</td>
+              <%/if%>
+          <%/if%>
+               
+          <%if {sID}!=2%>
+              <!--[门店]日均销量-->
+              <td align="center"  style="width:10.5%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sl[sNum]}),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+              <%if tList !=null%>
+              <%loop tl tList%> 
+              <!--[门店]同比销量-->
+              <td align="center"  style="width:10.5%">
+               <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({tl[sNum]}),2).ToString()%>
+              {aspxrewriteurl}
+              <%set {sumBB}=decimal.Round(sumBB+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>
+              <%/loop%>
+              <%else%>
+              <td align="center"  style="width:10.5%">0.00</td>
+              <%/if%>
+          <%else%>
+           <%set {hList}=Products_sales_storehouse_annulus({pID},{sl[StoresID]},{bDate},{eDate},{sID}) %>
+              <!--[门店]日均销量-->
+              <td align="center"  style="width:7%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({sl[sNum]}),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {sumB}=decimal.Round(sumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>
+              <%if tList !=null%>
+              <%loop tl tList%>
+              <!--[门店]同比销量-->
+              <td align="center"  style="width:7%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({tl[sNum]}),2).ToString()%>
+              {aspxrewriteurl}
+              <%set {sumBB}=decimal.Round(sumBB+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>
+              <%/loop%>
+              <%else%>
+              <td align="center"  style="width:7%">0.00</td>
+              <%/if%>
+              <%if hList !=null%>
+              <%loop hl hList%>
+              <!--[门店]环比销量-->
+              <td align="center"  style="width:7%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({hl[sNum]}),2).ToString()%>
+              {aspxrewriteurl}
+              <%set {sumBBB}=decimal.Round(sumBBB+Convert.ToDecimal(aspxrewriteurl),2)%>
+              </td>
+              <%/loop%>
+              <%else%>
+              <td align="center"  style="width:7%">0.00</td>
+              <%/if%>
+           <%/if%>
+         
+             </tr>
+       <%/loop%>
+      <%/if%>
+         <tr>
+           <td align="center" colspan="4"><span style="font-size:larger"><b>门店单品日均销量合计</b></span></td>
+           <!--购销-->
+          
+           <td align="center"  style="width:7%"><b>{sumA}</b></td>
+           <td align="center"  style="width:7%"><b>{sumAA}</b></td>
+           <%if {sID}==2%>
+           <td align="center"  style="width:7%"><b>{sumAAA}</b></td>
+           <%/if%>
+           <!--客户销售-->
+           <td align="center"  style="width:7%"><b>{sumB}</b></td>
+           <td align="center"  style="width:7%"><b>{sumBB}</b></td>
+           <%if {sID}==2%>
+           <td align="center"  style="width:7%"><b>{sumBBB}</b></td>
+           <%/if%>
+         </tr>
+         </table>
+        </div>
+
+        </form>
+        <%template _footer%>

@@ -1,0 +1,104 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Config", "Yannyo.Config\Yannyo.Config.csproj", "{F6A5F6C1-BD11-441D-B956-3BF52AEED890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Data", "Yannyo.Data\Yannyo.Data.csproj", "{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Data.SqlServer", "Yannyo.Data.SqlServer\Yannyo.Data.SqlServer.csproj", "{A1A66329-FE25-47D7-98FE-5F1EC3D2A872}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Entity", "Yannyo.Entity\Yannyo.Entity.csproj", "{41156C65-96B0-4026-A4FF-94CC299ABCAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.BLL", "Yannyo.BLL\Yannyo.BLL.csproj", "{8D8794D4-EAEF-48A3-86B3-C822FF35C793}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Public", "Yannyo.Public\Yannyo.Public.csproj", "{0ABFDA16-4699-49BD-B8A7-D87881BBDAEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Cache", "Yannyo.Cache\Yannyo.Cache.csproj", "{DEC263A7-C844-46A2-B143-91FE1B3A3851}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Web", "Yannyo.Web\Yannyo.Web.csproj", "{3D168DD8-D062-4EF8-BCB8-97C2543AE141}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DEC263A7-C844-46A2-B143-91FE1B3A3851} = {DEC263A7-C844-46A2-B143-91FE1B3A3851}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.SOAP", "Yannyo.SOAP\Yannyo.SOAP.csproj", "{682F3CEC-7381-417D-8C1D-A929C9BEAF85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopSdk", "Taobao.TopSdk\TopSdk.csproj", "{9C11CAE5-5188-4E71-825B-68FC3135728A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Event", "Yannyo.Event\Yannyo.Event.csproj", "{61F39CF8-563A-4A13-BE58-84DC7358F6C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Install", "Yannyo.Install\Yannyo.Install.csproj", "{2C38C4D1-3623-4440-B0F4-17F780B8BD7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yannyo.Common", "Yannyo.Common\Yannyo.Common.csproj", "{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6A5F6C1-BD11-441D-B956-3BF52AEED890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A5F6C1-BD11-441D-B956-3BF52AEED890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A5F6C1-BD11-441D-B956-3BF52AEED890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A5F6C1-BD11-441D-B956-3BF52AEED890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1A66329-FE25-47D7-98FE-5F1EC3D2A872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1A66329-FE25-47D7-98FE-5F1EC3D2A872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1A66329-FE25-47D7-98FE-5F1EC3D2A872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1A66329-FE25-47D7-98FE-5F1EC3D2A872}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41156C65-96B0-4026-A4FF-94CC299ABCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41156C65-96B0-4026-A4FF-94CC299ABCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41156C65-96B0-4026-A4FF-94CC299ABCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41156C65-96B0-4026-A4FF-94CC299ABCAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D8794D4-EAEF-48A3-86B3-C822FF35C793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D8794D4-EAEF-48A3-86B3-C822FF35C793}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D8794D4-EAEF-48A3-86B3-C822FF35C793}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D8794D4-EAEF-48A3-86B3-C822FF35C793}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ABFDA16-4699-49BD-B8A7-D87881BBDAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ABFDA16-4699-49BD-B8A7-D87881BBDAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ABFDA16-4699-49BD-B8A7-D87881BBDAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ABFDA16-4699-49BD-B8A7-D87881BBDAEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEC263A7-C844-46A2-B143-91FE1B3A3851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC263A7-C844-46A2-B143-91FE1B3A3851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC263A7-C844-46A2-B143-91FE1B3A3851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEC263A7-C844-46A2-B143-91FE1B3A3851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D168DD8-D062-4EF8-BCB8-97C2543AE141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D168DD8-D062-4EF8-BCB8-97C2543AE141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D168DD8-D062-4EF8-BCB8-97C2543AE141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D168DD8-D062-4EF8-BCB8-97C2543AE141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{682F3CEC-7381-417D-8C1D-A929C9BEAF85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{682F3CEC-7381-417D-8C1D-A929C9BEAF85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{682F3CEC-7381-417D-8C1D-A929C9BEAF85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{682F3CEC-7381-417D-8C1D-A929C9BEAF85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C11CAE5-5188-4E71-825B-68FC3135728A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C11CAE5-5188-4E71-825B-68FC3135728A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C11CAE5-5188-4E71-825B-68FC3135728A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C11CAE5-5188-4E71-825B-68FC3135728A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61F39CF8-563A-4A13-BE58-84DC7358F6C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61F39CF8-563A-4A13-BE58-84DC7358F6C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61F39CF8-563A-4A13-BE58-84DC7358F6C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61F39CF8-563A-4A13-BE58-84DC7358F6C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C38C4D1-3623-4440-B0F4-17F780B8BD7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C38C4D1-3623-4440-B0F4-17F780B8BD7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C38C4D1-3623-4440-B0F4-17F780B8BD7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C38C4D1-3623-4440-B0F4-17F780B8BD7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A0EC5BD-742F-431D-A9EC-5C0342B2A76A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Yannyo.Web\Yannyo.Web.csproj
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal

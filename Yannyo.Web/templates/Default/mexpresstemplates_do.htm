@@ -1,0 +1,113 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="/public/js/dialog.js"></script>
+
+<%template _m_sign%>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="/public/js/m_expresstemplates_do.js"></script>
+        
+        <form action="" method="post" name="form1" id="form1">
+<table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox">
+  <tr>
+    <td width="15%" align="right" class="ltd">系统模板:</td>
+    <td class="rtd">
+    <select id="PublicExpressTemplates" name="PublicExpressTemplates">
+    <option value="-1">请选择系统模板</option>
+    </select></td>
+  </tr>
+  <tr>
+    <td align="right" class="ltd">模板名称:</td>
+    <td class="rtd"><input type="text" name="mName" id="mName" style="width:90%;" <%if Act=="Edit"%>value="{ExpressTemplates.mName}"<%/if%>>
+      *</td>
+  </tr>
+  <tr>
+    <td align="right" class="ltd">快递公司:</td>
+    <td class="rtd"><input type="text" name="mExpName" id="mExpName" style="width:90%;" <%if Act=="Edit"%>value="{ExpressTemplates.mExpName}"<%/if%>>
+      *</td>
+  </tr>
+  <tr>
+    <td align="right" class="ltd">运单图片:</td>
+    <td class="rtd"><input type="text" name="mPic" id="mPic" style="width:90%;" <%if Act=="Edit"%>value="{ExpressTemplates.mPIC}"<%/if%>>
+      *</td>
+  </tr>
+  <tr>
+    <td align="right" class="ltd">运单尺寸:</td>
+    <td class="rtd">宽:
+      <input type="text" name="mWidth" id="mWidth" style="width:50px" <%if Act=="Edit"%>value="{ExpressTemplates.mWidth}"<%/if%>>
+      *
+      mm 高:
+      <input type="text" name="mHeight" id="mHeight" style="width:50px" <%if Act=="Edit"%>value="{ExpressTemplates.mHeight}"<%/if%>>
+      mm*</td>
+  </tr>
+  <tr>
+    <td align="right" class="ltd">模板内容:</td>
+    <td class="rtd">
+    
+    <textarea name="mData" id="mData" style="width:90%;height:200px;" rows="25"><%if Act=="Edit"%>{ExpressTemplates.mData}<%/if%></textarea>*
+      <div class="ExpressTemplatesKey">
+    <ul>
+    <li>发货单编号:&nbsp;&nbsp;<b><b>{</b></b>OrderID<b><b>}</b></b></li>
+    <li>交易单编号:&nbsp;&nbsp;<b>{</b>MTradeInfoID<b>}</b></li>
+    <li>收货人姓名:&nbsp;&nbsp;<b>{</b>Receiver_name<b>}</b></li>
+    <li>收货人的所在省份:&nbsp;&nbsp;<b>{</b>Receiver_state<b>}</b></li>
+    <li>收货人的所在城市:&nbsp;&nbsp;<b>{</b>Receiver_city<b>}</b></li>
+    <li>收货人的所在地区:&nbsp;&nbsp;<b>{</b>Receiver_district<b>}</b></li>
+    <li>收货人的详细地址:&nbsp;&nbsp;<b>{</b>Receiver_address<b>}</b></li>
+    <li>收货人的邮编:&nbsp;&nbsp;<b>{</b>Receiver_zip<b>}</b></li>
+    <li>收货人的手机号码:&nbsp;&nbsp;<b>{</b>Receiver_mobile<b>}</b></li>
+    <li>收货人的电话号码:&nbsp;&nbsp;<b>{</b>Receiver_phone<b>}</b></li>
+
+    <li>发件人姓名:&nbsp;&nbsp;<b>{</b>From_name<b>}</b></li>
+    <li>发件公司名称:&nbsp;&nbsp;<b>{</b>From_company<b>}</b></li>
+    <li>发件人所在省份:&nbsp;&nbsp;<b>{</b>From_state<b>}</b></li>
+    <li>发件人所在城市:&nbsp;&nbsp;<b>{</b>From_city<b>}</b></li>
+    <li>发件人所在地区:&nbsp;&nbsp;<b>{</b>From_district<b>}</b></li>
+    <li>发件地址:&nbsp;&nbsp;<b>{</b>From_address<b>}</b></li>
+    <li>发件邮编:&nbsp;&nbsp;<b>{</b>From_zip<b>}</b></li>
+    <li>发件手机:&nbsp;&nbsp;<b>{</b>From_mobile<b>}</b></li>
+    <li>发件电话:&nbsp;&nbsp;<b>{</b>From_phone<b>}</b></li>
+
+    <li>备注:&nbsp;&nbsp;<b>{</b>MMemo<b>}</b></li>
+    </ul>
+    </div>
+      </td>
+  </tr>
+</table>
+<div style="height:50px"></div>
+<div id="footer_tool">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td align="center">
+        <input type="button" name="bt_ok" id="bt_ok" value=" 确定 " class="B_INPUT">
+        <input type="button" name="bt_cancel" id="bt_cancel" value=" 取消 " class="B_INPUT">
+      </td>
+    </tr>
+  </table>
+</div>
+</form>
+
+<script language="javascript" type="text/javascript">
+var MexpressTemplates_do = new TMexpressTemplates_do();
+MexpressTemplates_do.tExpJson = {PublicExpressTemplatesJson};
+MexpressTemplates_do.ini();
+
+</script>
+
+<%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

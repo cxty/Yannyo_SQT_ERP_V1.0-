@@ -1,0 +1,311 @@
+<table width="100%" border="0" cellpadding="1" cellspacing="1" class="tBox" id="tBox">
+<thead>
+ <tr class="tBar">
+    <td width="3%" rowspan="2" align="center">序号</td>
+    <td  rowspan="2" <%if ShowPrice==true%>width="13%"<%else%>width="25%"<%/if%> align="center">客户</td>
+    <td colspan="2" width="20%" align="center" >商品</td>
+    
+    <td align="center" 
+   colspan="3" 
+    >销售出货(含销售赠品)</td>
+    <td align="center" 
+    colspan="3" 
+    >销售退货</td>
+	<td align="center"
+     <%if ShowPrice==true%>colspan="3" <%else%>colspan="2" <%/if%> 
+     >销售赠品</td>
+    <td align="center"
+     <%if ShowPrice==true%>colspan="3" <%else%>colspan="2" <%/if%> 
+     >赠品单</td>
+    <td align="center"
+     <%if ShowPrice==true%>colspan="3" <%else%>colspan="2" <%/if%> 
+     >样品单</td>
+    <td width="5%" rowspan="2" align="center">销售额</td>
+    <%if ShowPrice==true%><td width="5%" rowspan="2" align="center">销售成本</td><%/if%>
+  </tr>
+ <tr class="tBar">
+   <td align="center" >条码</td>
+   <td  align="center" >名称</td>
+   <td width="4%" align="center">数量</td>
+    <td width="4%" align="center">件数</td>
+    
+    <td width="4%" align="center">金额</td>
+    
+   <td width="4%" align="center">数量</td>
+    <td width="4%" align="center">件数</td>
+    
+    <td width="4%" align="center">金额</td>
+    <td width="4%" align="center">数量</td>
+    <td width="4%" align="center">件数</td>
+    <%if ShowPrice==true%>
+    <td width="4%" align="center">金额</td>
+    <%/if%>
+
+   <td width="4%" align="center">数量</td>
+    <td width="4%" align="center">件数</td>
+    <%if ShowPrice==true%>
+    <td width="4%" align="center">金额</td>
+    <%/if%>
+    <td width="4%" align="center">数量</td>
+    <td width="4%" align="center">件数</td>
+    <%if ShowPrice==true%>
+    <td width="4%" align="center">金额</td>
+    <%/if%>
+ </tr>
+</thead>
+ <tbody>
+ <%if cList!=null%>
+     <%if DateType==0%>
+        <%set {tLoopid_a}=0%>
+         <%loop cl cList%>
+            <%set {bMoneyA}=0%>
+            <%set {bMoneyAA}=0%>
+            <%set {bMoneyAAA}=0%>
+            <%set {bMoneyB}=0%>
+            <%set {bMoneyBB}=0%>
+            <%set {bMoneyBBB}=0%>
+            <%set {bMoneyC}=0%>
+            <%set {bMoneyCC}=0%>
+            <%set {bMoneyCCC}=0%>
+            <%set {bMoneyD}=0%>
+            <%set {bMoneyDD}=0%>
+            <%set {bMoneyDDD}=0%>
+            <%set {bMoneyH}=0%>
+            <%set {bMoneyHH}=0%>
+            <%set {bMoneyHHH}=0%>
+        
+            <%set {bMoneyE}=0%>
+            <%set {bMoneyF}=0%>
+            <%set {bMoneyG}=0%>
+            
+            <%set {tLoopid}=1%>
+            
+            <%if Convert.ToInt32(cl["pCount"].ToString())>0%>
+                <%set {tLoopid_a}=tLoopid_a+1%>
+                <tr>
+                <td  align="center" valign="top" <%if Convert.ToInt32(cl["pCount"].ToString())>0%>rowspan="{cl[pCount]}"<%/if%>>{tLoopid_a}</td>
+                <td  align="left" valign="top" <%if Convert.ToInt32(cl["pCount"].ToString())>0%>rowspan="{cl[pCount]}"<%/if%>>{cl[sName]}</td>
+                <%if dList != null%>
+                  <%loop dl dList%>
+                        <%if  Convert.ToInt32(dl["StoresID"].ToString()) == Convert.ToInt32(cl["StoresID"].ToString())%>
+                          <%if (tLoopid%2) == 0%><tr><%/if%>
+                          <td  align="left">{dl[pBarcode]}</td>
+                          <td  align="left">{dl[pName]}</td>
+                          <td  align="right" class="dboxleft">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyAAA} = Convert.ToDecimal(bMoneyAAA+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <td  align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"])/Convert.ToDecimal(dl["pToBoxNo"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyAA} = Convert.ToDecimal(bMoneyAA+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          
+                          <td  align="right">
+                            <%set {aspxrewriteurl} =  decimal.Round(Convert.ToDecimal(dl["oMoney"]),2).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyA} = Convert.ToDecimal(bMoneyA+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                
+                          <td  align="right" class="dboxleft">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity_t"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyBBB} = Convert.ToDecimal(bMoneyBBB+Convert.ToDecimal(aspxrewriteurl))%>
+                          
+                          </td>
+                          <td  align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity_t"])/Convert.ToDecimal(dl["pToBoxNo"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyBB} = Convert.ToDecimal(bMoneyBB+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          
+                          <td  align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oMoney_t"]),2).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyB} = Convert.ToDecimal(bMoneyB+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          
+                
+                          <td  align="right" class="dboxleft">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity_sz"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyHHH} = Convert.ToDecimal(bMoneyHHH+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <td align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity_sz"])/Convert.ToDecimal(dl["pToBoxNo"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyHH} = Convert.ToDecimal(bMoneyHH+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <%if ShowPrice==true%>
+                          <td  align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["CostPrice"])*Convert.ToDecimal(dl["oQuantity_sz"]),2).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyH} = Convert.ToDecimal(bMoneyH+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <%/if%>
+                          
+                          <td  align="right" class="dboxleft">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity_z"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyCCC} = Convert.ToDecimal(bMoneyCCC+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <td align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity_z"])/Convert.ToDecimal(dl["pToBoxNo"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyCC} = Convert.ToDecimal(bMoneyCC+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <%if ShowPrice==true%>
+                          <td  align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["CostPrice"])*Convert.ToDecimal(dl["oQuantity_z"]),2).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyC} = Convert.ToDecimal(bMoneyC+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <%/if%>
+                          
+                          <td  align="right" class="dboxleft">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity_y"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyDDD} = Convert.ToDecimal(bMoneyDDD+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <td  align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity_y"])/Convert.ToDecimal(dl["pToBoxNo"]),config.QuantityDecimal).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyDD} = Convert.ToDecimal(bMoneyDD+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <%if ShowPrice==true%>
+                          <td  align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["CostPrice"])*Convert.ToDecimal(dl["oQuantity_y"]),2).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyD} = Convert.ToDecimal(bMoneyD+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <%/if%>
+                          
+                          <td  align="right" class="dboxleft">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oMoney"])-Convert.ToDecimal(dl["oMoney_t"]),2).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyF} = Convert.ToDecimal(bMoneyF+Convert.ToDecimal(aspxrewriteurl))%>
+                          </td>
+                          <%if ShowPrice==true%>
+                          <td  align="right">
+                            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["CostPrice"])*(Convert.ToDecimal(dl["oQuantity"])-Convert.ToDecimal(dl["oQuantity_t"])+Convert.ToDecimal(dl["oQuantity_z"])+Convert.ToDecimal(dl["oQuantity_y"])),2).ToString()%>
+                                {aspxrewriteurl}
+                            <%set {bMoneyG} = Convert.ToDecimal(bMoneyG+Convert.ToDecimal(aspxrewriteurl))%>
+                            
+                          </td>
+                          <%/if%>
+                          <%if (tLoopid%2) == 0%></tr><%/if%>
+                          <%set {tLoopid}=tLoopid+1%>
+                      <%/if%>
+                  <%/loop%>
+                  <%if Convert.ToInt32(cl["pCount"].ToString())>0%><tr><%/if%>
+                        <td colspan="2" align="center" class="tBar">小计:</td>
+                        <td align="right" class="tBar dboxleft">
+                        <span>{bMoneyAAA}</span>
+                        <%set {MoneyAAA}=MoneyAAA+bMoneyAAA%>
+                        </td>
+                        <td  align="right" class="tBar"><span>{bMoneyAA}</span>
+                        <%set {MoneyAA}=MoneyAA+bMoneyAA%>
+                        </td>
+                        
+                        <td  align="right" class="tBar">
+                        <span>{bMoneyA}</span>
+                        <%set {MoneyA}=MoneyA+bMoneyA%>
+                        </td>
+                        
+                        <td  align="right" class="tBar dboxleft">
+                        <span>{bMoneyBBB}</span>
+                        <%set {MoneyBBB}=MoneyBBB+bMoneyBBB%>
+                        </td>
+                        <td  align="right" class="tBar"><span>{bMoneyBB}</span>
+                        <%set {MoneyBB}=MoneyBB+bMoneyBB%>
+                        </td>
+                        
+                        <td  align="right" class="tBar"><span>{bMoneyB}</span>
+                        <%set {MoneyB}=MoneyB+bMoneyB%>
+                        </td>
+                        
+                        <td  align="right" class="tBar dboxleft"><span>{bMoneyHHH}</span>
+                        <%set {MoneyHHH}=MoneyHHH+bMoneyHHH%>
+                        </td>
+                        <td  align="right" class="tBar"><span>{bMoneyHH}</span>
+                        <%set {MoneyHH}=MoneyHH+bMoneyHH%>
+                        </td>
+                        <%if ShowPrice==true%>
+                        <td  align="right" class="tBar"><span>{bMoneyH}</span>
+                        <%set {MoneyH}=MoneyH+bMoneyH%>
+                        </td>
+                        <%/if%>
+                        
+                        <td  align="right" class="tBar dboxleft"><span>{bMoneyCCC}</span>
+                        <%set {MoneyCCC}=MoneyCCC+bMoneyCCC%>
+                        </td>
+                        <td  align="right" class="tBar"><span>{bMoneyCC}</span>
+                        <%set {MoneyCC}=MoneyCC+bMoneyCC%>
+                        </td>
+                        <%if ShowPrice==true%>
+                        <td  align="right" class="tBar"><span>{bMoneyC}</span>
+                        <%set {MoneyC}=MoneyC+bMoneyC%>
+                        </td>
+                        <%/if%>
+                        <td align="right" class="tBar dboxleft"><span>{bMoneyDDD}</span>
+                        <%set {MoneyDDD}=MoneyDDD+bMoneyDDD%>
+                        </td>
+                        <td  align="right" class="tBar"><span>{bMoneyDD}</span>
+                        <%set {MoneyDD}=MoneyDD+bMoneyDD%>
+                        </td>
+                        <%if ShowPrice==true%>
+                        <td  align="right" class="tBar"><span>{bMoneyD}</span>
+                        <%set {MoneyD}=MoneyD+bMoneyD%>
+                        </td>
+                        <%/if%>
+                        <td  align="right" class="tBar dboxleft"><span>{bMoneyF}</span>
+                        <%set {MoneyF}=MoneyF+bMoneyF%>
+                        </td>
+                        <%if ShowPrice==true%>
+                        <td  align="right" class="tBar dboxleft"><span>{bMoneyG}</span>
+                        <%set {MoneyG}=MoneyG+bMoneyG%>
+                        </td>
+                        <%/if%>
+                  <%if Convert.ToInt32(cl["pCount"].ToString())>0%></tr><%/if%>
+                <%/if%>
+                </tr>
+            <%/if%>
+          <%/loop%>
+     <%/if%>
+ <%/if%>
+</tbody>
+
+
+
+<tfoot>
+  <tr class="tBar">
+    <td colspan="4" align="center">合计:</td>
+    <td align="right"><span>{MoneyAAA}</span></td>
+    <td align="right"><span>{MoneyAA}</span></td>
+    <td align="right"><span>{MoneyA}</span></td>
+	
+    <td align="right"><span>{MoneyBBB}</span></td>
+    <td align="right"><span>{MoneyBB}</span></td>
+    <td align="right"><span>{MoneyB}</span></td>
+
+	<td align="right"><span>{MoneyHHH}</span></td>
+    <td align="right"><span>{MoneyHH}</span></td>
+    <%if ShowPrice==true%><td align="right"><span>{MoneyH}</span></td><%/if%>
+
+	<td align="right"><span>{MoneyCCC}</span></td>
+    <td align="right"><span>{MoneyCC}</span></td>
+    <%if ShowPrice==true%><td align="right"><span>{MoneyC}</span></td><%/if%>
+
+	<td align="right"><span>{MoneyDDD}</span></td>
+    <td align="right"><span>{MoneyDD}</span></td>
+    <%if ShowPrice==true%><td align="right"><span>{MoneyD}</span></td><%/if%>
+    <td align="right"><span>{MoneyF}</span></td>
+    <%if ShowPrice==true%>
+    <td align="right"><span>{MoneyG}</span></td>
+    <%/if%>
+  </tr>
+</tfoot>
+
+
+</table>

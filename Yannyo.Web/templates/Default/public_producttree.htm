@@ -1,0 +1,30 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/public/js/jquery.hotkeys.js"></script>
+<script type="text/javascript" src="/public/js/jquery.jstree.js"></script>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+<script type="text/javascript" src="/public/js/public_producttree.js"></script>
+<div id="ptTree"></div>
+<script language="javascript" type="text/javascript">
+var Public_ProductTree = new TPublic_ProductTree();
+Public_ProductTree.reobj = '{objstr}';
+Public_ProductTree.ini();
+</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

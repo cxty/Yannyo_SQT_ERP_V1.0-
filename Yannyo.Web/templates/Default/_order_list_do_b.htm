@@ -1,0 +1,194 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="OrderListTool">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td valign="top">
+    客 户:<br>
+    <input name="StoresName" id="StoresName" type="text" 
+<%if Act=="v"%>value="{oi.StoresSupplierName}"<%/if%> showtitle="输入*检索"
+/>
+<INPUT TYPE="hidden" NAME="StoresID" id="StoresID" 
+<%if Act=="v"%>value="{oi.StoresSupplierID}"<%/if%>
+/>
+<input type="hidden" name="PriceClassID" id="PriceClassID" 
+<%if Act=="v"%>value="{oi.PriceClassID}"<%/if%>
+/>
+</td>
+    <td valign="top">客户编号: <br><span id="sCode"><%if Act=="v"%>{oi.StoresSupplierCode}<%/if%></span></td>
+    <td valign="top">
+业务员:<br />
+<input name="StaffName" id="StaffName" type="text" 
+<%if Act=="v"%>value="{oi.StaffName}"<%/if%> showtitle="输入*检索"
+/>
+<INPUT TYPE="hidden" NAME="StaffID" id="StaffID" 
+<%if Act=="v"%>value="{oi.StaffID}"<%/if%>
+/>
+    </td>
+    <td valign="top">
+<%set {aspxrewriteurl}=oOrderDateTime.ToString("yyyy-MM-dd")%>
+日期:<br /><input name="oOrderDateTime" type="text" id="oOrderDateTime" onClick="new Calendar().show(this);" value="{aspxrewriteurl}" readonly/>
+    </td>
+  </tr>
+  <tr>
+    <td valign="top">
+联系人:<br /><input type="text" id="oCustomersContact" name="oCustomersContact" 
+<%if Act=="v"%>value="{oi.oCustomersContact}"<%/if%>
+  />
+    </td>
+    <td valign="top">
+联系电话:<br /><input type="text" id="oCustomersTel" name="oCustomersTel" 
+<%if Act=="v"%>value="{oi.oCustomersTel}"<%/if%>
+  />
+    </td>
+    <td colspan="2" valign="top">
+      地址:<br />      <input type="text" id="oCustomersAddress" style="width:300px" name="oCustomersAddress" 
+<%if Act=="v"%>value="{oi.oCustomersAddress}"<%/if%>
+  />
+    </td>
+    </tr>
+  <tr>
+    <td valign="top">客户订单号:<br /><input type="text" id="oCustomersOrderID"  name="oCustomersOrderID" 
+<%if Act=="v"%>value="{oi.oCustomersOrderID}"<%/if%>
+  /></td>
+    <td valign="top">客户指定配送点:<br /><input type="text" id="oCustomersNameB"  name="oCustomersNameB" 
+<%if Act=="v"%>value="{oi.oCustomersNameB}"<%/if%>
+  /></td>
+    <td colspan="2" valign="top">&nbsp;</td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+  <td>
+  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox">
+	<tr class="tBar">
+	  <td width="80px">仓库</td>
+	  <td width="100px">条码</td>
+	  <td>商品名称</td>
+	  <td width="30px">包装量</td>
+	  <td width="80px">单价(元)</td>
+	  <td width="80px">数量(最小单位)</td>
+	  <td width="80px">金额</td>
+     <%if OrderFieldList!=null%>
+      <%loop ofl OrderFieldList%>
+      	<td width="80px">{ofl[fName]}</td>
+      <%/loop%>
+     <%/if%>
+     <%if ShowEdit == true%>
+	  <td width="50px" >操作</td>
+      <%/if%>
+	</tr>
+  </table>
+  <div id="OrderListLoop">
+  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox" id="OrderListLoop_data">
+	
+  </table>
+  </div>
+  </td>
+</tr>
+</table>
+<script language="javascript" type="text/javascript">
+$().ready(function(){
+	$('#StoresName').autocomplete('Services/CAjax.aspx',{
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStoresInfoList',
+			'RCode':Math.random(),
+			'StoresName':function(){return $('#StoresName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value,
+					sCode:tArray[i].info,
+					CustomersClassID:tArray[i].CustomersClassID,
+					CustomersClassName:tArray[i].CustomersClassName,
+					PriceClassID:tArray[i].PriceClassID,
+					PriceClassName:tArray[i].PriceClassName,
+					sType:tArray[i].sType,
+					sIsFZYH:tArray[i].sIsFZYH,
+					YHsysName:tArray[i].YHsysName,
+					sContact:tArray[i].sContact,
+					sTel:tArray[i].sTel,
+					sAddress:tArray[i].sAddress,
+					StaffID:tArray[i].StaffID,
+					StaffName:tArray[i].StaffName
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted, row) {
+			$("#sCode").html(row.sCode);
+			$('#StaffName').val(row.StaffName);
+			$('#StaffID').val(row.StaffID);
+			$('#oCustomersContact').val(row.sContact);
+			$('#oCustomersTel').val(row.sTel);
+			$('#oCustomersAddress').val(row.sAddress);
+			$("#StoresID").val((formatted!=null)?formatted:"0");   
+			$("#PriceClassID").val(row.PriceClassID);
+		}
+	  );
+	  
+	$('#StaffName').autocomplete('Services/CAjax.aspx',{
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStaffList',
+			'RCode':Math.random(),
+			'sType':1,//只调用业务员数据
+			'StaffName':function(){return $('#StaffName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StaffID").val((formatted!=null)?formatted:"0");      
+		}
+	  );
+});
+
+ OrderField = '{OrderFieldListJson}';
+ OrderListDataJsonStr = '{OrderListDataJsonStr}';
+</script>

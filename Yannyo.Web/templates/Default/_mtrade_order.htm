@@ -1,0 +1,143 @@
+<%set {sum_a}=0%>
+<%set {sum_b}=0%>
+<%set {sum_c}=0%>
+<%set {sum_d}=0%>
+<%set {sum_e}=0%>
+<%if oList!=null%>
+          <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tBox" id="order_box_{dl__loop__id}">
+          <tr class="tBar">
+            <td colspan="2">商品名称</td>
+            <td width="20%">对应商品</td>
+            <td width="8%" align="right">单价</td>
+            <td width="8%" align="right">数量</td>
+            <td width="8%" align="right">应付金额</td>
+            <td width="8%" align="right">优惠金额</td>
+            <td width="8%" align="right">调整金额</td>
+            <td width="8%" align="right">实付金额</td>
+            <td width="8%" align="right">订单到期时间</td>
+          </tr>
+          <%loop ol oList%>
+          <%if ol["m_TradeInfoID"].ToString() == dl["m_TradeInfoID"].ToString()%>
+          
+          <tr>
+            <td width="50" valign="middle">
+            <%if ol["pic_path"].ToString().Trim()!=""%>
+            <img src="{ol[pic_path]}" alt="{ol[title]}" width="50" height="50" />
+            <%/if%></td>
+            <td valign="middle">{ol[title]} </td>
+            <td width="20%">{ol[ProductsName]}<br>
+            {ol[ProductsBarcode]}</td>
+            <td width="8%" align="right">{ol[price]}</td>
+            <td width="8%" align="right">{ol[num]}
+            <%set {sum_a}={sum_a}+decimal.Parse(ol["num"].ToString())%>
+            </td>
+            <td width="8%" align="right">{ol[total_fee]}
+             <%set {sum_b}={sum_b}+decimal.Parse(ol["total_fee"].ToString())%>
+            </td>
+            <td width="8%" align="right">{ol[discount_fee]}
+            <%set {sum_c}={sum_c}+decimal.Parse(ol["discount_fee"].ToString())%>
+            </td>
+            <td width="8%" align="right">
+            
+            
+            {ol[adjust_fee]}
+            <%set {sum_d}={sum_d}+decimal.Parse(ol["adjust_fee"].ToString())%>
+            </td>
+            <td width="8%" align="right">{ol[payment]}
+            <%set {sum_e}={sum_e}+decimal.Parse(ol["payment"].ToString())%>
+            </td>
+            <td width="8%" align="right">
+            <%set {aspxrewriteurl} = FormatDateTime(ol["timeout_action_time"])%>
+            {aspxrewriteurl}
+            </td>
+          </tr>
+          
+          <%/if%>
+          <%/loop%>
+          <tr>
+            <td colspan="2">合计:</td>
+            <td>&nbsp;</td>
+            <td align="right">&nbsp;</td>
+            <td align="right">{sum_a}</td>
+            <td align="right">{sum_b}</td>
+            <td align="right">{sum_c}</td>
+            <td align="right">{sum_d}</td>
+            <td align="right">{sum_e}</td>
+            <td align="right">&nbsp;</td>
+          </tr>
+        </table>
+        
+        <table width="100%" border="0" cellspacing="1" cellpadding="0">
+  <tr>
+    <td  class="ltd">销售单单号:</td>
+    <td  class="rtd">&nbsp;</td>
+    <td  class="ltd">物流方式:</td>
+    <td  class="rtd">
+    <%set {aspxrewriteurl}=GetTradeShippingTypes(dl["shipping_type"].ToString())%>
+            {aspxrewriteurl}</td>
+    <td  class="ltd">付款时间:</td>
+    <td  class="rtd"><%set {aspxrewriteurl} = FormatDateTime(dl["pay_time"])%>
+{aspxrewriteurl}</td>
+  </tr>
+  <tr>
+    <td  class="ltd">物流公司:</td>
+    <td  class="rtd">&nbsp;</td>
+    <td  class="ltd">运单号:</td>
+    <td  class="rtd">&nbsp;</td>
+    <td  class="ltd">确认时间:</td>
+    <td  class="rtd">
+    <%set {aspxrewriteurl} = FormatDateTime(dl["end_time"])%>
+{aspxrewriteurl}
+    </td>
+  </tr>
+  <tr>
+    <td  class="ltd">收货地址:</td>
+    <td colspan="5" class="rtd">{dl[receiver_name]},{dl[receiver_state]},{dl[receiver_city]},{dl[receiver_district]},{dl[receiver_zip]}<br>
+    {dl[receiver_address]},手机:{dl[receiver_mobile]},电话号码:{dl[receiver_phone]},Email:{dl[buyer_email]}
+    </td>
+    </tr>
+  <tr>
+    <td  class="ltd">买家留言:</td>
+    <td class="rtd">{dl[buyer_memo]}</td>
+    <td class="ltd">买家平价:</td>
+    <td class="rtd">
+    <%if Convert.ToBoolean(dl["buyer_rate"])==true %>
+            是
+            <%else%>
+            否
+            <%/if%>
+    </td>
+    <td  class="ltd">买家备注:</td>
+    <td  class="rtd">
+    <img src="/images/op/op_memo_{dl[buyer_flag]}.png" />
+    </td>
+  </tr>
+  <tr>
+    <td  class="ltd">卖家留言:</td>
+    <td class="rtd">{dl[seller_memo]}</td>
+    <td class="ltd">卖家平价:</td>
+    <td class="rtd">
+    <%if Convert.ToBoolean(dl["seller_rate"])==true %>
+            是
+            <%else%>
+            否
+            <%/if%>
+    </td>
+    <td  class="ltd">卖家备注:</td>
+    <td  class="rtd">
+    <img src="/images/op/op_memo_{dl[seller_flag]}.png" />
+    </td>
+  </tr>
+  <tr>
+    <td class="ltd">发票抬头:</td>
+    <td class="rtd">{dl[invoice_name]}</td>
+    <td class="ltd">促销信息:</td>
+    <td colspan="3" class="rtd">{dl[promotion]}</td>
+    </tr>
+        </table>
+
+        
+<script language="javascript" type="text/javascript">
+        addTableListener(document.getElementById("order_box_{dl__loop__id}"),0,0);
+		</script>
+          <%/if%>

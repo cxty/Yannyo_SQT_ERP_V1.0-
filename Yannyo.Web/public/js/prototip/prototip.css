@@ -1,0 +1,427 @@
+.prototip {
+  color:#000000;
+  font:normal normal normal 11px/normal Arial, Helvetica, sans-serif;
+}
+.prototip .default {
+  color:#808080;
+  width:250px;
+}
+.prototip .default .toolbar {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#F1F1F1;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  font-weight:bold;
+}
+.prototip .default .title {
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .default .content {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#FFFFFF;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .basic {
+  color:#808080;
+  width:250px;
+}
+.prototip .basic .toolbar {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#F1F1F1;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  font-weight:bold;
+}
+.prototip .basic .title {
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .basic .content {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#FFFFFF;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .hint {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#FFF6AA;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  color:#313120;
+  width:250px;
+}
+.prototip .hint .toolbar {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#FDF1A0;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  font-weight:bold;
+}
+.prototip .hint .title, .prototip .hint .content {
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .protoblue {
+  color:#FFFFFF;
+  width:250px;
+}
+.prototip .protoblue .toolbar {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#0D7CD0;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  font-weight:bold;
+}
+.prototip .protoblue .title {
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .protoblue .content {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#1E90FF;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .creamy {
+  color:#BB9C61;
+  width:250px;
+}
+.prototip .creamy .toolbar {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#F3EDC2;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  font-weight:bold;
+}
+.prototip .creamy .title {
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .creamy .content {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#F8F4CA;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .darkgrey {
+  color:#FFFFFF;
+  width:250px;
+}
+.prototip .darkgrey .toolbar {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#5F5F5F;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  font-weight:bold;
+}
+.prototip .darkgrey .title {
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .darkgrey .content {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#808080;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .protogrey {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#FFFFFF;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  color:#FFFFFF;
+  width:250px;
+}
+.prototip .protogrey .toolbar {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:#969C92;
+  background-image:initial;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  font-weight:bold;
+}
+.prototip .protogrey .title {
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .protogrey .content {
+  color:#808080;
+  padding-bottom:5px;
+  padding-left:5px;
+  padding-right:5px;
+  padding-top:5px;
+}
+.prototip .protogrey .toolbar .close {
+  height:14px;
+  width:14px;
+}
+.prototipLoader {
+  border-bottom-color:#DDDDDD;
+  border-bottom-style:solid;
+  border-bottom-width:1px;
+  border-left-color:#DDDDDD;
+  border-left-style:solid;
+  border-left-width:1px;
+  border-right-color:#DDDDDD;
+  border-right-style:solid;
+  border-right-width:1px;
+  border-top-color:#DDDDDD;
+  border-top-style:solid;
+  border-top-width:1px;
+  height:14px;
+  left:-1000px;
+  overflow-x:hidden;
+  overflow-y:hidden;
+  position:absolute;
+  top:-1000px;
+  width:14px;
+}
+.prototip {
+  overflow-x:hidden;
+  overflow-y:hidden;
+  position:absolute;
+}
+.prototip .tooltip, .prototip .toolbar, .prototip .toolbar .title {
+  position:relative;
+}
+.prototip .content {
+  clear:both;
+}
+.prototip .toolbar .close {
+  border-bottom-width:0;
+  border-color:initial;
+  border-left-width:0;
+  border-right-width:0;
+  border-style:initial;
+  border-top-width:0;
+  cursor:pointer;
+  display:block;
+  float:right;
+  font-size:0;
+  height:15px;
+  line-height:0;
+  position:relative;
+  text-decoration:none;
+  width:19px;
+}
+.prototip .tooltip {
+  clear:both;
+  float:left;
+}
+.prototip .borderLeftWrapper, .prototip .borderRightWrapper {
+  height:20px;
+  left:0;
+  position:absolute;
+  top:0;
+  width:300px;
+}
+.prototip .borderFrame {
+  float:left;
+  height:100%;
+  margin-bottom:0;
+  margin-left:0;
+  margin-right:0;
+  margin-top:0;
+  padding-bottom:0;
+  padding-left:0;
+  padding-right:0;
+  padding-top:0;
+  position:relative;
+  width:100%;
+}
+.prototip .borderTop, .prototip .borderBottom {
+  overflow-x:hidden;
+  overflow-y:hidden;
+}
+.prototip .borderRow {
+  clear:both;
+  float:left;
+  list-style-type:none;
+  margin-bottom:0;
+  margin-left:0;
+  margin-right:0;
+  margin-top:0;
+  padding-bottom:0;
+  padding-left:0;
+  padding-right:0;
+  padding-top:0;
+  position:relative;
+  width:100%;
+}
+.prototip_CornerWrapper {
+  clear:both;
+  height:100%;
+  left:0;
+  margin-bottom:0;
+  margin-left:0;
+  margin-right:0;
+  margin-top:0;
+  padding-bottom:0;
+  padding-left:0;
+  padding-right:0;
+  padding-top:0;
+  position:absolute;
+  top:0;
+  width:100%;
+}
+.prototip_Corner {
+  float:left;
+  position:relative;
+}
+.prototip canvas {
+  float:left;
+  position:relative;
+}
+.prototip_CornerTr, .prototip_CornerBr {
+  float:right;
+}
+.prototip_BetweenCorners {
+  clear:both;
+  left:0;
+  overflow-x:hidden;
+  overflow-y:hidden;
+  position:absolute;
+  top:0;
+  width:100%;
+}
+.prototip .borderMiddle {
+  float:left;
+  position:relative;
+}
+.prototip .borderCenter {
+  float:left;
+  height:100%;
+  position:relative;
+}
+.prototip_StemWrapper {
+  clear:both;
+  height:auto;
+  position:relative;
+  width:100%;
+}
+.prototip_StemBox {
+  float:left;
+  position:relative;
+}
+.prototip_Stem {
+  overflow-x:hidden;
+  overflow-y:hidden;
+  position:absolute;
+  width:100%;
+}
+.iframeShim {
+  background-attachment:initial;
+  background-clip:initial;
+  background-color:initial;
+  background-image:none;
+  background-origin:initial;
+  background-position:initial initial;
+  background-repeat:initial initial;
+  border-bottom-width:0;
+  border-color:initial;
+  border-left-width:0;
+  border-right-width:0;
+  border-style:initial;
+  border-top-width:0;
+  margin-bottom:0;
+  margin-left:0;
+  margin-right:0;
+  margin-top:0;
+  overflow-x:hidden;
+  overflow-y:hidden;
+  padding-bottom:0;
+  padding-left:0;
+  padding-right:0;
+  padding-top:0;
+  position:absolute;
+}
+.prototip .clearfix::after {
+  clear:both;
+  content:'.';
+  display:block;
+  height:0;
+  visibility:hidden;
+}
+.prototip .clearfix {
+  display:inline-block;
+}
+.prototip .clearfix {
+  display:block;
+}

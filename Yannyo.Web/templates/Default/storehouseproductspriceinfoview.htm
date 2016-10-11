@@ -1,0 +1,96 @@
+﻿<%template _header%>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="/public/js/storehouse_storage.js" language="javascript" type="text/javascript"></script>
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:sManage.DeltPrice();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加数据" onclick="javascript:sManage.ShowAddPriceUserBox();"  />
+<input type="button" id="button6" style="margin:5px;width:100px" class="B_INPUT" value="产品单价导入" onclick="javascript:sManage.ShowSynPricedataBox();"  />
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="匹配数据" onclick="javascript:sManage.ShowSyndataPriceBox();"  />
+<input type="button" id="download" style="margin:5px;width:150px;" class="B_INPUT" value="导入格式点击下载" onclick="javascript:ShowDownloadBox('../../images/excl/门店产品单价导入表.xls');"/>
+</div>
+<div>
+ <b><span style="color:Red;font-size:10pt">注意：导入门店产品期初单价之前，请确保该门店产品期初数量已经导入！</span></b></div>
+<div id="center">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs" style="font-size:9pt">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td width="10%">门店名称</td>
+            <td width="10%">仓库名称</td>
+			<td width="15%">产品条码</td>
+			<td width="20%">产品名称</td>
+			<td width="10%" align="right">产品单价</td>
+			<td width="10%" align="right">创建时间</td>
+            <td width="12%" align="right">更新时间</td>
+            <td width="20%" align="center">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[ProductPriceID]}" />
+            </td>
+            <td>{dl[StoresName]}</td>
+            <td>{dl[stName]}</td>
+             <td><%if dl["ProductsBarcode"].ToString()=="null"%>无条码
+            <%else%>
+            {dl[ProductsBarcode]}
+            <%/if%>
+            </td>
+            <td><%if dl["ProductsID"].ToString() != "0"%>
+            {dl[ProductsName]}
+            <%else%>            
+			<span style="color:#cccccc">{dl[ProductsName]}</span>
+            <%/if%></td>
+            <td align="right">{dl[pPrice]}</td>
+			<td align="right">
+			<%set {aspxrewriteurl} = DateTime.Parse(dl["pAppendTime"].ToString()).ToShortDateString().ToString()%>
+					{aspxrewriteurl}
+			</td>
+			<td align="right">{dl[pUpdateTime]}</td>
+            <td align="center">
+			<a href="javascript:void(0);" onclick="javascript:sManage.ShowDelPriceUserBox({dl[ProductPriceID]});">删除</a> 
+            <a href="javascript:void(0);" onclick="javascript:sManage.ShowEditPriceUserBox({dl[ProductPriceID]});">修改</a> 
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="10"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+    var sManage = new StorehouseStorageManage();
+    sManage.ini();
+
+    function HidBox() {
+        sManage.HidUserBox();
+        location = location;
+    }
+    addTableListener(document.getElementById("tBoxs"), 0, 0);
+    function ShowDownloadBox(str) {
+        window.location.href = str;
+    }
+</script>
+<%/if%>
+
+
+<%template _copyright%>
+<%template _footer%>

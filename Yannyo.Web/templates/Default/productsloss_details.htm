@@ -1,0 +1,71 @@
+﻿<%template _poppageheader%>
+<body>
+<script src="/public/js/jquery.js" type="text/javascript" ></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script src="/public/js/myFrontPageJs/productsLoss.js" type="text/javascript" language="javascript" ></script>
+        <form action="" method="post" name="form1" id="form1">
+          <div>
+           <table width="100%" border="0" cellspacing="2" cellpadding="2" style="background-color:#cccccc">
+            <tr>
+             <td align="left" style="height:30px;">
+             <span style="font-size:11pt"><b>查询日期：[{sDate}至{tDate}]</b></span>
+             </td>
+             </tr>
+           </table>
+          </div>
+          <div>
+           <div id="space"></div>
+           <table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox" id="get_data">
+            <tr class="tBar">
+             <td align="center"  style="width:10%">仓库名称</td>
+             <td align="center" colspan="2"  style="width:30%">商品名称</td>
+             <td align="center"  style="width:10%">商品条码</td>
+             <td align="center"  style="width:10%">单据编号</td>
+             <td align="center"  style="width:5%">数量</td>
+             <td align="center"  style="width:5%">金额</td>
+             <td align="center"  style="width:15%">单据时间</td>
+             <td align="center"  style="width:15%">创建时间</td>
+            </tr>
+           </table>
+           <table width="100%" border="0" cellspacing="2" cellpadding="2" class="tBox" id="tBoxs">
+           <%if pList !=null%>
+           <%loop pl pList%>
+           <tr>
+             <td align="center"  style="width:10%">{storehouseName}</td>
+             <td align="center"  style="width:5%">{pl__loop__id}</td>
+             <td align="left"  style="width:25%">{productsName}</td>
+             <td align="center"  style="width:10%">
+             <%if {productsBarcode}.ToString()==""%>
+             No coding
+             <%else%>
+             {productsBarcode}
+             <%/if%>
+             </td>
+             <td align="center"  style="width:10%">{pl[oOrderNum]}</td>
+             <td align="right"  style="width:5%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[oQuantity]}),2).ToString()%>
+                  {aspxrewriteurl}
+             </td>
+             <td align="right"  style="width:5%">
+               <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({pl[oMoney]}),2).ToString()%>
+               <%if {Show}=="1"%>
+                  {aspxrewriteurl}
+               <%else%>
+                无权限
+               <%/if%>
+             </td>
+             <td align="center"  style="width:15%">
+              <%set {aspxrewriteurl} =Convert.ToDateTime({pl[oOrderDateTime]}).ToString("yyyy-MM-dd")%>
+               {aspxrewriteurl}
+             </td>
+             <td align="center"  style="width:15%">{pl[oAppendTime]}</td>
+
+           </tr>
+           <%/loop%>
+           <%/if%>
+           </table>
+          </div>
+
+        </form>
+        <%template _footer%>

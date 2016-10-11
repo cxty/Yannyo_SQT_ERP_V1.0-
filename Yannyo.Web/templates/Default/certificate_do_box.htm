@@ -1,0 +1,65 @@
+<%template _poppageheader%>
+<body>
+
+
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+        <script type="text/javascript" src="public/js/dialog.js "></script>
+		<script type="text/javascript" src="public/js/certificate_do_box.js "></script>
+		<script type="text/javascript" src="public/js/WebCalendar.js "></script>
+
+            <form name="bForm" id="bForm" action="" method="post">
+<%if Act=="s"%>
+<%template _certificate_do_box_b%>
+<%else%>
+<%template _certificate_do_box_a%>
+<%/if%>
+
+<div style="height:30px"></div>
+<div id="footer_tool">
+<div>
+  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox">
+	<tr class="tBar">
+	  <td align="left">合计</td>
+	  <td width="80" align="right" id="SumMoney">
+      <%set {aspxrewriteurl} = decimal.Round(SumMoney,2).ToString()%>
+     {aspxrewriteurl}</td>
+     </tr>
+    </table>
+</div>
+<input type="button" name="subbutton_add" id="subbutton_add" value=" 新建凭证 " class="B_INPUT">
+<%if Act=="s"%>
+<input type="button" name="subbutton_addto" id="subbutton_addto" value=" 添加选中 " class="B_INPUT">
+<%else%>
+<input type="button" name="subbutton_save" id="subbutton_save" value=" 完成预付操作 " class="B_INPUT">
+<%/if%>
+
+</div>
+
+</form>
+            
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+
+var Certificate_do_box = new TCertificate_do_box();
+Certificate_do_box.OrderType = {ordertype};
+Certificate_do_box.OrderID = {OrderID};
+Certificate_do_box.ini();
+function HidBox()
+{
+	Certificate_do_box.HidUserBox();
+	location = location;
+}
+
+</script>
+            
+            <%/if%>
+    <%/if%>
+
+
+
+<%template _footer%>

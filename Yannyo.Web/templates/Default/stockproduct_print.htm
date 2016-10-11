@@ -1,0 +1,148 @@
+<%template _poppageheader%>
+<body>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+<%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+
+        <form action="" method="post" name="form1" id="form1" class="print_box">
+
+<table width="100%" border="0" cellspacing="5" cellpadding="0" >
+              <tr class="print_box_top">
+                <td colspan="6" align="center"><%set {aspxrewriteurl}=sDate.ToString("yyyy-MM-dd")%>
+            {si.sName} 库存盘点表</td>
+              </tr>
+              <tr class="OrderListTool">
+                <td align="right">仓管员:</td>
+                <td align="left" class="text_dl">{si.ManagerName}</td>
+                <td align="right">联系电话:</td>
+                <td align="left" class="text_dl">{si.sTel}</td>
+                <td align="right">地址:</td>
+                <td align="left" class="text_dl">{si.sAddress}</td>
+              </tr>
+              <tr class="OrderListTool">
+                <td align="right">库存点:</td>
+                <td width="200" align="left" class="text_dl">{aspxrewriteurl} </td>
+                <td align="right">盘点时间:</td>
+                <td width="200" align="left" class="text_dl">&nbsp;</td>
+                <td align="right">盘点人:</td>
+                <td width="200" align="left" class="text_dl">&nbsp;</td>
+              </tr>
+              <tr >
+                <td colspan="6" valign="top">
+                <br/>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+          <tr >
+			<td width="10%">条码</td>
+			<td >名称</td>
+			<td width="10%">库存</td>
+			<td width="10%">入库未核销</td>
+			<td width="10%">出库未核销</td>
+			<td width="10%">不可用库存</td>
+			<td width="10%">盘点库存</td>
+
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+			<td align="left">{dl[pBarcode]}</td>
+			<td align="left">{dl[pName]}</td>
+
+			<td align="right">
+			<%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal(dl["Beginning"])+Convert.ToDecimal(dl["pStorage"])+Convert.ToDecimal(dl["pStorageIn"])-Convert.ToDecimal(dl["pStorageOut"])),config.QuantityDecimal).ToString()%>
+			{aspxrewriteurl}
+			</td>
+			<td align="right">
+			<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["pStorageIn"]),config.QuantityDecimal).ToString()%>
+			{aspxrewriteurl}
+			</td>
+			<td align="right">
+			<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["pStorageOut"]),config.QuantityDecimal).ToString()%>
+			{aspxrewriteurl}
+			</td>
+			<td align="right">
+			<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["StorageBad"]),config.QuantityDecimal).ToString()%>
+
+			{aspxrewriteurl}
+				
+			</td>
+			<td align="right" class="text_dl">&nbsp;</td>
+
+
+          </tr>
+		  <%set {loop_count}={loop_count}+1%>
+          <%/loop%>
+          
+          <%/if%>
+        </table>
+        
+                </td>
+              </tr>
+            </table>
+            
+        
+    
+
+
+      <%/if%>
+</form>
+
+<script language="JavaScript">
+var hkey_root,hkey_path,hkey_key
+hkey_root="HKEY_CURRENT_USER"
+hkey_path="\\Software\\Microsoft\\Internet Explorer\\PageSetup\\"
+//设置网页打印的页眉页脚为空
+function pagesetup_null(){
+try{
+var RegWsh = new ActiveXObject("WScript.Shell")
+hkey_key="header"
+RegWsh.RegWrite(hkey_root+hkey_path+hkey_key,"")
+hkey_key="footer"
+RegWsh.RegWrite(hkey_root+hkey_path+hkey_key,"")
+
+}catch(e){}
+}
+
+    </script>
+<OBJECT classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height="0" id="wb" name="wb" width="0"></OBJECT>
+<script language="JavaScript">
+try
+{
+	if(wb)
+	{
+		wb.execwb(7,1); 
+		window.close();
+	}
+	else
+	{
+		try{
+			window.print();
+		}catch(e){
+			alert("打印控件启动失败,请查看帮助!");
+			window.open("help_print.html","_blank");
+		}
+	}
+}catch(e){
+	try{
+		window.print();
+	}catch(e){
+		alert("打印控件启动失败,请查看帮助!");
+		window.open("help_print.html","_blank");
+	}
+}
+</script>
+<div style="page-break-after: always"></div>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

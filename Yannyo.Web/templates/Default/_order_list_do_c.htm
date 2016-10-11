@@ -1,0 +1,97 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td class="OrderListTool">
+
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  <td>目标仓库:<br />
+      <input name="StorageName" id="StorageName" type="text" 
+<%if Act=="v"%>value="{oi.StoresSupplierName}"<%/if%> showtitle="输入*可检索"
+/>
+<INPUT TYPE="hidden" NAME="StorageID" id="StorageID" 
+<%if Act=="v"%>value="{oi.StoresSupplierID}"<%/if%>
+/>
+</td>
+    <td><%set {aspxrewriteurl}=oOrderDateTime.ToString("yyyy-MM-dd")%>
+日期:<br /><input name="oOrderDateTime" type="text" id="oOrderDateTime" onClick="new Calendar().show(this);" value="{aspxrewriteurl}" readonly="readonly"/></td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+  <td>
+  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox">
+	<tr class="tBar">
+	  <td width="100px">仓库</td>
+	  <td width="100px">条码</td>
+	  <td>商品名称</td>
+	  <td width="80px">包装量</td>
+	  <td width="80px">单价(元)</td>
+	  <td width="80px">数量(最小单位)</td>
+	  <td width="80px">金额</td>
+     <%if OrderFieldList!=null%>
+      <%loop ofl OrderFieldList%>
+      	<td width="80px">{ofl[fName]}</td>
+      <%/loop%>
+     <%/if%>
+     <%if ShowEdit == true%>
+	  <td width="50px" >操作</td>
+      <%/if%>
+	</tr>
+  </table>
+  <div id="OrderListLoop">
+  <table width="100%" border="0" cellspacing="1" cellpadding="1" class="tBox" id="OrderListLoop_data">
+	
+  </table>
+  </div>
+  </td>
+</tr>
+</table>
+<script language="javascript" type="text/javascript">
+$().ready(function(){
+	$('#StorageName').autocomplete('Services/CAjax.aspx',{
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStorageList',
+			'RCode':Math.random(),
+			'StorageName':function(){return $('#StorageName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StorageID").val((formatted!=null)?formatted:"0"); 
+			OrderDO.sel_StorageIDB = (formatted!=null)?formatted:"0"; 
+		}
+	  );
+});
+
+ OrderField = '{OrderFieldListJson}';
+ OrderListDataJsonStr = '{OrderListDataJsonStr}';
+</script>

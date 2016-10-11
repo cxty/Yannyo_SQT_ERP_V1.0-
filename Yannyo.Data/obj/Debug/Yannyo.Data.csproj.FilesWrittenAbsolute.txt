@@ -1,0 +1,9 @@
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/bin/Debug/Yannyo.Data.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/bin/Debug/Yannyo.Data.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/obj/Debug/Yannyo.Data.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/obj/Debug/Yannyo.Data.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/bin/Debug/Yannyo.Common.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/bin/Debug/Yannyo.Config.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/bin/Debug/Yannyo.Config.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/bin/Debug/Yannyo.Entity.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Data/bin/Debug/Yannyo.Entity.dll.mdb

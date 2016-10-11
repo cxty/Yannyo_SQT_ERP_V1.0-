@@ -1,0 +1,66 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="/public/js/dialog.js"></script>
+<script src="public/js/jTable.js" language="javascript">
+
+<%template _m_sign%>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+
+
+<script src="/public/js/m_product_do.js" type="text/javascript" ></script>
+<form action="" method="post" name="form1" id="form1">
+
+	<%if Act=="DownLoad"%>
+	<%template _mproduct_do_a%>
+	<%/if%>
+	<%if Act=="UpdateNum"%>
+	<%template _mproduct_do_b%>
+	<%/if%>
+    <%if Act=="Edit"%>
+    <%template _mproduct_do_c%>
+    <%/if%>
+
+</form>
+<script language="javascript" type="text/javascript">
+var tf = new TableFixed("tBox");
+
+tf.Clone();
+
+var M_Product_do = new TM_Product_do();
+M_Product_do.MConfigID = {M_Config.m_ConfigInfoID};
+M_Product_do.PageIndex = {pageindex};
+M_Product_do.ActStr = '{Act}';
+M_Product_do.ini();
+function HidBox()
+{
+	M_Product_do.HidUserBox();
+}
+function ReCall(rObj)
+{
+	M_Product_do.numReCall(rObj);
+}
+function SetProductID(reObj,treObj)
+{
+	M_Product_do.SetProductID(reObj,treObj);
+}
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+        <%/if%>
+    <%/if%>
+<%/if%>
+
+<%template _footer%>

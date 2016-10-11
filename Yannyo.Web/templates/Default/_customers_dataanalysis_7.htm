@@ -1,0 +1,77 @@
+﻿<%csharp%>
+decimal _AllSumMoney=0;
+decimal _sumA=0;
+<%/csharp%>
+<div id="shiyan" class="topbar" style="width:100%">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" >
+        <thead id="col_head" >
+          <tr class="tBar">
+            <td width="15%" align="left">客户名称</td>
+          	<td width="35%" colspan="2" align="center">品名</td>
+            <td width="15%" align="right">销售数量</td>
+            <td width="15%" align="right">销售额</td>
+            <td width="20%" align="right">占比</td>
+          </tr>
+        </thead>
+</table>
+</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" id="tBoxs">
+            <%if cList !=null%>
+            <%loop cl cList%>
+            <%set {tLoopid}=1%>
+            <%set {sumA}=0%>
+            <%set {dList}=getStoreProducts({bDate},{eDate},{cl[StoresID]}) %>
+            <%set {count}=getStoreProductsCount({bDate},{eDate},{cl[StoresID]}) %>
+			<%if count>0%>
+        	<tr>
+                
+                <td width="15%" rowspan="{count}" align="left">{cl[sName]}</td>
+                <%if dList !=null%>
+                <%loop dl dList%>
+                     <%if (tLoopid%2) == 0%>
+                     <tr>
+                     <%/if%>
+                        <td width="10%" align="center">{dl__loop__id}</td>
+          	            <td width="25%" align="left">{dl[1]}</td>
+                        <td width="15%" align="right">{dl[2]}
+                        <%set {sumA}=decimal.Round(sumA+Convert.ToDecimal({dl[2]}))%>
+                        </td>
+                        <td width="15%" align="right">{dl[3]}</td>
+                        <td width="20%" align="right">
+                             <%if AllSumMoney>0%>
+                            <%set {aspxrewriteurl}=(decimal.Parse(dl[3].ToString()) / AllSumMoney).ToString("P")%>
+				            {aspxrewriteurl}
+                            <%else%>
+                            0.00%
+                            <%/if%>
+                        </td>
+                    <%if (tLoopid%2) == 0%>
+   			        </tr>
+                    <%/if%>
+                    <%set {tLoopid}=tLoopid+1%>
+                <%/loop%>
+                <%/if%>
+            </tr>
+            <tr>
+            	<td align="center" colspan="3" style="height:30px"><span style="font-size:11pt"><b>{cl[sName]}&nbsp;&nbsp;合计</b></span></td>
+                <td width="15%" align="right"><b>{sumA}</b></td>
+                <td width="15%" align="right"><b>{AllSumMoney}</b></td>
+                <td width="20%" align="right"></td>
+            </tr>
+<%csharp%>
+ _AllSumMoney+=sumA;
+ _sumA+=AllSumMoney;
+<%/csharp%>
+			<%/if%>
+            <%/loop%>
+            <%/if%>
+        	
+        </table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tBox" >
+          <tr class="tBar">
+            <td align="left"><b>合计</b></td>
+          	<td width="15%" align="right">{_AllSumMoney}</td>
+            <td width="15%" align="right">{_sumA}</td>
+            <td width="20%" align="right"></td>
+          </tr>
+</table>

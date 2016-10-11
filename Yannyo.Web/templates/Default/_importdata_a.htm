@@ -1,0 +1,39 @@
+<form action="" method="post" enctype="multipart/form-data" name="bForm" id="bForm">
+            <h2>第一步 上传数据</h2>
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+				<tr id="Box_A">
+                  <td  align="right">时间</td>
+                  <td align="left">
+				  
+				  <INPUT class="B_Check" TYPE="radio" NAME="sDateTime_S" id="sDateTime_A" value="0" onClick="javascript:CheckR();" checked>日数据（请选择日期）
+                  <input name="sDateTime" id="sDateTime" onClick="new Calendar().show(this);" type="text">
+				  <!--<br/>
+				  <INPUT class="B_Check" TYPE="radio" NAME="sDateTime_S" id="sDateTime_B" value="1" onClick="javascript:CheckR();" >月数据（文件含表头、时间）-->
+                  </td>
+                </tr>
+				
+				<tr id="Box_B">
+                  <td  align="right">文件</td>
+                  <td align="left"><input name="fi" type="file" showtitle="须上传标准Excel文件!数字部分格式需转换为<普通>,为非默认格式." style="height:25px">
+                  </td>
+                </tr>
+				
+                <tr id="Box_C">
+                  <td colspan="2" align="center"><br/>
+<p><font color="#FF0000"><b>操作提示:</b></font><br/>
+
+<ul>
+<li>1.打开下载的Excel文件, 点菜单栏&quot;文件&quot; -&gt;&quot;另存为&quot; -&gt;保存类型选择为&quot;Excel 97-2003 工作簿(*.xls)&quot; -&gt;覆盖原文件.
+<li>2.打开另存的文件,选中数字列-&gt;右键鼠标选择&quot;设置单元格格式&quot;-&gt;在弹出的对话框中选择第一个标签页&quot;数字&quot;-&gt;在分类栏中选择&quot;常规&quot;-&gt;点击&quot;确定按钮&quot;-&gt;保存并退出文档.<br />
+<img src="/images/e_001.png" >
+</ul>
+</p>
+				  <input type="button" id="bt_step_a" style="margin:5px" class="B_INPUT" value="下一步" /></td>
+                </tr>
+				
+				<tr id="Box_D" style="display:none;">
+                  <td colspan="2" align="center"><img src="images/loading.gif" />数据处理中,该过程需要10-30分钟,请不要刷新,切换或关闭此页面!</td>
+                </tr>
+
+              </table>
+              </form>

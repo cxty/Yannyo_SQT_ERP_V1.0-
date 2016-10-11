@@ -1,0 +1,81 @@
+<%template _header%>
+
+
+<script src="public/js/Products_Beginning.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<div class="toolbox">
+商品
+<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}"><INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:ProductsBeginning.Search();"  />
+</div>
+<div class="list_title">
+商品库存期初列表
+</div>
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+
+			<td width="10%">条码</td>
+			<td >名称</td>
+			<td width="20%">品牌</td>
+			<td width="10%">规格</td>
+			<td width="5%">单位</td>
+			<td width="5%">件装数</td>
+
+			<td width="10%">期初库存<br>(合计各仓库)</td>
+
+            <td width="10%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+
+			<td><a href="javascript:void(0);" onclick="javascript:ProductsBeginning.ShowEditUserBox({dl[ProductsID]});">{dl[pBarcode]}</a></td>
+			<td><a href="javascript:void(0);" onclick="javascript:ProductsBeginning.ShowEditUserBox({dl[ProductsID]});">{dl[pName]}</a></td>
+            <td>{dl[pBrand]}</td>
+			<td>{dl[pStandard]}</td>
+			<td align="center">{dl[pUnits]}</td>
+			<td align="right">{dl[pToBoxNo]}</td>
+
+			<td align="right">{dl[Beginning]}</td>
+			
+            <td>
+			<a href="javascript:void(0);" onclick="javascript:ProductsBeginning.ShowEditUserBox({dl[ProductsID]});">设置</a>
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="8"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+<script language="javascript" type="text/javascript">
+var ProductsBeginning = new TProductsBeginning();
+ProductsBeginning.ini();
+
+function HidBox()
+{
+	ProductsBeginning.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+      <%/if%>
+    </div></form>
+
+
+
+<%template _copyright%>
+<%template _footer%>

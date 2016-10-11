@@ -1,0 +1,89 @@
+<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/usermanage.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:UserManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:UserManage.ShowAddUserBox();"  />
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td>操作员登名</td>
+            <td width="20%">登录IP</td>
+            <td width="10%">状态</td>
+            <td width="10%">最后登录时间</td>
+            <td width="10%">创建时间</td>
+            <td width="10%">操作</td>
+          </tr>
+          <%if UserInfoList != null%>
+          <%loop uil UserInfoList%>
+          <tr>
+            <td>
+            <%if uil["uPermissions"].ToString() != "X"%>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{uil[UserID]}" />
+            <%/if%>
+            </td>
+            <td><a href="javascript:void(0);" onclick="javascript:UserManage.ShowEditUserBox({uil[UserID]});">{uil[uName]} ({uil[StaffName]})</a></td>
+            <td>{uil[uLastIP]}</td>
+            <td>
+            <%if uil["uEstate"].ToString() == "0"%>
+            正常
+            <%/if%>
+            <%if uil["uEstate"].ToString() == "1"%>
+            屏蔽
+            <%/if%>
+            </td>
+            <td>{uil[uUpAppendTime]}</td>
+            <td>{uil[uAppendTime]}</td>
+            <td>
+			<%if uil["uPermissions"].ToString() != "X"%>
+			<a href="javascript:void(0);" onclick="javascript:UserManage.ShowDelUserBox({uil[UserID]});">删除</a>
+			<%/if%>
+			<a href="javascript:void(0);" onclick="javascript:UserManage.ShowEditUserBox({uil[UserID]});">修改</a></td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="7">{PageBarHTML}</td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var UserManage = new TUserManage();
+UserManage.ini();
+
+function HidBox()
+{
+	UserManage.HidUserBox();
+	location='/usermanage.aspx';
+}
+<%if Act=="Add"%>
+UserManage.ShowAddUserBox();
+<%/if%>
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

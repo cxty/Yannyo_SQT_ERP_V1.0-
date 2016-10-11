@@ -1,0 +1,92 @@
+<%template _header%>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/datatomail.js" language="javascript" type="text/javascript"></script>
+
+<div class="main" >
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+  <input type="button" id="bt_add" style="margin:5px" class="B_INPUT" value="添加" />
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="20%" >数据类型</td>
+            <td width="10%" >统计类型</td>
+            <td >接收邮箱</td>
+            <td width="10%" >系统状态</td>
+            <td width="10%" >创建时间</td>
+            <td width="10%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td><a href="javascript:void(0);" onclick="javascript:DataToMail.ShowEditBox({dl[DataToMaillID]});">
+             <%set {aspxrewriteurl}=GetDataTypeName(Convert.ToInt32(dl["dDataType"].ToString()))%>
+            {aspxrewriteurl}
+            </a></td>
+            <td>
+            <%if dl["dDateType"].ToString() == "1"%>
+            日
+            <%/if%>
+            <%if dl["dDateType"].ToString() == "2"%>
+            周
+            <%/if%>
+            <%if dl["dDateType"].ToString() == "3"%>
+            月
+            <%/if%>
+            </td>
+            <td>{dl[dEmail]}</td>
+            <td>
+            <%if dl["dState"].ToString() == "0"%>
+            正常
+            <%/if%>
+            <%if dl["dState"].ToString() == "1"%>
+            屏蔽
+            <%/if%>
+            </td>
+            <td>{dl[dAppendTime]}</td>
+            <td>
+				<a href="javascript:void(0);" onclick="javascript:DataToMail.ShowDelBox({dl[DataToMaillID]});">删除</a>
+				<a href="javascript:void(0);" onclick="javascript:DataToMail.ShowEditBox({dl[DataToMaillID]});">修改</a>
+            </td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="6"> {PageBarHTML} </td>
+          </tr>
+
+          <%/if%>
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var DataToMail = new TDataToMail();
+DataToMail.ini();
+
+function HidBox()
+{
+	DataToMail.HidUserBox();
+	location=location;
+}
+
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

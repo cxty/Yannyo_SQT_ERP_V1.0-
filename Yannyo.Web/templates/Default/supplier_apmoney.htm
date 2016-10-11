@@ -1,0 +1,69 @@
+<%template _header%>
+
+
+<script src="public/js/Supplier_apmoney.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<div class="toolbox">
+供应商:<INPUT TYPE="text" NAME="S_key" id="S_key" value="{S_key}"><INPUT TYPE="hidden" NAME="Act" id="Act">
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="查找" onclick="javascript:SupplierAPmoney.Search();"  />
+</div>
+<div class="list_title">
+应付期初列表
+</div>
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+
+            <td >名称</td>
+			<td width="10%">编号</td>
+			<td width="10%">期初应付款</td>
+            <td width="5%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+
+            <td><a href="javascript:void(0);" onclick="javascript:SupplierAPmoney.ShowEditUserBox({dl[SupplierID]});">{dl[sName]}</a></td>
+			<td>{dl[sCode]}</td>
+			
+			<td width="5%" align="right">{dl[sDoDayMoney]}</td>
+
+            <td>
+				<a href="javascript:void(0);" onclick="javascript:SupplierAPmoney.ShowEditUserBox({dl[SupplierID]});">设置</a>
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="4"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+</div>
+
+      <%/if%>
+    </div>
+	</form>
+<script language="javascript" type="text/javascript">
+var SupplierAPmoney = new TSupplierAPmoney();
+SupplierAPmoney.ini();
+
+function HidBox()
+{
+	SupplierAPmoney.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+
+<%template _copyright%>
+<%template _footer%>

@@ -1,0 +1,4 @@
+/Volumes/Dev/git/Yannyo_SQT/Taobao.TopSdk/bin/Debug/TopSdk.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Taobao.TopSdk/bin/Debug/TopSdk.dll
+/Volumes/Dev/git/Yannyo_SQT/Taobao.TopSdk/obj/Debug/TopSdk.dll
+/Volumes/Dev/git/Yannyo_SQT/Taobao.TopSdk/obj/Debug/TopSdk.dll.mdb

@@ -1,0 +1,22 @@
+<div class="toolbar">
+    	<div style="float:left">
+        <ul>
+			<li id="ProductName_Box">
+                产品：<input name="ProductName" id="ProductName" type="text" value="{ProductName}" />
+                <INPUT TYPE="hidden" NAME="ProductID" id="ProductID" value="{ProductID}" />
+            </li>
+			<li>
+            	库存时间点：<br/><input style="width:60px" name="eDateTime" id="eDateTime" onclick="new Calendar().show(this);" value="{eDateTime}" type="text" />
+            </li>
+
+
+			
+
+            
+			
+        <ul>
+        
+        </div>
+        <div style="float:left;clear:left"><nobr><input type="button" value="确定" style="margin:5px;width:80px" class="B_INPUT" onclick="javascript:DataAnalysis.CheckF();" />
+        <input type="button" value="重置分析条件" onclick="javascript:DataAnalysis.ReSet();" style="margin:5px;width:80px" class="B_INPUT"/></nobr></div>
+    </div>

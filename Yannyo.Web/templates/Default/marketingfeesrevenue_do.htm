@@ -1,0 +1,228 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<script src="public/js/WebCalendar.js" type="text/javascript" ></script>
+<!--
+<script src="public/js/bsn.AutoSuggest_2.1.3_comp.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" href="public/js/autosuggest_inquisitor.css" type="text/css" media="screen" charset="utf-8" />
+-->
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td colspan="2" align="left"><h1>收入信息</h1></td>
+                </tr>
+                
+                  <td  align="right">科目</td>
+                  <td align="left">
+				  <input name="FeesSubjectName" id="FeesSubjectName" type="text" 
+                  <%if Act=="Edit"%>value="{mi.FeesSubjectName}"<%/if%> />
+				  <INPUT TYPE="hidden" NAME="FeesSubjectID" id="FeesSubjectID" <%if Act=="Edit"%>value="{mi.FeesSubjectID}"<%/if%>>
+					检索可输入*</td>
+                </tr>
+
+				<tr>
+                  <td  align="right">经办人</td>
+                  <td align="left">
+				  <input name="StaffctName" id="StaffName" type="text" 
+                  <%if Act=="Edit"%>value="{mi.StaffName}"<%/if%> />
+				  <INPUT TYPE="hidden" NAME="StaffID" id="StaffID" <%if Act=="Edit"%>value="{mi.StaffID}"<%/if%>>
+					检索可输入*</td>
+                </tr>
+
+				<tr>
+                  <td  align="right">发生时间</td>
+                  <td align="left">
+                  <input name="mDateTime" id="mDateTime" onclick="new Calendar().show(this);" type="text" 
+                  <%if Act=="Edit"%>value="{mi.mDateTime}"<%/if%>
+                  </td>
+                </tr>
+					
+
+				<tr>
+                  <td  align="right">金额</td>
+                  <td align="left">
+                  <input name="mFees" id="mFees" type="text" 
+                  <%if Act=="Edit"%>value="{mi.mFees}"<%/if%>
+                  </td>
+                </tr>
+
+				<tr>
+                  <td  align="right">备注</td>
+                  <td align="left">
+					<textarea style="width:80%" rows="5" name="mRemark" id="mRemark"><%if Act=="Edit"%>{mi.mRemark}<%/if%></textarea>                  
+                  </td>
+                </tr>
+				
+                <tr>
+                  <td colspan="2" align="center"><input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" /></td>
+                </tr>
+              </table>
+    
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+		
+/*
+	var options2 = {
+		script:'Services/CAjax.aspx?do=GetFeesSubjectList&RCode='+Math.random()+'&',
+		varname:"FeesSubjectName",
+		json:true,
+		shownoresults:false,
+		maxresults:6,
+		callback: function (obj) { document.getElementById('FeesSubjectID').value = obj.id; }
+	};
+
+	var as_json2 = new bsn.AutoSuggest('FeesSubjectName', options2);
+
+	var options3 = {
+		script:'Services/CAjax.aspx?do=GetStaffList&RCode='+Math.random()+'&',
+		varname:"StaffName",
+		json:true,
+		shownoresults:false,
+		maxresults:6,
+		callback: function (obj) { document.getElementById('StaffID').value = obj.id; }
+	};
+	var as_json3 = new bsn.AutoSuggest('StaffName', options3);
+*/
+$().ready(function(){
+		
+	$('#FeesSubjectName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetFeesSubjectList',
+			'RCode':Math.random(),
+			'FeesSubjectName':function(){return $('#FeesSubjectName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value,    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#FeesSubjectID").val((formatted!=null)?formatted:"0");
+		}
+	  );
+
+	$('#StaffName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStaffList',
+			'RCode':Math.random(),
+			'StaffName':function(){return $('#StaffName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#StaffID").val((formatted!=null)?formatted:"0");
+		}
+	  );
+});
+	
+			function CheckF()
+			{
+				
+						if(Sys.getObj('FeesSubjectName').value != '')
+						{
+							if(Sys.getObj('StaffName').value != '')
+							{
+								if(Sys.getObj('mFees').value != '')
+								{
+									if(Sys.getObj('mDateTime').value != '')
+									{
+										
+											Sys.getObj('bForm').submit();
+										
+									}else
+									{
+										alert('发生时间不能为空!');	
+									}
+								}else
+								{
+									alert('金额不能为空!');	
+								}
+							}else
+							{
+								alert('经办人不能为空!');	
+							}
+						}else
+						{
+							alert('科目不能为空!');	
+						}
+
+
+				
+			}
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

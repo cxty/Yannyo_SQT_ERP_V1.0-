@@ -1,0 +1,39 @@
+<div class="dlist">
+	<%if {ispost} %>
+		<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+          <tr class="tBar">
+			<td width="5%">日期</td>
+			<%if fList != null%>
+				<%loop fl fList%>
+					<td >{fl[bName]}</td>
+				<%/loop%>
+			<%/if%>
+			<td width="5%">合计</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+
+			<td><nobr>{dl[tdate]}</nobr></td>
+			<%set {AllSumValue} = 0%>
+			<%if fList != null%>
+				<%loop fl fList%>
+					<td  align="right">
+					<%set {AllSumValue}={AllSumValue}+decimal.Parse(dl["Bank_"+(fl__loop__id-1).ToString()].ToString())%>
+					<%set {ReHTML}=dl["Bank_"+(fl__loop__id-1).ToString()].ToString()%>
+					{ReHTML}
+					</td>
+				<%/loop%>
+			<%/if%>
+
+            <td align="right">
+			{AllSumValue}
+			</td>
+
+          </tr>
+          <%/loop%>
+
+          <%/if%>
+        </table>
+	<%/if%>
+</div>

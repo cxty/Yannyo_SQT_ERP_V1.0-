@@ -1,0 +1,105 @@
+<%template _poppageheader%>
+<body>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+
+
+<script src="public/js/orderlist_do_nofull.js" language="javascript" type="text/javascript"></script>
+
+<form name="bForm" id="bForm" action="" method="post">
+<%if oi!=null%>
+
+<h2>单据编号:{oi.oOrderNum}</h2>
+<%if dList!=null%>
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="tBox" id="tBoxs">
+<thead>
+    <tr class="tBar">
+      <td width="10%" align="center">差额来源</td>
+      <td align="center">商品名称</td>
+      <td width="10%" align="center">开单数</td>
+      <td width="10%" align="center">到货数</td>
+      <td width="10%" align="center">差额</td>
+      <td width="20%" align="center">差额去向</td>
+    </tr>
+ </thead>
+ <tbody>
+    
+    <%loop dl dList%>
+    <tr>
+      <td width="10%">
+      <input type="hidden" id="s_StorageID_{dl__loop__id}" name="s_StorageID_{dl__loop__id}" value="{dl[StorageID]}"/>
+      {dl[sName]}</td>
+      <td>
+      <input type="hidden" id="ProductsID_{dl__loop__id}" name="ProductsID_{dl__loop__id}" value="{dl[ProductsID]}"/>
+      {dl[pName]}</td>
+      <td width="10%" align="right">
+      <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oldQuantity"]),config.QuantityDecimal).ToString()%>
+		  {aspxrewriteurl}
+      </td>
+      <td width="10%" align="right">
+       <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oQuantity"]),config.QuantityDecimal).ToString()%>
+		  {aspxrewriteurl}
+      </td>
+      <td width="10%" align="right">
+       <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oldQuantity"])-Convert.ToDecimal(dl["oQuantity"]),config.QuantityDecimal).ToString()%>
+		  {aspxrewriteurl}
+       <input type="hidden" id="Quantity_{dl__loop__id}" name="Quantity_{dl__loop__id}" value="{aspxrewriteurl}"/>
+      </td>
+      <td width="20%">
+      <select id="t_StorageID_{dl__loop__id}" name="t_StorageID_{dl__loop__id}" >
+	   <option value="-1">回原仓库</option>
+        <%if StorageList!=null%>
+        <%loop sl StorageList%>
+        <%if sl["StorageID"].ToString()!=dl["StorageID"].ToString()%>
+        <option value="{sl[StorageID]}">{sl[sName]}</option>
+        <%/if%>
+        <%/loop%>
+        <%/if%>
+      </select></td>
+    </tr>
+    <%/loop%>
+    
+    </tbody>
+  </table>
+  <input type="hidden" id="loop_count" name="loop_count" value="{dl__loop__id}" />
+<%/if%>
+ <div id="footer_tool">
+ <input type="button" id="Sub_button" name="Sub_button" style="margin:5px" class="B_INPUT" value=" 确 定 " />
+ </div>
+ <%/if%>
+</form>
+<script language="javascript" type="text/javascript">
+
+var Orderlist_do_nofull = new TOrderlist_do_nofull();
+Orderlist_do_nofull.ini();
+
+var gvn=$('#tBoxs').clone(true).removeAttr("id");
+    $(gvn).find("tr:not(:first)").remove();
+    $('#tBoxs').before(gvn);
+    $('#tBoxs').find("tr:first").remove();
+    $('#tBoxs').wrap("<div style='height:250px; overflow-y: scroll;overflow-x:hidden; overflow: auto; padding: 0;margin: 0;'></div>");
+	
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+<%/if%>
+    <%/if%>
+<%/if%>
+
+
+
+
+<%template _footer%>

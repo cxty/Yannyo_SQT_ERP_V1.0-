@@ -1,0 +1,191 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="/public/js/Cxty_XTool.js"></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="/public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="/public/js/jquery.bgiframe.js"></script>
+
+<link type="text/css" href="templates/{templatepath}/css/jquery.mcdropdown.css" rel="stylesheet" media="all" />
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+
+				
+				<tr>
+					<td width="20%" align="right" class="ltd">名称</td>
+					<td align="left" class="rtd">
+						<INPUT TYPE="text" NAME="sName" id="sName" showtitle="可填写少于50个的中英文字符" 
+						 <%if Act=="Edit"%>value="{si.sName}"<%/if%>
+						/>
+					</td>
+				</tr>
+                	<tr>
+                  <td width="20%" align="right" class="ltd">分类</td>
+                  <td align="left" class="rtd">
+                  <input type="hidden" id="StorageClassID" name="StorageClassID" 
+                  <%if Act=="Edit"%>value="{si.StorageClassID}"<%/if%>
+                  />
+                  <input type="text" name="category" id="category" value="" />
+                     <ul id="categorymenu" class="mcdropdown_menu">{strStorage}</ul>
+                  </td>
+                </tr>
+                <tr id="APObjType_A_box">
+                  <td width="20%" align="right" class="ltd">代码</td>
+                  <td align="left" class="rtd">
+                  <input name="sCode" id="sCode" type="text" showtitle="可用数字编号表示"
+                  <%if Act=="Edit"%>value="{si.sCode}"<%/if%>
+                  />
+				 </td>
+                </tr>
+                
+                <tr id="APObjType_B_box">
+                  <td  align="right" class="ltd">管理员</td>
+                  <td align="left" class="rtd">
+				  <input name="StaffName" id="StaffName" type="text" showtitle="人事管理中的人员名称(*检索)"
+                  <%if Act=="Edit"%>value="{si.ManagerName}"<%/if%> />
+				  <INPUT TYPE="hidden" NAME="sManager" id="sManager" <%if Act=="Edit"%>value="{si.sManager}"<%/if%>></td>
+                </tr>
+				
+				<tr>
+                  <td align="right" class="ltd">联系电话</td>
+                  <td align="left" class="rtd">
+				  <input name="sTel" id="sTel" type="text" showtitle="仓库的联系电话" 
+                  <%if Act=="Edit"%>value="{si.sTel}"<%/if%> />
+				  </td>
+                </tr>
+				<tr>
+                  <td align="right" class="ltd">地址</td>
+                  <td align="left" class="rtd">
+				  <input name="sAddress" id="sAddress" type="text" showtitle="仓库的具体地址" 
+                  <%if Act=="Edit"%>value="{si.sAddress}"<%/if%> />
+				  </td>
+                </tr>
+				<tr>
+                  <td  align="right" class="ltd">备注</td>
+                  <td align="left" class="rtd">
+<TEXTAREA NAME="sRemake" id="sRemake" style="width:90%;
+height:170px;">
+<%if Act=="Edit"%>{si.sRemake}<%/if%>
+</TEXTAREA>
+				  
+				  </td>
+                </tr>
+				<tr>
+                          <td align="right" class="ltd">状态:</td>
+                          <td align="left" class="rtd"><input name="sState" type="checkbox" value="0" id="sState" class="B_Check"
+                          <%if Act=="Edit"%>
+                            <%if si.sState.ToString() == "0"%>
+                                checked="checked"
+                            <%/if%>
+                          <%else%>
+                                checked="checked"
+                          <%/if%>
+                          />
+                            正常</td>
+                        </tr>
+              </table>
+<div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                  	<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+            </form>
+            
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#category").mcDropdown("#categorymenu");
+    });
+    <%if Act=="Edit"%>
+    $(document).ready(function (){
+        var dd = $("#category").mcDropdown();
+		dd.setValue({si.StorageClassID});
+    });
+    <%/if%>
+$().ready(function(){
+	$('#StaffName').autocomplete('Services/CAjax.aspx',{ 
+		
+		width: 200,
+		scroll: true,
+		autoFill: true,
+		scrollHeight: 200,
+		matchContains: true,
+		dataType: 'json',
+		extraParams:{
+			'do':'GetStaffList',
+			'RCode':Math.random(),
+			'StaffName':function(){return $('#StaffName').val();}
+		},
+		parse: function(data) {
+				var rows = [];  
+				var tArray = data.results;
+				 for(var i=0; i<tArray.length; i++){  
+				  rows[rows.length] = {    
+					data:tArray[i].value +"("+ tArray[i].info+")",    
+					value:tArray[i].id,    
+					result:tArray[i].value    
+					};    
+				  }
+			   return rows; 
+			 },
+		formatItem: function(row, i, max) {  
+			   return row;
+		},
+		formatMatch: function(row, i, max) {
+					return row.value; 
+		},
+		formatResult: function(row) { 
+					return row.value;
+		}
+	  }).result(function(event, data, formatted) {
+			$("#sManager").val((formatted!=null)?formatted:"0");
+		}
+	  );
+});
+
+
+	function CheckF() {
+	    var dd = $("#category").mcDropdown();
+	    var ddarray = dd.getValue();
+	    if (Sys.getObj('sName').value == '') {
+	        jAlert("仓库名称不能为空!", "友情提示");
+	    } else if (ddarray[0].toString() =='') {
+	        jAlert("请选择仓库分类!", "友情提示");
+        } else if (Sys.getObj('sCode').value == '') {
+	        jAlert("仓库编号不能为空!", "友情提示");
+	    } else if (Sys.getObj('sManager').value == '') {
+	        jAlert("管理员不能为空!", "友情提示");
+	    } else {
+	        Sys.getObj('StorageClassID').value = Number(ddarray[0]);
+	        Sys.getObj('bForm').submit();
+	    }
+	}
+	</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

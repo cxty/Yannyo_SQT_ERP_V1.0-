@@ -1,0 +1,191 @@
+<table width="100%" border="0" cellspacing="1" cellpadding="1">
+<tr>
+  <td class="OrderListTool">
+
+<table width="98%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>发货单号:{oi.oOrderNum}</td>
+    <td> 网店名称:
+{oi.StoresSupplierName} </td>
+    <td> 买家:
+      {BuyerName} </td>
+    <td><%set {aspxrewriteurl}=oi.oOrderDateTime.ToString("yyyy-MM-dd")%>
+      日期:
+      {aspxrewriteurl} </td>
+      <td><nobr>第{(x+1)}/{OrderListSet.Tables.Count}页</nobr></td>
+   <!-- <td rowspan="5" align="center"><img src="qrcode-{oi.OrderID}.aspx" /></td>-->
+  </tr>
+  <tr>
+    <td>
+联系人:{_ms.receiver_name}
+    </td>
+    <td colspan="3"> 联系电话:{_ms.receiver_mobile} {_ms.receiver_phone} </td>
+    </tr>
+  <tr>
+    <td>网店订单号:{oi.oCustomersOrderID}</td>
+    <td colspan="3"> 送货地址:{_ms.receiver_state}{_ms.receiver_city}{_ms.receiver_district} {oi.oCustomersAddress} </td>
+    </tr>
+  <%if _mxsp!=null%>
+  <tr>
+    <td>物流公司:{_mxsp.mExpName}</td>
+    <td colspan="3">运单号:{_ms.mExpNO}</td>
+    </tr>
+  <%/if%>
+  <tr>
+    <td>企业注册号:{config.RegistrationNo}</td>
+    <td colspan="2">单位地址：{config.Address}</td>
+    <td>电话：{config.Phone}</td>
+    </tr>
+</table>
+
+</td>
+</tr>
+<tr>
+  <td>
+  <table width="98%" border="1" cellpadding="1" cellspacing="0"  bordercolor= "#000000 "   style= "border-collapse:collapse; ">
+	<tr >
+	  <!--<td width="50">仓库</td>-->
+	  <td width="40" align="center">条码</td>
+	  <td align="center">商品名称</td>
+	  <td width="30" align="center">包装量</td>
+	  <%if OrderFieldList!=null%>
+      <%loop ofl OrderFieldList%>
+      	<%if ofl["fPrint"].ToString()=="0"%>
+        <%set {OrderFieldCount}=Convert.ToInt32(OrderFieldCount+1)%>
+      	<td width="50px" align="center">{ofl[fName]}</td>
+        <%/if%>
+      <%/loop%>
+     <%/if%>
+	  <%if ShowMoney == true%>
+	  <td width="50" align="center">单价<br />
+	    (元)</td>
+	  <%/if%>
+	 <td width="50" align="center">数量</td>
+	  <td width="50" align="center">件数</td>
+	  <%if ShowMoney == true%>
+	  <td width="50" align="center">金额</td>
+	  <%/if%>
+     
+	</tr>
+
+<%if OrderList!=null%>
+	<%loop ol OrderList%>
+		<tr>
+		  <!--<td width="80">{ol[StorageName]}</td>-->
+		  <td >{ol[ProductsBarcode]}</td>
+		  <td>
+		  <%if ol["IsGifts"].ToString() !="0"%>
+		  (赠)
+		  <%/if%>
+		  {ol[ProductsName]}</td>
+		  <td align="center" >{ol[ProductsToBoxNo]}</td>
+		  <%if OrderFieldList!=null%>
+			<%if OrderFieldValueList!=null%>
+				<%loop ofl OrderFieldList%>
+                	<%if ofl["fPrint"].ToString()=="0"%>
+					<td >
+					<%loop ofvl OrderFieldValueList%>
+						<%if ofvl["OrderListID"].ToString() == ol["OrderListID"].ToString() && ofvl["OrderFieldID"].ToString()==ofl["OrderFieldID"].ToString()%>
+							{ofvl[oFieldValue]}&nbsp;
+						<%/if%>
+					<%/loop%>
+					</td>
+                    <%/if%>
+				<%/loop%>
+			<%/if%>
+		 <%/if%>
+		  <%if ShowMoney == true%>
+		  <td  align="right">
+<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oPrice"]),2).ToString()%>
+		  <nobr>{aspxrewriteurl}&nbsp;</nobr>
+</td>
+		  <%/if%>
+		   <td  align="right">
+           <%set {sumQuantityM} = Convert.ToDecimal(sumQuantityM+Convert.ToDecimal(ol["oQuantity"]))%>
+		  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"]),config.QuantityDecimal).ToString()%>
+		  <nobr>{aspxrewriteurl}{ol[ProductsUnits]}&nbsp;</nobr>
+</td>
+<td  align="right">
+<%if Convert.ToDecimal(Convert.ToDecimal(ol["oQuantity"]))==0  || Convert.ToDecimal(ol["ProductsToBoxNo"]) == 0%>
+	<%set {sumQuantityB}=0%>
+<%else%>
+			<%set {sumQuantityB} = Convert.ToDecimal(sumQuantityB+Convert.ToDecimal(ol["oQuantity"])/Convert.ToDecimal(ol["ProductsToBoxNo"]))%>
+<%/if%>
+<%if Convert.ToDecimal(ol["oQuantity"])==0 || Convert.ToDecimal(ol["ProductsToBoxNo"]) == 0%>
+	<%set {aspxrewriteurl} = "0"%>
+<%else%>
+		  <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oQuantity"])/Convert.ToDecimal(ol["ProductsToBoxNo"]),config.QuantityDecimal).ToString()%>
+<%/if%>
+		  <nobr>{aspxrewriteurl}{ol[ProductsMaxUnits]}&nbsp;</nobr>
+</td>
+		  <%if ShowMoney == true%>
+		  <td align="right">
+           <%set {summoney} = summoney+Convert.ToDecimal(ol["oMoney"])%>
+<%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(ol["oMoney"]),2).ToString()%>
+		  <nobr>{aspxrewriteurl}&nbsp;</nobr>
+</td>
+		  <%/if%>
+		 
+		</tr>
+	<%/loop%>
+    <%if ShowMoney == true%>
+    <%set {OrderFieldCount} = Convert.ToInt32(OrderFieldCount + 3)%>
+    <%else%>
+    <%set {OrderFieldCount} = Convert.ToInt32(OrderFieldCount + 2)%>
+    <%/if%>
+    <%set {sumQuantityM_page} = sumQuantityM_page + sumQuantityM %>
+    <%set {sumQuantityB_page} = sumQuantityB_page + sumQuantityB %>
+    <%set {summoney_page} = summoney_page + summoney %>
+    
+    <%if OrderListSet.Tables.Count > 1%>
+    <tr>
+        <td>小计:</td>
+        <td colspan="{OrderFieldCount}"></td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sumQuantityM,config.QuantityDecimal).ToString()%>
+       
+        <nobr>{aspxrewriteurl}&nbsp;</nobr></td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sumQuantityB,config.QuantityDecimal).ToString()%>
+        
+        <nobr>{aspxrewriteurl}&nbsp;</nobr>
+        </td>
+        <%if ShowMoney == true%>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(summoney,2).ToString()%>
+       
+        <nobr>{aspxrewriteurl}&nbsp;</nobr>
+        </td>
+        <%/if%>
+        </tr>
+    <%/if%>
+    <%if (x+1) == OrderListSet.Tables.Count%>
+    	<tr>
+        <td>合计:</td>
+        <td colspan="{OrderFieldCount}"></td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sumQuantityM_page,config.QuantityDecimal).ToString()%>
+        <nobr>{aspxrewriteurl}&nbsp;</nobr></td>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(sumQuantityB_page,config.QuantityDecimal).ToString()%>
+        <nobr>{aspxrewriteurl}&nbsp;</nobr>
+        </td>
+        <%if ShowMoney == true%>
+        <td align="right">
+        <%set {aspxrewriteurl} = decimal.Round(summoney_page,2).ToString()%>
+        <nobr>{aspxrewriteurl}&nbsp;</nobr>
+        </td>
+        <%/if%>
+        </tr>
+    <%/if%>
+<%/if%>
+
+  </table>
+  <%if ShowMoney == true%>
+  <div><!--合计:&yen;{summoney} &nbsp;&nbsp;&nbsp;&nbsp;-->大写:人民币{summoney_str}</div>
+  <%/if%>
+</tr>
+</table>
+<div>
+
+<%template _order_print_fo%></div>

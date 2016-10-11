@@ -1,0 +1,85 @@
+﻿<%if oi_array.Count>0%>
+	 <%csharp%>
+	 for(int y=0;y<oi_array.Count;y++){
+		OrderPrintObj _oo = ((OrderPrintObj)oi_array[y]);
+		OrderListSet = _oo.OrderListSet;
+		oi = _oo.Order;
+		OrderFieldList = _oo.OrderFieldList;
+		OrderFieldValueList = _oo.OrderFieldValueList;
+		ordertype = _oo.Order.oType;
+		ShowMoney = _oo.ShowMoney;
+		print_ui = _oo.print_ui;
+	 <%/csharp%>
+
+	<%if OrderListSet != null%>
+			 <%csharp%>
+				for(int x=0;x<OrderListSet.Tables.Count;x++){
+					OrderList= OrderListSet.Tables[x];
+					OrderFieldCount = 0;
+					sumQuantityM = 0;
+					sumQuantityB = 0;
+					summoney = 0;
+			<%/csharp%>
+
+	<div class="print_box">
+
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr class="print_box_top">
+				<td align="center">
+					&nbsp;
+					{config.CompanyName}
+					<%set {aspxrewriteurl}=GetOrderType(ordertype.ToString())%>
+					{aspxrewriteurl}单
+					<%if oi.oState==1%>
+					(已经作废)
+					<%else%>
+					<%if ot=="d"%>
+					<br>注:*配货用,单据审核后该打印单据即无效*
+					<%/if%>
+					<!--
+						<%set {aspxrewriteurl} = GetOrderStpes(oi.oSteps.ToString())%>
+						({aspxrewriteurl})-->
+					<%/if%>
+					&nbsp;
+					<br><br>
+				</td>
+			</tr>
+			<tr>
+
+				<td align="left" valign="top">
+					<!--采购-->
+					<%if ordertype==1 || ordertype ==2%>
+					<%template _order_print_a%>
+					<%/if%>
+					<!--销售-->
+					<%if ordertype==3 || ordertype == 4 || ordertype==5 || ordertype==6 || ordertype==7 || ordertype==11%>
+					<%if IsMOrder == true%>
+					<%template _order_print_e%>
+					<%else%>
+					<%template _order_print_b%>
+					<%/if%>
+					<%/if%>
+					<!--调整,坏货-->
+					<%if ordertype==8 || ordertype==10%>
+					<%template _order_print_c%>
+					<%/if%>
+					<!--调拨-->
+					<%if ordertype==9%>
+					<%template _order_print_d%>
+					<%/if%>
+				</td>
+
+			</tr>
+		</table>
+
+
+	</div>
+	<p style="page-break-after:always">&nbsp;</p>
+	<%csharp%>
+	}
+	<%/csharp%>
+	<%/if%>
+<%csharp%>
+}
+<%/csharp%>
+<%/if%>

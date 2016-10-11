@@ -1,0 +1,86 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="/public/js/comm.js"></script>
+<script type="text/javascript" src="/public/js/xml.js"></script>
+<script type="text/javascript" src="/public/js/jquery-1.3.2.js"></script>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="public/js/bank.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        
+<div class="toolbar">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:Bank.Delt();"  />
+<input type="button" id="button5" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:Bank.ShowAddBankBox();"  />
+<input type="button" id="button6" style="margin:5px" class="B_INPUT" value="退出" onclick="javascript:parent.HidBox();"  />
+</div>
+<div class="datalist">
+    <form action="" method="post" name="form1" id="form1">
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+            <td >名称</td>
+            <td width="20%">操作</td>
+          </tr>
+		  <tr>
+            <td colspan="3">
+			
+          <%if dList != null%>
+		  <div style="overflow:scroll;height:200px;overflow-x:hidden;">
+		  <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox"  >
+          <%loop dl dList%>
+          <tr >
+            <td width="2%">
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[BankID]}" />
+            </td>
+			<td ><a href="javascript:void(0);" onclick="javascript:Bank.ShowEditBox({dl[BankID]});">{dl[bName]}</a></td>
+            <td width="20%">
+			
+			<a href="javascript:void(0);" onclick="javascript:Bank.ShowEditBox({dl[BankID]});">修改</a> 
+			<a href="javascript:void(0);" onclick="javascript:Bank.ShowDelBox({dl[BankID]});">删除</a> 
+			
+			
+			</td>
+          </tr>
+          <%/loop%>
+			</table>
+			</div>
+			<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+          <tr>
+            <td colspan="3"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          </table>
+          <%/if%>
+		  </td>
+          </tr>
+
+        </table>
+    </form>
+</div>
+
+      <%/if%>
+    </div>
+<script language="javascript" type="text/javascript">
+var Bank = new TBank();
+Bank.ini();
+
+function HidBox()
+{
+	Bank.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+<%/if%>
+
+<%template _footer%>

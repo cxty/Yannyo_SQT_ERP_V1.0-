@@ -1,0 +1,57 @@
+
+            <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBox" >
+              <thead >
+              <tr class="tBar">
+                <td width="2%" align="center"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+                <td >交易订单号</td>
+                <td width="30%">买家昵称</td>
+				<td width="10%" align="right">总金额</td>
+                <td width="15%" align="center">交易类型</td>
+                <td width="15%"  align="right">交易时间</td>
+              </tr>
+              </thead>
+              
+              <%if dList != null%>
+              <tbody id="dloop">
+          		<%loop dl dList%>
+              <tr id="tr_{dl[tid]}">
+                <td align="center" width="2%"><input name="cCheck" type="checkbox" class="B_Check" title="{dl[title]}" id="ch_{dl[tid]}" value="{dl[tid]}" /></td>
+                <td >{dl[tid]}
+                <%if Convert.ToBoolean(dl["is_new"].ToString()) == false%>
+                <span style="color:#F00">[新]</span>
+                <%/if%>
+                </td>
+                <td width="30%"  >{dl[buyer_nick]}</td>
+				<td width="10%"  align="right">{dl[total_fee]}</td>
+                <td width="15%" align="center">
+                <%set {aspxrewriteurl}=GetTrade_Types(dl["type"].ToString())%>
+            {aspxrewriteurl}
+                </td>
+                <td width="15%"  align="right">
+                {dl[created]}
+                </td>
+              </tr>
+              <%/loop%>
+              </tbody>
+              <%/if%>
+              <tfoot>
+              <tr>
+                <td colspan="6">
+                <%if pageindex>1%>
+                <a href="javascript:void(0);" onclick="M_Trade_do.PageUp();"><-上一页</a>
+                <%/if%>
+                <a href="javascript:void(0);" onclick="M_Trade_do.PageDown();">下一页-></a></td>
+                </tr>
+              </tfoot>
+              
+            </table>
+            <div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                    <input type="button" name="bt_download" id="bt_download" value=" 下载选中 " class="B_INPUT">
+                    <input type="button" name="bt_cancel" id="bt_cancel" value=" 取消 " class="B_INPUT">
+                  </td>
+                </tr>
+              </table>

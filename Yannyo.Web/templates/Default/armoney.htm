@@ -1,0 +1,119 @@
+<%template _header%>
+
+
+<script src="public/js/armoney.js" language="javascript" type="text/javascript"></script>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+        <form action="" method="post" name="form1" id="form1">
+<div class="toolbar">
+<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="删除选中" onclick="javascript:ArmoneyManage.Delt();"  />
+<input type="button" id="button3" style="margin:5px" class="B_INPUT" value="添加" onclick="javascript:ArmoneyManage.ShowAddUserBox();"  />
+<input type="button" id="button4" style="margin:5px" class="B_INPUT" value="批量添加" onclick="javascript:ArmoneyManage.ShowAddBatBox();"  />
+<input type="button" id="button2" style="margin:5px" class="B_INPUT" value="导入" onclick="javascript:ArmoneyManage.ShowImportUserBox();"  />
+</div>
+<div class="datalist">
+    
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs">
+          <tr class="tBar">
+            <td width="2%"><input name="cCheck" type="checkbox" class="B_Check" value="" onclick="javascript:selectCheck(document.getElementById('form1'),this);"/></td>
+			<td width="10%">类型</td>
+			<td >名称</td>
+			<td width="80">新增金额</td>
+			<td width="80">实际对账金额</td>
+			<td width="80">开票日期</td>
+			<td width="80">开票金额</td>
+			<td width="80">预计到款日期</td>
+			<td width="80">实际收款日期</td>
+            <td width="80">实际收款金额</td>
+			<td width="80">是否已完成</td>
+			<td width="80">最后操作时间</td>
+			<td width="10%">创建时间</td>
+            <td width="10%">操作</td>
+          </tr>
+          <%if dList != null%>
+          <%loop dl dList%>
+          <tr>
+            <td>
+            <input name="cCheck" type="checkbox" class="B_Check" value="{dl[ARMoneyID]}" />
+            </td>
+			<td>
+			<%if dl["ARObjType"].ToString()=="0"%>
+			门店
+			<%/if%>
+			<%if dl["ARObjType"].ToString()=="1"%>
+			个人
+			<%/if%>
+			<%if dl["ARObjType"].ToString()=="2"%>
+			结算系统
+			<%/if%>
+			</td>
+			<td><nobr><a href="javascript:void(0);" onclick="javascript:ArmoneyManage.ShowEditUserBox({dl[ARMoneyID]});">{dl[ARObjName]}</a></nobr></td>
+            <td align="right">{dl[aAMoney]}</td>
+			<td align="right">{dl[aBMoney]}</td>
+			<td align="right">
+			<%set {aspxrewriteurl}=DateTime.Parse(dl["aOpenDate"].ToString()).ToString("yyyy-MM-dd")%>
+			<nobr>{aspxrewriteurl}</nobr></td>
+			<td align="right">{dl[aOpenMoney]}</td>
+			<td align="right">
+			<%set {aspxrewriteurl}=DateTime.Parse(dl["aDate"].ToString()).ToString("yyyy-MM-dd")%>
+			<nobr>{aspxrewriteurl}</nobr>
+			
+			</td>
+			<td align="right">
+			<%if dl["aSteps"].ToString()=="2"%>
+			<%set {aspxrewriteurl}=DateTime.Parse(dl["aActualDate"].ToString()).ToString("yyyy-MM-dd")%>
+			<nobr>{aspxrewriteurl}</nobr>
+			<%/if%></td>
+			<td align="right">
+			<%if dl["aSteps"].ToString()=="2"%>
+			{dl[aActualMoney]}
+			<%/if%>
+			</td>
+			<td align="center">
+			<%if dl["aSteps"].ToString() == "0"%>
+            未处理
+            <%/if%>
+			<%if dl["aSteps"].ToString() == "1"%>
+            未完成
+            <%/if%>
+            <%if dl["aSteps"].ToString() == "2"%>
+            完成
+            <%/if%></td>
+			<td align="right"><nobr>{dl[aUpdateTime]}</nobr></td>
+			<td align="right"><nobr>{dl[aAppendTime]}</nobr></td>
+            <td>
+			<a href="javascript:void(0);" onclick="javascript:ArmoneyManage.ShowDelUserBox({dl[ARMoneyID]});">删除</a> 
+			<a href="javascript:void(0);" onclick="javascript:ArmoneyManage.ShowEditUserBox({dl[ARMoneyID]});">修改</a>
+			</td>
+          </tr>
+          <%/loop%>
+          <tr>
+            <td colspan="14"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+          
+          <%/if%>
+        </table>
+    
+</div>
+<script language="javascript" type="text/javascript">
+var ArmoneyManage = new TArmoneyManage();
+ArmoneyManage.ini();
+
+function HidBox()
+{
+	ArmoneyManage.HidUserBox();
+	location.reload();
+}
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+      <%/if%>
+    </div></form>
+
+
+
+<%template _copyright%>
+<%template _footer%>

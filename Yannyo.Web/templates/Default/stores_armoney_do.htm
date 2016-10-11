@@ -1,0 +1,84 @@
+<%template _poppageheader%>
+<body>
+<script type="text/javascript" src="public/js/Cxty_XTool.js"></script>
+<!--
+<script src="public/js/bsn.AutoSuggest_2.1.3_comp.js" type="text/javascript" ></script>
+
+<link rel="stylesheet" href="public/js/autosuggest_inquisitor.css" type="text/css" media="screen" charset="utf-8" />
+-->
+
+<link rel="stylesheet" type="text/css" href="public/js/jquery.autocomplete.css"></link>
+<script type="text/javascript" src="public/js/jquery.autocomplete.js "></script>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+            <form name="bForm" id="bForm" action="" method="post">
+              <table width="100%" border="0" cellspacing="1" cellpadding="1" class="dBox">
+                <tr>
+                  <td width="20%" align="right" class="ltd">客户名称</td>
+                  <td align="left" class="rtd">
+
+                  <%if Act=="Edit"%><h3>{si.sName}</h3><%/if%>
+                  </td>
+                </tr>
+                
+                
+				
+				<tr>
+                  <td  align="right" class="ltd">期初应收款</td>
+                  <td align="left" class="rtd">
+                  <input name="sDoDayMoney" id="sDoDayMoney" type="text" 
+                  <%if Act=="Edit"%>value="{si.sDoDayMoney}"<%/if%> showtitle="只能填写数字格式"
+                  /></td>
+                </tr>
+
+              </table>
+<div style="height:30px"></div>
+            <div id="footer_tool">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center">
+                  	<input type="button" id="button1" style="margin:5px" class="B_INPUT" value="确定" onClick="javascript:CheckF();"/>
+                  <input type="button" id="button2" style="margin:5px" class="B_INPUT" value="取消" onClick="javascript:window.parent.HidBox();" />
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            </form>
+            
+            <script language="javascript" type="text/javascript">
+		
+			
+			function CheckF()
+			{
+				if(Sys.getObj('sDoDayMoney').value != '')
+				{
+
+						Sys.getObj('bForm').submit();
+
+				}else
+				{
+					alert('应收款不能为空!');	
+				}
+				
+			}
+			</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

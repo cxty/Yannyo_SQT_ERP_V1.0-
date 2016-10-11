@@ -1,0 +1,143 @@
+﻿<%template _header%>
+
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+
+    <div class="main" id="usermanage">
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<form action="" method="post" name="form1" id="form1">
+
+<div class="datalist">
+    
+       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="2" class="tBox tBoxI" id="tBoxs">
+	  <tr class="tBar">
+		<td colspan="2"><b>管理平台系统配置信息</b></td>
+	  </tr>
+	  <tr>
+		<td width="20%" align="right">初始订单号:</td>
+		<td ><label for="OrderID"></label>
+		  <input type="text" name="OrderID" id="OrderID" value="{ManageConfig.OrderID}"/>
+		  长度小于12位</td>
+	  </tr>
+	  <tr>
+		<td  align="right">初始供应商号:</td>
+		<td ><label for="SupplierCode"></label>
+		  <input type="text" name="SupplierCode" id="SupplierCode" value="{ManageConfig.SupplierCode}"/>
+		  长度小于12位</td>
+	  </tr>
+	  <tr>
+		<td  align="right">初始对账单号:</td>
+		<td ><label for="MonthlyStatementCode"></label>
+		  <input type="text" name="MonthlyStatementCode" id="MonthlyStatementCode" value="{ManageConfig.MonthlyStatementCode}"/>
+		  长度小于12位</td>
+	  </tr>
+	  <tr>
+	    <td  align="right">凭证号长度:</td>
+	    <td ><label for="CertificateCodeLen"></label>
+		<input type="text" name="CertificateCodeLen" id="CertificateCodeLen" value="{ManageConfig.CertificateCodeLen}"/>系统自动在凭证号前用"0"补齐</td>
+	    </tr>
+	  <tr>
+		<td  align="right">金额小数保留位数:</td>
+		<td ><label for="MoneyDecimal"></label>
+		  <input type="text" name="MoneyDecimal" id="MoneyDecimal" value="{ManageConfig.MoneyDecimal}"/></td>
+	  </tr>
+	  <tr>
+		<td  align="right">数量小数保留位数:</td>
+		<td ><label for="QuantityDecimal"></label>
+		  <input type="text" name="QuantityDecimal" id="QuantityDecimal" value="{ManageConfig.QuantityDecimal}"/></td>
+	  </tr>
+	<tr>
+		<td  align="right">单据打印机名称:</td>
+		<td ><label for="PrinterName"></label>
+		  <input type="text" name="PrinterName" id="PrinterName" value="{ManageConfig.PrinterName}"/></td>
+	  </tr>
+	  <tr>
+		<td  align="right">单据打印宽度(cm):</td>
+		<td ><label for="PrintPageWidth"></label>
+		  <input type="text" name="PrintPageWidth" id="PrintPageWidth" value="{ManageConfig.PrintPageWidth}"/></td>
+	  </tr>
+	  <tr>
+		<td  align="right">凭证打印宽度(cm):</td>
+		<td ><label for="PrintCertificatePageWidth"></label>
+		  <input type="text" name="PrintCertificatePageWidth" id="PrintCertificatePageWidth" value="{ManageConfig.PrintCertificatePageWidth}"/></td>
+	  </tr>
+	  <tr>
+		<td  align="right">凭证打印行数:</td>
+		<td ><label for="CertificateRow"></label>
+		  <input type="text" name="CertificateRow" id="CertificateRow" value="{ManageConfig.CertificateRow}"/></td>
+	  </tr>
+	  <tr>
+		<td  align="right">随附单打印宽度(cm):</td>
+		<td ><label for="PrintAddPageWidth"></label>
+		  <input type="text" name="PrintAddPageWidth" id="PrintAddPageWidth" value="{ManageConfig.PrintAddPageWidth}"/></td>
+	  </tr>
+	  <tr>
+		<td  align="right">随附单打印行数:</td>
+		<td ><label for="PrintAddRow"></label>
+		  <input type="text" name="PrintAddRow" id="PrintAddRow" value="{ManageConfig.PrintAddRow}"/></td>
+	  </tr>
+
+	  <tr>
+		<td  align="right">企业名称:</td>
+		<td ><label for="CompanyName"></label>
+		  <input type="text" name="CompanyName" id="CompanyName" value="{ManageConfig.CompanyName}"/></td>
+	  </tr>
+	  <tr>
+		<td  align="right">注册号:</td>
+		<td ><label for="RegistrationNo"></label>
+		  <input type="text" name="RegistrationNo" id="RegistrationNo" value="{ManageConfig.RegistrationNo}"/></td>
+	  </tr>
+	  <tr>
+		<td  align="right">地址:</td>
+		<td ><label for="Address"></label>
+		  <input type="text" name="Address" id="Address" value="{ManageConfig.Address}"/></td>
+	  </tr>
+	   <tr>
+		<td  align="right">电话:</td>
+		<td ><label for="Phone"></label>
+		  <input type="text" name="Phone" id="Phone" value="{ManageConfig.Phone}"/></td>
+	  </tr>
+
+	  <tr>
+		<td  align="right">库存盘点关闭单据操作:</td>
+		<td ><input name="Order_lock" type="checkbox" value="1" id="Order_lock" class="B_Check"
+                    <%if {ManageConfig.Order_lock}==1%>
+                        checked="checked"
+                    <%/if%>
+                  />关闭</td>
+	  </tr>
+
+	  <tr>
+		<td  align="right">财务账期关闭凭证操作:</td>
+		<td ><input name="Certificate_lock" type="checkbox" value="1" id="Certificate_lock" class="B_Check"
+                    <%if {ManageConfig.Certificate_lock}==1%>
+                        checked="checked"
+                    <%/if%>
+                  />关闭</td>
+	  </tr>
+	  <tr>
+		<td colspan="2" align="center"><input type="submit" id="button3" style="margin:5px" class="B_INPUT" value="   保   存   "  /></td>
+		</tr>
+	</table>
+    
+</div>
+<script language="javascript" type="text/javascript">
+addTableListener(document.getElementById("tBoxs"),0,0);
+</script>
+
+    <%/if%>
+</div>    
+</form>
+
+<%/if%>
+
+<%template _copyright%>
+<%template _footer%>

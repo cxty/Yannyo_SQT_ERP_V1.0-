@@ -1,0 +1,1362 @@
+﻿<%template _header%>
+<%if page_err!=0%>
+    <%template _errmsgbox%>
+<%else%>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<script src="/public/js/jquery.js" type="text/javascript" language="javascript" ></script>
+<script src="/public/js/SerchWebSite.js" type="text/javascript" language="javascript" ></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+<link rel="stylesheet" type="text/css" href="/public/js/popup.tree.css"></link>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="/public/js/Cxty_XTool.js"></script>
+<script type="text/javascript" src="/public/js/jquery.autocomplete.js "></script>
+<script type="text/javascript" src="/public/js/jquery.mcdropdown.js"></script>
+<script type="text/javascript" src="/public/js/jquery.bgiframe.js"></script>
+<script type="text/javascript" src="/public/js/reportselect.js"></script>
+<script type="text/javascript" src="/public/js/reportselect_do.js"></script>
+<script type="text/javascript" src="/public/js/jTable.js"></script>
+<script src="/public/js/myFrontPageJs/storage.js" type="text/javascript" language="javascript"></script>
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+<div class="main" id="OrderList">
+<form action="" method="post" name="bForm" id="bForm">   
+
+<div class="toolbar" style="background-color:#cccccc">
+<input type="hidden" id="reTypeValue" name="reTypeValue" />
+<input type="hidden" id="_associated" name="_associated" />
+<table border="0" cellspacing="2" cellpadding="0" style="font-size:10pt;width:100%">
+  <tr>
+  
+  <%if bType==1%>
+  <div style="visibility:visible">
+  <td style="width:60%">年份选择:
+    <%if yList !=null%>
+    <select name="s_year" style="width:10%">
+    <%loop yl yList%>
+     <option>{yl[sDateTime_year]}</option>
+    <%/loop%>
+    </select>
+    <%/if%>
+  </td>
+  </div>
+  <%/if%>
+  <%if bType==0%>
+  <div style="visibility:visible">
+   <td align="center" style="width:10%;">区域名称
+    <%if List !=null%>
+   <select  style="width:80%" id="rName" name="rName"  onchange="javascript:changeOptions();">
+   <option>选择全部</option>
+   <%loop ddl List%>
+    <option>{ddl[rName]}</option>
+    <%/loop%>
+   </select>
+   <%/if%>
+   </td>
+   <td align="center" style="width:15%;">业务员
+    <select style="width:80%" id="staffName" name="staffName" onchange="javascript:changeOptionsStorage()">
+       <option>选择全部</option>
+     </select>
+   </td>
+   <td align="center" style="width:15%;">门店名称
+   <select style="width:100%;" id="storageName" name="storageName" >
+       <option>选择全部</option>
+   </select>
+   </td>
+   <td align="center" colspan="3" style="width:30%;">日期选择<br />
+   <%set {aspxrewriteurl}=sDate.ToString("yyyy-MM-dd")%>
+    <input name="sDate" id="sDate" type="text" value="{aspxrewriteurl}" style="width:175px" onclick="new Calendar().show(this);"  />至
+    <%set {aspxrewriteurl}=stDate.ToString("yyyy-MM-dd")%>
+    <input name="stDate" id="stDate" type="text" value="{aspxrewriteurl}" style="width:175px" onclick="new Calendar().show(this);"/>
+   </td>
+   <td align="center" style="width:7%;">查看类型
+   <select id="reType" name="reType" style="width:80%">
+        <option value="-1"<%if {reType}==-1%>selected="selected"<%/if%>>全部</option>
+        <option value="0" <%if {reType}==0%>selected="selected"<%/if%>>进货</option>
+        <option value="1" <%if {reType}==1%>selected="selected"<%/if%>>销售</option>
+        <option value="2" <%if {reType}==2%>selected="selected"<%/if%>>库存</option>
+    </select>
+    </td>
+    <td align="center">联营
+    <select id="associated" name="associated" style="width:100%">
+        <option value="-1"<%if {_associated}==-1%>selected="selected"<%/if%>>包含</option>
+        <option value="0" <%if {_associated}==0%>selected="selected"<%/if%>>剔除</option>
+        <option value="1" <%if {_associated}==1%>selected="selected"<%/if%>>仅联营</option>
+    </select>
+    </td>
+   </div>
+   <%/if%>
+
+   <td <%if bType==0%>align="center" style="width:7%"<%else%>align="right" style="width:15%"<%/if%>><%if bType==0%>查询<%else%><%/if%>
+    <input type="button"  id="btn_submit" class="B_INPUT" value=" 确 定 "/>
+   </td>
+   <td align="center" style="width:7%"><%if bType==0%>导出数据
+   <input type="button" id="export" name="export"   class="B_INPUT" value="导出数据" /><%/if%>
+   </td>
+  </tr>
+
+</table>
+</div>
+
+
+<%if bType==1%>
+  <div id="space"></div>
+  <table width="100%" id="get_data" border="0" cellspacing="2" cellpadding="0" class="tBox">
+  <tr class="tBar">
+   <td rowspan="2" align="center" style="width:3%" >序号</td>
+   <td rowspan="2" align="center" style="width:5%">业务员</td>
+   <td rowspan="2" align="center" colspan="2" style="width:20%">客户名称</td>
+   <td colspan="2" align="center" style="width:6%">1月</td>
+   <td colspan="2" align="center" style="width:6%">2月</td>
+   <td colspan="2" align="center" style="width:6%">3月</td>
+   <td colspan="2" align="center" style="width:6%">4月</td>
+   <td colspan="2" align="center" style="width:6%">5月</td>
+   <td colspan="2" align="center" style="width:6%">6月</td>
+   <td colspan="2" align="center" style="width:6%">7月</td>
+   <td colspan="2" align="center" style="width:6%">8月</td>
+   <td colspan="2" align="center" style="width:6%">9月</td>
+   <td colspan="2" align="center" style="width:6%">10月</td>
+   <td colspan="2" align="center" style="width:6%">11月</td>
+   <td colspan="2" align="center" style="width:6%">12月</td>
+  </tr>
+  <tr class="tBar">
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+
+   <td style="width:3%">数量</td>
+   <td style="width:3%">金额</td>
+  </tr>
+  </table>
+  <table width="100%" id="tBoxs" border="0" cellspacing="2" cellpadding="0" class="tBox">
+  <%if {ispost}%>
+  <%if sList !=null%>
+  <%loop sl sList%>
+    <%set {SumE}=0%>
+    <%set {SumEA}=0%>
+    <%set {SumEB}=0%>
+    <%set {SumEC}=0%>
+    <%set {SumED}=0%>
+    <%set {SumEE}=0%>
+    <%set {SumEF}=0%>
+    <%set {SumEG}=0%>
+    <%set {SumEH}=0%>
+    <%set {SumEI}=0%>
+    <%set {SumEJ}=0%>
+    <%set {SumEK}=0%>
+    
+    <%set {SumF}=0%>
+    <%set {SumFA}=0%>
+    <%set {SumFB}=0%>
+    <%set {SumFC}=0%>
+    <%set {SumFD}=0%>
+    <%set {SumFE}=0%>
+    <%set {SumFF}=0%>
+    <%set {SumFG}=0%>
+    <%set {SumFH}=0%>
+    <%set {SumFI}=0%>
+    <%set {SumFJ}=0%>
+    <%set {SumFK}=0%>
+
+    
+    <%set {hList}=stName({sl[sName]})%>
+    <%set {rList}=rowList({sl[sName]}) %>
+    <%set {fList}=getStorage_Num(sDate.ToString("yyyy"),sl["sName"].ToString()) %>
+    <%set {tLoopid}=1%>
+        <tr>
+           <td rowspan="{rList}" style="width:3%">{sl__loop__id}</td>
+           <td rowspan="{rList}" style="width:5%;">{sl[sName]}</td>
+           <%if hList==null%>
+           <td colspan="31" align="center">无信息</td>
+           <%/if%>
+        <%if hList !=null%>
+        <%loop hl hList%>
+        <%if (tLoopid%2) == 0%>
+                 <tr>
+                <%/if%>
+           <td style="width:3%">{hl__loop__id}</td>
+           <td colspan="6" style="width:17%">{hl[sName]}</td>
+          
+          <%set {pList}=getProductsDetails(sDate.ToString("yyyy"),hl["sName"].ToString())%>
+           <%if {ispost} && {bType}.ToString()=="1"%>
+           <%set {pList}=getProductsDetails({s_year},hl["sName"].ToString())%>
+           <%if pList !=null%>
+            <%loop pl pList%>
+             <div style="visibility:visible">
+             <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum1"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumE}=decimal.Round(SumE+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice1"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumF}=decimal.Round(SumF+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td> 
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum2"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEA}=decimal.Round(SumEA+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice2"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFA}=decimal.Round(SumFA+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+            <td align="right" style="width:3%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum3"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEB}=decimal.Round(SumEB+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice3"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFB}=decimal.Round(SumFB+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum4"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEC}=decimal.Round(SumEC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice4"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFC}=decimal.Round(SumFC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum5"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumED}=decimal.Round(SumED+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice5"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFD}=decimal.Round(SumFD+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum6"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEE}=decimal.Round(SumEE+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice6"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFE}=decimal.Round(SumFE+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum7"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEF}=decimal.Round(SumEF+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice7"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFF}=decimal.Round(SumFF+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum8"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEG}=decimal.Round(SumEG+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice8"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFG}=decimal.Round(SumFG+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum9"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEH}=decimal.Round(SumEH+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice9"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFH}=decimal.Round(SumFH+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum10"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEI}=decimal.Round(SumEI+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice10"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFI}=decimal.Round(SumFI+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum11"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEJ}=decimal.Round(SumEJ+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice11"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFJ}=decimal.Round(SumFJ+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum12"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEK}=decimal.Round(SumEK+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice12"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFK}=decimal.Round(SumFK+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td> 
+             </div>
+           <%/loop%>
+            <%else%>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <%/if%>
+           <%else%>
+           <%if pList !=null%>
+            <%loop pl pList%>
+            <div style="visibility:visible">
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum1"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumE}=decimal.Round(SumE+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice1"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumF}=decimal.Round(SumF+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td> 
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum2"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEA}=decimal.Round(SumEA+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice2"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFA}=decimal.Round(SumFA+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+            <td align="right" style="width:3%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum3"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEB}=decimal.Round(SumEB+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice3"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFB}=decimal.Round(SumFB+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum4"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEC}=decimal.Round(SumEC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice4"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFC}=decimal.Round(SumFC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum5"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumED}=decimal.Round(SumED+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice5"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFD}=decimal.Round(SumFD+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum6"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEE}=decimal.Round(SumEE+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice6"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFE}=decimal.Round(SumFE+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum7"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEF}=decimal.Round(SumEF+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice7"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFF}=decimal.Round(SumFF+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum8"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEG}=decimal.Round(SumEG+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice8"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFG}=decimal.Round(SumFG+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum9"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEH}=decimal.Round(SumEH+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice9"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFH}=decimal.Round(SumFH+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum10"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEI}=decimal.Round(SumEI+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice10"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFI}=decimal.Round(SumFI+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum11"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEJ}=decimal.Round(SumEJ+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice11"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFJ}=decimal.Round(SumFJ+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sNum12"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumEK}=decimal.Round(SumEK+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" style="width:3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(pl["sPrice12"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumFK}=decimal.Round(SumFK+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            </div>
+           <%/loop%>
+           <%else%>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <td align="right" style="width:3%">0.00</td>
+           <%/if%>
+          <%/if%>
+
+         <%if (tLoopid%2) == 0%>
+   			</tr>
+            <%/if%>
+            <%set {tLoopid}=tLoopid+1%>
+        </tr>
+       <%/loop%>
+        <tr>
+         <td colspan="3" rowspan="3" align="center">{sl[sName]}小计</td>
+         <td colspan="6" align="center"><b>零售额增幅</b></td>
+         <td align="right"><span>{SumE}</span></td>
+         <td align="right"><span>{SumF}</span></td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumEA) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEA})-Convert.ToDecimal({SumE}))/Convert.ToDecimal({SumEA}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEA}
+             <%/if%></span></td>
+         <td align="right"><span>
+           <%if Convert.ToDecimal(SumFA) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFA})-Convert.ToDecimal({SumF}))/Convert.ToDecimal({SumFA}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFA}
+             <%/if%></span></td>
+         <td align="right"><span>
+           <%if Convert.ToDecimal(SumEB) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEB})-Convert.ToDecimal({SumEA}))/Convert.ToDecimal({SumEB}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEB}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumFB) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFB})-Convert.ToDecimal({SumFA}))/Convert.ToDecimal({SumFB}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFB}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+         <%if Convert.ToDecimal(SumEC) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEC})-Convert.ToDecimal({SumEB}))/Convert.ToDecimal({SumEC}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEC}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumFC) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFC})-Convert.ToDecimal({SumFB}))/Convert.ToDecimal({SumFC}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFC}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+         <%if Convert.ToDecimal(SumED) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumED})-Convert.ToDecimal({SumEC}))/Convert.ToDecimal({SumED}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumED}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumFD) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFD})-Convert.ToDecimal({SumFC}))/Convert.ToDecimal({SumFD}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFD}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumEE) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEE})-Convert.ToDecimal({SumED}))/Convert.ToDecimal({SumEE}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEE}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumFE) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFE})-Convert.ToDecimal({SumFD}))/Convert.ToDecimal({SumFE}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFE}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumEF) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEF})-Convert.ToDecimal({SumEE}))/Convert.ToDecimal({SumEF}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEF}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumFF) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFF})-Convert.ToDecimal({SumFE}))/Convert.ToDecimal({SumFF}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFF}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumEG) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEG})-Convert.ToDecimal({SumEF}))/Convert.ToDecimal({SumEG}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEG}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+           <%if Convert.ToDecimal(SumFG) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFG})-Convert.ToDecimal({SumFF}))/Convert.ToDecimal({SumFG}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFG}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+              <%if Convert.ToDecimal(SumEH) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEH})-Convert.ToDecimal({SumEG}))/Convert.ToDecimal({SumEH}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEH}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+             <%if Convert.ToDecimal(SumFH) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFH})-Convert.ToDecimal({SumFG}))/Convert.ToDecimal({SumFH}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFH}
+             <%/if%></span>
+          </td>
+         <td align="right"><span>
+           <%if Convert.ToDecimal(SumEI) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEI})-Convert.ToDecimal({SumEH}))/Convert.ToDecimal({SumEI}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEI}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+         <%if Convert.ToDecimal(SumFI) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFI})-Convert.ToDecimal({SumFH}))/Convert.ToDecimal({SumFI}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFI}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumEJ) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEJ})-Convert.ToDecimal({SumEH}))/Convert.ToDecimal({SumEJ}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEJ}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumFJ) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFJ})-Convert.ToDecimal({SumFH}))/Convert.ToDecimal({SumFJ}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFJ}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+           <%if Convert.ToDecimal(SumEK) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEK})-Convert.ToDecimal({SumEJ}))/Convert.ToDecimal({SumEK}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumEK}
+             <%/if%></span>
+         </td>
+         <td align="right"><span>
+          <%if Convert.ToDecimal(SumFK) !=0%>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFK})-Convert.ToDecimal({SumFJ}))/Convert.ToDecimal({SumFK}),2).ToString()%>
+             {aspxrewriteurl}
+             <%else%>
+              {SumFK}
+             <%/if%></span>
+         </td>
+       
+        </tr>
+        <%if fList !=null%>
+        <%loop fl fList%>
+        <tr>
+        <td colspan="6" align="center"><b>销售门店数增幅</b></td>
+         <td align="right" colspan="2">{fl[countStorage_1]}</td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_2]})-Convert.ToDecimal({fl[countStorage_1]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_3]})-Convert.ToDecimal({fl[countStorage_2]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_4]})-Convert.ToDecimal({fl[countStorage_3]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_5]})-Convert.ToDecimal({fl[countStorage_4]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_6]})-Convert.ToDecimal({fl[countStorage_5]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_7]})-Convert.ToDecimal({fl[countStorage_6]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_8]})-Convert.ToDecimal({fl[countStorage_7]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_9]})-Convert.ToDecimal({fl[countStorage_8]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_10]})-Convert.ToDecimal({fl[countStorage_9]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_11]})-Convert.ToDecimal({fl[countStorage_10]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+         <td align="right" colspan="2">
+          <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal({fl[countStorage_12]})-Convert.ToDecimal({fl[countStorage_11]}),2).ToString()%>
+             {aspxrewriteurl}
+         </td>
+        </tr>
+        <%/loop%>
+        <%/if%>
+        <tr>
+         <td colspan="6" align="center"><b>店均零售额增幅</b></td>
+         <td align="right">0</td>
+         <td align="right">0</td>
+         <td align="right"><span>
+          <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEA})/{rList})-(Convert.ToDecimal({SumE})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+           <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFA})/{rList})-(Convert.ToDecimal({SumF})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+          <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEB})/{rList})-(Convert.ToDecimal({SumEA})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFB})/{rList})-(Convert.ToDecimal({SumFA})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+          <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEC})/{rList})-(Convert.ToDecimal({SumEB})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFC})/{rList})-(Convert.ToDecimal({SumFB})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumED})/{rList})-(Convert.ToDecimal({SumEC})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFD})/{rList})-(Convert.ToDecimal({SumFC})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEE})/{rList})-(Convert.ToDecimal({SumED})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFE})/{rList})-(Convert.ToDecimal({SumFD})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEF})/{rList})-(Convert.ToDecimal({SumEE})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFF})/{rList})-(Convert.ToDecimal({SumFE})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEG})/{rList})-(Convert.ToDecimal({SumEF})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFG})/{rList})-(Convert.ToDecimal({SumFF})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEH})/{rList})-(Convert.ToDecimal({SumEG})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFH})/{rList})-(Convert.ToDecimal({SumFG})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEI})/{rList})-(Convert.ToDecimal({SumEH})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFI})/{rList})-(Convert.ToDecimal({SumFH})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEJ})/{rList})-(Convert.ToDecimal({SumEI})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFJ})/{rList})-(Convert.ToDecimal({SumFI})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumEK})/{rList})-(Convert.ToDecimal({SumEJ})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+         <td align="right"><span>
+         <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal({SumFK})/{rList})-(Convert.ToDecimal({SumFJ})/{rList}),2).ToString()%>
+             {aspxrewriteurl}</span>
+         </td>
+        </tr>
+       <%/if%>
+   <%/loop%>
+   <%/if%>
+   <%/if%>
+  </table>
+<%/if%>
+
+<%if bType==0%>
+<div style="visibility:visible">
+   <div class="datalist">
+    <table width="60%" id="select_data" border="0" cellspacing="2" cellpadding="0" class="tBox">
+     <tr class="tBar">
+       <td colspan="2" width="15%"><label>区域:{get_rName}</label></td>
+       <td  width="10%"><label>业务员:
+       <%if {get_staffName}=="-1"%>选择全部
+        <%else%>{get_staffName}
+       <%/if%>
+       </label>
+       </td>
+       <td  width="15%"><label>
+       门店:
+       <%if {get_storageName}=="-1"%>选择全部
+       <%else%>{get_storageName}
+       <%/if%>
+       </label>
+       </td>
+       <td  width="10%">
+       <label>类型:
+       <%if {get_reTypeValue}=="-1"%>全部<%/if%>
+       <%if {get_reTypeValue}=="0"%>进货<%/if%>
+       <%if {get_reTypeValue}=="1"%>销售<%/if%>
+       <%if {get_reTypeValue}=="2"%>库存<%/if%>
+       </label>
+       </td>
+       <td width="10%">
+        <label>联营:
+         <%if {associated}=="-1"%>包含<%/if%>
+         <%if {associated}=="0"%>剔除<%/if%>
+         <%if {associated}=="1"%>仅包含<%/if%>
+        </label>
+       </td>
+       <td colspan="12"><label>查询日期:{sDate.ToLongDateString()}</label>—<label>{stDate.ToLongDateString()}</label>
+       </td>
+     </tr>
+     </table>
+<div id="space"></div>
+ <table width="100%" id="get_data" class="tBox" border="0"  cellspacing="2" cellpadding="0">
+     <thead>
+         <tr class="tBar">
+            <td width="2%" align="center" rowspan="3"><b>序号</b></td>
+            <td width="8%" align="center" rowspan="3"><b>商品条码</b></td>    
+	        <td width="15%"align="center" rowspan="3"><b>商品名称</b></td>
+            <td width="5%" align="center" rowspan="3"><b>装件数</b></td>
+             <%if reType==-1 %>
+            <div style="visibility:visible">
+            <td width="15%" align="center" colspan="3" rowspan="2"><b>期初结存</b></td>
+            </div><%/if%>
+             <%if reType==-1 %>
+            <div style="visibility:visible">
+            <td width="30%" align="center" colspan="10"><b>进货数量</b></td>
+            </div><%/if%>
+             <%if reType==-1 %>
+            <div style="visibility:visible">
+            <td width="15%" align="center" colspan="3" rowspan="2"><b>销售数量</b></td>
+            </div><%/if%>
+            
+            <%if reType==-1 %>
+            <div style="visibility:visible">
+           <td width="10%" align="center" colspan="2" rowspan="2"><b>期末结存</b></td>
+            </div><%/if%>
+	        
+            <%if reType==2 %>
+            <div style="visibility:visible">
+	        <td width="15%" align="center" colspan="3"><b>期初结存</b></td>
+            </div><%/if%>
+            <%if reType==0 %>
+            <div style="visibility:visible">
+            <td  width="30%" align="center" colspan="10"><b>进货数量</b></td>
+            </div><%/if%>
+            <%if reType==1 %>
+            <div style="visibility:visible">
+            <td width="15%" align="center" colspan="3"><b>销售数量</b></td>
+            </div><%/if%>
+        </tr>
+        <%if reType==-1 %>
+        <div style="visibility:visible">
+        <tr align="center" class="tBar">
+         <td colspan="2">进货</td>
+         <td colspan="2">赠品</td>
+         <td colspan="2">样品</td>
+         <td colspan="2">退货</td>
+         <td colspan="2">小计</td>
+        </tr>
+        </div><%/if%>
+       <%if reType==0 %>
+        <div style="visibility:visible">
+        <tr align="center">
+         <td colspan="2">进货</td>
+         <td colspan="2">赠品</td>
+         <td colspan="2">样品</td>
+         <td colspan="2">退货</td>
+         <td colspan="2">小计</td>
+        </tr>
+        </div><%/if%>
+         <tr class="tBar" style="width:100%">
+           <%if reType==2 %>
+            <div style="visibility:visible">
+	        <td width="5%" align="right" >数量</td>
+	        <td width="5%" align="right" >件数</td>
+            <td width="5%" align="right" >总金额</td>
+           </div><%/if%>
+
+           <%if reType==0 %>
+            <div style="visibility:visible">
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            </div><%/if%>
+
+             <%if reType==1 %>
+            <div style="visibility:visible">
+            <td width="5%" align="right">数量</td>
+	        <td width="5%" align="right">件数</td>
+            <td width="5%" align="right" >总金额</td>
+            </div><%/if%>
+
+             <%if reType==-1 %>
+            <div style="visibility:visible">
+	        <td width="5%" align="right" >数量</td>
+	        <td width="5%" align="right" >件数</td>
+            <td width="5%" align="right" >总金额</td>
+           </div><%/if%>
+            <%if reType==-1 %>
+            <div style="visibility:visible">
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+            <td width="3%" align="right" >数量</td>
+            <td width="3%" align="right" >金额</td>
+             </div><%/if%>
+              <%if reType==-1 %>
+            <div style="visibility:visible">
+            <td width="5%" align="right">数量</td>
+	        <td width="5%" align="right">件数</td>
+            <td width="5%" align="right" >总金额</td>
+            </div><%/if%>
+             <%if reType==-1 %>
+            <div style="visibility:visible">
+            <td width="5%" align="right" >数量</td>
+            <td width="5%" align="right" >件数</td>
+            </div><%/if%>
+        </tr>
+       </table>
+       <table width="100%"  border="0" cellspacing="2" cellpadding="0" class="tBox">
+        <tbody>
+        <%if dList != null%>
+        <%loop dl dList%>
+          <tr>
+            <td align="center" width="2%" id="id">{dl__loop__id}</td>
+            <td align="left"  width="8%" id="pBarCode">
+            <a href="javascript:void(0);" onclick="javascript:GetDataListDo.GetDataList('{dl[ProductsID]}','{dl[pName]}','{dl[pBarcode]}','{sDate}','{stDate}');">{dl[pBarcode]}</a>
+            </td>
+            <td align="left" width="15%" id="pName">
+            <a href="javascript:void(0);" onclick="javascript:GetDataListDo.GetDataList('{dl[ProductsID]}','{dl[pName]}','{dl[pBarcode]}','{sDate}','{stDate}');">{dl[pName]}</a></td>
+            <td align="center" width="5%" id="pToBoxNo">{dl[pToBoxNo]}</td> 
+               
+            <%if reType==2 %>
+            <div style="visibility:visible">  
+			<!--期初数量-->
+            <td align="right" width="5%" id="rNum">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["RelityStorage"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumA}=decimal.Round(SumA+Convert.ToDecimal(aspxrewriteurl))%>
+            </td>
+            <!--期初件数-->
+            <td align="right" width="5%" id="rBox">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["RelityStorage"])/Convert.ToDecimal(dl["pToBoxNo"]),2).ToString()%>
+             {aspxrewriteurl} 
+             <%set {SumAA}=decimal.Round(SumAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+             <!--期初金额-->
+            <td align="right" width="5%" id="rMoney"> 
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["pPrice"]),2).ToString()%>
+             {aspxrewriteurl} 
+             <%set {SumAAA}=decimal.Round(SumAAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            </div><%/if%>
+
+            <%if reType==0 %>
+            <div style="visibility:visible">
+            <!--进货-->
+            <td align="right" width="3%" id="iNum">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["InQuantity"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumB}=decimal.Round(SumB+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" width="3%" id="iMoney">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oMoney"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumBA}=decimal.Round(SumBA+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <!--赠品-->
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["GiveQuantity"]),2).ToString()%>
+             {aspxrewriteurl}
+            <%set {SumBB}=decimal.Round(SumBB+Convert.ToDecimal(aspxrewriteurl),2)%>
+             </td>
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["GivePrice"]),2).ToString()%>
+            <%set {SumBC}=decimal.Round(SumBC+Convert.ToDecimal(aspxrewriteurl),2)%>
+             {aspxrewriteurl}
+             </td>
+             <!--样品-->
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["yQuantity"]),2).ToString()%>
+            <%set {SumBD}=decimal.Round(SumBD+Convert.ToDecimal(aspxrewriteurl),2)%>
+             {aspxrewriteurl}</td>
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["yPrice"]),2).ToString()%>
+            <%set {SumBE}=decimal.Round(SumBE+Convert.ToDecimal(aspxrewriteurl),2)%>
+             {aspxrewriteurl}</td>
+             <!--退货-->
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["outQuantity"])).ToString()%>
+            <%set {SumBF}=decimal.Round(SumBF+Convert.ToDecimal(aspxrewriteurl))%>
+             {aspxrewriteurl}</td>
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["OutPrice"]),2).ToString()%>
+            <%set {SumBG}=decimal.Round(SumBG+Convert.ToDecimal(aspxrewriteurl),2)%>
+             {aspxrewriteurl}</td>
+             <!--小计-->
+             <td align="right" width="3%">
+             <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal(dl["InQuantity"])+Convert.ToDecimal(dl["GiveQuantity"])+Convert.ToDecimal(dl["yQuantity"])-Convert.ToDecimal(dl["outQuantity"])),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumBH}=decimal.Round(SumBH+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal(dl["oMoney"])+Convert.ToDecimal(dl["GivePrice"])+Convert.ToDecimal(dl["yPrice"])-Convert.ToDecimal(dl["OutPrice"])),2).ToString()%>
+             {aspxrewriteurl}
+              <%set {SumBI}=decimal.Round(SumBI+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            </div><%/if%>
+
+
+             <%if reType==1 %>
+            <div style="visibility:visible">
+             <!--销售数量-->
+             <td align="right" width="5%" id="sNum">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["OutQuantity"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumC}=decimal.Round(SumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <!--销售件数-->
+            <td align="right" width="5%" id="sBox">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["OutQuantity"])/Convert.ToDecimal(dl["pToBoxNo"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumCC}=decimal.Round(SumCC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+             <!--销售金额-->
+            <td align="right" width="5%" id="sMoney">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["SalesPrice"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumCCC}=decimal.Round(SumCCC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            </div><%/if%>
+
+             <%if reType==-1 %>
+            <div style="visibility:visible">
+            <!--期初数量-->
+            <td align="right" width="5%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["RelityStorage"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumA}=decimal.Round(SumA+Convert.ToDecimal(aspxrewriteurl))%>
+            </td>
+            <!--期初件数-->
+            <td align="right" width="5%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["RelityStorage"])/Convert.ToDecimal(dl["pToBoxNo"]),2).ToString()%>
+             {aspxrewriteurl} 
+             <%set {SumAA}=decimal.Round(SumAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+             <!--期初金额-->
+            <td align="right" width="5%">
+              <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["pPrice"]),2).ToString()%>
+             {aspxrewriteurl} 
+             <%set {SumAAA}=decimal.Round(SumAAA+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            </div><%/if%>
+
+            <%if reType==-1 %>
+            <div style="visibility:visible">
+            <!--进货-->
+            <td align="right" width="3%" class="tdTextH">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["InQuantity"])).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumB}=decimal.Round(SumB+Convert.ToDecimal(aspxrewriteurl))%>
+            </td>
+            <td align="right" width="3%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["oMoney"]),2).ToString()%>
+             {aspxrewriteurl} 
+              <%set {SumBA}=decimal.Round(SumBA+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <!--赠品-->
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["GiveQuantity"])).ToString()%>
+             {aspxrewriteurl}
+              <%set {SumBB}=decimal.Round(SumBB+Convert.ToDecimal(aspxrewriteurl))%>
+             </td>
+             
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["GivePrice"]),2).ToString()%>
+            <%set {SumBC}=decimal.Round(SumBC+Convert.ToDecimal(aspxrewriteurl),2)%>
+             {aspxrewriteurl}</td>
+             <!--样品-->
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["yQuantity"])).ToString()%>
+            <%set {SumBD}=decimal.Round(SumBD+Convert.ToDecimal(aspxrewriteurl))%>
+             {aspxrewriteurl}</td>
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["yPrice"]),2).ToString()%>
+            <%set {SumBE}=decimal.Round(SumBE+Convert.ToDecimal(aspxrewriteurl),2)%>
+             {aspxrewriteurl}</td>
+             <!--退货-->
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["outQuantity1"])).ToString()%>
+            <%set {SumBF}=decimal.Round(SumBF+Convert.ToDecimal(aspxrewriteurl))%>
+             {aspxrewriteurl}</td>
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["OutPrice"]),2).ToString()%>
+            <%set {SumBG}=decimal.Round(SumBG+Convert.ToDecimal(aspxrewriteurl),2)%>
+             {aspxrewriteurl}</td>
+             <!--小计-->
+             <td align="right" width="3%">
+             <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal(dl["InQuantity"])+Convert.ToDecimal(dl["GiveQuantity"])+Convert.ToDecimal(dl["yQuantity"])-Convert.ToDecimal(dl["outQuantity1"]))).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumBH}=decimal.Round(SumBH+Convert.ToDecimal(aspxrewriteurl))%>
+            </td>
+            <td align="right" width="3%">
+            <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal(dl["oMoney"])+Convert.ToDecimal(dl["GivePrice"])+Convert.ToDecimal(dl["yPrice"])-Convert.ToDecimal(dl["OutPrice"])),2).ToString()%>
+             {aspxrewriteurl}
+              <%set {SumBI}=decimal.Round(SumBI+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            </div><%/if%>
+
+             <%if reType==-1 %>
+            <div style="visibility:visible">
+             <!--销售数量-->
+             <td align="right" width="5%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["OutQuantity"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumC}=decimal.Round(SumC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <!--销售件数-->
+            <td align="right" width="5%">
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["OutQuantity"])/Convert.ToDecimal(dl["pToBoxNo"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumCC}=decimal.Round(SumCC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+             <!--销售金额-->
+            <td align="right" width="5%">
+            <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["SalesPrice"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumCCC}=decimal.Round(SumCCC+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            </div><%/if%>
+
+            <%if reType==-1 %>
+            <div style="visibility:visible">
+            <!--期末数量-->
+             <td align="right" width="5%" >
+             <%set {aspxrewriteurl} = decimal.Round(Convert.ToDecimal(dl["RelityStorage"])+Convert.ToDecimal(dl["InQuantity"])-Convert.ToDecimal
+             (dl["OutQuantity"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumD}=decimal.Round(SumD+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            <!--期末件数-->
+             <td align="right" width="5%">
+             <%set {aspxrewriteurl} = decimal.Round((Convert.ToDecimal(dl["RelityStorage"])+Convert.ToDecimal(dl["InQuantity"])-Convert.ToDecimal
+             (dl["OutQuantity"]))/Convert.ToDecimal(dl["pToBoxNo"]),2).ToString()%>
+             {aspxrewriteurl}
+             <%set {SumDD}=decimal.Round(SumDD+Convert.ToDecimal(aspxrewriteurl),2)%>
+            </td>
+            </div><%/if%>
+          </tr>
+          <%/loop%>
+          </tbody>
+          <tfoot>
+          <%if {ispost}%>
+              <tr style="height:30px">
+                <td align="center"  colspan="4"><span style="font-size:larger"><b>合计：</b></span></td>
+                <%if reType==-1 %>
+                <div style="visibility:visible">
+                <td align="right" ><span>{SumA}</span></td>
+                <td align="right" ><span>{SumAA}</span></td>
+                <td align="right" ><span>{SumAAA}</span></td>
+             
+                <td align="right" ><span>{SumB}</span></td>
+                <td align="right" ><span>{SumBA}</span></td>
+                <td align="right" ><span>{SumBB}</span></td>
+                <td align="right" ><span>{SumBC}</span></td>
+                <td align="right" ><span>{SumBD}</span></td>
+                <td align="right" ><span>{SumBE}</span></td>
+                <td align="right" ><span>{SumBF}</span></td>
+                <td align="right" ><span>{SumBG}</span></td>
+                <td align="right" ><span>{SumBH}</span></td>
+                <td align="right" ><span>{SumBI}</span></td>
+                 
+                <td align="right" ><span>{SumC}</span></td>
+                <td align="right" ><span>{SumCC}</span></td>
+                <td align="right" ><span>{SumCCC}</span></td>
+                <td align="right" ><span>{SumD}</span></td>
+                <td align="right" ><span>{SumDD}</span></td>
+                </div><%/if%>
+
+                <%if reType==2 %>
+                <div style="visibility:visible">
+                <td align="right" ><span>{SumA}</span></td>
+                <td align="right" ><span>{SumAA}</span></td>
+                <td align="right" ><span>{SumAAA}</span></td>
+                </div><%/if%>
+
+                <%if reType==0 %>
+                <div style="visibility:visible">
+                 <td align="right" ><span>{SumB}</span></td>
+                <td align="right" ><span>{SumBA}</span></td>
+                <td align="right" ><span>{SumBB}</span></td>
+                <td align="right" ><span>{SumBC}</span></td>
+                <td align="right" ><span>{SumBD}</span></td>
+                <td align="right" ><span>{SumBE}</span></td>
+                <td align="right" ><span>{SumBF}</span></td>
+                <td align="right" ><span>{SumBG}</span></td>
+                <td align="right" ><span>{SumBH}</span></td>
+                <td align="right" ><span>{SumBI}</span></td>
+                </div><%/if%>
+
+                 <%if reType==1 %>
+                <div style="visibility:visible">
+                 <td align="right" ><span>{SumC}</span></td>
+                <td align="right" ><span>{SumCC}</span></td>
+                <td align="right" ><span>{SumCCC}</span></td>
+                </div><%/if%>
+              </tr>
+              <%/if%>
+           </tfoot>
+          <%/if%>
+        </table>
+        </div>
+       
+    <%/if%>
+      <div id="winAll">
+          <div id="winLoding"><img alt="" src="/images/loading99.gif"/></div>
+         </div>
+      <script language="javascript" type="text/javascript">
+
+          var GetDataListDo = new getListOfRegion();
+          GetDataListDo.ini();
+          function HidBox() {
+              GetDataListDo.HidUserBox();
+              location.reload();
+          }
+          
+          $("#btn_submit").click(function(){
+              var bTime = $('#sDate').val();
+              var eTime = $('#stDate').val();
+              var reType = $('#reType').children('option:selected').val();
+              document.getElementById("reTypeValue").value = reType;
+              var _associated = $("#associated").children('option:selected').val();
+              document.getElementById("_associated").value = _associated;
+              if (eTime < bTime) {
+                  alert("日期选择错误，请重新选择！"); 
+              }
+              else {
+                 $("div#winAll").fadeIn("slow");
+                 $('#bForm').submit();   
+              }
+         });
+
+         //导出数据
+         $("#export").click(function () {
+             var id = $.query.get('id');
+             if (id == "0") {
+                 var rName = $("#rName").children('option:selected').val();
+                 var staffName = $("#staffName").children('option:selected').val();
+                 var storageName = $("#storageName").children('option:selected').val();
+                 var sDate = $("#sDate").val();
+                 var stDate = $("#stDate").val();
+                 var reType = $("#reType").children('option:selected').val();
+                 var associated = $("#associated").children('option:selected').val();
+
+                 var _url = '/report_storehousestorage.aspx?Act=act&rName=' + rName + '&staffName=' + staffName + '&storageName=' + storageName + '&sDate=' + sDate + '&stDate=' + stDate + '&reType=' + reType + '&associated=' + associated + '&id=' + id;
+
+                 window.open('', "top");
+                 setTimeout(window.open(_url, "top"), 100);
+             }
+         });
+         
+     </script>
+    </form>
+    </div>
+    <%/if%>
+  <%/if%>
+  <%template _copyright%>
+  <%template _footer%>

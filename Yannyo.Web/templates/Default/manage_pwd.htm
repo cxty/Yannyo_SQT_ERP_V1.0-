@@ -1,0 +1,53 @@
+<%template _poppageheader%>
+<body>
+
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _popmsgbox%>
+	<%else%>
+		<%template _poperrmsgbox%>
+	<%/if%>
+<%else%>
+    <%if page_err!=0%>
+    	<%template _poperrmsgbox%>
+    <%else%>
+        <%if page_msg!=0%>
+            <%template _popmsgbox%>
+        <%else%>
+		<script type="text/javascript" src="public/js/manage_pwd.js "></script>
+
+            <form name="bForm" id="bForm" action="" method="post">
+
+              <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                  <td width="30%" align="right">用户名:</td>
+                  <td align="left" >{userinfo.uName}</td>
+                </tr>
+                <tr>
+                  <td align="right">旧密码:</td>
+                  <td align="left" ><input type="password" id="OldPWD" name="OldPWD" value="" /></td>
+                </tr>
+                <tr>
+                  <td align="right">新密码:</td>
+                  <td align="left" ><input type="password" id="NewPWD" name="NewPWD" value="" /></td>
+                </tr>
+                
+				
+                <tr>
+                  <td colspan="2" align="center"><input name="提交" type="submit" class="B_INPUT" id="button1" style="margin:5px"  value="确定"/>
+                </tr>
+              </table>
+
+            </form>
+            
+<script language="javascript" type="text/javascript">
+var Manage_pwd = new TManage_pwd();
+Manage_pwd.ini();
+</script>
+            
+            <%/if%>
+    <%/if%>
+<%/if%>
+
+
+<%template _footer%>

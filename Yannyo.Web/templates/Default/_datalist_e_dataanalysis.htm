@@ -1,0 +1,60 @@
+<div class="dlist">
+	<%if {ispost} %>
+		<table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox">
+			<tr class="tBar">
+				<td width="2%">排名</td>
+					<%if ShowType==1%>
+					<td width="10%">门店、客户</td>
+					<%/if%>
+					<%if ShowType==2%>
+					<td width="10%">业务员</td>
+					<%/if%>
+					<%if ShowType==3%>
+					<td width="10%">促销员</td>
+					<%/if%>
+					<%if ShowType==4%>
+					<td width="10%">产品</td>
+					<%/if%>
+					<%if ShowType==5%>
+					<td width="10%">品牌</td>
+					<%/if%>
+					<%if ShowType==6%>
+					<td width="10%">系统</td>
+					<%/if%>
+				<td width="5%">销售额</td>
+				<td width="5%">销售费用</td>
+				<td width="5%">赠品</td>
+				<td width="5%">坏货</td>
+				<td width="5%">退货</td>
+				<td width="5%">成本</td>
+				<td width="5%">利润</td>
+			</tr>
+			<%if dList != null%>
+			  <%loop dl dList%>
+			  <tr>
+				<td >{dl__loop__id}</td>
+				<td >{dl[sName]}</td>
+				<td align="right">{dl[Sales]}</td>
+				<td align="right">{dl[SalesFees]}</td>
+				<td align="right">{dl[GiftsFees]}</td>
+				<td align="right">{dl[BadgoodsFees]}</td>
+				<td align="right">{dl[ReturnsFees]}</td>
+				<td align="right">{dl[CostFees]}</td>
+				<td align="right">{dl[Profit]}</td>
+			  </tr>
+			  <%/loop%>
+			  <tr>
+				<td >合计</td>
+				<td align="right"></td>
+				<td align="right">{AllSales}</td>
+				<td align="right">{AllSalesFees}</td>
+				<td align="right">{AllGiftsFees}</td>
+				<td align="right">{AllBadgoodsFees}</td>
+				<td align="right">{AllReturnsFees}</td>
+				<td align="right">{AllCostFees}</td>
+				<td align="right">{AllProfit}</td>
+			  </tr>
+			 <%/if%>
+		</table>
+	<%/if%>
+</div>

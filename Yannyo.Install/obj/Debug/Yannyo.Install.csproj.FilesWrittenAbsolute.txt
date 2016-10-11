@@ -1,0 +1,4 @@
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Web/bin/Yannyo.Install.dll.mdb
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Web/bin/Yannyo.Install.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Install/obj/Debug/Yannyo.Install.dll
+/Volumes/Dev/git/Yannyo_SQT/Yannyo.Install/obj/Debug/Yannyo.Install.dll.mdb

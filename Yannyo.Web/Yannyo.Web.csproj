@@ -1,0 +1,1785 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3D168DD8-D062-4EF8-BCB8-97C2543AE141}</ProjectGuid>
+    <ProjectTypeGuids>{349C5851-65DF-11DA-9384-00065B846F21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Yannyo.Web</RootNamespace>
+    <AssemblyName>Yannyo.Web</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="ThoughtWorks.QRCode">
+      <HintPath>..\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Yannyo.Common">
+      <HintPath>..\Yannyo.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="aspx\1\apmoney.aspx" />
+    <Content Include="aspx\1\apmoney_bat.aspx" />
+    <Content Include="aspx\1\apmoney_do.aspx" />
+    <Content Include="aspx\1\apmoney_importdata.aspx" />
+    <Content Include="aspx\1\armoney.aspx" />
+    <Content Include="aspx\1\armoney_bat.aspx" />
+    <Content Include="aspx\1\armoney_do.aspx" />
+    <Content Include="aspx\1\armoney_importdata.aspx" />
+    <Content Include="aspx\1\associated_details.aspx" />
+    <Content Include="aspx\1\associated_details_do.aspx" />
+    <Content Include="aspx\1\banklist.aspx" />
+    <Content Include="aspx\1\banklist_beginning.aspx" />
+    <Content Include="aspx\1\bankmoney.aspx" />
+    <Content Include="aspx\1\bank.aspx" />
+    <Content Include="aspx\1\bankmoney_do.aspx" />
+    <Content Include="aspx\1\bank_do.aspx" />
+    <Content Include="aspx\1\barcode.aspx" />
+    <Content Include="aspx\1\buy_sales_details.aspx" />
+    <Content Include="aspx\1\camera.aspx" />
+    <Content Include="aspx\1\certificatedata.aspx" />
+    <Content Include="aspx\1\certificatelist.aspx" />
+    <Content Include="aspx\1\certificateworkinglog.aspx" />
+    <Content Include="aspx\1\certificate_do.aspx" />
+    <Content Include="aspx\1\certificate_do_box.aspx" />
+    <Content Include="aspx\1\certificate_print.aspx" />
+    <Content Include="aspx\1\certificate_print_box.aspx" />
+    <Content Include="aspx\1\config.aspx" />
+    <Content Include="aspx\1\costvalence.aspx" />
+    <Content Include="aspx\1\costvalence_do.aspx" />
+    <Content Include="aspx\1\cost_class_details.aspx" />
+    <Content Include="aspx\1\cost_details.aspx" />
+    <Content Include="aspx\1\cost_details_gifts.aspx" />
+    <Content Include="aspx\1\cost_details_staff.aspx" />
+    <Content Include="aspx\1\cost_details_storehouse.aspx" />
+    <Content Include="aspx\1\customersclass.aspx" />
+    <Content Include="aspx\1\customersclass_edit.aspx" />
+    <Content Include="aspx\1\customers_dataanalysis.aspx" />
+    <Content Include="aspx\1\dataanalysis.aspx" />
+    <Content Include="aspx\1\dataanalysis_fee.aspx" />
+    <Content Include="aspx\1\dataanalysis_tvalue.aspx" />
+    <Content Include="aspx\1\dataclass_box.aspx" />
+    <Content Include="aspx\1\datapost.aspx" />
+    <Content Include="aspx\1\datatomail.aspx" />
+    <Content Include="aspx\1\datatomail_do.aspx" />
+    <Content Include="aspx\1\data_import_export.aspx" />
+    <Content Include="aspx\1\departmentsclass.aspx" />
+    <Content Include="aspx\1\departmentsclass_edit.aspx" />
+    <Content Include="aspx\1\diqu.aspx" />
+    <Content Include="aspx\1\diqu_edit.aspx" />
+    <Content Include="aspx\1\edudata_do.aspx" />
+    <Content Include="aspx\1\erpdata.aspx" />
+    <Content Include="aspx\1\erpdata_do.aspx" />
+    <Content Include="aspx\1\erpdata_sync.aspx" />
+    <Content Include="aspx\1\familydata_do.aspx" />
+    <Content Include="aspx\1\feessubject.aspx" />
+    <Content Include="aspx\1\feessubjectclass.aspx" />
+    <Content Include="aspx\1\feessubjectclass_do.aspx" />
+    <Content Include="aspx\1\feessubjectclass_do_move.aspx" />
+    <Content Include="aspx\1\feessubject_do.aspx" />
+    <Content Include="aspx\1\geterpdata.aspx" />
+    <Content Include="aspx\1\gifts.aspx" />
+    <Content Include="aspx\1\gifts_do.aspx" />
+    <Content Include="aspx\1\importdata.aspx" />
+    <Content Include="aspx\1\indexpage.aspx" />
+    <Content Include="aspx\1\login.aspx" />
+    <Content Include="aspx\1\logout.aspx" />
+    <Content Include="aspx\1\logs.aspx" />
+    <Content Include="aspx\1\manage_pwd.aspx" />
+    <Content Include="aspx\1\marketingfees.aspx" />
+    <Content Include="aspx\1\marketingfeesrevenue_do.aspx" />
+    <Content Include="aspx\1\marketingfees_bat.aspx" />
+    <Content Include="aspx\1\marketingfees_do.aspx" />
+    <Content Include="aspx\1\marketingfees_importdata.aspx" />
+    <Content Include="aspx\1\mconfig.aspx" />
+    <Content Include="aspx\1\mconfig_do.aspx" />
+    <Content Include="aspx\1\mexpresstemplates.aspx" />
+    <Content Include="aspx\1\mexpresstemplates_do.aspx" />
+    <Content Include="aspx\1\mexpress_print.aspx" />
+    <Content Include="aspx\1\mgoodscat_do.aspx" />
+    <Content Include="aspx\1\mmembers.aspx" />
+    <Content Include="aspx\1\mmembers_do.aspx" />
+    <Content Include="aspx\1\money_out.aspx" />
+    <Content Include="aspx\1\monthlystatementlist.aspx" />
+    <Content Include="aspx\1\monthlystatementlist_do.aspx" />
+    <Content Include="aspx\1\monthlystatementlist_money.aspx" />
+    <Content Include="aspx\1\monthlystatementlist_orderlist.aspx" />
+    <Content Include="aspx\1\monthlystatementprint.aspx" />
+    <Content Include="aspx\1\monthlystatementworkinglog.aspx" />
+    <Content Include="aspx\1\morder.aspx" />
+    <Content Include="aspx\1\mproduct.aspx" />
+    <Content Include="aspx\1\mproduct_do.aspx" />
+    <Content Include="aspx\1\mrecallmsg.aspx" />
+    <Content Include="aspx\1\msendgoods.aspx" />
+    <Content Include="aspx\1\msendgoods_exp.aspx" />
+    <Content Include="aspx\1\mtrade.aspx" />
+    <Content Include="aspx\1\mtrade_do.aspx" />
+    <Content Include="aspx\1\occurrence_forehead_balance.aspx" />
+    <Content Include="aspx\1\occurrence_forehead_balance_do.aspx" />
+    <Content Include="aspx\1\occurrence_forehead_balance_do_print.aspx" />
+    <Content Include="aspx\1\occurrence_forehead_balance_print.aspx" />
+    <Content Include="aspx\1\orderfield.aspx" />
+    <Content Include="aspx\1\orderfield_do.aspx" />
+    <Content Include="aspx\1\orderlist.aspx" />
+    <Content Include="aspx\1\orderlist_do.aspx" />
+    <Content Include="aspx\1\orderlist_dobox.aspx" />
+    <Content Include="aspx\1\orderlist_do_nofull.aspx" />
+    <Content Include="aspx\1\orderlist_do_nofull_do.aspx" />
+    <Content Include="aspx\1\orderlist_typebox.aspx" />
+    <Content Include="aspx\1\orderprint.aspx" />
+    <Content Include="aspx\1\orderprint_add.aspx" />
+    <Content Include="aspx\1\orderworkinglog.aspx" />
+    <Content Include="aspx\1\paymentsystem.aspx" />
+    <Content Include="aspx\1\paymentsystem_do.aspx" />
+    <Content Include="aspx\1\personnel_statistics.aspx" />
+    <Content Include="aspx\1\personnel_statistics_details.aspx" />
+    <Content Include="aspx\1\priceclass.aspx" />
+    <Content Include="aspx\1\priceclassdefaultprice.aspx" />
+    <Content Include="aspx\1\priceclassdefaultprice_do.aspx" />
+    <Content Include="aspx\1\priceclass_edit.aspx" />
+    <Content Include="aspx\1\productclass.aspx" />
+    <Content Include="aspx\1\productclass_edit.aspx" />
+    <Content Include="aspx\1\productpool.aspx" />
+    <Content Include="aspx\1\productpool_do.aspx" />
+    <Content Include="aspx\1\products.aspx" />
+    <Content Include="aspx\1\productsloss.aspx" />
+    <Content Include="aspx\1\productsloss_details.aspx" />
+    <Content Include="aspx\1\products_beginning.aspx" />
+    <Content Include="aspx\1\products_beginning_do.aspx" />
+    <Content Include="aspx\1\products_do.aspx" />
+    <Content Include="aspx\1\products_importdata.aspx" />
+    <Content Include="aspx\1\products_sales.aspx" />
+    <Content Include="aspx\1\products_sales_details.aspx" />
+    <Content Include="aspx\1\products_sales_storehouse.aspx" />
+    <Content Include="aspx\1\public_goodsnum.aspx" />
+    <Content Include="aspx\1\public_producttree.aspx" />
+    <Content Include="aspx\1\purchasingpayment.aspx" />
+    <Content Include="aspx\1\purchasingreceivables.aspx" />
+    <Content Include="aspx\1\qrcode_monthlystatement.aspx" />
+    <Content Include="aspx\1\qrcode_order.aspx" />
+    <Content Include="aspx\1\reportstorageselect_do.aspx" />
+    <Content Include="aspx\1\report_certificate_summary.aspx" />
+    <Content Include="aspx\1\report_certificate_summary_print.aspx" />
+    <Content Include="aspx\1\report_invoicing.aspx" />
+    <Content Include="aspx\1\report_out.aspx" />
+    <Content Include="aspx\1\report_purchase.aspx" />
+    <Content Include="aspx\1\report_sales.aspx" />
+    <Content Include="aspx\1\report_sales_show.aspx" />
+    <Content Include="aspx\1\report_storehousestorage.aspx" />
+    <Content Include="aspx\1\sales.aspx" />
+    <Content Include="aspx\1\sales_data.aspx" />
+    <Content Include="aspx\1\sales_do.aspx" />
+    <Content Include="aspx\1\sales_syndata.aspx" />
+    <Content Include="aspx\1\staff.aspx" />
+    <Content Include="aspx\1\staffstores_do.aspx" />
+    <Content Include="aspx\1\staffstores_importdata.aspx" />
+    <Content Include="aspx\1\staff_do.aspx" />
+    <Content Include="aspx\1\staff_do_updown.aspx" />
+    <Content Include="aspx\1\stockproduct.aspx" />
+    <Content Include="aspx\1\stockproduct_do.aspx" />
+    <Content Include="aspx\1\stockproduct_invoicing.aspx" />
+    <Content Include="aspx\1\stockproduct_log.aspx" />
+    <Content Include="aspx\1\stockproduct_print.aspx" />
+    <Content Include="aspx\1\storage.aspx" />
+    <Content Include="aspx\1\storageclass.aspx" />
+    <Content Include="aspx\1\storageclass_edit.aspx" />
+    <Content Include="aspx\1\storage_do.aspx" />
+    <Content Include="aspx\1\storehouseproductspriceinfo.aspx" />
+    <Content Include="aspx\1\storehouseproductspriceinfoview.aspx" />
+    <Content Include="aspx\1\storehousestorageadd.aspx" />
+    <Content Include="aspx\1\storehousestorageprice_do.aspx" />
+    <Content Include="aspx\1\storehousestorageselected.aspx" />
+    <Content Include="aspx\1\storehousestorageview.aspx" />
+    <Content Include="aspx\1\storehousestorage_add_list.aspx" />
+    <Content Include="aspx\1\storehousestorage_do.aspx" />
+    <Content Include="aspx\1\StorehouseStorage_Syndata.aspx" />
+    <Content Include="aspx\1\StorehouseStoragPrice_Syndata.aspx" />
+    <Content Include="aspx\1\stores.aspx" />
+    <Content Include="aspx\1\stores_armoney.aspx" />
+    <Content Include="aspx\1\stores_armoney_do.aspx" />
+    <Content Include="aspx\1\stores_do.aspx" />
+    <Content Include="aspx\1\supplier.aspx" />
+    <Content Include="aspx\1\supplierclass.aspx" />
+    <Content Include="aspx\1\supplierclass_edit.aspx" />
+    <Content Include="aspx\1\supplier_apmoney.aspx" />
+    <Content Include="aspx\1\supplier_apmoney_do.aspx" />
+    <Content Include="aspx\1\supplier_do.aspx" />
+    <Content Include="aspx\1\usermanage.aspx" />
+    <Content Include="aspx\1\usermanageclass.aspx" />
+    <Content Include="aspx\1\usermanageclass_do.aspx" />
+    <Content Include="aspx\1\usermanage_do.aspx" />
+    <Content Include="aspx\1\valence.aspx" />
+    <Content Include="aspx\1\valence_do.aspx" />
+    <Content Include="aspx\1\warehouseinventory.aspx" />
+    <Content Include="aspx\1\warehouseinventorylist.aspx" />
+    <Content Include="aspx\1\warehouseinventory_do.aspx" />
+    <Content Include="aspx\1\warehouseinventory_view.aspx" />
+    <Content Include="aspx\1\workdata_do.aspx" />
+    <Content Include="aspx\1\yhsys.aspx" />
+    <Content Include="aspx\1\yhsys_do.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="aspx\1\page.aspx" />
+    <Content Include="config\email.config" />
+    <Content Include="config\general.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="config\popedoms.config" />
+    <Content Include="config\schedule.config" />
+    <Content Include="config\urls.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="cache\cache.config" />
+    <Content Include="cache\scheduleeventfaildlog.config" />
+    <Content Include="config\managerclass.config" />
+    <Content Include="config\monthlystatementsteps.config" />
+    <Content Include="config\ordersteps.config" />
+    <Content Include="config\ordertype.config" />
+    <Content Include="config\fieldtype.config" />
+    <Content Include="HtmlPage1.html" />
+    <Content Include="install\saveConfig\Yannyo.config" />
+    <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <None Include="public\js\img_inquisitor\.DS_Store" />
+    <None Include="public\js\img_inquisitor\._.DS_Store" />
+    <None Include="public\js\img_inquisitor\Thumbs.db" />
+    <None Include="public\js\img_inquisitor\_source\.DS_Store" />
+    <None Include="public\js\img_inquisitor\_source\._.DS_Store" />
+    <None Include="public\js\img_inquisitor\_source\Thumbs.db" />
+    <None Include="public\js\wTree\images\Thumbs.db" />
+    <Content Include="help_print.html" />
+    <Content Include="index.html" />
+    <Content Include="install\css\install.css" />
+    <Content Include="install\images\box_bg.gif" />
+    <Content Include="install\images\check.gif" />
+    <Content Include="install\images\circle_bg.gif" />
+    <Content Include="install\images\error.gif" />
+    <Content Include="install\images\failed.gif" />
+    <Content Include="install\images\guide_1.gif" />
+    <Content Include="install\images\guide_2.gif" />
+    <Content Include="install\images\guide_3.gif" />
+    <Content Include="install\images\guide_4.gif" />
+    <Content Include="install\images\head_bg.gif" />
+    <Content Include="install\images\input_bg.gif" />
+    <Content Include="install\images\install_box_bg.gif" />
+    <Content Include="install\images\ins_box_bg.gif" />
+    <Content Include="install\images\jiaz.gif" />
+    <Content Include="install\images\li_bg.gif" />
+    <Content Include="install\images\loading.gif" />
+    <Content Include="install\images\loading_bg.gif" />
+    <Content Include="install\images\logo.gif" />
+    <Content Include="install\images\next.gif" />
+    <Content Include="install\images\return.gif" />
+    <Content Include="install\images\right.gif" />
+    <Content Include="install\images\send.gif" />
+    <Content Include="install\images\success.gif" />
+    <Content Include="install\install_step_four.aspx" />
+    <Content Include="install\install_step_one.aspx" />
+    <Content Include="install\install_step_three.aspx" />
+    <Content Include="install\install_step_two.aspx" />
+    <Content Include="install\javascript\crypto-md5.js" />
+    <Content Include="install\javascript\jquery-1.4.4.min.js" />
+    <Content Include="install\Sql_Script\sql.sql" />
+    <Content Include="install\Sql_Script\sqlsever.sql" />
+    <Content Include="load.html" />
+    <Content Include="public\Camera.swf" />
+    <Content Include="public\Charts\Area2D.swf" />
+    <Content Include="public\Charts\Bar2D.swf" />
+    <Content Include="public\Charts\Bubble.swf" />
+    <Content Include="public\Charts\Column2D.swf" />
+    <Content Include="public\Charts\Column3D.swf" />
+    <Content Include="public\Charts\Doughnut2D.swf" />
+    <Content Include="public\Charts\Doughnut3D.swf" />
+    <Content Include="public\Charts\FCExporter.swf" />
+    <Content Include="public\Charts\Line.swf" />
+    <Content Include="public\Charts\MSArea.swf" />
+    <Content Include="public\Charts\MSBar2D.swf" />
+    <Content Include="public\Charts\MSBar3D.swf" />
+    <Content Include="public\Charts\MSColumn2D.swf" />
+    <Content Include="public\Charts\MSColumn3D.swf" />
+    <Content Include="public\Charts\MSColumn3DLineDY.swf" />
+    <Content Include="public\Charts\MSColumnLine3D.swf" />
+    <Content Include="public\Charts\MSCombi2D.swf" />
+    <Content Include="public\Charts\MSCombi3D.swf" />
+    <Content Include="public\Charts\MSCombiDY2D.swf" />
+    <Content Include="public\Charts\MSLine.swf" />
+    <Content Include="public\Charts\MSStackedColumn2D.swf" />
+    <Content Include="public\Charts\MSStackedColumn2DLineDY.swf" />
+    <Content Include="public\Charts\Pie2D.swf" />
+    <Content Include="public\Charts\Pie3D.swf" />
+    <Content Include="public\Charts\Scatter.swf" />
+    <Content Include="public\Charts\ScrollArea2D.swf" />
+    <Content Include="public\Charts\ScrollColumn2D.swf" />
+    <Content Include="public\Charts\ScrollCombi2D.swf" />
+    <Content Include="public\Charts\ScrollCombiDY2D.swf" />
+    <Content Include="public\Charts\ScrollLine2D.swf" />
+    <Content Include="public\Charts\ScrollStackedColumn2D.swf" />
+    <Content Include="public\Charts\SSGrid.swf" />
+    <Content Include="public\Charts\StackedArea2D.swf" />
+    <Content Include="public\Charts\StackedBar2D.swf" />
+    <Content Include="public\Charts\StackedBar3D.swf" />
+    <Content Include="public\Charts\StackedColumn2D.swf" />
+    <Content Include="public\Charts\StackedColumn3D.swf" />
+    <Content Include="public\Charts\StackedColumn3DLineDY.swf" />
+    <Content Include="public\JSClass\Commented\FusionChartsExportComponent.js" />
+    <Content Include="public\JSClass\FusionCharts.js" />
+    <Content Include="public\JSClass\FusionChartsExportComponent.js" />
+    <Content Include="public\js\apmoney.js" />
+    <Content Include="public\js\apmoney_bat.js" />
+    <Content Include="public\js\apmoney_importdata.js" />
+    <Content Include="public\js\armoney.js" />
+    <Content Include="public\js\armoney_bat.js" />
+    <Content Include="public\js\armoney_importdata.js" />
+    <Content Include="public\js\arrow-down-d.gif" />
+    <Content Include="public\js\arrow-down.gif" />
+    <Content Include="public\js\arrow-up-d.gif" />
+    <Content Include="public\js\arrow-up.gif" />
+    <Content Include="public\js\autosuggest.css" />
+    <Content Include="public\js\autosuggest.js" />
+    <Content Include="public\js\autosuggest_inquisitor.css" />
+    <Content Include="public\js\bank.js" />
+    <Content Include="public\js\bankmoney.js" />
+    <Content Include="public\js\bsn.AutoSuggest_2.1.3.js" />
+    <Content Include="public\js\bsn.AutoSuggest_2.1.3_comp.js" />
+    <Content Include="public\js\certificatelist.js" />
+    <Content Include="public\js\certificate_do.js" />
+    <Content Include="public\js\certificate_do_box.js" />
+    <Content Include="public\js\comm.js" />
+    <Content Include="public\js\costvalence.js" />
+    <Content Include="public\js\Customers_DataAnlysis.js" />
+    <Content Include="public\js\Cxty_XTool.js" />
+    <Content Include="public\js\DataAnalysis.js" />
+    <Content Include="public\js\dataanalysis_tvalue.js" />
+    <Content Include="public\js\datapost.js" />
+    <Content Include="public\js\data_import_export.js" />
+    <Content Include="public\js\dialog.js" />
+    <Content Include="public\js\erpdata.js" />
+    <Content Include="public\js\feessubject.js" />
+    <Content Include="public\js\GetErpData.js" />
+    <Content Include="public\js\gifts.js" />
+    <Content Include="public\js\img_inquisitor\._as_pointer.gif" />
+    <Content Include="public\js\img_inquisitor\._hl_corner_bl.gif" />
+    <Content Include="public\js\img_inquisitor\._hl_corner_br.gif" />
+    <Content Include="public\js\img_inquisitor\._hl_corner_tl.gif" />
+    <Content Include="public\js\img_inquisitor\._hl_corner_tr.gif" />
+    <Content Include="public\js\img_inquisitor\._ul_corner_bl.gif" />
+    <Content Include="public\js\img_inquisitor\._ul_corner_br.gif" />
+    <Content Include="public\js\img_inquisitor\._ul_corner_tl.gif" />
+    <Content Include="public\js\img_inquisitor\._ul_corner_tr.gif" />
+    <Content Include="public\js\img_inquisitor\as_pointer.gif" />
+    <Content Include="public\js\img_inquisitor\hl_corner_bl.gif" />
+    <Content Include="public\js\img_inquisitor\hl_corner_br.gif" />
+    <Content Include="public\js\img_inquisitor\hl_corner_tl.gif" />
+    <Content Include="public\js\img_inquisitor\hl_corner_tr.gif" />
+    <Content Include="public\js\img_inquisitor\ul_corner_bl.gif" />
+    <Content Include="public\js\img_inquisitor\ul_corner_br.gif" />
+    <Content Include="public\js\img_inquisitor\ul_corner_tl.gif" />
+    <Content Include="public\js\img_inquisitor\ul_corner_tr.gif" />
+    <Content Include="public\js\img_inquisitor\_source\._as_pointer.png" />
+    <Content Include="public\js\img_inquisitor\_source\._li_corner.png" />
+    <Content Include="public\js\img_inquisitor\_source\._ul_corner.png" />
+    <Content Include="public\js\img_inquisitor\_source\as_pointer.png" />
+    <Content Include="public\js\img_inquisitor\_source\li_corner.png" />
+    <Content Include="public\js\img_inquisitor\_source\ul_corner.png" />
+    <Content Include="public\js\jquery-1.3.2.js" />
+    <Content Include="public\js\jquery-cxty.js" />
+    <Content Include="public\js\jquery.autocomplete.css" />
+    <Content Include="public\js\jquery.autocomplete.js" />
+    <Content Include="public\js\jquery.bgiframe.js" />
+    <Content Include="public\js\jquery.cookie.js" />
+    <Content Include="public\js\jquery.hotkeys.js" />
+    <Content Include="public\js\jquery.jPrintArea.js" />
+    <Content Include="public\js\jquery.js" />
+    <Content Include="public\js\jQuery.jsons.js" />
+    <Content Include="public\js\jquery.jstree.js" />
+    <Content Include="public\js\jquery.maskedinput-1.2.2.min.js" />
+    <Content Include="public\js\jquery.mcdropdown.js" />
+    <Content Include="public\js\manage_pwd.js" />
+    <Content Include="public\js\manage_Region.js" />
+    <Content Include="public\js\manage_Region_Tree.js" />
+    <Content Include="public\js\marketingfees.js" />
+    <Content Include="public\js\marketingfees_bat.js" />
+    <Content Include="public\js\mconfig.js" />
+    <Content Include="public\js\mconfig_do.js" />
+    <Content Include="public\js\menu.js" />
+    <Content Include="public\js\monthlystatementlist.js" />
+    <Content Include="public\js\monthlystatementlist_do.js" />
+    <Content Include="public\js\monthlystatementlist_orderlist.js" />
+    <Content Include="public\js\mootools-1.2.4-core-yc.js" />
+    <Content Include="public\js\mtrade.js" />
+    <Content Include="public\js\mtrade_do.js" />
+    <Content Include="public\js\m_goodscat_do.js" />
+    <Content Include="public\js\m_product.js" />
+    <Content Include="public\js\m_product_do.js" />
+    <Content Include="public\js\orderdo.js" />
+    <Content Include="public\js\orderfield.js" />
+    <Content Include="public\js\orderlist.js" />
+    <Content Include="public\js\orderlist_dobox.js" />
+    <Content Include="public\js\orderlist_do_nofull.js" />
+    <Content Include="public\js\orderlist_selecttype.js" />
+    <Content Include="public\js\paymentsystem.js" />
+    <Content Include="public\js\priceclassdefaultprice.js" />
+    <Content Include="public\js\productpool.js" />
+    <Content Include="public\js\products.js" />
+    <Content Include="public\js\products_beginning.js" />
+    <Content Include="public\js\public_goodsnum.js" />
+    <Content Include="public\js\public_producttree.js" />
+    <Content Include="public\js\reportselect.js" />
+    <Content Include="public\js\reportselect_do.js" />
+    <Content Include="public\js\report_invoicing.js" />
+    <Content Include="public\js\report_out.js" />
+    <Content Include="public\js\report_purchase.js" />
+    <Content Include="public\js\report_sales.js" />
+    <Content Include="public\js\sales.js" />
+    <Content Include="public\js\staff.js" />
+    <Content Include="public\js\staffstores.js" />
+    <Content Include="public\js\staff_do_updown.js" />
+    <Content Include="public\js\stockproducts.js" />
+    <Content Include="public\js\stockproducts_do.js" />
+    <Content Include="public\js\storage.js" />
+    <Content Include="public\js\storehousestorage_add_list.js" />
+    <Content Include="public\js\storehouse_storage.js" />
+    <Content Include="public\js\stores.js" />
+    <Content Include="public\js\stores_armoney.js" />
+    <Content Include="public\js\supplier.js" />
+    <Content Include="public\js\supplier_apmoney.js" />
+    <Content Include="public\js\swfobject.js" />
+    <Content Include="public\js\swfobject_modified.js" />
+    <Content Include="public\js\swfupload.js" />
+    <Content Include="public\js\usermanage.js" />
+    <Content Include="public\js\usermanagedo.js" />
+    <Content Include="public\js\valence.js" />
+    <Content Include="public\js\warehouseinventory.js" />
+    <Content Include="public\js\warehouseview.js" />
+    <Content Include="public\js\WebCalendar.js" />
+    <Content Include="public\js\wTree\cxty_treeObj.js" />
+    <Content Include="public\js\wTree\demo.html" />
+    <Content Include="public\js\wTree\images\add.gif" />
+    <Content Include="public\js\wTree\images\at.gif" />
+    <Content Include="public\js\wTree\images\blank.png" />
+    <Content Include="public\js\wTree\images\del.gif" />
+    <Content Include="public\js\wTree\images\file.png" />
+    <Content Include="public\js\wTree\images\foldericon.png" />
+    <Content Include="public\js\wTree\images\I.png" />
+    <Content Include="public\js\wTree\images\L.png" />
+    <Content Include="public\js\wTree\images\Lminus.png" />
+    <Content Include="public\js\wTree\images\lock.gif" />
+    <Content Include="public\js\wTree\images\Lplus.png" />
+    <Content Include="public\js\wTree\images\new.png" />
+    <Content Include="public\js\wTree\images\Nstar.gif" />
+    <Content Include="public\js\wTree\images\openfoldericon.png" />
+    <Content Include="public\js\wTree\images\star.gif" />
+    <Content Include="public\js\wTree\images\T.png" />
+    <Content Include="public\js\wTree\images\Tminus.png" />
+    <Content Include="public\js\wTree\images\Tplus.png" />
+    <Content Include="public\js\wTree\images\unlock.gif" />
+    <Content Include="public\js\wTree\Main_Class.js" />
+    <Content Include="public\js\wTree\tree.js" />
+    <Content Include="public\js\wTree\webfxcheckboxtreeitem.js" />
+    <Content Include="public\js\wTree\xtree.css" />
+    <Content Include="public\js\wTree\xtree.js" />
+    <Content Include="public\js\wTree\xtree_M.css" />
+    <Content Include="public\js\xml.js" />
+    <Content Include="public\js\yhsys.js" />
+    <Content Include="public\swfupload\swfupload.swf" />
+    <Content Include="public\swfupload\swfuploadbutton.swf" />
+    <Content Include="Services\CAjax.aspx" />
+    <Content Include="aspx\1\staffstores.aspx" />
+    <Content Include="aspx\1\qrcode.aspx" />
+    <Content Include="aspx\1\cimg.aspx" />
+    <Content Include="aspx\1\topapirecall.aspx" />
+    <Content Include="Services\uppic.aspx" />
+    <Content Include="templates\Default\!style.css" />
+    <Content Include="templates\Default\apmoney.htm" />
+    <Content Include="templates\Default\apmoney_bat.htm" />
+    <Content Include="templates\Default\apmoney_do.htm" />
+    <Content Include="templates\Default\apmoney_importdata.htm" />
+    <Content Include="templates\Default\armoney.htm" />
+    <Content Include="templates\Default\armoney_bat.htm" />
+    <Content Include="templates\Default\armoney_do.htm" />
+    <Content Include="templates\Default\armoney_importdata.htm" />
+    <Content Include="templates\Default\bank.htm" />
+    <Content Include="templates\Default\banklist.htm" />
+    <Content Include="templates\Default\banklist_Beginning.htm" />
+    <Content Include="templates\Default\bankmoney.htm" />
+    <Content Include="templates\Default\bankmoney_do.htm" />
+    <Content Include="templates\Default\bank_do.htm" />
+    <Content Include="templates\Default\camera.htm" />
+    <Content Include="templates\Default\certificatedata.htm" />
+    <Content Include="templates\Default\certificatelist.htm" />
+    <Content Include="templates\Default\certificate_do.htm" />
+    <Content Include="templates\Default\certificate_do_box.htm" />
+    <Content Include="templates\Default\config.htm" />
+    <Content Include="templates\Default\costvalence.htm" />
+    <Content Include="templates\Default\costvalence_do.htm" />
+    <Content Include="templates\Default\customersclass.htm" />
+    <Content Include="templates\Default\customers_dataanalysis.htm" />
+    <Content Include="templates\Default\dataanalysis.htm" />
+    <Content Include="templates\Default\dataanalysis_fee.htm" />
+    <Content Include="templates\Default\dataanalysis_tvalue.htm" />
+    <Content Include="templates\Default\dataclass_box.htm" />
+    <Content Include="templates\Default\datapost.htm" />
+    <Content Include="templates\Default\data_import_export.htm" />
+    <Content Include="templates\Default\default.css" />
+    <Content Include="templates\Default\departmentsclass.htm" />
+    <Content Include="templates\Default\diqu.htm" />
+    <Content Include="templates\Default\erpdata.htm" />
+    <Content Include="templates\Default\erpdata_do.htm" />
+    <Content Include="templates\Default\erpdata_sync.htm" />
+    <Content Include="templates\Default\feessubject.htm" />
+    <Content Include="templates\Default\feessubjectclass.htm" />
+    <Content Include="templates\Default\feessubjectclass_do.htm" />
+    <Content Include="templates\Default\feessubject_do.htm" />
+    <Content Include="templates\Default\geterpdata.htm" />
+    <Content Include="templates\Default\gifts.htm" />
+    <Content Include="templates\Default\gifts_do.htm" />
+    <Content Include="templates\Default\importdata.htm" />
+    <Content Include="templates\Default\index.css" />
+    <Content Include="templates\Default\indexpage.htm" />
+    <Content Include="templates\Default\login.htm" />
+    <Content Include="templates\Default\logout.htm" />
+    <Content Include="templates\Default\manage_pwd.htm" />
+    <Content Include="templates\Default\marketingfees.htm" />
+    <Content Include="templates\Default\marketingfeesrevenue_do.htm" />
+    <Content Include="templates\Default\marketingfees_bat.htm" />
+    <Content Include="templates\Default\marketingfees_do.htm" />
+    <Content Include="templates\Default\marketingfees_importdata.htm" />
+    <Content Include="templates\Default\mconfig.htm" />
+    <Content Include="templates\Default\mconfig_do.htm" />
+    <Content Include="templates\Default\mexpresstemplates.htm" />
+    <Content Include="templates\Default\mexpresstemplates_do.htm" />
+    <Content Include="templates\Default\mgoodscat_do.htm" />
+    <Content Include="templates\Default\money_out.htm" />
+    <Content Include="templates\Default\monthlystatementlist.htm" />
+    <Content Include="templates\Default\monthlystatementlist_do.htm" />
+    <Content Include="templates\Default\monthlystatementlist_orderlist.htm" />
+    <Content Include="templates\Default\monthlystatementprint.htm" />
+    <Content Include="templates\Default\monthlystatementworkinglog.htm" />
+    <Content Include="templates\Default\mproduct.htm" />
+    <Content Include="templates\Default\mproduct_do.htm" />
+    <Content Include="templates\Default\mrecallmsg.htm" />
+    <Content Include="templates\Default\msendgoods.htm" />
+    <Content Include="templates\Default\mtrade.htm" />
+    <Content Include="templates\Default\mtrade_do.htm" />
+    <Content Include="templates\Default\orderfield.htm" />
+    <Content Include="templates\Default\orderfield_do.htm" />
+    <Content Include="templates\Default\orderlist.htm" />
+    <Content Include="templates\Default\orderlist_do.htm" />
+    <Content Include="templates\Default\orderlist_dobox.htm" />
+    <Content Include="templates\Default\orderlist_do_nofull.htm" />
+    <Content Include="templates\Default\orderlist_typebox.htm" />
+    <Content Include="templates\Default\orderprint.htm" />
+    <Content Include="templates\Default\orderworkinglog.htm" />
+    <Content Include="templates\Default\page.htm" />
+    <Content Include="templates\Default\paymentsystem.htm" />
+    <Content Include="templates\Default\paymentsystem_do.htm" />
+    <Content Include="templates\Default\priceclass.htm" />
+    <Content Include="templates\Default\priceclassdefaultprice.htm" />
+    <Content Include="templates\Default\priceclassdefaultprice_do.htm" />
+    <Content Include="templates\Default\productclass.htm" />
+    <Content Include="templates\Default\productpool.htm" />
+    <Content Include="templates\Default\productpool_do.htm" />
+    <Content Include="templates\Default\products.htm" />
+    <Content Include="templates\Default\products_beginning.htm" />
+    <Content Include="templates\Default\products_beginning_do.htm" />
+    <Content Include="templates\Default\products_do.htm" />
+    <Content Include="templates\Default\products_importdata.htm" />
+    <Content Include="templates\Default\public_goodsnum.htm" />
+    <Content Include="templates\Default\public_producttree.htm" />
+    <Content Include="templates\Default\purchasingpayment.htm" />
+    <Content Include="templates\Default\purchasingreceivables.htm" />
+    <Content Include="templates\Default\qrcode_monthlystatement.htm" />
+    <Content Include="templates\Default\qrcode_order.htm" />
+    <Content Include="templates\Default\reportstorageselect_do.htm" />
+    <Content Include="templates\Default\report_invoicing.htm" />
+    <Content Include="templates\Default\report_out.htm" />
+    <Content Include="templates\Default\report_purchase.htm" />
+    <Content Include="templates\Default\report_sales.htm" />
+    <Content Include="templates\Default\report_storehousestorage.htm" />
+    <Content Include="templates\Default\sales.htm" />
+    <Content Include="templates\Default\sales_do.htm" />
+    <Content Include="templates\Default\sales_syndata.htm" />
+    <Content Include="templates\Default\staff.htm" />
+    <Content Include="templates\Default\staffstores.htm" />
+    <Content Include="templates\Default\staffstores_do.htm" />
+    <Content Include="templates\Default\staffstores_importdata.htm" />
+    <Content Include="templates\Default\staff_do.htm" />
+    <Content Include="templates\Default\staff_do_updown.htm" />
+    <Content Include="templates\Default\stockproduct.htm" />
+    <Content Include="templates\Default\stockproduct_do.htm" />
+    <Content Include="templates\Default\stockproduct_print.htm" />
+    <Content Include="templates\Default\storage.htm" />
+    <Content Include="templates\Default\storage_do.htm" />
+    <Content Include="templates\Default\storehouseproductspriceinfo.htm" />
+    <Content Include="templates\Default\storehouseproductspriceinfoview.htm" />
+    <Content Include="templates\Default\storehousestorageadd.htm" />
+    <Content Include="templates\Default\storehousestorageprice_do.htm" />
+    <Content Include="templates\Default\storehousestorageselected.htm" />
+    <Content Include="templates\Default\storehousestorageview.htm" />
+    <Content Include="templates\Default\storehousestorage_add_list.htm" />
+    <Content Include="templates\Default\storehousestorage_do.htm" />
+    <Content Include="templates\Default\StorehouseStorage_Syndata.htm" />
+    <Content Include="templates\Default\StorehouseStoragPrice_Syndata.htm" />
+    <Content Include="templates\Default\stores.htm" />
+    <Content Include="templates\Default\stores_armoney.htm" />
+    <Content Include="templates\Default\stores_armoney_do.htm" />
+    <Content Include="templates\Default\stores_do.htm" />
+    <Content Include="templates\Default\supplier.htm" />
+    <Content Include="templates\Default\supplierclass.htm" />
+    <Content Include="templates\Default\supplier_apmoney.htm" />
+    <Content Include="templates\Default\supplier_apmoney_do.htm" />
+    <Content Include="templates\Default\supplier_do.htm" />
+    <Content Include="templates\Default\toolbar.css" />
+    <Content Include="templates\Default\topapirecall.htm" />
+    <Content Include="templates\Default\usermanage.htm" />
+    <Content Include="templates\Default\usermanage_do.htm" />
+    <Content Include="templates\Default\valence.htm" />
+    <Content Include="templates\Default\valence_do.htm" />
+    <Content Include="templates\Default\warehouseinventory.htm" />
+    <Content Include="templates\Default\warehouseinventorylist.htm" />
+    <Content Include="templates\Default\warehouseinventory_do.htm" />
+    <Content Include="templates\Default\warehouseinventory_view.htm" />
+    <Content Include="templates\Default\weather.css" />
+    <Content Include="templates\Default\yhsys.htm" />
+    <Content Include="templates\Default\yhsys_do.htm" />
+    <Content Include="templates\Default\_certificatedata_a.htm" />
+    <Content Include="templates\Default\_certificatedata_b.htm" />
+    <Content Include="templates\Default\_certificate_do_box_a.htm" />
+    <Content Include="templates\Default\_certificate_do_box_b.htm" />
+    <Content Include="templates\Default\_copyright.htm" />
+    <Content Include="templates\Default\_customers_dataanalysis_1.htm" />
+    <Content Include="templates\Default\_customers_dataanalysis_2.htm" />
+    <Content Include="templates\Default\_customers_dataanalysis_3.htm" />
+    <Content Include="templates\Default\_customers_dataanalysis_4.htm" />
+    <Content Include="templates\Default\_customers_dataanalysis_5.htm" />
+    <Content Include="templates\Default\_customers_dataanalysis_6.htm" />
+    <Content Include="templates\Default\_datalist_a_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_datetime_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_e_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_f_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_h1_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_h2_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_h4_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_h6_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_h_dataanalysis.htm" />
+    <Content Include="templates\Default\_datalist_stock_dataanalysis.htm" />
+    <Content Include="templates\Default\_errmsgbox.htm" />
+    <Content Include="templates\Default\_footer.htm" />
+    <Content Include="templates\Default\_header.htm" />
+    <Content Include="templates\Default\_mproduct_do_a.htm" />
+    <Content Include="templates\Default\_mproduct_do_b.htm" />
+    <Content Include="templates\Default\_mproduct_do_c.htm" />
+    <Content Include="templates\Default\_msgbox.htm" />
+    <Content Include="templates\Default\_mtrade_do_a.htm" />
+    <Content Include="templates\Default\_mtrade_order.htm" />
+    <Content Include="templates\Default\_m_sign.htm" />
+    <Content Include="templates\Default\_orderlist_dobox_b.htm" />
+    <Content Include="templates\Default\_orderprint.htm" />
+    <Content Include="templates\Default\_order_list_do_a.htm" />
+    <Content Include="templates\Default\_order_list_do_b.htm" />
+    <Content Include="templates\Default\_order_list_do_c.htm" />
+    <Content Include="templates\Default\_order_print_a.htm" />
+    <Content Include="templates\Default\_order_print_b.htm" />
+    <Content Include="templates\Default\_order_print_c.htm" />
+    <Content Include="templates\Default\_order_print_d.htm" />
+    <Content Include="templates\Default\_order_print_fo.htm" />
+    <Content Include="templates\Default\_pageheader.htm" />
+    <Content Include="templates\Default\_poperrmsgbox.htm" />
+    <Content Include="templates\Default\_popmsgbox.htm" />
+    <Content Include="templates\Default\_poppageheader.htm" />
+    <Content Include="templates\Default\_report_out_a.htm" />
+    <Content Include="templates\Default\_report_out_b.htm" />
+    <Content Include="templates\Default\_report_purchase_a.htm" />
+    <Content Include="templates\Default\_report_purchase_b.htm" />
+    <Content Include="templates\Default\_report_sales_a.htm" />
+    <Content Include="templates\Default\_report_sales_b.htm" />
+    <Content Include="templates\Default\_report_sales_b_a.htm" />
+    <Content Include="templates\Default\_report_sales_c.htm" />
+    <Content Include="templates\Default\_toolbar.htm" />
+    <Content Include="templates\Default\_toolbar_dataanalysis.htm" />
+    <Content Include="templates\Default\_toolbar_h2_analysis.htm" />
+    <Content Include="templates\Default\_toolbar_h4_analysis.htm" />
+    <Content Include="templates\Default\_toolbar_h6_analysis.htm" />
+    <Content Include="templates\Default\_toolbar_h_analysis.htm" />
+    <Content Include="templates\Default\_toolbar_stockanalysis.htm" />
+    <Content Include="aspx\1\test.aspx" />
+    <Content Include="Web.config" />
+    <Content Include="Yannyo.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="aspx\1\productfield.aspx" />
+    <Content Include="config\productfeildtype.config" />
+    <Content Include="aspx\1\ProductField_edit.aspx" />
+    <Content Include="aspx\1\products_show.aspx" />
+    <Content Include="config\ExpressTemplates.config" />
+    <Content Include="config\datatomail.config" />
+    <Content Include="config\feessubjectclasstype.config" />
+    <Content Include="config\productfieldtype.config" />
+    <Content Include="aspx\1\Storage_Order.aspx" />
+    <Content Include="aspx\1\storage_order_do.aspx" />
+    <Content Include="aspx\1\storage_order_print.aspx" />
+    <Content Include="aspx\1\storage_order_list.aspx" />
+    <Content Include="aspx\1\product_price.aspx" />
+    <Compile Include="aspx\1\data_import_export.aspx.cs">
+      <DependentUpon>data_import_export.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\product_price.cs">
+      <DependentUpon>product_price.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Content Include="Global.asax" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Content Include="Services\service.asmx" />
+    <Compile Include="Services\service.asmx.cs">
+      <DependentUpon>service.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="aspx\1\apmoney.aspx.cs">
+      <DependentUpon>apmoney.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\apmoney_bat.aspx.cs">
+      <DependentUpon>apmoney_bat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\apmoney_do.aspx.cs">
+      <DependentUpon>apmoney_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\apmoney_importdata.aspx.cs">
+      <DependentUpon>apmoney_importdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\armoney.aspx.cs">
+      <DependentUpon>armoney.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\armoney_bat.aspx.cs">
+      <DependentUpon>armoney_bat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\armoney_do.aspx.cs">
+      <DependentUpon>armoney_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\armoney_importdata.aspx.cs">
+      <DependentUpon>armoney_importdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\associated_details.aspx.cs">
+      <DependentUpon>associated_details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\associated_details_do.aspx.cs">
+      <DependentUpon>associated_details_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\banklist.aspx.cs">
+      <DependentUpon>banklist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\banklist_beginning.aspx.cs">
+      <DependentUpon>banklist_beginning.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\bankmoney.aspx.cs">
+      <DependentUpon>bankmoney.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\bank.aspx.cs">
+      <DependentUpon>bank.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\bankmoney_do.aspx.cs">
+      <DependentUpon>bankmoney_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\bank_do.aspx.cs">
+      <DependentUpon>bank_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\barcode.aspx.cs">
+      <DependentUpon>barcode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\buy_sales_details.aspx.cs">
+      <DependentUpon>buy_sales_details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\camera.aspx.cs">
+      <DependentUpon>camera.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\certificatedata.aspx.cs">
+      <DependentUpon>certificatedata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\certificatelist.aspx.cs">
+      <DependentUpon>certificatelist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\certificateworkinglog.aspx.cs">
+      <DependentUpon>certificateworkinglog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\certificate_do.aspx.cs">
+      <DependentUpon>certificate_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\certificate_do_box.aspx.cs">
+      <DependentUpon>certificate_do_box.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\certificate_print.aspx.cs">
+      <DependentUpon>certificate_print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\certificate_print_box.aspx.cs">
+      <DependentUpon>certificate_print_box.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\config.aspx.cs">
+      <DependentUpon>config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\costvalence.aspx.cs">
+      <DependentUpon>costvalence.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\costvalence_do.aspx.cs">
+      <DependentUpon>costvalence_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\cost_class_details.aspx.cs">
+      <DependentUpon>cost_class_details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\cost_details.aspx.cs">
+      <DependentUpon>cost_details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\cost_details_gifts.aspx.cs">
+      <DependentUpon>cost_details_gifts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\cost_details_staff.aspx.cs">
+      <DependentUpon>cost_details_staff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\cost_details_storehouse.aspx.cs">
+      <DependentUpon>cost_details_storehouse.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\customersclass.aspx.cs">
+      <DependentUpon>customersclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\customersclass_edit.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>customersclass_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\customers_dataanalysis.aspx.cs">
+      <DependentUpon>customers_dataanalysis.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\dataanalysis.aspx.cs">
+      <DependentUpon>dataanalysis.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\dataanalysis_fee.aspx.cs">
+      <DependentUpon>dataanalysis_fee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\dataanalysis_tvalue.aspx.cs">
+      <DependentUpon>dataanalysis_tvalue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\dataclass_box.aspx.cs">
+      <DependentUpon>dataclass_box.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\datapost.aspx.cs">
+      <DependentUpon>datapost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\datatomail.aspx.cs">
+      <DependentUpon>datatomail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\datatomail_do.aspx.cs">
+      <DependentUpon>datatomail_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\departmentsclass.aspx.cs">
+      <DependentUpon>departmentsclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\departmentsclass_edit.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>departmentsclass_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\diqu.aspx.cs">
+      <DependentUpon>diqu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\diqu_edit.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>diqu_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\edudata_do.aspx.cs">
+      <DependentUpon>edudata_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\erpdata.aspx.cs">
+      <DependentUpon>erpdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\erpdata_do.aspx.cs">
+      <DependentUpon>erpdata_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\erpdata_sync.aspx.cs">
+      <DependentUpon>erpdata_sync.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\familydata_do.aspx.cs">
+      <DependentUpon>familydata_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\feessubject.aspx.cs">
+      <DependentUpon>feessubject.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\feessubjectclass.aspx.cs">
+      <DependentUpon>feessubjectclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\feessubjectclass_do.aspx.cs">
+      <DependentUpon>feessubjectclass_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\feessubjectclass_do_move.aspx.cs">
+      <DependentUpon>feessubjectclass_do_move.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\feessubject_do.aspx.cs">
+      <DependentUpon>feessubject_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\geterpdata.aspx.cs">
+      <DependentUpon>geterpdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\gifts.aspx.cs">
+      <DependentUpon>gifts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\gifts_do.aspx.cs">
+      <DependentUpon>gifts_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\importdata.aspx.cs">
+      <DependentUpon>importdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\indexpage.aspx.cs">
+      <DependentUpon>indexpage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\logout.aspx.cs">
+      <DependentUpon>logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\logs.aspx.cs">
+      <DependentUpon>logs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\manage_pwd.aspx.cs">
+      <DependentUpon>manage_pwd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\marketingfees.aspx.cs">
+      <DependentUpon>marketingfees.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\marketingfeesrevenue_do.aspx.cs">
+      <DependentUpon>marketingfeesrevenue_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\marketingfees_bat.aspx.cs">
+      <DependentUpon>marketingfees_bat.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\marketingfees_do.aspx.cs">
+      <DependentUpon>marketingfees_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\marketingfees_importdata.aspx.cs">
+      <DependentUpon>marketingfees_importdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mconfig.aspx.cs">
+      <DependentUpon>mconfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mconfig_do.aspx.cs">
+      <DependentUpon>mconfig_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mexpresstemplates.aspx.cs">
+      <DependentUpon>mexpresstemplates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mexpresstemplates_do.aspx.cs">
+      <DependentUpon>mexpresstemplates_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mexpress_print.aspx.cs">
+      <DependentUpon>mexpress_print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mgoodscat_do.aspx.cs">
+      <DependentUpon>mgoodscat_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mmembers.aspx.cs">
+      <DependentUpon>mmembers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mmembers_do.aspx.cs">
+      <DependentUpon>mmembers_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mmembers_do.aspx.designer.cs">
+      <DependentUpon>mmembers_do.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\money_out.aspx.cs">
+      <DependentUpon>money_out.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\monthlystatementlist.aspx.cs">
+      <DependentUpon>monthlystatementlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\monthlystatementlist_do.aspx.cs">
+      <DependentUpon>monthlystatementlist_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\monthlystatementlist_money.aspx.cs">
+      <DependentUpon>monthlystatementlist_money.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\monthlystatementlist_orderlist.aspx.cs">
+      <DependentUpon>monthlystatementlist_orderlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\monthlystatementprint.aspx.cs">
+      <DependentUpon>monthlystatementprint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\monthlystatementworkinglog.aspx.cs">
+      <DependentUpon>monthlystatementworkinglog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\morder.aspx.cs">
+      <DependentUpon>morder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mproduct.aspx.cs">
+      <DependentUpon>mproduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mproduct_do.aspx.cs">
+      <DependentUpon>mproduct_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mrecallmsg.aspx.cs">
+      <DependentUpon>mrecallmsg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\msendgoods.aspx.cs">
+      <DependentUpon>msendgoods.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\msendgoods_exp.aspx.cs">
+      <DependentUpon>msendgoods_exp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mtrade.aspx.cs">
+      <DependentUpon>mtrade.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\mtrade_do.aspx.cs">
+      <DependentUpon>mtrade_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\occurrence_forehead_balance.aspx.cs">
+      <DependentUpon>occurrence_forehead_balance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\occurrence_forehead_balance_do.aspx.cs">
+      <DependentUpon>occurrence_forehead_balance_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\occurrence_forehead_balance_do_print.aspx.cs">
+      <DependentUpon>occurrence_forehead_balance_do_print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\occurrence_forehead_balance_print.aspx.cs">
+      <DependentUpon>occurrence_forehead_balance_print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderfield.aspx.cs">
+      <DependentUpon>orderfield.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderfield_do.aspx.cs">
+      <DependentUpon>orderfield_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderlist.aspx.cs">
+      <DependentUpon>orderlist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderlist_do.aspx.cs">
+      <DependentUpon>orderlist_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderlist_dobox.aspx.cs">
+      <DependentUpon>orderlist_dobox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderlist_do_nofull.aspx.cs">
+      <DependentUpon>orderlist_do_nofull.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderlist_do_nofull_do.aspx.cs">
+      <DependentUpon>orderlist_do_nofull_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderlist_typebox.aspx.cs">
+      <DependentUpon>orderlist_typebox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderprint.aspx.cs">
+      <DependentUpon>orderprint.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderprint_add.aspx.cs">
+      <DependentUpon>orderprint_add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\orderworkinglog.aspx.cs">
+      <DependentUpon>orderworkinglog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\paymentsystem.aspx.cs">
+      <DependentUpon>paymentsystem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\paymentsystem_do.aspx.cs">
+      <DependentUpon>paymentsystem_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\personnel_statistics.aspx.cs">
+      <DependentUpon>personnel_statistics.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\personnel_statistics_details.aspx.cs">
+      <DependentUpon>personnel_statistics_details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\priceclass.aspx.cs">
+      <DependentUpon>priceclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\priceclassdefaultprice.aspx.cs">
+      <DependentUpon>priceclassdefaultprice.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\priceclassdefaultprice_do.aspx.cs">
+      <DependentUpon>priceclassdefaultprice_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\priceclass_edit.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>priceclass_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\productclass.aspx.cs">
+      <DependentUpon>productclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\productclass_edit.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>productclass_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\productpool.aspx.cs">
+      <DependentUpon>productpool.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\productpool_do.aspx.cs">
+      <DependentUpon>productpool_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\products.aspx.cs">
+      <DependentUpon>products.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\productsloss.aspx.cs">
+      <DependentUpon>productsloss.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\productsloss_details.aspx.cs">
+      <DependentUpon>productsloss_details.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\products_beginning.aspx.cs">
+      <DependentUpon>products_beginning.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\products_beginning_do.aspx.cs">
+      <DependentUpon>products_beginning_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\products_do.aspx.cs">
+      <DependentUpon>products_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\products_importdata.aspx.cs">
+      <DependentUpon>products_importdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\products_sales.aspx.cs">
+      <DependentUpon>products_sales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\products_sales_details.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>products_sales_details.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\products_sales_storehouse.aspx.cs">
+      <DependentUpon>products_sales_storehouse.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\public_goodsnum.aspx.cs">
+      <DependentUpon>public_goodsnum.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\public_producttree.aspx.cs">
+      <DependentUpon>public_producttree.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\purchasingpayment.aspx.cs">
+      <DependentUpon>purchasingpayment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\purchasingreceivables.aspx.cs">
+      <DependentUpon>purchasingreceivables.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\qrcode_monthlystatement.aspx.cs">
+      <DependentUpon>qrcode_monthlystatement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\qrcode_order.aspx.cs">
+      <DependentUpon>qrcode_order.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\reportstorageselect_do.aspx.cs">
+      <DependentUpon>reportstorageselect_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\report_certificate_summary.aspx.cs">
+      <DependentUpon>report_certificate_summary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\report_certificate_summary_print.aspx.cs">
+      <DependentUpon>report_certificate_summary_print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\report_invoicing.aspx.cs">
+      <DependentUpon>report_invoicing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\report_out.aspx.cs">
+      <DependentUpon>report_out.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\report_purchase.aspx.cs">
+      <DependentUpon>report_purchase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\report_sales.aspx.cs">
+      <DependentUpon>report_sales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\report_sales_show.aspx.cs">
+      <DependentUpon>report_sales_show.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\report_storehousestorage.aspx.cs">
+      <DependentUpon>report_storehousestorage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\sales.aspx.cs">
+      <DependentUpon>sales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\sales_data.aspx.cs">
+      <DependentUpon>sales_data.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\sales_data.aspx.designer.cs">
+      <DependentUpon>sales_data.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\sales_do.aspx.cs">
+      <DependentUpon>sales_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\sales_syndata.aspx.cs">
+      <DependentUpon>sales_syndata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\staff.aspx.cs">
+      <DependentUpon>staff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\staffstores_do.aspx.cs">
+      <DependentUpon>staffstores_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\staffstores_importdata.aspx.cs">
+      <DependentUpon>staffstores_importdata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\staff_do.aspx.cs">
+      <DependentUpon>staff_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\staff_do_updown.aspx.cs">
+      <DependentUpon>staff_do_updown.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stockproduct.aspx.cs">
+      <DependentUpon>stockproduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stockproduct_do.aspx.cs">
+      <DependentUpon>stockproduct_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stockproduct_invoicing.aspx.cs">
+      <DependentUpon>stockproduct_invoicing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stockproduct_log.aspx.cs">
+      <DependentUpon>stockproduct_log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stockproduct_log.aspx.designer.cs">
+      <DependentUpon>stockproduct_log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\stockproduct_print.aspx.cs">
+      <DependentUpon>stockproduct_print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storage.aspx.cs">
+      <DependentUpon>storage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storageclass.aspx.cs">
+      <DependentUpon>storageclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storageclass_edit.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>storageclass_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\storage_do.aspx.cs">
+      <DependentUpon>storage_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storehouseproductspriceinfo.aspx.cs">
+      <DependentUpon>storehouseproductspriceinfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storehouseproductspriceinfoview.aspx.cs">
+      <DependentUpon>storehouseproductspriceinfoview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storehousestorageadd.aspx.cs">
+      <DependentUpon>storehousestorageadd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storehousestorageprice_do.aspx.cs">
+      <DependentUpon>storehousestorageprice_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storehousestorageselected.aspx.cs">
+      <DependentUpon>storehousestorageselected.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storehousestorageview.aspx.cs">
+      <DependentUpon>storehousestorageview.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storehousestorage_add_list.aspx.cs">
+      <DependentUpon>storehousestorage_add_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storehousestorage_do.aspx.cs">
+      <DependentUpon>storehousestorage_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\StorehouseStorage_Syndata.aspx.cs">
+      <DependentUpon>StorehouseStorage_Syndata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\StorehouseStoragPrice_Syndata.aspx.cs">
+      <DependentUpon>StorehouseStoragPrice_Syndata.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stores.aspx.cs">
+      <DependentUpon>stores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stores_armoney.aspx.cs">
+      <DependentUpon>stores_armoney.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stores_armoney_do.aspx.cs">
+      <DependentUpon>stores_armoney_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\stores_do.aspx.cs">
+      <DependentUpon>stores_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\supplier.aspx.cs">
+      <DependentUpon>supplier.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\supplierclass.aspx.cs">
+      <DependentUpon>supplierclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\supplierclass_edit.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>supplierclass_edit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\supplier_apmoney.aspx.cs">
+      <DependentUpon>supplier_apmoney.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\supplier_apmoney_do.aspx.cs">
+      <DependentUpon>supplier_apmoney_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\supplier_do.aspx.cs">
+      <DependentUpon>supplier_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\usermanage.aspx.cs">
+      <DependentUpon>usermanage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\usermanageclass.aspx.cs">
+      <DependentUpon>usermanageclass.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\usermanageclass_do.aspx.cs">
+      <DependentUpon>usermanageclass_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\usermanage_do.aspx.cs">
+      <DependentUpon>usermanage_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\valence.aspx.cs">
+      <DependentUpon>valence.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\valence_do.aspx.cs">
+      <DependentUpon>valence_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\warehouseinventory.aspx.cs">
+      <DependentUpon>warehouseinventory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\warehouseinventorylist.aspx.cs">
+      <DependentUpon>warehouseinventorylist.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\warehouseinventory_do.aspx.cs">
+      <DependentUpon>warehouseinventory_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\warehouseinventory_view.aspx.cs">
+      <DependentUpon>warehouseinventory_view.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\workdata_do.aspx.cs">
+      <DependentUpon>workdata_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\yhsys.aspx.cs">
+      <DependentUpon>yhsys.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\yhsys_do.aspx.cs">
+      <DependentUpon>yhsys_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="install\install_step_four.aspx.cs">
+      <DependentUpon>install_step_four.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="install\install_step_one.aspx.cs">
+      <DependentUpon>install_step_one.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="install\install_step_three.aspx.cs">
+      <DependentUpon>install_step_three.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="install\install_step_two.aspx.cs">
+      <DependentUpon>install_step_two.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MPageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="aspx\1\page.aspx.cs">
+      <DependentUpon>page.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\CAjax.aspx.cs">
+      <DependentUpon>CAjax.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\staffstores.aspx.cs">
+      <DependentUpon>staffstores.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\qrcode.aspx.cs">
+      <DependentUpon>qrcode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\cimg.aspx.cs">
+      <DependentUpon>cimg.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\cimg.aspx.designer.cs">
+      <DependentUpon>cimg.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\topapirecall.aspx.cs">
+      <DependentUpon>topapirecall.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\uppic.aspx.cs">
+      <DependentUpon>uppic.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\uppic.aspx.designer.cs">
+      <DependentUpon>uppic.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\productfield.cs">
+      <DependentUpon>productfield.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\ProductField_edit.aspx.cs">
+      <DependentUpon>ProductField_edit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\products_show.aspx.cs">
+      <DependentUpon>products_show.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\Storage_Order.aspx.cs">
+      <DependentUpon>Storage_Order.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\Storage_Order.aspx.designer.cs">
+      <DependentUpon>Storage_Order.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\storage_order_do.aspx.cs">
+      <DependentUpon>storage_order_do.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storage_order_do.aspx.designer.cs">
+      <DependentUpon>storage_order_do.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\storage_order_print.aspx.cs">
+      <DependentUpon>storage_order_print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storage_order_print.aspx.designer.cs">
+      <DependentUpon>storage_order_print.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="aspx\1\storage_order_list.aspx.cs">
+      <DependentUpon>storage_order_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="aspx\1\storage_order_list.aspx.designer.cs">
+      <DependentUpon>storage_order_list.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Yannyo.BLL\Yannyo.BLL.csproj">
+      <Project>{8D8794D4-EAEF-48A3-86B3-C822FF35C793}</Project>
+      <Name>Yannyo.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Cache\Yannyo.Cache.csproj">
+      <Project>{DEC263A7-C844-46A2-B143-91FE1B3A3851}</Project>
+      <Name>Yannyo.Cache</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Config\Yannyo.Config.csproj">
+      <Project>{F6A5F6C1-BD11-441D-B956-3BF52AEED890}</Project>
+      <Name>Yannyo.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Data.SqlServer\Yannyo.Data.SqlServer.csproj">
+      <Project>{a1a66329-fe25-47d7-98fe-5f1ec3d2a872}</Project>
+      <Name>Yannyo.Data.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Data\Yannyo.Data.csproj">
+      <Project>{CAA860C2-28D3-4D1B-8D7B-3A83C94DAA65}</Project>
+      <Name>Yannyo.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Entity\Yannyo.Entity.csproj">
+      <Project>{41156C65-96B0-4026-A4FF-94CC299ABCAB}</Project>
+      <Name>Yannyo.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Install\Yannyo.Install.csproj">
+      <Project>{2C38C4D1-3623-4440-B0F4-17F780B8BD7F}</Project>
+      <Name>Yannyo.Install</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yannyo.Public\Yannyo.Public.csproj">
+      <Project>{0ABFDA16-4699-49BD-B8A7-D87881BBDAEB}</Project>
+      <Name>Yannyo.Public</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Data\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349C5851-65DF-11DA-9384-00065B846F21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2457</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>

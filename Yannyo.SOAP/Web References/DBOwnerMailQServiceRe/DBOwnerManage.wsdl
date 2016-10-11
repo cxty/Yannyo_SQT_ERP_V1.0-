@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://messagequeue.dbowner.com/DBOwnerManage/" name="DBOwnerManage" targetNamespace="http://messagequeue.dbowner.com/DBOwnerManage/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://messagequeue.dbowner.com/DBOwnerManage/">
+      <xsd:element name="Auth">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="user" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AuthResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AddMessageTask">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AddMessageTaskResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SelectTaskInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SelectTaskInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateTaskInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateTaskInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delMessageTask">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delMessageTaskResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMessageList">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetMessageListResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AddServer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AddServerResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SelectServerInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SelectServerInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateServerInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdateServerInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delServer">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="delServerResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetServerList">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetServerListResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Selectsystemlog">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SelectsystemlogResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetsystemlogList">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetsystemlogListResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Updatesystemlog">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UpdatesystemlogResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Insertsystemlog">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="InsertsystemlogResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Deletesystemlog">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="data" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DeletesystemlogResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="return" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="SOAPAuth">
+    <wsdl:part name="Auth" element="tns:Auth" />
+  </wsdl:message>
+  <wsdl:message name="AddMessageTaskRequest">
+    <wsdl:part name="parameters" element="tns:AddMessageTask" />
+  </wsdl:message>
+  <wsdl:message name="AddMessageTaskResponse">
+    <wsdl:part name="parameters" element="tns:AddMessageTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="SelectTaskInfoRequest">
+    <wsdl:part name="parameters" element="tns:SelectTaskInfo" />
+  </wsdl:message>
+  <wsdl:message name="SelectTaskInfoResponse">
+    <wsdl:part name="parameters" element="tns:SelectTaskInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTaskInfoRequest">
+    <wsdl:part name="parameters" element="tns:UpdateTaskInfo" />
+  </wsdl:message>
+  <wsdl:message name="UpdateTaskInfoResponse">
+    <wsdl:part name="parameters" element="tns:UpdateTaskInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="delMessageTaskRequest">
+    <wsdl:part name="parameters" element="tns:delMessageTask" />
+  </wsdl:message>
+  <wsdl:message name="delMessageTaskResponse">
+    <wsdl:part name="parameters" element="tns:delMessageTaskResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMessageListRequest">
+    <wsdl:part name="parameters" element="tns:GetMessageList" />
+  </wsdl:message>
+  <wsdl:message name="GetMessageListResponse">
+    <wsdl:part name="parameters" element="tns:GetMessageListResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddServerRequest">
+    <wsdl:part name="parameters" element="tns:AddServer" />
+  </wsdl:message>
+  <wsdl:message name="AddServerResponse">
+    <wsdl:part name="parameters" element="tns:AddServerResponse" />
+  </wsdl:message>
+  <wsdl:message name="SelectServerInfoRequest">
+    <wsdl:part name="parameters" element="tns:SelectServerInfo" />
+  </wsdl:message>
+  <wsdl:message name="SelectServerInfoResponse">
+    <wsdl:part name="parameters" element="tns:SelectServerInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateServerInfoRequest">
+    <wsdl:part name="parameters" element="tns:UpdateServerInfo" />
+  </wsdl:message>
+  <wsdl:message name="UpdateServerInfoResponse">
+    <wsdl:part name="parameters" element="tns:UpdateServerInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="delServerRequest">
+    <wsdl:part name="parameters" element="tns:delServer" />
+  </wsdl:message>
+  <wsdl:message name="delServerResponse">
+    <wsdl:part name="parameters" element="tns:delServerResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetServerListRequest">
+    <wsdl:part name="parameters" element="tns:GetServerList" />
+  </wsdl:message>
+  <wsdl:message name="GetServerListResponse">
+    <wsdl:part name="parameters" element="tns:GetServerListResponse" />
+  </wsdl:message>
+  <wsdl:message name="SelectsystemlogRequest">
+    <wsdl:part name="parameters" element="tns:Selectsystemlog" />
+  </wsdl:message>
+  <wsdl:message name="SelectsystemlogResponse">
+    <wsdl:part name="parameters" element="tns:SelectsystemlogResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetsystemlogListRequest">
+    <wsdl:part name="parameters" element="tns:GetsystemlogList" />
+  </wsdl:message>
+  <wsdl:message name="GetsystemlogListResponse">
+    <wsdl:part name="parameters" element="tns:GetsystemlogListResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdatesystemlogRequest">
+    <wsdl:part name="parameters" element="tns:Updatesystemlog" />
+  </wsdl:message>
+  <wsdl:message name="UpdatesystemlogResponse">
+    <wsdl:part name="parameters" element="tns:UpdatesystemlogResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertsystemlogRequest">
+    <wsdl:part name="parameters" element="tns:Insertsystemlog" />
+  </wsdl:message>
+  <wsdl:message name="InsertsystemlogResponse">
+    <wsdl:part name="parameters" element="tns:InsertsystemlogResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeletesystemlogRequest">
+    <wsdl:part name="parameters" element="tns:Deletesystemlog" />
+  </wsdl:message>
+  <wsdl:message name="DeletesystemlogResponse">
+    <wsdl:part name="parameters" element="tns:DeletesystemlogResponse" />
+  </wsdl:message>
+  <wsdl:portType name="DBOwnerManage">
+    <wsdl:operation name="AddMessageTask">
+      <wsdl:input message="tns:AddMessageTaskRequest" />
+      <wsdl:output message="tns:AddMessageTaskResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SelectTaskInfo">
+      <wsdl:input message="tns:SelectTaskInfoRequest" />
+      <wsdl:output message="tns:SelectTaskInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTaskInfo">
+      <wsdl:input message="tns:UpdateTaskInfoRequest" />
+      <wsdl:output message="tns:UpdateTaskInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delMessageTask">
+      <wsdl:input message="tns:delMessageTaskRequest" />
+      <wsdl:output message="tns:delMessageTaskResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMessageList">
+      <wsdl:input message="tns:GetMessageListRequest" />
+      <wsdl:output message="tns:GetMessageListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="AddServer">
+      <wsdl:input message="tns:AddServerRequest" />
+      <wsdl:output message="tns:AddServerResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="SelectServerInfo">
+      <wsdl:input message="tns:SelectServerInfoRequest" />
+      <wsdl:output message="tns:SelectServerInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateServerInfo">
+      <wsdl:input message="tns:UpdateServerInfoRequest" />
+      <wsdl:output message="tns:UpdateServerInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="delServer">
+      <wsdl:input message="tns:delServerRequest" />
+      <wsdl:output message="tns:delServerResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetServerList">
+      <wsdl:input message="tns:GetServerListRequest" />
+      <wsdl:output message="tns:GetServerListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Selectsystemlog">
+      <wsdl:input message="tns:SelectsystemlogRequest" />
+      <wsdl:output message="tns:SelectsystemlogResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetsystemlogList">
+      <wsdl:input message="tns:GetsystemlogListRequest" />
+      <wsdl:output message="tns:GetsystemlogListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Updatesystemlog">
+      <wsdl:input message="tns:UpdatesystemlogRequest" />
+      <wsdl:output message="tns:UpdatesystemlogResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Insertsystemlog">
+      <wsdl:input message="tns:InsertsystemlogRequest" />
+      <wsdl:output message="tns:InsertsystemlogResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Deletesystemlog">
+      <wsdl:input message="tns:DeletesystemlogRequest" />
+      <wsdl:output message="tns:DeletesystemlogResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DBOwnerManageSOAP" type="tns:DBOwnerManage">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddMessageTask">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/AddMessageTask" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SelectTaskInfo">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/SelectTaskInfo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateTaskInfo">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/UpdateTaskInfo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delMessageTask">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/delMessageTask" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessageList">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/GetMessageList" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddServer">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/AddServer" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SelectServerInfo">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/SelectServerInfo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateServerInfo">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/UpdateServerInfo" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="delServer">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/delServer" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetServerList">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/GetServerList" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Selectsystemlog">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/Selectsystemlog" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetsystemlogList">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/GetsystemlogList" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Updatesystemlog">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/Updatesystemlog" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Insertsystemlog">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/Insertsystemlog" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Deletesystemlog">
+      <soap:operation soapAction="http://messagequeue.dbowner.com/DBOwnerManage/Deletesystemlog" />
+      <wsdl:input>
+        <soap:body use="literal" />
+        <soap:header message="tns:SOAPAuth" part="Auth" use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DBOwnerManage">
+    <wsdl:port name="DBOwnerManageSOAP" binding="tns:DBOwnerManageSOAP">
+      <soap:address location="http://messagequeue.dbowner.com/soap.php?wsdl" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

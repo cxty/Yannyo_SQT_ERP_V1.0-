@@ -1,0 +1,103 @@
+﻿<%template _header%>
+<%if {ispost} %>
+	<%if page_err==0%>
+		<%template _msgbox%>
+	<%else%>
+		<%template _errmsgbox%>
+	<%/if%>
+<%else%>
+<script src="/public/js/storehouse_storage.js" language="javascript" type="text/javascript"></script>
+<script src="/public/js/warehouseview.js" language="javascript" type="text/javascript"></script>
+<script src="/public/js/WebCalendar.js" type="text/javascript" ></script>
+<script type="text/javascript" language="javascript" src="/public/js/jTable.js"></script>
+<link rel="stylesheet" type="text/css" href="/public/js/jquery.autocomplete.css"></link>
+        <%if page_err!=0%>
+            <%template _errmsgbox%>
+        <%else%>
+ <form action="" method="post" name="form1" id="form1">      
+  <table cellpadding="0" cellspacing="0" border="0" style="width:100%;background-color:#cccccc">
+  <tr>
+      <td>
+       仓库:<select id="StorageID" name="StorageID" >
+                <option value="0" >全部</option>
+                <%if StorageList!=null%>
+                <%loop sl StorageList%>
+                <option value="{sl[StorageID]}" 
+                <%if sl["StorageID"].ToString() == StorageID.ToString()%>
+                 selected="selected"
+                 <%/if%>
+                 >{sl[sName]}({sl[sCode]})</option>
+                <%/loop%>
+                <%/if%>
+         </select>
+         &nbsp; &nbsp; &nbsp; &nbsp;
+         时间点：<input type="text" readonly="readonly" name="sDate" id="sDate" onClick="new Calendar().show(this);"/>
+          &nbsp; &nbsp; &nbsp; &nbsp;
+          <input type="button" id="add" name="add" style="margin:5px;width:150px" class="B_INPUT" value="添加盘点信息"/>
+         </td>
+     </tr>
+       
+     </table>
+
+        <table width="100%" border="0" cellspacing="2" cellpadding="0" class="tBox" id="tBoxs" style="font-size:9pt">
+		  <tr class="tBar">
+            <td width="5%" height="30px" align="center" rowspan="1"><span style="font-size:11pt">序号</span></td>
+            <td width="15%"><span style="font-size:11pt">盘点时间</span></td>
+            <td width="20%"><span style="font-size:11pt">仓库名称</span></td>
+			<td width="15%"><span style="font-size:11pt">仓管员</span></td>
+			<td width="15%"><span style="font-size:11pt">盘点人</span></td>
+			<td width="15%"><span style="font-size:11pt">库存点</span></td>
+            <td width="15%"><span style="font-size:11pt">操作员</span></td>
+          </tr>
+
+         <%if dList !=null%>
+          <%loop dl dList%>
+          <tr>
+            <td width="5%" align="center">{dl__loop__id}</td>
+             <td width="15%">
+             <%set {aspxrewriteurl} = DateTime.Parse(dl["sUpdateTime"].ToString()).ToShortDateString().ToString()%>
+              <a href="javascript:void(0);" onclick="javascript:StockProductsManage.ShowHouseInventoryList({dl[StockID]});">{aspxrewriteurl}</a>
+            <input type="hidden" id="sUpdateTime" name="sUpdateTime"  value="{dl[sUpdateTime]}"/>
+            </td>
+            <td width="20%">
+             <a href="javascript:void(0);" onclick="javascript:StockProductsManage.ShowHouseInventoryList({dl[StockID]});">
+              {dl[StorageName]}
+             </a>  
+             <input type="hidden" id="StorageName" name="StorageName"  value="{dl[StorageID]}"/>
+            </td>
+            <td width="15%">{dl[StorageStaff]}</td>
+            <td width="15%">{dl[InventoryName]}</td>
+            <td width="15%">
+            <%set {aspxrewriteurl} = DateTime.Parse(dl["sAppendTime"].ToString()).ToShortDateString().ToString()%>
+           {aspxrewriteurl}
+           </td>
+            <td width="15%">{dl[StaffName]}</td>
+          </tr>
+          <%/loop%>
+          <%/if%>
+          <tr>
+            <td colspan="8"><%if PageBarHTML!=null%>{PageBarHTML}<%/if%></td>
+          </tr>
+      </table>
+    
+    </form>
+
+<%/if%>
+<script language="javascript" type="text/javascript">
+    addTableListener(document.getElementById("tBoxs"), 0, 0);
+var tf = new TableFixed("tBoxs");
+
+tf.Clone();
+
+    var StockProductsManage = new TStockProductsManage();
+    StockProductsManage.ini();
+    function HidBox() {
+        StockProductsManage.HidUserBox();
+        //location.reload();
+    }
+</script>
+<%/if%>
+
+
+<%template _copyright%>
+<%template _footer%>
